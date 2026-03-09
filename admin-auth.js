@@ -1,20 +1,15 @@
 /**
- * Vercel Serverless Function — /api/admin-auth
+ * Vercel Serverless Function — /api/admin-auth.js
+ * Written in CommonJS so it works without any package.json config.
  *
- * SETUP (do this once in the Vercel dashboard):
+ * SETUP (once, in Vercel dashboard):
  *   Project → Settings → Environment Variables
- *   Name:  ADMIN_PASSWORD
- *   Value: (whatever you want — never commit it)
- *
- * The function checks the posted password against the env var,
- * and on success returns a signed HMAC token the client stores
- * in sessionStorage. Nothing sensitive is ever in source code.
+ *   Name: ADMIN_PASSWORD  |  Value: your password
  */
 
-import crypto from 'crypto';
+const crypto = require('crypto');
 
-export default function handler(req, res) {
-  // Only accept POST
+module.exports = function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -28,18 +23,14 @@ export default function handler(req, res) {
   const secret = process.env.ADMIN_PASSWORD;
 
   if (!secret) {
-    // Env var not configured — fail loudly in dev, silently in prod
     console.error('ADMIN_PASSWORD env var is not set.');
     return res.status(500).json({ ok: false });
   }
 
   if (password !== secret) {
-    // Small artificial delay to slow brute-force attempts
     return setTimeout(() => res.status(401).json({ ok: false }), 400);
   }
 
-  // Sign a token: HMAC-SHA256(timestamp, ADMIN_PASSWORD)
-  // The timestamp is embedded so tokens expire after 8 hours client-side.
   const ts    = Date.now();
   const token = crypto
     .createHmac('sha256', secret)
@@ -47,4 +38,4 @@ export default function handler(req, res) {
     .digest('hex');
 
   return res.status(200).json({ ok: true, token, ts });
-}
+};
