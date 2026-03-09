@@ -71,7 +71,6 @@
           <div class="post-label"><span>example 3.JPG</span><span>SCRAP</span></div>
         </div>
 
-        <!-- Multi-image: arrows appear automatically in lightbox -->
         <div class="art-post" onclick="openLightbox(3)">
           <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" alt="Series 01" />
           <div class="post-label"><span>series_01.JPG</span><span>2025</span></div>
@@ -211,9 +210,37 @@
   </div>
 </div>
 
+<!-- ═══════════════════════════════════════════════════════
+     FIREBASE SDK  —  loaded before your script so it's available
+     Do not change these URLs.
+════════════════════════════════════════════════════════ -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+
 <script>
   /* ══════════════════════════════════════════════════════
-     ART DATA INPUT:  index must match openLightbox(N) in HTML. look at your notes.
+     FIREBASE CONFIG
+     Replace every value below with your own project's config.
+     See the setup guide for step-by-step instructions.
+  ══════════════════════════════════════════════════════ */
+  const firebaseConfig = {
+    apiKey:            "YOUR_API_KEY",
+    authDomain:        "YOUR_PROJECT_ID.firebaseapp.com",
+    databaseURL:       "https://YOUR_PROJECT_ID-default-rtdb.firebaseio.com",
+    projectId:         "YOUR_PROJECT_ID",
+    storageBucket:     "YOUR_PROJECT_ID.appspot.com",
+    messagingSenderId: "YOUR_SENDER_ID",
+    appId:             "YOUR_APP_ID"
+  };
+
+  firebase.initializeApp(firebaseConfig);
+  const db          = firebase.database();
+  const msgRef      = db.ref('board/messages');
+  const MAX_MSGS    = 75;   // oldest entry deleted when this is exceeded
+  const renderedIds = new Set(); // prevents duplicates from the real-time listener
+
+  /* ══════════════════════════════════════════════════════
+     ART DATA  —  index must match openLightbox(N) in HTML. look at your notes.
   ══════════════════════════════════════════════════════ */
   const artData = [
     {
@@ -401,38 +428,74 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     BULLETIN BOARD
+     BULLETIN BOARD — Firebase-backed
+     Messages are shared across all visitors and persist
+     until the 75-message cap pushes the oldest one out.
   ══════════════════════════════════════════════════════ */
   const FALLBACK_W = 800, FALLBACK_H = 500;
 
+  // Build and insert one message popup from stored data
+  function renderMessage(id, msg) {
+    if (renderedIds.has(id)) return; // listener fires on load for all existing msgs
+    renderedIds.add(id);
+
+    const board = document.getElementById('board-section');
+    const bw    = board.offsetWidth  || FALLBACK_W;
+    const bh    = board.offsetHeight || FALLBACK_H;
+
+    const popup = document.createElement('div');
+    popup.className  = 'comment-popup';
+    // Positions stored as percentages so they work on any screen size
+    popup.style.left = Math.max(10, (msg.xPct / 100) * bw) + 'px';
+    popup.style.top  = Math.max(10, (msg.yPct / 100) * bh) + 'px';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'comment-header';
+    hdr.innerHTML = `<span>${msg.msgId}</span><span>${msg.time}</span>`;
+
+    const bdy = document.createElement('div');
+    bdy.className   = 'comment-body';
+    bdy.textContent = msg.text; // textContent — no XSS :p
+
+    popup.append(hdr, bdy);
+    board.appendChild(popup);
+    makeDraggable(popup, hdr, board);
+  }
+
+  // Write a new message to Firebase
   function addComment(preset = null) {
     const input = document.getElementById('commentInput');
     const text  = preset || input.value.trim();
     if (!text) return;
 
     const board = document.getElementById('board-section');
-    const bw = board.offsetWidth  || FALLBACK_W;
-    const bh = board.offsetHeight || FALLBACK_H;
+    const bw    = board.offsetWidth  || FALLBACK_W;
+    const bh    = board.offsetHeight || FALLBACK_H;
 
-    const popup  = document.createElement('div');
-    popup.className  = 'comment-popup';
-    popup.style.left = Math.max(10, Math.random() * (bw - 200)) + 'px';
-    popup.style.top  = Math.max(10, Math.random() * (bh - 150)) + 'px';
+    // Store position as % of board dims so it's consistent across screen sizes
+    const xPct = Math.max(2, Math.random() * 72);
+    const yPct = Math.max(2, Math.random() * 68);
 
-    const time  = new Date().toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
-    const msgId = 'MSG_' + String(Math.floor(Math.random() * 999)).padStart(3, '0');
+    const payload = {
+      text,
+      time:      new Date().toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
+      msgId:     'MSG_' + String(Math.floor(Math.random() * 999)).padStart(3, '0'),
+      xPct,
+      yPct,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
 
-    const hdr = document.createElement('div');
-    hdr.className = 'comment-header';
-    hdr.innerHTML = `<span>${msgId}</span><span>${time}</span>`;
-
-    const bdy = document.createElement('div');
-    bdy.className   = 'comment-body';
-    bdy.textContent = text; // textContent — no XSS :p
-
-    popup.append(hdr, bdy);
-    board.appendChild(popup);
-    makeDraggable(popup, hdr, board);
+    msgRef.push(payload).then(() => {
+      // Enforce cap: count all messages, delete the oldest if over limit
+      msgRef.orderByChild('timestamp').once('value', snap => {
+        if (snap.numChildren() > MAX_MSGS) {
+          // grab the single oldest entry and remove it
+          msgRef.orderByChild('timestamp').limitToFirst(1).once('value', oldest => {
+            oldest.forEach(child => child.ref.remove());
+          });
+        }
+      });
+    });
 
     if (!preset) {
       input.value = '';
@@ -443,6 +506,12 @@
   }
 
   function submitComment() { addComment(); }
+
+  // Real-time listener — fires once per existing message on load,
+  // then again instantly whenever any visitor posts a new one
+  msgRef.orderByChild('timestamp').on('child_added', snap => {
+    renderMessage(snap.key, snap.val());
+  });
 
   /* ══════════════════════════════════════════════════════
      STICKERS cause i'm stupid
@@ -467,12 +536,41 @@
   });
 
   window.onload = () => {
-    ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
-      .forEach(t => addComment(t));
+    // Seed notes only written once, the very first time the board is empty
+    msgRef.once('value', snap => {
+      if (!snap.exists()) {
+        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+          .forEach(t => addComment(t));
+      }
+    });
     initStickers();
     updateLiveStatus();
     setInterval(updateLiveStatus, 1000);
   };
+  <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-app.js";
+  import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.10.0/firebase-analytics.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
+    authDomain: "seistudiomessageboard.firebaseapp.com",
+    databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
+    projectId: "seistudiomessageboard",
+    storageBucket: "seistudiomessageboard.firebasestorage.app",
+    messagingSenderId: "683797738985",
+    appId: "1:683797738985:web:3e79b66988d1498fddc778",
+    measurementId: "G-8Z80K96RSF"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const analytics = getAnalytics(app);
+</script>
 </script>
 </body>
 </html>
