@@ -174,8 +174,8 @@
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
-<div id="adminLoginModal" class="modal-overlay">
+<!-- ADMIN LOGIN — style="display:none" guarantees hidden before CSS loads -->
+<div id="adminLoginModal" class="modal-overlay" style="display:none">
   <div class="admin-box" style="max-width:360px">
     <div class="admin-toolbar">
       <span>ADMIN_ACCESS.EXE</span>
@@ -190,8 +190,8 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
-<div id="adminPanelModal" class="modal-overlay">
+<!-- ADMIN PANEL — style="display:none" guarantees hidden before CSS loads -->
+<div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
       <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
@@ -656,18 +656,18 @@
     } catch(_) { return false; }
   }
 
+  // Pure-JS modal helpers — don't rely on CSS class toggling
+  function openModal(id)  { document.getElementById(id).style.display = 'flex'; }
+  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
   function showAdminLogin() {
-    // Skip login if already authenticated this session
-    if (isAdminSession()) {
-      document.getElementById('adminPanelModal').classList.add('show');
-      return;
-    }
-    document.getElementById('adminLoginModal').classList.add('show');
+    if (isAdminSession()) { openModal('adminPanelModal'); return; }
+    openModal('adminLoginModal');
     setTimeout(() => document.getElementById('adminPassInput').focus(), 50);
   }
 
   function closeAdminLogin() {
-    document.getElementById('adminLoginModal').classList.remove('show');
+    closeModal('adminLoginModal');
     document.getElementById('adminPassInput').value = '';
     document.getElementById('adminPassError').style.display = 'none';
   }
@@ -689,7 +689,7 @@
       if (data.ok) {
         sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
         closeAdminLogin();
-        document.getElementById('adminPanelModal').classList.add('show');
+        openModal('adminPanelModal');
       } else {
         errEl.style.display = 'block';
       }
@@ -700,9 +700,7 @@
     }
   }
 
-  function closeAdminPanel() {
-    document.getElementById('adminPanelModal').classList.remove('show');
-  }
+  function closeAdminPanel() { closeModal('adminPanelModal'); }
   function switchAdminTab(tab) {
     document.getElementById('adminArtForm') .style.display = tab === 'art'  ? 'flex' : 'none';
     document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
