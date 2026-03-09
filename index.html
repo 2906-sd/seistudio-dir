@@ -577,6 +577,15 @@
   // FIXED: deterministic name from Firebase push key so old messages
   // (seeded before the name field existed) get a stable generated name
   // instead of falling back to plain "Anon."
+  // Firebase push keys encode a millisecond timestamp in their first 8 chars.
+  // Decode it to get the exact post date for messages that predate the date field.
+  const PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
+  function dateFromKey(key) {
+    let ts = 0;
+    for (let i = 0; i < 8; i++) ts = ts * 64 + PUSH_CHARS.indexOf(key[i]);
+    return new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
+  }
+
   function nameFromKey(key) {
     let h = 0;
     for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
@@ -610,7 +619,7 @@
     const hdr = document.createElement('div');
     hdr.className = 'comment-header';
     const name    = msg.name || nameFromKey(id);
-    const dateStr = msg.date ? `${msg.date} · ` : '';
+    const dateStr = `${msg.date || dateFromKey(id)} · `;
     hdr.innerHTML = `<span>${name}</span><span>${dateStr}${msg.time}</span>`;
 
     const bdy = document.createElement('div');
