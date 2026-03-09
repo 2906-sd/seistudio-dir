@@ -196,7 +196,10 @@
   <div class="admin-box">
     <div class="admin-toolbar">
       <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
-      <button onclick="closeAdminPanel()">× LOCK</button>
+      <div style="display:flex;gap:6px">
+        <button onclick="adminLogout()">⏻ LOGOUT</button>
+        <button onclick="closeAdminPanel()">× CLOSE</button>
+      </div>
     </div>
     <div class="admin-body">
 
@@ -860,6 +863,13 @@
   }
 
   function closeAdminPanel() { closeModal('adminPanelModal'); }
+
+  function adminLogout() {
+    sessionStorage.removeItem(ADMIN_TOKEN_KEY);
+    closeAdminPanel();
+    renderArtGrid();
+    renderLogList();
+  }
   function switchAdminTab(tab) {
     document.getElementById('adminArtForm') .style.display = tab === 'art'  ? 'flex' : 'none';
     document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
