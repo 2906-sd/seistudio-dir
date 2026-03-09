@@ -556,10 +556,13 @@
      inner div), not #board-section. Drag is constrained to
      canvas too, so popups can't escape into the controls bar.
   ══════════════════════════════════════════════════════ */
-  const FALLBACK_W = 800, FALLBACK_H = 400;
+  const FALLBACK_W  = 800, FALLBACK_H = 400;
+  const MSG_TTL_MS  = 7 * 24 * 60 * 60 * 1000; // 1 week
 
   function renderMessage(id, msg) {
     if (renderedIds.has(id)) return;
+    // Skip messages older than one week
+    if (msg.timestamp && (Date.now() - msg.timestamp) > MSG_TTL_MS) return;
     renderedIds.add(id);
 
     const canvas = document.getElementById('boardCanvas'); // FIXED
@@ -632,6 +635,11 @@
 
   // Everything that needs Firebase to be ready
   function onFirebaseReady() {
+    // Purge messages older than one week from Firebase
+    const cutoff = Date.now() - MSG_TTL_MS;
+    msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
+      snap.forEach(child => child.ref.remove());
+    }).catch(e => console.error('Expiry purge failed:', e));
     const seededRef = db.ref('board/seeded');
     seededRef.once('value', snap => {
       if (!snap.val()) {
