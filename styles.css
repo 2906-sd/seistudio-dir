@@ -472,6 +472,40 @@ input.board-input, textarea.board-input {
   line-height: 1.4;
 }
 
+/* ── DELETE BUTTONS ──────────────────────────────────── */
+.delete-btn {
+  position: absolute;
+  top: 6px; right: 6px;
+  background: var(--accent);
+  color: var(--text-inv);
+  border: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 2px 6px;
+  cursor: pointer;
+  z-index: 5;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.art-post:hover .delete-btn,
+.blog-list-item:hover .delete-btn { opacity: 1; }
+
+/* Log delete sits in flow, not absolute */
+.blog-list-item .delete-btn {
+  position: absolute;
+  top: 50%; right: 1rem;
+  transform: translateY(-50%);
+}
+
+/* ── RATE LIMIT MESSAGE ───────────────────────────────── */
+.rate-limit-msg {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--accent);
+  text-align: right;
+  display: none;
+}
+
 .comment-body {
   padding: 10px;
   font-family: var(--font-mono);
