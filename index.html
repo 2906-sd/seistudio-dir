@@ -241,158 +241,613 @@
 
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-/* The script you provided has been corrected for syntax errors, broken promise chains, and malformed catch blocks. The functionality is unchanged except for fixes. */
+  /* ══════════════════════════════════════════════════════
+     FIREBASE CONFIG — fetched from /api/firebase-config
+     so the actual values never live in this file.
+  ══════════════════════════════════════════════════════ */
+  let db     = null;
+  let msgRef = null;
+  const MAX_MSGS    = 75;
+  const renderedIds = new Set();
 
-let db = null;
-let msgRef = null;
-const MAX_MSGS = 75;
-const renderedIds = new Set();
-
-async function initFirebase() {
-  try {
-    const res = await fetch('/api/firebase-config');
-    if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
-    const config = await res.json();
-
-    firebase.initializeApp(config);
-    db = firebase.database();
-    msgRef = db.ref('board/messages');
-
-    msgRef.orderByChild('timestamp').on('child_added', snap => {
-      renderMessage(snap.key, snap.val());
-    }, e => console.error('Board listener error:', e));
-
-    onFirebaseReady();
-  } catch (e) {
-    console.error('Firebase init failed:', e);
-  }
-}
-
-/* Admin delete helpers */
-function adminDeleteArt(i) {
-  if (!isAdminSession()) return;
-  const piece = artData[i];
-  if (!piece || !piece.id) return;
-
-  if (!confirm(`Delete artwork "${piece.title}"?`)) return;
-
-  db.ref('content/art/' + piece.id).remove()
-    .then(() => {
-      artData.splice(i, 1);
-      renderArtGrid();
-      closeLightbox();
-    })
-    .catch(e => console.error('Delete art failed:', e));
-}
-
-function adminDeleteLog(i) {
-  if (!isAdminSession()) return;
-  const log = logsData[i];
-  if (!log || !log.id) return;
-
-  if (!confirm(`Delete log "${log.title}"?`)) return;
-
-  db.ref('content/logs/' + log.id).remove()
-    .then(() => {
-      logsData.splice(i, 1);
-      renderLogList();
-      showPage('writing');
-    })
-    .catch(e => console.error('Delete log failed:', e));
-}
-
-function adminAddArt() {
-  const title = document.getElementById('artTitle').value.trim();
-  const imgRaw = document.getElementById('artImages').value.trim();
-  const desc = document.getElementById('artDesc').value.trim();
-  const meta = document.getElementById('artMeta').value.trim() || String(new Date().getFullYear());
-
-  if (!title || !imgRaw) return;
-
-  const images = imgRaw.split('\n').map(u => u.trim()).filter(Boolean);
-  if (!images.length) return;
-
-  const piece = { title, images, desc, meta };
-
-  if (db) {
-    const ref = db.ref('content/art').push({
-      ...piece,
-      timestamp: firebase.database.ServerValue.TIMESTAMP
-    });
-
-    piece.id = ref.key;
-
-    ref.catch(e => console.error('Art push failed:', e));
-  }
-
-  artData.push(piece);
-  renderArtGrid();
-}
-
-function adminAddLog() {
-  const title = document.getElementById('logTitle').value.trim();
-  const meta = document.getElementById('logMeta').value.trim();
-  const body = document.getElementById('logBody').value.trim();
-
-  if (!title || !body) return;
-
-  const log = { title, meta: meta || 'LOG.TXT', body };
-
-  if (db) {
-    const ref = db.ref('content/logs').push({
-      ...log,
-      timestamp: firebase.database.ServerValue.TIMESTAMP
-    });
-
-    log.id = ref.key;
-
-    ref.catch(e => console.error('Log push failed:', e));
-  }
-
-  logsData.push(log);
-  renderLogList();
-}
-
-function onFirebaseReady() {
-  const cutoff = Date.now() - (7 * 24 * 60 * 60 * 1000);
-
-  msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
-    snap.forEach(child => child.ref.remove());
-  }).catch(e => console.error('Expiry purge failed:', e));
-
-  const seededRef = db.ref('board/seeded');
-
-  seededRef.once('value', snap => {
-    if (!snap.val()) {
-      seededRef.set(true);
-      ['Welcome to the board!', 'be nice :)', 'click + drag me!']
-        .forEach(t => addComment(t));
+  async function initFirebase() {
+    try {
+      const res    = await fetch('/api/firebase-config');
+      if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
+      const config = await res.json();
+      firebase.initializeApp(config);
+      db     = firebase.database();
+      msgRef = db.ref('board/messages');
+      // Start the real-time board listener only once Firebase is ready
+      msgRef.orderByChild('timestamp').on('child_added', snap => {
+        renderMessage(snap.key, snap.val());
+      }, e => console.error('Board listener error:', e));
+      onFirebaseReady();
+    } catch(e) {
+      console.error('Firebase init failed:', e);
     }
-  }).catch(e => console.error('Seed check failed:', e));
+  }
 
-  db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-    snap.forEach(child => {
-      const data = child.val();
-      artData.push({ id: child.key, ...data });
+  /* ══════════════════════════════════════════════════════
+     ART DATA
+  ══════════════════════════════════════════════════════ */
+  let artData = [
+    {
+      title: 'example_1.JPG',
+      images: ['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'],
+      desc:  'Im supposed to put an artist note here.',
+      meta:  '2026'
+    },
+    {
+      title: 'example_2.PNG',
+      images: ['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'],
+      desc:  'Anutha artist description.',
+      meta:  'EXPERIMENT'
+    },
+    {
+      title: 'example_3.JPG',
+      images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'],
+      desc:  'Mountains or something idk.',
+      meta:  'SCRAP'
+    },
+    {
+      title: 'series_01',
+      images: [
+        'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600',
+        'https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600',
+        'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'
+      ],
+      desc:  'multi-pic carousel tester.',
+      meta:  '2025'
+    }
+  ];
+
+  /* ══════════════════════════════════════════════════════
+     LOG DATA
+  ══════════════════════════════════════════════════════ */
+  let logsData = [
+    { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
+    { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
+  ];
+
+  /* ══════════════════════════════════════════════════════
+     FIREBASE ARRAY FIX
+     Firebase Realtime DB stores arrays as {0: v, 1: v, ...}.
+     Normalize back to a real array before using .length or [0].
+  ══════════════════════════════════════════════════════ */
+  function normalizeImages(val) {
+    if (!val) return [];
+    if (Array.isArray(val)) return val;
+    // Firebase object with numeric keys → sorted array
+    return Object.keys(val).sort((a, b) => Number(a) - Number(b)).map(k => val[k]);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     RENDER
+  ══════════════════════════════════════════════════════ */
+  function renderArtGrid() {
+    const feed = document.getElementById('artFeed');
+    feed.innerHTML = '';
+    artData.forEach((piece, i) => {
+      const el = document.createElement('div');
+      el.className = 'art-post';
+      el.onclick   = () => openLightbox(i);
+      el.innerHTML = `
+        <img src="${piece.images[0]}" alt="${piece.title}" />
+        <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
+      `;
+      feed.appendChild(el);
     });
+  }
+
+  function renderLogList() {
+    const list = document.getElementById('logList');
+    list.innerHTML = '';
+    logsData.forEach((log, i) => {
+      const el = document.createElement('div');
+      el.className = 'blog-list-item';
+      el.onclick   = () => readLog(i);
+      el.innerHTML = `
+        <p class="post-label">${log.meta}</p>
+        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  function readLog(i) {
+    const log = logsData[i];
+    if (!log) return;
+    document.getElementById('log-content').innerHTML = `
+      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+    `;
+    showPage('log-reader');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DARK MODE
+  ══════════════════════════════════════════════════════ */
+  function toggleDark() {
+    const dark = document.body.classList.toggle('dark');
+    document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
+    try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
+  }
+
+  try {
+    if (localStorage.getItem('darkMode') === '1') {
+      document.body.classList.add('dark');
+      document.getElementById('darkToggle').textContent = '◑ MODE';
+    }
+  } catch(_) {}
+
+  /* ══════════════════════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════════════════════ */
+  function showPage(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
+    if (link) link.classList.add('active');
+    document.getElementById('navLinks').classList.remove('show');
+    window.scrollTo(0, 0);
+  }
+
+  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+
+  /* ══════════════════════════════════════════════════════
+     LIGHTBOX
+  ══════════════════════════════════════════════════════ */
+  let lbPiece = null, lbIdx = 0;
+
+  function openLightbox(i) {
+    lbPiece = artData[i]; lbIdx = 0;
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('show');
+  }
+
+  function renderLightbox() {
+    const multi = lbPiece.images.length > 1;
+    document.getElementById('lb-image').src         = lbPiece.images[lbIdx];
+    document.getElementById('lb-title').textContent = lbPiece.title;
+    document.getElementById('lb-desc').textContent  = lbPiece.desc;
+    document.getElementById('lb-meta').textContent  = `DATE: ${lbPiece.meta}`;
+
+    const prev = document.getElementById('lb-prev');
+    const next = document.getElementById('lb-next');
+    const ctr  = document.getElementById('lb-counter');
+    prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
+    if (multi) ctr.textContent = `${lbIdx + 1} / ${lbPiece.images.length}`;
+    prev.disabled = lbIdx === 0;
+    next.disabled = lbIdx === lbPiece.images.length - 1;
+  }
+
+  function lbNav(dir) {
+    lbIdx = Math.max(0, Math.min(lbPiece.images.length - 1, lbIdx + dir));
+    renderLightbox();
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+    lbPiece = null; lbIdx = 0;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     STATUS PILL
+  ══════════════════════════════════════════════════════ */
+  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
+
+  function updateLiveStatus() {
+    const now  = new Date();
+    const date = now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
+    const time = now.toLocaleTimeString('en-US',  { hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true });
+    const el   = document.getElementById('liveDateTime');
+    if (el) el.textContent = `${date} // ${time}`;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DRAG UTILITY
+  ══════════════════════════════════════════════════════ */
+  let zTop = 100;
+
+  function makeDraggable(el, handle, parent) {
+    let ox = 0, oy = 0, sx = 0, sy = 0;
+    handle.onmousedown  = start;
+    handle.ontouchstart = start;
+
+    function start(e) {
+      e.preventDefault();
+      el.style.zIndex = ++zTop;
+      const { cx, cy } = pt(e);
+      sx = cx; sy = cy;
+      document.onmousemove = document.ontouchmove = move;
+      document.onmouseup   = document.ontouchend  = stop;
+    }
+
+    function move(e) {
+      const { cx, cy } = pt(e);
+      ox = sx - cx; oy = sy - cy; sx = cx; sy = cy;
+      let t = el.offsetTop  - oy;
+      let l = el.offsetLeft - ox;
+      if (parent) {
+        t = Math.max(0, Math.min(t, parent.offsetHeight - el.offsetHeight));
+        l = Math.max(0, Math.min(l, parent.offsetWidth  - el.offsetWidth));
+      }
+      el.style.top = t + 'px'; el.style.left = l + 'px';
+    }
+
+    function stop() {
+      document.onmousemove = document.onmouseup = null;
+      document.ontouchmove = document.ontouchend = null;
+    }
+
+    function pt(e) {
+      const src = (e.type === 'touchend' || e.type === 'touchcancel') ? e.changedTouches[0]
+                : e.touches ? e.touches[0] : e;
+      return { cx: src.clientX, cy: src.clientY };
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     BOARD RESIZE
+  ══════════════════════════════════════════════════════ */
+  function initBoardResize() {
+    const board  = document.getElementById('board-section');
+    const handle = document.getElementById('boardResizeHandle');
+    let startX, startY, startW, startH;
+
+    function onDown(cx, cy) {
+      startX = cx; startY = cy;
+      startW = board.offsetWidth; startH = board.offsetHeight;
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup',   onUp);
+      document.addEventListener('touchmove', onTouchMove, { passive: false });
+      document.addEventListener('touchend',  onUp);
+    }
+
+    function resize(cx, cy) {
+      const maxW = board.parentElement.offsetWidth;
+      board.style.width  = Math.max(400, Math.min(maxW, startW + cx - startX)) + 'px';
+      board.style.height = Math.max(300, startH + cy - startY) + 'px';
+    }
+
+    function onMouseMove(e)  { resize(e.clientX, e.clientY); }
+    function onTouchMove(e)  { e.preventDefault(); const t = e.touches[0]; resize(t.clientX, t.clientY); }
+    function onUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup',   onUp);
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend',  onUp);
+    }
+
+    handle.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
+    handle.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive: false });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     ANONYMOUS NAME GENERATOR
+  ══════════════════════════════════════════════════════ */
+  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
+  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
+
+  function genAnonName() {
+    const adj  = ANON_ADJ [Math.floor(Math.random() * ANON_ADJ .length)];
+    const noun = ANON_NOUN[Math.floor(Math.random() * ANON_NOUN.length)];
+    return `Anon. ${adj} ${noun}`;
+  }
+
+  // FIXED: deterministic name from Firebase push key so old messages
+  // (seeded before the name field existed) get a stable generated name
+  // instead of falling back to plain "Anon."
+  function nameFromKey(key) {
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
+    return `Anon. ${ANON_ADJ[h % ANON_ADJ.length]} ${ANON_NOUN[(h >>> 8) % ANON_NOUN.length]}`;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     BULLETIN BOARD
+     FIXED: popups now append to #boardCanvas (the scrollable
+     inner div), not #board-section. Drag is constrained to
+     canvas too, so popups can't escape into the controls bar.
+  ══════════════════════════════════════════════════════ */
+  const FALLBACK_W  = 800, FALLBACK_H = 400;
+  const MSG_TTL_MS  = 7 * 24 * 60 * 60 * 1000; // 1 week
+
+  function renderMessage(id, msg) {
+    if (renderedIds.has(id)) return;
+    // Skip messages older than one week
+    if (msg.timestamp && (Date.now() - msg.timestamp) > MSG_TTL_MS) return;
+    renderedIds.add(id);
+
+    const canvas = document.getElementById('boardCanvas'); // FIXED
+    const bw     = canvas.offsetWidth  || FALLBACK_W;
+    const bh     = canvas.offsetHeight || FALLBACK_H;
+
+    const popup = document.createElement('div');
+    popup.className  = 'comment-popup';
+    popup.style.left = Math.max(10, (msg.xPct / 100) * bw) + 'px';
+    popup.style.top  = Math.max(10, (msg.yPct / 100) * bh) + 'px';
+
+    const hdr = document.createElement('div');
+    hdr.className = 'comment-header';
+    const name    = msg.name || nameFromKey(id);
+    const dateStr = msg.date ? `${msg.date} · ` : '';
+    hdr.innerHTML = `<span>${name}</span><span>${dateStr}${msg.time}</span>`;
+
+    const bdy = document.createElement('div');
+    bdy.className   = 'comment-body';
+    bdy.textContent = msg.text; // textContent — no XSS
+
+    popup.append(hdr, bdy);
+    canvas.appendChild(popup);           // FIXED: was board-section
+    makeDraggable(popup, hdr, canvas);   // FIXED: constrain to canvas
+  }
+
+  function addComment(preset = null) {
+    const input = document.getElementById('commentInput');
+    const text  = preset || input.value.trim();
+    if (!text) return;
+
+    if (!msgRef) {
+      console.warn('Board unavailable: Firebase not connected.');
+      return;
+    }
+
+    const xPct = Math.max(2, Math.random() * 72);
+    const yPct = Math.max(2, Math.random() * 68);
+    const now  = new Date();
+
+    const payload = {
+      text,
+      time:      now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
+      date:      now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.'),
+      name:      genAnonName(),
+      xPct,
+      yPct,
+      timestamp: firebase.database.ServerValue.TIMESTAMP
+    };
+
+    msgRef.push(payload).then(() => {
+      msgRef.orderByChild('timestamp').once('value', snap => {
+        if (snap.numChildren() > MAX_MSGS) {
+          msgRef.orderByChild('timestamp').limitToFirst(1).once('value', oldest => {
+            oldest.forEach(child => child.ref.remove());
+          });
+        }
+      });
+    }).catch(e => console.error('Post failed:', e));
+
+    if (!preset) {
+      input.value = '';
+      const ctr = document.getElementById('charCounter');
+      ctr.textContent = '0 / 500';
+      ctr.classList.remove('warn');
+    }
+  }
+
+  function submitComment() { addComment(); }
+
+  // Everything that needs Firebase to be ready
+  function onFirebaseReady() {
+    // Purge messages older than one week from Firebase
+    const cutoff = Date.now() - MSG_TTL_MS;
+    msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
+      snap.forEach(child => child.ref.remove());
+    }).catch(e => console.error('Expiry purge failed:', e));
+    const seededRef = db.ref('board/seeded');
+    seededRef.once('value', snap => {
+      if (!snap.val()) {
+        seededRef.set(true);
+        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+          .forEach(t => addComment(t));
+      }
+    }).catch(e => console.error('Seed check failed:', e));
+
+    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
+      snap.forEach(child => {
+        const data = child.val();
+        data.images = normalizeImages(data.images);
+        artData.push(data);
+      });
+      renderArtGrid();
+    }).catch(e => console.error('Art load failed:', e));
+
+    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
+      snap.forEach(child => logsData.push(child.val()));
+      renderLogList();
+    }).catch(e => console.error('Logs load failed:', e));
+  }
+
+  /* ══════════════════════════════════════════════════════
+     ADMIN AUTH — password verified server-side via
+     /api/admin-auth (Vercel serverless function).
+     The actual password lives in a Vercel env var and
+     is never present in this file or the GitHub repo.
+
+     Token is stored in sessionStorage and expires after
+     8 hours; closing the tab always clears it.
+  ══════════════════════════════════════════════════════ */
+  const ADMIN_TOKEN_KEY = 'sei_admin_token';
+  const ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000; // 8 hours in ms
+
+  function isAdminSession() {
+    try {
+      const raw = sessionStorage.getItem(ADMIN_TOKEN_KEY);
+      if (!raw) return false;
+      const { token, ts } = JSON.parse(raw);
+      return token && (Date.now() - ts) < ADMIN_TOKEN_TTL;
+    } catch(_) { return false; }
+  }
+
+  // Pure-JS modal helpers — don't rely on CSS class toggling
+  function openModal(id)  { document.getElementById(id).style.display = 'flex'; }
+  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+  function showAdminLogin() {
+    if (isAdminSession()) { openModal('adminPanelModal'); return; }
+    openModal('adminLoginModal');
+    setTimeout(() => document.getElementById('adminPassInput').focus(), 50);
+  }
+
+  function closeAdminLogin() {
+    closeModal('adminLoginModal');
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('adminPassError').style.display = 'none';
+  }
+
+  async function verifyAdminPass() {
+    const password = document.getElementById('adminPassInput').value;
+    const errEl    = document.getElementById('adminPassError');
+    errEl.style.display = 'none';
+    errEl.textContent   = '// ACCESS DENIED.';
+
+    try {
+      const res  = await fetch('/api/admin-auth', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ password })
+      });
+
+      // Try to parse JSON — if it fails, show the raw text so we can diagnose
+      let data;
+      try {
+        data = await res.json();
+      } catch(_) {
+        const raw = await res.text().catch(() => '(no response body)');
+        errEl.textContent   = `// HTTP ${res.status} — CHECK VERCEL LOGS.`;
+        errEl.style.display = 'block';
+        console.error('Admin auth: non-JSON response', res.status, raw);
+        return;
+      }
+
+      if (data.ok) {
+        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
+        closeAdminLogin();
+        openModal('adminPanelModal');
+      } else {
+        errEl.textContent   = `// ACCESS DENIED.`;
+        errEl.style.display = 'block';
+        console.warn('Admin auth denied:', data.reason);
+      }
+    } catch(e) {
+      errEl.textContent   = '// NETWORK ERROR — are you online?';
+      errEl.style.display = 'block';
+      console.error('Auth request failed:', e);
+    }
+  }
+
+  function closeAdminPanel() { closeModal('adminPanelModal'); }
+  function switchAdminTab(tab) {
+    document.getElementById('adminArtForm') .style.display = tab === 'art'  ? 'flex' : 'none';
+    document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
+    document.getElementById('tab-art') .classList.toggle('active', tab === 'art');
+    document.getElementById('tab-logs').classList.toggle('active', tab === 'logs');
+  }
+
+  function adminAddArt() {
+    const title  = document.getElementById('artTitle') .value.trim();
+    const imgRaw = document.getElementById('artImages').value.trim();
+    const desc   = document.getElementById('artDesc')  .value.trim();
+    const meta   = document.getElementById('artMeta')  .value.trim() || String(new Date().getFullYear());
+
+    if (!title || !imgRaw) return;
+    const images = imgRaw.split('\n').map(u => u.trim()).filter(Boolean);
+    if (!images.length) return;
+
+    const piece = { title, images, desc, meta };
+    artData.push(piece);
     renderArtGrid();
-  }).catch(e => console.error('Art load failed:', e));
 
-  db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-    snap.forEach(child => {
-      logsData.push({ id: child.key, ...child.val() });
-    });
+    if (db) {
+      db.ref('content/art').push({ ...piece, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .catch(e => console.error('Art push failed:', e));
+    }
+
+    ['artTitle','artImages','artDesc','artMeta'].forEach(id => { document.getElementById(id).value = ''; });
+    const s = document.getElementById('artSuccess');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
+  function adminAddLog() {
+    const title = document.getElementById('logTitle').value.trim();
+    const meta  = document.getElementById('logMeta') .value.trim();
+    const body  = document.getElementById('logBody') .value.trim();
+
+    if (!title || !body) return;
+
+    const log = { title, meta: meta || 'LOG.TXT', body };
+    logsData.push(log);
     renderLogList();
-  }).catch(e => console.error('Logs load failed:', e));
-}
 
-window.onload = () => {
-  initFirebase();
-};
+    if (db) {
+      db.ref('content/logs').push({ ...log, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .catch(e => console.error('Log push failed:', e));
+    }
+
+    ['logTitle','logMeta','logBody'].forEach(id => { document.getElementById(id).value = ''; });
+    const s = document.getElementById('logSuccess');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     STICKERS
+  ══════════════════════════════════════════════════════ */
+  function initStickers() {
+    const section = document.getElementById('about');
+    document.querySelectorAll('.sticker').forEach(s => makeDraggable(s, s, section));
+  }
+
+  /* ══════════════════════════════════════════════════════
+     GLOBAL KEYBOARD HANDLER
+  ══════════════════════════════════════════════════════ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+      closeAdminLogin();
+      closeAdminPanel();
+    }
+    if (lbPiece) {
+      if (e.key === 'ArrowRight') lbNav(1);
+      if (e.key === 'ArrowLeft')  lbNav(-1);
+    }
+  });
+
+  /* ══════════════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', () => {
+    renderArtGrid();
+    renderLogList();
+
+    const input = document.getElementById('commentInput');
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submitComment(); });
+    input.addEventListener('input', function() {
+      const n = this.value.length;
+      const ctr = document.getElementById('charCounter');
+      ctr.textContent = `${n} / 500`;
+      ctr.classList.toggle('warn', n >= 450);
+    });
+
+    document.getElementById('adminPassInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') verifyAdminPass();
+    });
+  });
+
+  window.onload = () => {
+    initFirebase(); // async — board listener + seeding + content load happen inside
+    initStickers();
+    initBoardResize();
+    updateLiveStatus();
+    setInterval(updateLiveStatus, 1000);
+  };
 </script>
 </body>
 </html>
