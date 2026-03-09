@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SEI // STUDIO.DIR</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="page-wrapper">
+  <nav id="navbar">
+    <div class="nav-header">
+      <div class="marquee-container">
+        <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+      </div>
+    </div>
+    <div class="logo-area">
+      <span class="logo" onclick="showPage('home')">NAV</span>
+      <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
+      <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
+    </div>
+    <div class="nav-links" id="navLinks">
+      <span class="nav-item active" onclick="showPage('home')"    id="link-home">INDEX<span>00</span></span>
+      <span class="nav-item"        onclick="showPage('art')"     id="link-art">VISUALS<span>01</span></span>
+      <span class="nav-item"        onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
+      <span class="nav-item"        onclick="showPage('board')"   id="link-board">BULLETIN<span>03</span></span>
+      <span class="nav-item"        onclick="showPage('about')"   id="link-about">PROFILE<span>04</span></span>
+    </div>
+  </nav>
+
+  <main>
+
+    <!-- ════════════════════════════════════════ HOME -->
+    <section id="home" class="active">
+      <span class="site-title">// SEISTUDIO. //</span>
+      <h1 class="hero-text">
+        A collection of <br />colors from the <i>heart,</i> silly things,<br />and
+        <i>unsent</i> drafts. Made unapologetically by Sage.
+      </h1>
+    </section>
+
+    <!-- ════════════════════════════════════════ ART
+         To add a piece:
+           1. Copy one .art-post block.
+           2. Set onclick="openLightbox(N)" — N = next index.
+           3. Add a matching entry at index N in artData[].
+    -->
+    <section id="art">
+      <div class="section-header">
+        <h1>VISUAL<span>S</span></h1>
+        <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
+      </div>
+      <div class="art-feed">
+
+        <div class="art-post" onclick="openLightbox(0)">
+          <img src="https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=800" alt="Art piece 1" />
+          <div class="post-label"><span>example 1.JPG</span><span>2026</span></div>
+        </div>
+
+        <div class="art-post" onclick="openLightbox(1)">
+          <img src="https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=800" alt="Art piece 2" />
+          <div class="post-label"><span>example 2.PNG</span><span>EXPERIMENT</span></div>
+        </div>
+
+        <div class="art-post" onclick="openLightbox(2)">
+          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800" alt="Art piece 3" />
+          <div class="post-label"><span>example 3.JPG</span><span>SCRAP</span></div>
+        </div>
+
+        <!-- Multi-image: arrows appear automatically in lightbox -->
+        <div class="art-post" onclick="openLightbox(3)">
+          <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" alt="Series 01" />
+          <div class="post-label"><span>series_01.JPG</span><span>2025</span></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ WRITING
+         To add a log:
+           1. Copy one .blog-list-item block.
+           2. Increment readLog(N).
+           3. Add a matching entry in logs{}.
+    -->
+    <section id="writing">
+      <div class="section-header">
+        <h1>LOG<span>S</span></h1>
+        <p>// notes, drafts, and things that don't have anywhere to go.</p>
+      </div>
+      <div class="blog-list">
+
+        <div class="blog-list-item" onclick="readLog(1)">
+          <p class="post-label">LOG_01.TXT // MM.YY</p>
+          <h2 style="font-family: var(--font-tech); text-transform: uppercase; font-size: 1.5rem;">Title 1</h2>
+        </div>
+
+        <div class="blog-list-item" onclick="readLog(2)">
+          <p class="post-label">LOG_02.TXT // MM.YY</p>
+          <h2 style="font-family: var(--font-tech); text-transform: uppercase; font-size: 1.5rem;">Title 2</h2>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Log reader — DO NOT EDITTTTT -->
+    <section id="log-reader">
+      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
+      <div id="log-content" class="log-container"></div>
+    </section>
+
+    <!-- ════════════════════════════════════════ BULLETIN BOARD -->
+    <section id="board">
+      <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
+        Public Archive // Leave a piece of yourself here...
+      </h2>
+      <div id="board-section">
+        <div class="board-controls">
+          <div class="board-input-row">
+            <input class="board-input" type="text" id="commentInput" placeholder="Say something..." maxlength="500" />
+            <button class="board-submit" onclick="submitComment()">POST</button>
+          </div>
+          <div class="char-counter" id="charCounter">0 / 500</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════ ABOUT
+         PLEAAAASE READ the damn tags carefully, oml.
+    -->
+    <section id="about">
+
+      <div class="about-card">
+        <div class="about-header">
+          <span>USER_PROFILE.EXE</span><span>_ X</span>
+        </div>
+        <div class="about-body">
+          <div class="profile-header">
+            <img src="https://img.icons8.com/?size=100&id=z-JBA_KtSkxG&format=png&color=000000" class="profile-img" alt="Avatar" />
+            <div class="profile-meta">
+              <h3>Sage</h3>
+              <p>Art Student // 24</p>
+            </div>
+          </div>
+          <p class="about-bio">Multimedia student exploring human emotion, identity and things that heal the whimsy inside. DFW based. (the links don't work.)</p>
+          <div class="tag-list">
+            <span class="tag">#ART</span>
+            <span class="tag">#MULTIMEDIA</span>
+            <span class="tag">#SOME BULLLLLSHITTTTTT</span>
+          </div>
+          <div class="about-links">
+            <a href="#">INSTAGRAM</a>
+            <a href="#">EMAIL</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Draggable stickers :DDDDDDDD — replace src with stuff -->
+      <div class="sticker" style="top:6%; left:74%; transform:rotate(-14deg)">
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="sticker" />
+      </div>
+      <div class="sticker" style="top:24%; left:82%; transform:rotate(9deg)">
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png" alt="sticker" />
+      </div>
+      <div class="sticker" style="top:48%; left:76%; transform:rotate(-6deg)">
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="sticker" />
+      </div>
+      <div class="sticker" style="top:65%; left:60%; transform:rotate(12deg)">
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/fox-Photoroom.png" alt="sticker" />
+      </div>
+      <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
+      </div>
+
+    </section>
+
+  </main>
+</div>
+
+<!-- FOOTER STATUS PILL -->
+<div class="footer-status">
+  <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
+    <span class="status-dot">⟡</span>
+    <div class="pill-expanded-content">
+      <span id="liveDateTime">...</span>
+      <span>// SYSTEM_ACTIVE</span>
+    </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" class="lightbox" onclick="closeLightbox()">
+  <div class="lightbox-content" onclick="event.stopPropagation()">
+    <div class="lb-toolbar">
+      <span class="lb-toolbar-title" id="lb-title">FILE</span>
+      <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
+    </div>
+    <div class="lb-body">
+      <div class="lb-image-wrap">
+        <button class="lb-nav-btn" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
+        <img id="lb-image" src="" alt="" />
+        <button class="lb-nav-btn" id="lb-next" onclick="lbNav(1)">&#8594;</button>
+      </div>
+      <div class="lb-image-counter" id="lb-counter"></div>
+      <p  id="lb-desc" class="lb-desc"></p>
+      <div id="lb-meta" class="lb-meta"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  /* ══════════════════════════════════════════════════════
+     ART DATA INPUT:  index must match openLightbox(N) in HTML. look at your notes.
+  ══════════════════════════════════════════════════════ */
+  const artData = [
+    {
+      title: 'example_1.JPG',
+      images: ['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'],
+      desc: 'Im supposed to put an artist note here.',
+      meta: '2026'
+    },
+    {
+      title: 'example_2.PNG',
+      images: ['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'],
+      desc: 'Anutha artist description.',
+      meta: 'EXPERIMENT'
+    },
+    {
+      title: 'example_3.JPG',
+      images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'],
+      desc: 'Mountains or something idk.',
+      meta: 'SCRAP'
+    },
+    {
+      title: 'series_01',
+      images: [
+        'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600',
+        'https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600',
+        'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'
+      ],
+      desc: 'multi-pic carousel tester.',
+      meta: '2025'
+    }
+  ];
+
+  /* ══════════════════════════════════════════════════════
+     LOG DATA  —  key must match readLog(N) in HTML
+  ══════════════════════════════════════════════════════ */
+  const logs = {
+    1: { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
+    2: { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
+  };
+
+  /* ══════════════════════════════════════════════════════
+     DARK MODE STUFF
+  ══════════════════════════════════════════════════════ */
+  function toggleDark() {
+    const dark = document.body.classList.toggle('dark');
+    document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
+    try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
+  }
+
+  try {
+    if (localStorage.getItem('darkMode') === '1') {
+      document.body.classList.add('dark');
+      document.getElementById('darkToggle').textContent = '◑ MODE';
+    }
+  } catch(_) {}
+
+  /* ══════════════════════════════════════════════════════
+     NAVIGATION
+  ══════════════════════════════════════════════════════ */
+  function showPage(id) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
+    if (link) link.classList.add('active');
+    document.getElementById('navLinks').classList.remove('show');
+    window.scrollTo(0, 0);
+  }
+
+  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+
+  function readLog(id) {
+    const log = logs[id];
+    if (!log) return;
+    document.getElementById('log-content').innerHTML = `
+      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+    `;
+    showPage('log-reader');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     LIGHTBOX
+  ══════════════════════════════════════════════════════ */
+  let lbPiece = null, lbIdx = 0;
+
+  function openLightbox(i) {
+    lbPiece = artData[i]; lbIdx = 0;
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('show');
+  }
+
+  function renderLightbox() {
+    const multi = lbPiece.images.length > 1;
+    document.getElementById('lb-image').src         = lbPiece.images[lbIdx];
+    document.getElementById('lb-title').textContent = lbPiece.title;
+    document.getElementById('lb-desc').textContent  = lbPiece.desc;
+    document.getElementById('lb-meta').textContent  = `DATE: ${lbPiece.meta}`;
+
+    const prev = document.getElementById('lb-prev');
+    const next = document.getElementById('lb-next');
+    const ctr  = document.getElementById('lb-counter');
+    prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
+    if (multi) ctr.textContent = `${lbIdx + 1} / ${lbPiece.images.length}`;
+    prev.disabled = lbIdx === 0;
+    next.disabled = lbIdx === lbPiece.images.length - 1;
+  }
+
+  function lbNav(dir) {
+    lbIdx = Math.max(0, Math.min(lbPiece.images.length - 1, lbIdx + dir));
+    renderLightbox();
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+    lbPiece = null; lbIdx = 0;
+  }
+
+  document.addEventListener('keydown', e => {
+    if (!lbPiece) return;
+    if (e.key === 'ArrowRight') lbNav(1);
+    if (e.key === 'ArrowLeft')  lbNav(-1);
+    if (e.key === 'Escape')     closeLightbox();
+  });
+
+  /* ══════════════════════════════════════════════════════
+     STATUS PILL (again. im sorry i love this little thing)
+  ══════════════════════════════════════════════════════ */
+  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
+
+  function updateLiveStatus() {
+    const now  = new Date();
+    const date = now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
+    const time = now.toLocaleTimeString('en-US',  { hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true });
+    const el   = document.getElementById('liveDateTime');
+    if (el) el.textContent = `${date} // ${time}`;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DRAG UTILITY
+     makeDraggable(el, handle, parent)
+       el     — element to move
+       handle — element that receives the mousedown
+       parent — constrain within this element (or null)
+  ══════════════════════════════════════════════════════ */
+  let zTop = 100;
+
+  function makeDraggable(el, handle, parent) {
+    let ox = 0, oy = 0, sx = 0, sy = 0;
+    handle.onmousedown  = start;
+    handle.ontouchstart = start;
+
+    function start(e) {
+      e.preventDefault();
+      el.style.zIndex = ++zTop;
+      const { cx, cy } = pt(e);
+      sx = cx; sy = cy;
+      document.onmousemove = document.ontouchmove = move;
+      document.onmouseup   = document.ontouchend  = stop;
+    }
+
+    function move(e) {
+      const { cx, cy } = pt(e);
+      ox = sx - cx; oy = sy - cy; sx = cx; sy = cy;
+      let t = el.offsetTop  - oy;
+      let l = el.offsetLeft - ox;
+      if (parent) {
+        t = Math.max(0, Math.min(t, parent.offsetHeight - el.offsetHeight));
+        l = Math.max(0, Math.min(l, parent.offsetWidth  - el.offsetWidth));
+      }
+      el.style.top = t + 'px'; el.style.left = l + 'px';
+    }
+
+    function stop() {
+      document.onmousemove = document.onmouseup = null;
+      document.ontouchmove = document.ontouchend = null;
+    }
+
+    function pt(e) {
+      const src = (e.type === 'touchend' || e.type === 'touchcancel') ? e.changedTouches[0]
+                : e.touches ? e.touches[0] : e;
+      return { cx: src.clientX, cy: src.clientY };
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     BULLETIN BOARD
+  ══════════════════════════════════════════════════════ */
+  const FALLBACK_W = 800, FALLBACK_H = 500;
+
+  function addComment(preset = null) {
+    const input = document.getElementById('commentInput');
+    const text  = preset || input.value.trim();
+    if (!text) return;
+
+    const board = document.getElementById('board-section');
+    const bw = board.offsetWidth  || FALLBACK_W;
+    const bh = board.offsetHeight || FALLBACK_H;
+
+    const popup  = document.createElement('div');
+    popup.className  = 'comment-popup';
+    popup.style.left = Math.max(10, Math.random() * (bw - 200)) + 'px';
+    popup.style.top  = Math.max(10, Math.random() * (bh - 150)) + 'px';
+
+    const time  = new Date().toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true });
+    const msgId = 'MSG_' + String(Math.floor(Math.random() * 999)).padStart(3, '0');
+
+    const hdr = document.createElement('div');
+    hdr.className = 'comment-header';
+    hdr.innerHTML = `<span>${msgId}</span><span>${time}</span>`;
+
+    const bdy = document.createElement('div');
+    bdy.className   = 'comment-body';
+    bdy.textContent = text; // textContent — no XSS :p
+
+    popup.append(hdr, bdy);
+    board.appendChild(popup);
+    makeDraggable(popup, hdr, board);
+
+    if (!preset) {
+      input.value = '';
+      const ctr = document.getElementById('charCounter');
+      ctr.textContent = '0 / 500';
+      ctr.classList.remove('warn');
+    }
+  }
+
+  function submitComment() { addComment(); }
+
+  /* ══════════════════════════════════════════════════════
+     STICKERS cause i'm stupid
+  ══════════════════════════════════════════════════════ */
+  function initStickers() {
+    const section = document.getElementById('about');
+    document.querySelectorAll('.sticker').forEach(s => makeDraggable(s, s, section));
+  }
+
+  /* ══════════════════════════════════════════════════════
+     INIT
+  ══════════════════════════════════════════════════════ */
+  document.addEventListener('DOMContentLoaded', () => {
+    const input = document.getElementById('commentInput');
+    input.addEventListener('keydown', e => { if (e.key === 'Enter') submitComment(); });
+    input.addEventListener('input', function() {
+      const n = this.value.length;
+      const ctr = document.getElementById('charCounter');
+      ctr.textContent = `${n} / 500`;
+      ctr.classList.toggle('warn', n >= 450);
+    });
+  });
+
+  window.onload = () => {
+    ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+      .forEach(t => addComment(t));
+    initStickers();
+    updateLiveStatus();
+    setInterval(updateLiveStatus, 1000);
+  };
+</script>
+</body>
+</html>
