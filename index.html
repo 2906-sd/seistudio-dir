@@ -30,6 +30,7 @@
       <span class="nav-item"        onclick="showPage('board')"   id="link-board">BULLETIN<span>03</span></span>
       <span class="nav-item"        onclick="showPage('about')"   id="link-about">PROFILE<span>04</span></span>
     </div>
+    <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
   </nav>
 
   <main>
@@ -43,66 +44,22 @@
       </h1>
     </section>
 
-    <!-- ════════════════════════════════════════ ART
-         To add a piece:
-           1. Copy one .art-post block.
-           2. Set onclick="openLightbox(N)" — N = next index.
-           3. Add a matching entry at index N in artData[].
-    -->
+    <!-- ════════════════════════════════════════ ART -->
     <section id="art">
       <div class="section-header">
         <h1>VISUAL<span>S</span></h1>
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
-      <div class="art-feed">
-
-        <div class="art-post" onclick="openLightbox(0)">
-          <img src="https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=800" alt="Art piece 1" />
-          <div class="post-label"><span>example 1.JPG</span><span>2026</span></div>
-        </div>
-
-        <div class="art-post" onclick="openLightbox(1)">
-          <img src="https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=800" alt="Art piece 2" />
-          <div class="post-label"><span>example 2.PNG</span><span>EXPERIMENT</span></div>
-        </div>
-
-        <div class="art-post" onclick="openLightbox(2)">
-          <img src="https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=800" alt="Art piece 3" />
-          <div class="post-label"><span>example 3.JPG</span><span>SCRAP</span></div>
-        </div>
-
-        <div class="art-post" onclick="openLightbox(3)">
-          <img src="https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=800" alt="Series 01" />
-          <div class="post-label"><span>series_01.JPG</span><span>2025</span></div>
-        </div>
-
-      </div>
+      <div class="art-feed" id="artFeed"></div>
     </section>
 
-    <!-- ════════════════════════════════════════ WRITING
-         To add a log:
-           1. Copy one .blog-list-item block.
-           2. Increment readLog(N).
-           3. Add a matching entry in logs{}.
-    -->
+    <!-- ════════════════════════════════════════ WRITING -->
     <section id="writing">
       <div class="section-header">
         <h1>LOG<span>S</span></h1>
         <p>// notes, drafts, and things that don't have anywhere to go.</p>
       </div>
-      <div class="blog-list">
-
-        <div class="blog-list-item" onclick="readLog(1)">
-          <p class="post-label">LOG_01.TXT // MM.YY</p>
-          <h2 style="font-family: var(--font-tech); text-transform: uppercase; font-size: 1.5rem;">Title 1</h2>
-        </div>
-
-        <div class="blog-list-item" onclick="readLog(2)">
-          <p class="post-label">LOG_02.TXT // MM.YY</p>
-          <h2 style="font-family: var(--font-tech); text-transform: uppercase; font-size: 1.5rem;">Title 2</h2>
-        </div>
-
-      </div>
+      <div class="blog-list" id="logList"></div>
     </section>
 
     <!-- Log reader — DO NOT EDITTTTT -->
@@ -116,7 +73,14 @@
       <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
         Public Archive // Leave a piece of yourself here...
       </h2>
+      <!--
+        FIXED: board is now split into:
+          .board-canvas  — the scrollable dot-grid where popups live
+          .board-controls — static bar, always visible at the bottom
+          .board-resize-handle — corner triangle, resizes #board-section
+      -->
       <div id="board-section">
+        <div class="board-canvas" id="boardCanvas"></div>
         <div class="board-controls">
           <div class="board-input-row">
             <input class="board-input" type="text" id="commentInput" placeholder="Say something..." maxlength="500" />
@@ -124,14 +88,12 @@
           </div>
           <div class="char-counter" id="charCounter">0 / 500</div>
         </div>
+        <div class="board-resize-handle" id="boardResizeHandle" title="Drag to resize"></div>
       </div>
     </section>
 
-    <!-- ════════════════════════════════════════ ABOUT
-         PLEAAAASE READ the damn tags carefully, oml.
-    -->
+    <!-- ════════════════════════════════════════ ABOUT -->
     <section id="about">
-
       <div class="about-card">
         <div class="about-header">
           <span>USER_PROFILE.EXE</span><span>_ X</span>
@@ -157,7 +119,6 @@
         </div>
       </div>
 
-      <!-- Draggable stickers :DDDDDDDD — replace src with stuff -->
       <div class="sticker" style="top:6%; left:74%; transform:rotate(-14deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="sticker" />
       </div>
@@ -173,7 +134,6 @@
       <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
       </div>
-
     </section>
 
   </main>
@@ -198,30 +158,94 @@
       <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
     </div>
     <div class="lb-body">
-      <div class="lb-image-wrap">
-        <button class="lb-nav-btn" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
-        <img id="lb-image" src="" alt="" />
-        <button class="lb-nav-btn" id="lb-next" onclick="lbNav(1)">&#8594;</button>
+      <div class="lb-image-side">
+        <div class="lb-image-wrap">
+          <button class="lb-nav-btn" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
+          <img id="lb-image" src="" alt="" />
+          <button class="lb-nav-btn" id="lb-next" onclick="lbNav(1)">&#8594;</button>
+        </div>
+        <div class="lb-image-counter" id="lb-counter"></div>
       </div>
-      <div class="lb-image-counter" id="lb-counter"></div>
-      <p  id="lb-desc" class="lb-desc"></p>
-      <div id="lb-meta" class="lb-meta"></div>
+      <div class="lb-info-side">
+        <p id="lb-desc" class="lb-desc"></p>
+        <div id="lb-meta" class="lb-meta"></div>
+      </div>
     </div>
   </div>
 </div>
 
-<!-- ═══════════════════════════════════════════════════════
-     FIREBASE SDK  —  loaded before your script so it's available
-     Do not change these URLs.
-════════════════════════════════════════════════════════ -->
+<!-- ADMIN LOGIN -->
+<div id="adminLoginModal" class="modal-overlay">
+  <div class="admin-box" style="max-width:360px">
+    <div class="admin-toolbar">
+      <span>ADMIN_ACCESS.EXE</span>
+      <button onclick="closeAdminLogin()">× CLOSE</button>
+    </div>
+    <div class="admin-body">
+      <label class="admin-label">Password</label>
+      <input type="password" id="adminPassInput" class="admin-input" placeholder="Enter password..." />
+      <button class="board-submit" style="margin-top:6px;cursor:pointer" onclick="verifyAdminPass()">ENTER →</button>
+      <p id="adminPassError" style="display:none;color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:6px;">// ACCESS DENIED.</p>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="adminPanelModal" class="modal-overlay">
+  <div class="admin-box">
+    <div class="admin-toolbar">
+      <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
+      <button onclick="closeAdminPanel()">× LOCK</button>
+    </div>
+    <div class="admin-body">
+
+      <div class="admin-tabs">
+        <button class="admin-tab active" id="tab-art"  onclick="switchAdminTab('art')">ADD ART</button>
+        <button class="admin-tab"        id="tab-logs" onclick="switchAdminTab('logs')">ADD LOG</button>
+      </div>
+
+      <div id="adminArtForm" class="admin-form">
+        <label class="admin-label">Title</label>
+        <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
+
+        <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
+        <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
+
+        <label class="admin-label">Artist Note</label>
+        <textarea id="artDesc" class="admin-input" placeholder="Say something about the piece..."></textarea>
+
+        <label class="admin-label">Date / Meta tag</label>
+        <input type="text" id="artMeta" class="admin-input" placeholder="2026" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddArt()">POST ART →</button>
+        <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
+      </div>
+
+      <div id="adminLogsForm" class="admin-form" style="display:none">
+        <label class="admin-label">Title</label>
+        <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
+
+        <label class="admin-label">Meta Label (shown on the list card)</label>
+        <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+
+        <label class="admin-label">Body — basic HTML is fine</label>
+        <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
+        <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
   /* ══════════════════════════════════════════════════════
      FIREBASE CONFIG
-     Replace every value below with your own project's config.
-     See the setup guide for step-by-step instructions.
   ══════════════════════════════════════════════════════ */
   const firebaseConfig = {
     apiKey:            "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
@@ -233,38 +257,40 @@
     appId:             "1:683797738985:web:3e79b66988d1498fddc778"
   };
 
-  let msgRef      = null;
+  let db     = null;
+  let msgRef = null;
   const MAX_MSGS    = 75;
   const renderedIds = new Set();
 
   try {
     firebase.initializeApp(firebaseConfig);
-    msgRef = firebase.database().ref('board/messages');
+    db     = firebase.database();
+    msgRef = db.ref('board/messages');
   } catch(e) {
     console.error('Firebase init failed:', e);
   }
 
   /* ══════════════════════════════════════════════════════
-     ART DATA  —  index must match openLightbox(N) in HTML. look at your notes.
+     ART DATA
   ══════════════════════════════════════════════════════ */
-  const artData = [
+  let artData = [
     {
       title: 'example_1.JPG',
       images: ['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'],
-      desc: 'Im supposed to put an artist note here.',
-      meta: '2026'
+      desc:  'Im supposed to put an artist note here.',
+      meta:  '2026'
     },
     {
       title: 'example_2.PNG',
       images: ['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'],
-      desc: 'Anutha artist description.',
-      meta: 'EXPERIMENT'
+      desc:  'Anutha artist description.',
+      meta:  'EXPERIMENT'
     },
     {
       title: 'example_3.JPG',
       images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'],
-      desc: 'Mountains or something idk.',
-      meta: 'SCRAP'
+      desc:  'Mountains or something idk.',
+      meta:  'SCRAP'
     },
     {
       title: 'series_01',
@@ -273,21 +299,77 @@
         'https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600',
         'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'
       ],
-      desc: 'multi-pic carousel tester.',
-      meta: '2025'
+      desc:  'multi-pic carousel tester.',
+      meta:  '2025'
     }
   ];
 
   /* ══════════════════════════════════════════════════════
-     LOG DATA  —  key must match readLog(N) in HTML
+     LOG DATA
   ══════════════════════════════════════════════════════ */
-  const logs = {
-    1: { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
-    2: { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
-  };
+  let logsData = [
+    { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
+    { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
+  ];
 
   /* ══════════════════════════════════════════════════════
-     DARK MODE STUFF
+     FIREBASE ARRAY FIX
+     Firebase Realtime DB stores arrays as {0: v, 1: v, ...}.
+     Normalize back to a real array before using .length or [0].
+  ══════════════════════════════════════════════════════ */
+  function normalizeImages(val) {
+    if (!val) return [];
+    if (Array.isArray(val)) return val;
+    // Firebase object with numeric keys → sorted array
+    return Object.keys(val).sort((a, b) => Number(a) - Number(b)).map(k => val[k]);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     RENDER
+  ══════════════════════════════════════════════════════ */
+  function renderArtGrid() {
+    const feed = document.getElementById('artFeed');
+    feed.innerHTML = '';
+    artData.forEach((piece, i) => {
+      const el = document.createElement('div');
+      el.className = 'art-post';
+      el.onclick   = () => openLightbox(i);
+      el.innerHTML = `
+        <img src="${piece.images[0]}" alt="${piece.title}" />
+        <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
+      `;
+      feed.appendChild(el);
+    });
+  }
+
+  function renderLogList() {
+    const list = document.getElementById('logList');
+    list.innerHTML = '';
+    logsData.forEach((log, i) => {
+      const el = document.createElement('div');
+      el.className = 'blog-list-item';
+      el.onclick   = () => readLog(i);
+      el.innerHTML = `
+        <p class="post-label">${log.meta}</p>
+        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  function readLog(i) {
+    const log = logsData[i];
+    if (!log) return;
+    document.getElementById('log-content').innerHTML = `
+      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+    `;
+    showPage('log-reader');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DARK MODE
   ══════════════════════════════════════════════════════ */
   function toggleDark() {
     const dark = document.body.classList.toggle('dark');
@@ -316,17 +398,6 @@
   }
 
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
-
-  function readLog(id) {
-    const log = logs[id];
-    if (!log) return;
-    document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
-      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
-    `;
-    showPage('log-reader');
-  }
 
   /* ══════════════════════════════════════════════════════
      LIGHTBOX
@@ -365,15 +436,8 @@
     lbPiece = null; lbIdx = 0;
   }
 
-  document.addEventListener('keydown', e => {
-    if (!lbPiece) return;
-    if (e.key === 'ArrowRight') lbNav(1);
-    if (e.key === 'ArrowLeft')  lbNav(-1);
-    if (e.key === 'Escape')     closeLightbox();
-  });
-
   /* ══════════════════════════════════════════════════════
-     STATUS PILL (again. im sorry i love this little thing)
+     STATUS PILL
   ══════════════════════════════════════════════════════ */
   function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
 
@@ -387,10 +451,6 @@
 
   /* ══════════════════════════════════════════════════════
      DRAG UTILITY
-     makeDraggable(el, handle, parent)
-       el     — element to move
-       handle — element that receives the mousedown
-       parent — constrain within this element (or null)
   ══════════════════════════════════════════════════════ */
   let zTop = 100;
 
@@ -433,41 +493,98 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     BULLETIN BOARD — Firebase-backed
-     Messages are shared across all visitors and persist
-     until the 75-message cap pushes the oldest one out.
+     BOARD RESIZE
   ══════════════════════════════════════════════════════ */
-  const FALLBACK_W = 800, FALLBACK_H = 500;
+  function initBoardResize() {
+    const board  = document.getElementById('board-section');
+    const handle = document.getElementById('boardResizeHandle');
+    let startX, startY, startW, startH;
 
-  // Build and insert one message popup from stored data
+    function onDown(cx, cy) {
+      startX = cx; startY = cy;
+      startW = board.offsetWidth; startH = board.offsetHeight;
+      document.addEventListener('mousemove', onMouseMove);
+      document.addEventListener('mouseup',   onUp);
+      document.addEventListener('touchmove', onTouchMove, { passive: false });
+      document.addEventListener('touchend',  onUp);
+    }
+
+    function resize(cx, cy) {
+      const maxW = board.parentElement.offsetWidth;
+      board.style.width  = Math.max(400, Math.min(maxW, startW + cx - startX)) + 'px';
+      board.style.height = Math.max(300, startH + cy - startY) + 'px';
+    }
+
+    function onMouseMove(e)  { resize(e.clientX, e.clientY); }
+    function onTouchMove(e)  { e.preventDefault(); const t = e.touches[0]; resize(t.clientX, t.clientY); }
+    function onUp() {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup',   onUp);
+      document.removeEventListener('touchmove', onTouchMove);
+      document.removeEventListener('touchend',  onUp);
+    }
+
+    handle.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
+    handle.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive: false });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     ANONYMOUS NAME GENERATOR
+  ══════════════════════════════════════════════════════ */
+  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
+  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
+
+  function genAnonName() {
+    const adj  = ANON_ADJ [Math.floor(Math.random() * ANON_ADJ .length)];
+    const noun = ANON_NOUN[Math.floor(Math.random() * ANON_NOUN.length)];
+    return `Anon. ${adj} ${noun}`;
+  }
+
+  // FIXED: deterministic name from Firebase push key so old messages
+  // (seeded before the name field existed) get a stable generated name
+  // instead of falling back to plain "Anon."
+  function nameFromKey(key) {
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
+    return `Anon. ${ANON_ADJ[h % ANON_ADJ.length]} ${ANON_NOUN[(h >>> 8) % ANON_NOUN.length]}`;
+  }
+
+  /* ══════════════════════════════════════════════════════
+     BULLETIN BOARD
+     FIXED: popups now append to #boardCanvas (the scrollable
+     inner div), not #board-section. Drag is constrained to
+     canvas too, so popups can't escape into the controls bar.
+  ══════════════════════════════════════════════════════ */
+  const FALLBACK_W = 800, FALLBACK_H = 400;
+
   function renderMessage(id, msg) {
-    if (renderedIds.has(id)) return; // listener fires on load for all existing msgs
+    if (renderedIds.has(id)) return;
     renderedIds.add(id);
 
-    const board = document.getElementById('board-section');
-    const bw    = board.offsetWidth  || FALLBACK_W;
-    const bh    = board.offsetHeight || FALLBACK_H;
+    const canvas = document.getElementById('boardCanvas'); // FIXED
+    const bw     = canvas.offsetWidth  || FALLBACK_W;
+    const bh     = canvas.offsetHeight || FALLBACK_H;
 
     const popup = document.createElement('div');
     popup.className  = 'comment-popup';
-    // Positions stored as percentages so they work on any screen size
     popup.style.left = Math.max(10, (msg.xPct / 100) * bw) + 'px';
     popup.style.top  = Math.max(10, (msg.yPct / 100) * bh) + 'px';
 
     const hdr = document.createElement('div');
     hdr.className = 'comment-header';
-    hdr.innerHTML = `<span>${msg.msgId}</span><span>${msg.time}</span>`;
+    const name    = msg.name || nameFromKey(id);
+    const dateStr = msg.date ? `${msg.date} · ` : '';
+    hdr.innerHTML = `<span>${name}</span><span>${dateStr}${msg.time}</span>`;
 
     const bdy = document.createElement('div');
     bdy.className   = 'comment-body';
-    bdy.textContent = msg.text; // textContent — no XSS :p
+    bdy.textContent = msg.text; // textContent — no XSS
 
     popup.append(hdr, bdy);
-    board.appendChild(popup);
-    makeDraggable(popup, hdr, board);
+    canvas.appendChild(popup);           // FIXED: was board-section
+    makeDraggable(popup, hdr, canvas);   // FIXED: constrain to canvas
   }
 
-  // Write a new message to Firebase
   function addComment(preset = null) {
     const input = document.getElementById('commentInput');
     const text  = preset || input.value.trim();
@@ -480,11 +597,13 @@
 
     const xPct = Math.max(2, Math.random() * 72);
     const yPct = Math.max(2, Math.random() * 68);
+    const now  = new Date();
 
     const payload = {
       text,
-      time:      new Date().toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
-      msgId:     'MSG_' + String(Math.floor(Math.random() * 999)).padStart(3, '0'),
+      time:      now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
+      date:      now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.'),
+      name:      genAnonName(),
       xPct,
       yPct,
       timestamp: firebase.database.ServerValue.TIMESTAMP
@@ -510,7 +629,6 @@
 
   function submitComment() { addComment(); }
 
-  // Real-time listener — only attach if Firebase connected successfully
   if (msgRef) {
     msgRef.orderByChild('timestamp').on('child_added', snap => {
       renderMessage(snap.key, snap.val());
@@ -518,7 +636,129 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     STICKERS cause i'm stupid
+     ADMIN AUTH — password verified server-side via
+     /api/admin-auth (Vercel serverless function).
+     The actual password lives in a Vercel env var and
+     is never present in this file or the GitHub repo.
+
+     Token is stored in sessionStorage and expires after
+     8 hours; closing the tab always clears it.
+  ══════════════════════════════════════════════════════ */
+  const ADMIN_TOKEN_KEY = 'sei_admin_token';
+  const ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000; // 8 hours in ms
+
+  function isAdminSession() {
+    try {
+      const raw = sessionStorage.getItem(ADMIN_TOKEN_KEY);
+      if (!raw) return false;
+      const { token, ts } = JSON.parse(raw);
+      return token && (Date.now() - ts) < ADMIN_TOKEN_TTL;
+    } catch(_) { return false; }
+  }
+
+  function showAdminLogin() {
+    // Skip login if already authenticated this session
+    if (isAdminSession()) {
+      document.getElementById('adminPanelModal').classList.add('show');
+      return;
+    }
+    document.getElementById('adminLoginModal').classList.add('show');
+    setTimeout(() => document.getElementById('adminPassInput').focus(), 50);
+  }
+
+  function closeAdminLogin() {
+    document.getElementById('adminLoginModal').classList.remove('show');
+    document.getElementById('adminPassInput').value = '';
+    document.getElementById('adminPassError').style.display = 'none';
+  }
+
+  async function verifyAdminPass() {
+    const password = document.getElementById('adminPassInput').value;
+    const errEl    = document.getElementById('adminPassError');
+    errEl.style.display = 'none';
+    errEl.textContent   = '// ACCESS DENIED.';
+
+    try {
+      const res  = await fetch('/api/admin-auth', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ password })
+      });
+      const data = await res.json();
+
+      if (data.ok) {
+        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
+        closeAdminLogin();
+        document.getElementById('adminPanelModal').classList.add('show');
+      } else {
+        errEl.style.display = 'block';
+      }
+    } catch(e) {
+      errEl.textContent   = '// SERVER UNREACHABLE.';
+      errEl.style.display = 'block';
+      console.error('Auth request failed:', e);
+    }
+  }
+
+  function closeAdminPanel() {
+    document.getElementById('adminPanelModal').classList.remove('show');
+  }
+  function switchAdminTab(tab) {
+    document.getElementById('adminArtForm') .style.display = tab === 'art'  ? 'flex' : 'none';
+    document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
+    document.getElementById('tab-art') .classList.toggle('active', tab === 'art');
+    document.getElementById('tab-logs').classList.toggle('active', tab === 'logs');
+  }
+
+  function adminAddArt() {
+    const title  = document.getElementById('artTitle') .value.trim();
+    const imgRaw = document.getElementById('artImages').value.trim();
+    const desc   = document.getElementById('artDesc')  .value.trim();
+    const meta   = document.getElementById('artMeta')  .value.trim() || String(new Date().getFullYear());
+
+    if (!title || !imgRaw) return;
+    const images = imgRaw.split('\n').map(u => u.trim()).filter(Boolean);
+    if (!images.length) return;
+
+    const piece = { title, images, desc, meta };
+    artData.push(piece);
+    renderArtGrid();
+
+    if (db) {
+      db.ref('content/art').push({ ...piece, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .catch(e => console.error('Art push failed:', e));
+    }
+
+    ['artTitle','artImages','artDesc','artMeta'].forEach(id => { document.getElementById(id).value = ''; });
+    const s = document.getElementById('artSuccess');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
+  function adminAddLog() {
+    const title = document.getElementById('logTitle').value.trim();
+    const meta  = document.getElementById('logMeta') .value.trim();
+    const body  = document.getElementById('logBody') .value.trim();
+
+    if (!title || !body) return;
+
+    const log = { title, meta: meta || 'LOG.TXT', body };
+    logsData.push(log);
+    renderLogList();
+
+    if (db) {
+      db.ref('content/logs').push({ ...log, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .catch(e => console.error('Log push failed:', e));
+    }
+
+    ['logTitle','logMeta','logBody'].forEach(id => { document.getElementById(id).value = ''; });
+    const s = document.getElementById('logSuccess');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
+  /* ══════════════════════════════════════════════════════
+     STICKERS
   ══════════════════════════════════════════════════════ */
   function initStickers() {
     const section = document.getElementById('about');
@@ -526,9 +766,27 @@
   }
 
   /* ══════════════════════════════════════════════════════
+     GLOBAL KEYBOARD HANDLER
+  ══════════════════════════════════════════════════════ */
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      closeLightbox();
+      closeAdminLogin();
+      closeAdminPanel();
+    }
+    if (lbPiece) {
+      if (e.key === 'ArrowRight') lbNav(1);
+      if (e.key === 'ArrowLeft')  lbNav(-1);
+    }
+  });
+
+  /* ══════════════════════════════════════════════════════
      INIT
   ══════════════════════════════════════════════════════ */
   document.addEventListener('DOMContentLoaded', () => {
+    renderArtGrid();
+    renderLogList();
+
     const input = document.getElementById('commentInput');
     input.addEventListener('keydown', e => { if (e.key === 'Enter') submitComment(); });
     input.addEventListener('input', function() {
@@ -537,13 +795,15 @@
       ctr.textContent = `${n} / 500`;
       ctr.classList.toggle('warn', n >= 450);
     });
+
+    document.getElementById('adminPassInput').addEventListener('keydown', e => {
+      if (e.key === 'Enter') verifyAdminPass();
+    });
   });
 
   window.onload = () => {
-    // Seed notes — guarded by a one-time flag in the DB so they
-    // never write twice regardless of listener timing
-    if (msgRef) {
-      const seededRef = firebase.database().ref('board/seeded');
+    if (db) {
+      const seededRef = db.ref('board/seeded');
       seededRef.once('value', snap => {
         if (!snap.val()) {
           seededRef.set(true);
@@ -551,8 +811,25 @@
             .forEach(t => addComment(t));
         }
       }).catch(e => console.error('Seed check failed:', e));
+
+      // FIXED: normalize images from Firebase object back to array
+      db.ref('content/art').orderByChild('timestamp').once('value', snap => {
+        snap.forEach(child => {
+          const data = child.val();
+          data.images = normalizeImages(data.images);
+          artData.push(data);
+        });
+        renderArtGrid();
+      }).catch(e => console.error('Art load failed:', e));
+
+      db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
+        snap.forEach(child => logsData.push(child.val()));
+        renderLogList();
+      }).catch(e => console.error('Logs load failed:', e));
     }
+
     initStickers();
+    initBoardResize();
     updateLiveStatus();
     setInterval(updateLiveStatus, 1000);
   };
