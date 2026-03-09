@@ -1,28 +1,21 @@
 /* ══════════════════════════════════════════════════════
    DESIGN TOKENS
-   All colors go through variables dark mode just
-   redefines them on body.dark, nothing else should change..
 ══════════════════════════════════════════════════════ */
 :root {
-  /* Surfaces */
   --bg:          #f4f4f4;
-  --bg2:         #ffffff;   /* cards, popups */
-  --bg3:         #eeeeee;   /* subtle secondary fills — FIXED: was #eeeee (typo) */
-  --bg4:         #f0f0f0;   /* hover states, tags */
-  /* Text */
+  --bg2:         #ffffff;
+  --bg3:         #eeeeee;
+  --bg4:         #f0f0f0;
   --text:        #1a1a1a;
   --text-muted:  #999999;
-  --text-sub:    #555555;   /* subheaders — readable but secondary */
-  --text-inv:    #ffffff;   /* text on accent backgrounds */
-  /* Accent & borders */
+  --text-sub:    #555555;
+  --text-inv:    #ffffff;
   --accent:      #e60000;
   --border:      #100C08;
-  --border-lt:   #eeeeee;   /* light internal dividers */
-  /* Fonts */
+  --border-lt:   #eeeeee;
   --font-main:   'Newsreader', serif;
   --font-tech:   'Space Grotesk', sans-serif;
   --font-mono:   'Space Mono', monospace;
-  /* Shadows */
   --shadow:      4px 4px 0px var(--border);
   --shadow-lg:   8px 8px 0px var(--border);
 }
@@ -34,7 +27,7 @@ body.dark {
   --bg4:        #000000;
   --text:       #f0f0f0;
   --text-muted: #888888;
-  --text-sub:   #bbbbbb;   /* subheaders in dark mode */
+  --text-sub:   #bbbbbb;
   --text-inv:   #f0f0f0;
   --accent:     #0000FF;
   --border:     #dddddd;
@@ -161,6 +154,19 @@ nav {
 .nav-item.active     { background: var(--bg4); color: var(--accent); }
 .nav-item.active::after { content: "⟡"; font-size: 10px; }
 
+.nav-admin-trigger {
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--border-lt);
+  cursor: pointer;
+  text-align: right;
+  border-top: 1px solid var(--border-lt);
+  transition: color 0.2s;
+  user-select: none;
+}
+.nav-admin-trigger:hover { color: var(--accent); }
+
 /* ── MAIN / SECTIONS ─────────────────────────────────── */
 main { flex: 1; min-width: 0; }
 
@@ -260,7 +266,6 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   justify-content: space-between;
 }
 
-/* Art grid override — overlaid label bar */
 .art-post .post-label {
   position: absolute;
   bottom: 0; left: 0; right: 0;
@@ -353,37 +358,60 @@ body.dark .art-post .post-label {
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
 /* ── BULLETIN BOARD ──────────────────────────────────── */
+
+/* Outer shell — flex column so canvas + controls stack */
 #board-section {
   width: 100%;
-  height: 80vh;
   min-height: 500px;
   position: relative;
   background: var(--bg2);
   border: 1.5px solid var(--border);
-  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  /* overflow handled by .board-canvas */
+}
+
+/* Scrollable dot-grid area where popups live */
+.board-canvas {
+  flex: 1;
+  min-height: 300px;
+  position: relative;
+  overflow: auto;
   background-image: radial-gradient(var(--border-lt) 1px, transparent 1px);
   background-size: 20px 20px;
 }
 
-.board-controls {
+/* Corner resize handle — FIXED: was a mess of sticky + float + absolute */
+.board-resize-handle {
   position: absolute;
-  bottom: 20px; left: 50%;
-  transform: translateX(-50%);
+  bottom: 0;
+  right: 0;
+  width: 22px;
+  height: 22px;
+  background: var(--accent);
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  cursor: se-resize;
+  z-index: 600;
+}
+
+/* Controls bar — static flow at the bottom, always visible */
+.board-controls {
+  flex-shrink: 0;
   background: var(--bg2);
   padding: 0.8rem 1rem;
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow);
+  border-top: 1.5px solid var(--border);
   z-index: 500;
   display: flex;
   flex-direction: column;
   gap: 6px;
-  width: calc(100% - 40px);
-  max-width: 420px;
+  /* leave 30px right gap so resize handle corner isn't covered */
+  padding-right: 36px;
 }
 
 .board-input-row { display: flex; gap: 8px; align-items: center; }
 
-.board-input {
+/* FIXED: cursor:text needs higher specificity than * { cursor:default } */
+input.board-input, textarea.board-input {
   border: 1px solid var(--border-lt);
   background: var(--bg);
   color: var(--text);
@@ -393,6 +421,7 @@ body.dark .art-post .post-label {
   flex: 1;
   min-width: 0;
   outline: none;
+  cursor: text;
 }
 
 .board-submit {
@@ -426,17 +455,21 @@ body.dark .art-post .post-label {
 }
 
 .comment-header {
-  background: var(--bg3);
+  background: var(--accent);
+  color: var(--text-inv);
   border-bottom: 1px solid var(--border);
   padding: 4px 8px;
   font-family: var(--font-mono);
   font-size: 9px;
-  color: var(--text);
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  gap: 4px;
   cursor: move;
   user-select: none;
   -webkit-user-select: none;
+  flex-wrap: wrap;
+  line-height: 1.4;
 }
 
 .comment-body {
@@ -532,9 +565,8 @@ body.dark .tag { color: #FFFFFF; }
   border: 1.5px solid var(--border);
   width: 95vw;
   max-width: 1200px;
-  max-height: 95vh;
-  overflow-y: auto;
-  overflow-x: hidden;
+  max-height: 92vh;
+  overflow: hidden;
   position: relative;
   box-shadow: 12px 12px 0px var(--border);
   display: flex;
@@ -547,8 +579,6 @@ body.dark .tag { color: #FFFFFF; }
   align-items: center;
   padding: 0.75rem 1rem;
   border-bottom: 1.5px solid var(--border);
-  position: sticky;
-  top: 0;
   background: var(--bg2);
   z-index: 10;
   flex-shrink: 0;
@@ -576,21 +606,56 @@ body.dark .tag { color: #FFFFFF; }
 }
 .lb-close-btn:hover { background: var(--accent); color: var(--text-inv); }
 
-.lb-body { padding: 1.25rem 1.5rem 1.5rem; }
+/* Two-column lightbox body */
+.lb-body {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  overflow: hidden;
+  min-height: 0; /* FIXED: without this, flex children ignore max-height in most browsers */
+}
+
+.lb-image-side {
+  flex: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+  border-right: 1.5px solid var(--border-lt);
+  overflow: hidden;
+  min-width: 0;
+  min-height: 0; /* FIXED: same issue */
+  gap: 0.5rem;
+}
+
+.lb-info-side {
+  flex: 4;
+  padding: 1.5rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 200px;
+  max-width: 340px;
+}
 
 .lb-image-wrap {
   position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 0.75rem;
+  flex: 1;
+  width: 100%;
   padding: 0 44px;
+  min-height: 0; /* FIXED: lets the image respect parent height constraints */
 }
 
 #lb-image {
   max-width: 100%;
-  max-height: 82vh;
-  width: auto; height: auto;
+  max-height: 100%;
+  width: auto;
+  height: auto;
   object-fit: contain;
   border: 1px solid var(--border-lt);
   display: block;
@@ -621,12 +686,133 @@ body.dark .tag { color: #FFFFFF; }
   font-size: 10px;
   color: var(--text-muted);
   text-align: center;
-  margin-bottom: 0.75rem;
+  flex-shrink: 0;
   display: none;
 }
 
-.lb-desc { margin: 0.4rem 0 0.25rem; font-size: 1rem; color: var(--text); }
+.lb-desc { font-size: 1rem; color: var(--text); line-height: 1.6; }
 .lb-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+
+/* ── MODAL OVERLAY (admin) ───────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.78);
+  backdrop-filter: blur(4px);
+  z-index: 3000;
+  display: none; /* fallback — JS controls this via style.display */
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.admin-box {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-lg);
+  width: 95vw;
+  max-width: 620px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-toolbar {
+  background: var(--accent);
+  color: var(--text-inv);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.admin-toolbar button {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.5);
+  color: var(--text-inv);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.admin-toolbar button:hover { background: rgba(255,255,255,0.15); }
+
+.admin-body {
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  overflow-y: auto;
+}
+
+.admin-tabs {
+  display: flex;
+  border-bottom: 1.5px solid var(--border);
+  flex-shrink: 0;
+}
+.admin-tab {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 7px 16px;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  border-bottom: none;
+  color: var(--text-muted);
+  background: transparent;
+  transition: all 0.15s;
+  text-transform: uppercase;
+}
+.admin-tab.active {
+  color: var(--text);
+  border-color: var(--border);
+  border-bottom-color: var(--bg2);
+  background: var(--bg2);
+  margin-bottom: -1.5px;
+}
+
+.admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.admin-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+
+/* Admin inputs — higher specificity than * { cursor: default } */
+input.admin-input, textarea.admin-input {
+  border: 1px solid var(--border-lt);
+  background: var(--bg);
+  color: var(--text);
+  padding: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  width: 100%;
+  outline: none;
+  cursor: text;
+  transition: border-color 0.15s;
+}
+input.admin-input:focus,
+textarea.admin-input:focus { border-color: var(--accent); }
+textarea.admin-input { resize: vertical; min-height: 80px; }
+
+.admin-success {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: #22c55e;
+  display: none;
+}
 
 /* ── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 850px) {
@@ -641,6 +827,11 @@ body.dark .tag { color: #FFFFFF; }
   .site-title      { font-size: 0.9rem; letter-spacing: 0.2em; }
   .about-card      { margin: 0 auto; }
   .sticker         { display: none; }
-  .lb-image-wrap   { padding: 0 36px; }
-  #lb-image        { max-height: 60vh; }
+
+  /* Lightbox stacks on mobile */
+  .lb-body         { flex-direction: column; overflow-y: auto; }
+  .lb-image-side   { flex: none; border-right: none; border-bottom: 1.5px solid var(--border-lt); min-height: 240px; }
+  .lb-image-wrap   { padding: 0 36px; flex: 1; min-height: 200px; }
+  .lb-info-side    { flex: none; max-width: 100%; }
+  #lb-image        { max-height: 50vh; }
 }
