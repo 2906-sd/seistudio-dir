@@ -233,11 +233,16 @@
     appId:             "1:683797738985:web:3e79b66988d1498fddc778"
   };
 
-  firebase.initializeApp(firebaseConfig);
-  const db          = firebase.database();
-  const msgRef      = db.ref('board/messages');
-  const MAX_MSGS    = 75;   // oldest entry deleted when this is exceeded
-  const renderedIds = new Set(); // prevents duplicates from the real-time listener
+  let msgRef      = null;
+  const MAX_MSGS    = 75;
+  const renderedIds = new Set();
+
+  try {
+    firebase.initializeApp(firebaseConfig);
+    msgRef = firebase.database().ref('board/messages');
+  } catch(e) {
+    console.error('Firebase init failed:', e);
+  }
 
   /* ══════════════════════════════════════════════════════
      ART DATA  —  index must match openLightbox(N) in HTML. look at your notes.
@@ -468,11 +473,11 @@
     const text  = preset || input.value.trim();
     if (!text) return;
 
-    const board = document.getElementById('board-section');
-    const bw    = board.offsetWidth  || FALLBACK_W;
-    const bh    = board.offsetHeight || FALLBACK_H;
+    if (!msgRef) {
+      console.warn('Board unavailable: Firebase not connected.');
+      return;
+    }
 
-    // Store position as % of board dims so it's consistent across screen sizes
     const xPct = Math.max(2, Math.random() * 72);
     const yPct = Math.max(2, Math.random() * 68);
 
@@ -486,16 +491,14 @@
     };
 
     msgRef.push(payload).then(() => {
-      // Enforce cap: count all messages, delete the oldest if over limit
       msgRef.orderByChild('timestamp').once('value', snap => {
         if (snap.numChildren() > MAX_MSGS) {
-          // grab the single oldest entry and remove it
           msgRef.orderByChild('timestamp').limitToFirst(1).once('value', oldest => {
             oldest.forEach(child => child.ref.remove());
           });
         }
       });
-    });
+    }).catch(e => console.error('Post failed:', e));
 
     if (!preset) {
       input.value = '';
@@ -507,11 +510,12 @@
 
   function submitComment() { addComment(); }
 
-  // Real-time listener — fires once per existing message on load,
-  // then again instantly whenever any visitor posts a new one
-  msgRef.orderByChild('timestamp').on('child_added', snap => {
-    renderMessage(snap.key, snap.val());
-  });
+  // Real-time listener — only attach if Firebase connected successfully
+  if (msgRef) {
+    msgRef.orderByChild('timestamp').on('child_added', snap => {
+      renderMessage(snap.key, snap.val());
+    }, e => console.error('Board listener error:', e));
+  }
 
   /* ══════════════════════════════════════════════════════
      STICKERS cause i'm stupid
@@ -536,13 +540,15 @@
   });
 
   window.onload = () => {
-    // Seed notes only written once, the very first time the board is empty
-    msgRef.once('value', snap => {
-      if (!snap.exists()) {
-        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
-          .forEach(t => addComment(t));
-      }
-    });
+    // Seed notes only written once, only if Firebase is connected
+    if (msgRef) {
+      msgRef.once('value', snap => {
+        if (!snap.exists()) {
+          ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+            .forEach(t => addComment(t));
+        }
+      }).catch(e => console.error('Seed check failed:', e));
+    }
     initStickers();
     updateLiveStatus();
     setInterval(updateLiveStatus, 1000);
