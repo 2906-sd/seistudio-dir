@@ -87,6 +87,7 @@
             <button class="board-submit" onclick="submitComment()">POST</button>
           </div>
           <div class="char-counter" id="charCounter">0 / 500</div>
+          <div class="rate-limit-msg" id="rateLimitMsg"></div>
         </div>
         <div class="board-resize-handle" id="boardResizeHandle" title="Drag to resize"></div>
       </div>
@@ -329,7 +330,8 @@
      RENDER
   ══════════════════════════════════════════════════════ */
   function renderArtGrid() {
-    const feed = document.getElementById('artFeed');
+    const feed  = document.getElementById('artFeed');
+    const admin = isAdminSession();
     feed.innerHTML = '';
     artData.forEach((piece, i) => {
       const el = document.createElement('div');
@@ -338,13 +340,18 @@
       el.innerHTML = `
         <img src="${piece.images[0]}" alt="${piece.title}" />
         <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
+        ${admin ? `<button class="delete-btn" title="Delete">× DEL</button>` : ''}
       `;
+      if (admin) {
+        el.querySelector('.delete-btn').onclick = e => { e.stopPropagation(); deleteArt(i); };
+      }
       feed.appendChild(el);
     });
   }
 
   function renderLogList() {
-    const list = document.getElementById('logList');
+    const list  = document.getElementById('logList');
+    const admin = isAdminSession();
     list.innerHTML = '';
     logsData.forEach((log, i) => {
       const el = document.createElement('div');
@@ -353,9 +360,32 @@
       el.innerHTML = `
         <p class="post-label">${log.meta}</p>
         <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+        ${admin ? `<button class="delete-btn" title="Delete">× DEL</button>` : ''}
       `;
+      if (admin) {
+        el.querySelector('.delete-btn').onclick = e => { e.stopPropagation(); deleteLog(i); };
+      }
       list.appendChild(el);
     });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DELETE
+  ══════════════════════════════════════════════════════ */
+  function deleteArt(i) {
+    if (!confirm('Delete this piece?')) return;
+    const piece = artData[i];
+    if (piece._key && db) db.ref(`content/art/${piece._key}`).remove().catch(console.error);
+    artData.splice(i, 1);
+    renderArtGrid();
+  }
+
+  function deleteLog(i) {
+    if (!confirm('Delete this log?')) return;
+    const log = logsData[i];
+    if (log._key && db) db.ref(`content/logs/${log._key}`).remove().catch(console.error);
+    logsData.splice(i, 1);
+    renderLogList();
   }
 
   function readLog(i) {
@@ -631,7 +661,86 @@
     }
   }
 
-  function submitComment() { addComment(); }
+  /* ══════════════════════════════════════════════════════
+     RATE LIMITING — localStorage-based
+     Rules: 30s cooldown between posts, max 5 per hour.
+  ══════════════════════════════════════════════════════ */
+  const RL_KEY         = 'sei_rl';
+  const RL_COOLDOWN_MS = 30 * 1000;
+  const RL_WINDOW_MS   = 60 * 60 * 1000;
+  const RL_MAX         = 5;
+  let   rlCountdown    = null; // interval ref
+
+  function getRLData() {
+    try { return JSON.parse(localStorage.getItem(RL_KEY)) || {}; } catch(_) { return {}; }
+  }
+  function setRLData(d) {
+    try { localStorage.setItem(RL_KEY, JSON.stringify(d)); } catch(_) {}
+  }
+
+  function checkRateLimit() {
+    const now  = Date.now();
+    const d    = getRLData();
+    const last = d.last    || 0;
+    const wStart = d.wStart || now;
+    const count  = (now - wStart < RL_WINDOW_MS) ? (d.count || 0) : 0;
+
+    if (now - last < RL_COOLDOWN_MS) {
+      return { allowed: false, waitMs: RL_COOLDOWN_MS - (now - last), reason: 'cooldown' };
+    }
+    if (count >= RL_MAX) {
+      return { allowed: false, waitMs: RL_WINDOW_MS - (now - wStart), reason: 'hourly' };
+    }
+    return { allowed: true };
+  }
+
+  function recordPost() {
+    const now = Date.now();
+    const d   = getRLData();
+    const newWindow = (now - (d.wStart || 0)) >= RL_WINDOW_MS;
+    setRLData({
+      last:   now,
+      wStart: newWindow ? now : (d.wStart || now),
+      count:  newWindow ? 1  : (d.count  || 0) + 1
+    });
+  }
+
+  function showRateLimit(waitMs, reason) {
+    const input   = document.getElementById('commentInput');
+    const counter = document.getElementById('charCounter');
+    const msg     = document.getElementById('rateLimitMsg');
+    input.disabled      = true;
+    counter.style.display = 'none';
+    msg.style.display     = 'block';
+
+    if (rlCountdown) clearInterval(rlCountdown);
+    rlCountdown = setInterval(() => {
+      const remaining = Math.ceil((waitMs - (Date.now() - (Date.now() - waitMs))) / 1000);
+      const secs = Math.max(0, Math.ceil(checkRateLimit().waitMs / 1000));
+      if (secs <= 0) {
+        clearInterval(rlCountdown);
+        input.disabled        = false;
+        msg.style.display     = 'none';
+        counter.style.display = 'block';
+        return;
+      }
+      msg.textContent = reason === 'hourly'
+        ? `// MAX ${RL_MAX} POSTS/HR — wait ${Math.ceil(secs/60)}m`
+        : `// SLOW DOWN — wait ${secs}s`;
+    }, 500);
+    // Fire immediately
+    const secs = Math.ceil(waitMs / 1000);
+    msg.textContent = reason === 'hourly'
+      ? `// MAX ${RL_MAX} POSTS/HR — wait ${Math.ceil(secs/60)}m`
+      : `// SLOW DOWN — wait ${secs}s`;
+  }
+
+  function submitComment() {
+    const rl = checkRateLimit();
+    if (!rl.allowed) { showRateLimit(rl.waitMs, rl.reason); return; }
+    recordPost();
+    addComment();
+  }
 
   // Everything that needs Firebase to be ready
   function onFirebaseReady() {
@@ -653,13 +762,18 @@
       snap.forEach(child => {
         const data = child.val();
         data.images = normalizeImages(data.images);
+        data._key   = child.key; // store key for delete
         artData.push(data);
       });
       renderArtGrid();
     }).catch(e => console.error('Art load failed:', e));
 
     db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-      snap.forEach(child => logsData.push(child.val()));
+      snap.forEach(child => {
+        const data = child.val();
+        data._key  = child.key; // store key for delete
+        logsData.push(data);
+      });
       renderLogList();
     }).catch(e => console.error('Logs load failed:', e));
   }
@@ -730,6 +844,9 @@
         sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
         closeAdminLogin();
         openModal('adminPanelModal');
+        // Re-render so delete buttons appear
+        renderArtGrid();
+        renderLogList();
       } else {
         errEl.textContent   = `// ACCESS DENIED.`;
         errEl.style.display = 'block';
@@ -765,7 +882,8 @@
     renderArtGrid();
 
     if (db) {
-      db.ref('content/art').push({ ...piece, timestamp: firebase.database.ServerValue.TIMESTAMP })
+      db.ref('content/art').push({ title, images, desc, meta, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .then(ref => { artData[artData.length - 1]._key = ref.key; })
         .catch(e => console.error('Art push failed:', e));
     }
 
@@ -787,7 +905,8 @@
     renderLogList();
 
     if (db) {
-      db.ref('content/logs').push({ ...log, timestamp: firebase.database.ServerValue.TIMESTAMP })
+      db.ref('content/logs').push({ title, meta: log.meta, body, timestamp: firebase.database.ServerValue.TIMESTAMP })
+        .then(ref => { logsData[logsData.length - 1]._key = ref.key; })
         .catch(e => console.error('Log push failed:', e));
     }
 
