@@ -9,7 +9,7 @@
 
 const crypto = require('crypto');
 
-module.exports = function handler(req, res) {
+module.exports = async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -28,7 +28,9 @@ module.exports = function handler(req, res) {
   }
 
   if (password !== secret) {
-    return setTimeout(() => res.status(401).json({ ok: false }), 400);
+    // Proper async delay — setTimeout doesn't work in serverless functions
+    await new Promise(resolve => setTimeout(resolve, 400));
+    return res.status(401).json({ ok: false });
   }
 
   const ts    = Date.now();
