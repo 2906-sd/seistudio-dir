@@ -245,29 +245,30 @@
 
 <script>
   /* ══════════════════════════════════════════════════════
-     FIREBASE CONFIG
+     FIREBASE CONFIG — fetched from /api/firebase-config
+     so the actual values never live in this file.
   ══════════════════════════════════════════════════════ */
-  const firebaseConfig = {
-    apiKey:            "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
-    authDomain:        "seistudiomessageboard.firebaseapp.com",
-    databaseURL:       "https://seistudiomessageboard-default-rtdb.firebaseio.com",
-    projectId:         "seistudiomessageboard",
-    storageBucket:     "seistudiomessageboard.firebasestorage.app",
-    messagingSenderId: "683797738985",
-    appId:             "1:683797738985:web:3e79b66988d1498fddc778"
-  };
-
   let db     = null;
   let msgRef = null;
   const MAX_MSGS    = 75;
   const renderedIds = new Set();
 
-  try {
-    firebase.initializeApp(firebaseConfig);
-    db     = firebase.database();
-    msgRef = db.ref('board/messages');
-  } catch(e) {
-    console.error('Firebase init failed:', e);
+  async function initFirebase() {
+    try {
+      const res    = await fetch('/api/firebase-config');
+      if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
+      const config = await res.json();
+      firebase.initializeApp(config);
+      db     = firebase.database();
+      msgRef = db.ref('board/messages');
+      // Start the real-time board listener only once Firebase is ready
+      msgRef.orderByChild('timestamp').on('child_added', snap => {
+        renderMessage(snap.key, snap.val());
+      }, e => console.error('Board listener error:', e));
+      onFirebaseReady();
+    } catch(e) {
+      console.error('Firebase init failed:', e);
+    }
   }
 
   /* ══════════════════════════════════════════════════════
@@ -629,10 +630,30 @@
 
   function submitComment() { addComment(); }
 
-  if (msgRef) {
-    msgRef.orderByChild('timestamp').on('child_added', snap => {
-      renderMessage(snap.key, snap.val());
-    }, e => console.error('Board listener error:', e));
+  // Everything that needs Firebase to be ready
+  function onFirebaseReady() {
+    const seededRef = db.ref('board/seeded');
+    seededRef.once('value', snap => {
+      if (!snap.val()) {
+        seededRef.set(true);
+        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+          .forEach(t => addComment(t));
+      }
+    }).catch(e => console.error('Seed check failed:', e));
+
+    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
+      snap.forEach(child => {
+        const data = child.val();
+        data.images = normalizeImages(data.images);
+        artData.push(data);
+      });
+      renderArtGrid();
+    }).catch(e => console.error('Art load failed:', e));
+
+    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
+      snap.forEach(child => logsData.push(child.val()));
+      renderLogList();
+    }).catch(e => console.error('Logs load failed:', e));
   }
 
   /* ══════════════════════════════════════════════════════
@@ -684,17 +705,30 @@
         headers: { 'Content-Type': 'application/json' },
         body:    JSON.stringify({ password })
       });
-      const data = await res.json();
+
+      // Try to parse JSON — if it fails, show the raw text so we can diagnose
+      let data;
+      try {
+        data = await res.json();
+      } catch(_) {
+        const raw = await res.text().catch(() => '(no response body)');
+        errEl.textContent   = `// HTTP ${res.status} — CHECK VERCEL LOGS.`;
+        errEl.style.display = 'block';
+        console.error('Admin auth: non-JSON response', res.status, raw);
+        return;
+      }
 
       if (data.ok) {
         sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
         closeAdminLogin();
         openModal('adminPanelModal');
       } else {
+        errEl.textContent   = `// ACCESS DENIED.`;
         errEl.style.display = 'block';
+        console.warn('Admin auth denied:', data.reason);
       }
     } catch(e) {
-      errEl.textContent   = '// SERVER UNREACHABLE.';
+      errEl.textContent   = '// NETWORK ERROR — are you online?';
       errEl.style.display = 'block';
       console.error('Auth request failed:', e);
     }
@@ -800,32 +834,7 @@
   });
 
   window.onload = () => {
-    if (db) {
-      const seededRef = db.ref('board/seeded');
-      seededRef.once('value', snap => {
-        if (!snap.val()) {
-          seededRef.set(true);
-          ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
-            .forEach(t => addComment(t));
-        }
-      }).catch(e => console.error('Seed check failed:', e));
-
-      // FIXED: normalize images from Firebase object back to array
-      db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-        snap.forEach(child => {
-          const data = child.val();
-          data.images = normalizeImages(data.images);
-          artData.push(data);
-        });
-        renderArtGrid();
-      }).catch(e => console.error('Art load failed:', e));
-
-      db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-        snap.forEach(child => logsData.push(child.val()));
-        renderLogList();
-      }).catch(e => console.error('Logs load failed:', e));
-    }
-
+    initFirebase(); // async — board listener + seeding + content load happen inside
     initStickers();
     initBoardResize();
     updateLiveStatus();
