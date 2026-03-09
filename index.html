@@ -365,6 +365,7 @@
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
       <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+${isAdminSession() ? `<button onclick="adminDeleteLog(${i})" style="margin-top:20px">DELETE_LOG</button>` : ''}
     `;
     showPage('log-reader');
   }
@@ -416,7 +417,12 @@
     document.getElementById('lb-image').src         = lbPiece.images[lbIdx];
     document.getElementById('lb-title').textContent = lbPiece.title;
     document.getElementById('lb-desc').textContent  = lbPiece.desc;
-    document.getElementById('lb-meta').textContent  = `DATE: ${lbPiece.meta}`;
+    const metaEl = document.getElementById('lb-meta');
+metaEl.textContent = `DATE: ${lbPiece.meta}`;
+
+if (isAdminSession()) {
+  metaEl.innerHTML += `<br><button onclick="adminDeleteArt(artData.indexOf(lbPiece))" style="margin-top:8px">DELETE_ART</button>`;
+}
 
     const prev = document.getElementById('lb-prev');
     const next = document.getElementById('lb-next');
@@ -649,19 +655,28 @@
       }
     }).catch(e => console.error('Seed check failed:', e));
 
-    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-      snap.forEach(child => {
-        const data = child.val();
-        data.images = normalizeImages(data.images);
-        artData.push(data);
-      });
-      renderArtGrid();
-    }).catch(e => console.error('Art load failed:', e));
+db.ref('content/art').orderByChild('timestamp').once('value', snap => {
+  snap.forEach(child => {
+    const data = child.val();
+    data.images = normalizeImages(data.images);
 
-    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-      snap.forEach(child => logsData.push(child.val()));
-      renderLogList();
-    }).catch(e => console.error('Logs load failed:', e));
+    artData.push({
+      id: child.key,
+      ...data
+    });
+  });
+  renderArtGrid();
+});.catch(e => console.error('Art load failed:', e));
+
+db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
+  snap.forEach(child => {
+    logsData.push({
+      id: child.key,
+      ...child.val()
+    });
+  });
+  renderLogList();
+});.catch(e => console.error('Logs load failed:', e));
   }
 
   /* ══════════════════════════════════════════════════════
@@ -765,7 +780,12 @@
     renderArtGrid();
 
     if (db) {
-      db.ref('content/art').push({ ...piece, timestamp: firebase.database.ServerValue.TIMESTAMP })
+      const ref = db.ref('content/art').push({
+  ...piece,
+  timestamp: firebase.database.ServerValue.TIMESTAMP
+});
+
+piece.id = ref.key;
         .catch(e => console.error('Art push failed:', e));
     }
 
@@ -787,7 +807,12 @@
     renderLogList();
 
     if (db) {
-      db.ref('content/logs').push({ ...log, timestamp: firebase.database.ServerValue.TIMESTAMP })
+      const ref = db.ref('content/logs').push({
+  ...log,
+  timestamp: firebase.database.ServerValue.TIMESTAMP
+});
+
+log.id = ref.key;
         .catch(e => console.error('Log push failed:', e));
     }
 
@@ -796,7 +821,43 @@
     s.style.display = 'block';
     setTimeout(() => { s.style.display = 'none'; }, 3000);
   }
+/* ══════════════════════════════════════════════════════
+   ADMIN DELETE
+══════════════════════════════════════════════════════ */
 
+function adminDeleteArt(i) {
+  if (!isAdminSession()) return;
+
+  const piece = artData[i];
+  if (!piece?.id) return;
+
+  if (!confirm(`Delete artwork "${piece.title}"?`)) return;
+
+  db.ref('content/art/' + piece.id).remove()
+    .then(() => {
+      artData.splice(i, 1);
+      renderArtGrid();
+      closeLightbox();
+    })
+    .catch(e => console.error('Delete art failed:', e));
+}
+
+function adminDeleteLog(i) {
+  if (!isAdminSession()) return;
+
+  const log = logsData[i];
+  if (!log?.id) return;
+
+  if (!confirm(`Delete log "${log.title}"?`)) return;
+
+  db.ref('content/logs/' + log.id).remove()
+    .then(() => {
+      logsData.splice(i, 1);
+      renderLogList();
+      showPage('writing');
+    })
+    .catch(e => console.error('Delete log failed:', e));
+}
   /* ══════════════════════════════════════════════════════
      STICKERS
   ══════════════════════════════════════════════════════ */
