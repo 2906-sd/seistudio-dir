@@ -540,10 +540,13 @@
   });
 
   window.onload = () => {
-    // Seed notes only written once, only if Firebase is connected
+    // Seed notes — guarded by a one-time flag in the DB so they
+    // never write twice regardless of listener timing
     if (msgRef) {
-      msgRef.once('value', snap => {
-        if (!snap.exists()) {
+      const seededRef = firebase.database().ref('board/seeded');
+      seededRef.once('value', snap => {
+        if (!snap.val()) {
+          seededRef.set(true);
           ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
             .forEach(t => addComment(t));
         }
