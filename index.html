@@ -8,199 +8,46 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
-  <style>
-    /* Delete button styles */
-    .admin-delete-btn {
-      position: absolute;
-      top: 8px;
-      right: 8px;
-      background: var(--accent);
-      color: var(--text-inv);
-      border: 1px solid var(--border);
-      padding: 4px 8px;
-      font-family: var(--font-mono);
-      font-size: 9px;
-      cursor: pointer;
-      z-index: 5;
-      display: none;
-      text-transform: uppercase;
-    }
-    .admin-delete-btn:hover { opacity: 0.8; }
-    body.admin-mode .admin-delete-btn { display: block; }
-    
-    /* Spam warning */
-    .spam-warning {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: var(--accent);
-      margin-top: 4px;
-      display: none;
-    }
-
-    /* Status pill repositioned under nav */
-    .status-pill-container {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      display: flex;
-      justify-content: flex-end;
-      padding: 0.5rem 2rem;
-      pointer-events: none;
-    }
-
-    .status-pill {
-      pointer-events: auto;
-      cursor: pointer;
-      background: var(--bg2);
-      border: 1.5px solid var(--border);
-      padding: 0.4rem 1rem;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      border-radius: 0;
-      box-shadow: var(--shadow);
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      overflow: hidden;
-      white-space: nowrap;
-      transition: padding 0.3s ease, min-width 0.3s ease, background-color 0.3s;
-      min-width: 220px;
-      justify-content: center;
-    }
-
-    .pill-expanded-content {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      overflow: hidden;
-      max-width: 300px;
-      transition: max-width 0.35s ease, opacity 0.25s ease;
-    }
-
-    .status-pill.collapsed { padding: 0.4rem 0.6rem; min-width: 0; gap: 0; }
-    .status-pill.collapsed .pill-expanded-content { max-width: 0; opacity: 0; pointer-events: none; }
-    .status-pill.collapsed .status-dot { font-size: 1.2rem; }
-
-    .status-dot {
-      color: #3b82f6;
-      font-size: 0.9rem;
-      animation: blink 1.5s infinite;
-      transition: font-size 0.3s ease;
-      flex-shrink: 0;
-    }
-
-    /* Category navigation */
-    .category-nav {
-      display: flex;
-      gap: 0.5rem;
-      margin-bottom: 1.5rem;
-      flex-wrap: wrap;
-      border-bottom: 1.5px solid var(--border);
-      padding-bottom: 0.5rem;
-    }
-
-    .category-tab {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      padding: 6px 14px;
-      cursor: pointer;
-      border: 1.5px solid var(--border);
-      background: var(--bg2);
-      color: var(--text);
-      transition: all 0.15s;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .category-tab:hover { background: var(--bg4); }
-    .category-tab.active {
-      background: var(--accent);
-      color: var(--text-inv);
-      border-color: var(--accent);
-    }
-
-    /* Zoom controls */
-    .zoom-controls {
-      position: absolute;
-      bottom: 1rem;
-      right: 1rem;
-      display: flex;
-      gap: 0.5rem;
-      z-index: 15;
-    }
-
-    .zoom-btn {
-      background: var(--bg2);
-      border: 1.5px solid var(--border);
-      color: var(--text);
-      font-family: var(--font-mono);
-      font-size: 16px;
-      width: 36px;
-      height: 36px;
-      cursor: pointer;
-      box-shadow: 2px 2px 0 var(--border);
-      transition: background 0.15s;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .zoom-btn:hover { background: var(--bg4); }
-    .zoom-btn:disabled { opacity: 0.3; pointer-events: none; }
-
-    .lb-image-wrap {
-      overflow: hidden !important;
-      position: relative;
-    }
-
-    #lb-image {
-      transition: transform 0.2s ease;
-      cursor: grab;
-      transform-origin: center center;
-    }
-
-    #lb-image.zoomed { cursor: move; }
-
-    @media (max-width: 850px) {
-      .status-pill-container { padding: 0.5rem 1rem; }
-      .category-nav { gap: 0.3rem; }
-      .category-tab { font-size: 10px; padding: 5px 10px; }
-    }
-  </style>
 </head>
 <body>
 
 <div class="page-wrapper">
-  <nav id="navbar">
-    <div class="nav-header">
-      <div class="marquee-container">
-        <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
-      </div>
-    </div>
-    <div class="logo-area">
-      <span class="logo" onclick="showPage('home')">NAV</span>
-      <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
-      <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
-    </div>
-    <div class="nav-links" id="navLinks">
-      <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
-      <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
-      <span class="nav-item" onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
-      <span class="nav-item" onclick="showPage('board')" id="link-board">BULLETIN<span>03</span></span>
-      <span class="nav-item" onclick="showPage('about')" id="link-about">PROFILE<span>04</span></span>
-    </div>
-    <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
-  </nav>
 
-  <!-- STATUS PILL - Now under nav -->
-  <div class="status-pill-container">
-    <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
-      <span class="status-dot">⟡</span>
-      <div class="pill-expanded-content">
-        <span id="liveDateTime">...</span>
-        <span>// ACTIVE</span>
+  <!-- LEFT COLUMN: nav + status pill + dark toggle -->
+  <div class="left-col">
+    <nav id="navbar">
+      <div class="nav-header">
+        <div class="marquee-container">
+          <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+        </div>
+      </div>
+      <div class="logo-area">
+        <span class="logo" onclick="showPage('home')">NAV</span>
+        <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
+      </div>
+      <div class="nav-links" id="navLinks">
+        <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
+        <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
+        <span class="nav-item" onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
+        <span class="nav-item" onclick="showPage('board')" id="link-board">BULLETIN<span>03</span></span>
+        <span class="nav-item" onclick="showPage('about')" id="link-about">PROFILE<span>04</span></span>
+      </div>
+      <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
+    </nav>
+
+    <!-- Status pill - beneath nav -->
+    <div class="status-pill-container">
+      <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
+        <span class="status-dot">⟡</span>
+        <div class="pill-expanded-content">
+          <span id="liveDateTime">...</span>
+          <span>// ACTIVE</span>
+        </div>
       </div>
     </div>
+
+    <!-- Dark mode toggle - standalone beneath pill -->
+    <button class="dark-toggle-standalone" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
   </div>
 
   <main>
@@ -220,7 +67,6 @@
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
 
-      <!-- Category Navigation -->
       <div class="category-nav" id="categoryNav">
         <div class="category-tab active" data-category="all">ALL</div>
         <div class="category-tab" data-category="painting">PAINTINGS</div>
@@ -326,8 +172,6 @@
           <button class="lb-nav-btn" id="lb-prev" onclick="event.stopPropagation(); lbNav(-1)">&#8592;</button>
           <img id="lb-image" src="" alt="" draggable="false" />
           <button class="lb-nav-btn" id="lb-next" onclick="event.stopPropagation(); lbNav(1)">&#8594;</button>
-          
-          <!-- Zoom controls -->
           <div class="zoom-controls">
             <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(-1)" title="Zoom out">−</button>
             <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" title="Reset zoom">⊙</button>
@@ -377,7 +221,6 @@
       <div id="adminArtForm" class="admin-form">
         <label class="admin-label">Title</label>
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
-
         <label class="admin-label">Category</label>
         <select id="artCategory" class="admin-input" style="cursor:pointer;">
           <option value="painting">Painting</option>
@@ -386,16 +229,12 @@
           <option value="photography">Photography</option>
           <option value="other">Other</option>
         </select>
-
         <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
         <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
-
         <label class="admin-label">Artist Note</label>
         <textarea id="artDesc" class="admin-input" placeholder="Say something about the piece..."></textarea>
-
         <label class="admin-label">Date / Meta tag</label>
         <input type="text" id="artMeta" class="admin-input" placeholder="2026" />
-
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddArt()">POST ART →</button>
         <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
@@ -403,13 +242,10 @@
       <div id="adminLogsForm" class="admin-form" style="display:none">
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
-
         <label class="admin-label">Meta Label (shown on the list card)</label>
         <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
-
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
-
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
@@ -422,9 +258,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  /* ══════════════════════════════════════════════════════
-     FIREBASE CONFIG
-  ══════════════════════════════════════════════════════ */
   const firebaseConfig = {
     apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
     authDomain: "seistudiomessageboard.firebaseapp.com",
@@ -435,277 +268,142 @@
     appId: "1:683797738985:web:3e79b66988d1498fddc778"
   };
 
-  let db = null;
-  let msgRef = null;
+  let db = null, msgRef = null;
   const MAX_MSGS = 75;
   const renderedIds = new Set();
 
-  /* ══════════════════════════════════════════════════════
-     CATEGORY SYSTEM
-  ══════════════════════════════════════════════════════ */
+  /* ── CATEGORY ── */
   let activeCategory = 'all';
 
   function filterCategory(category) {
     activeCategory = category;
-    
-    // Update active tab
     document.querySelectorAll('.category-tab').forEach(tab => {
-      tab.classList.remove('active');
-      if (tab.getAttribute('data-category') === category) {
-        tab.classList.add('active');
-      }
+      tab.classList.toggle('active', tab.getAttribute('data-category') === category);
     });
-    
     renderArtGrid();
   }
 
   function initCategoryTabs() {
     document.querySelectorAll('.category-tab').forEach(tab => {
-      tab.addEventListener('click', function() {
-        const category = this.getAttribute('data-category');
-        filterCategory(category);
-      });
+      tab.addEventListener('click', function() { filterCategory(this.getAttribute('data-category')); });
     });
   }
 
-  /* ══════════════════════════════════════════════════════
-     ZOOM SYSTEM
-  ══════════════════════════════════════════════════════ */
-  let zoomLevel = 1;
-  let isDragging = false;
-  let dragStartX = 0;
-  let dragStartY = 0;
-  let imageX = 0;
-  let imageY = 0;
+  /* ── ZOOM ── */
+  let zoomLevel = 1, isDragging = false;
+  let dragStartX = 0, dragStartY = 0, imageX = 0, imageY = 0;
 
-  function zoomImage(direction) {
-    const step = 0.25;
-    const minZoom = 1;
-    const maxZoom = 3;
-    
-    zoomLevel = Math.max(minZoom, Math.min(maxZoom, zoomLevel + (direction * step)));
-    
+  function zoomImage(dir) {
+    zoomLevel = Math.max(1, Math.min(3, zoomLevel + dir * 0.25));
     const img = document.getElementById('lb-image');
-    
     if (zoomLevel <= 1) {
-      img.style.transform = 'scale(1) translate(0, 0)';
+      img.style.transform = 'scale(1) translate(0,0)';
       img.classList.remove('zoomed');
-      imageX = 0;
-      imageY = 0;
+      imageX = imageY = 0;
     } else {
-      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px, ${imageY}px)`;
+      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;
       img.classList.add('zoomed');
     }
   }
 
   function resetZoom() {
-    zoomLevel = 1;
-    imageX = 0;
-    imageY = 0;
+    zoomLevel = 1; imageX = imageY = 0;
     const img = document.getElementById('lb-image');
-    img.style.transform = 'scale(1) translate(0, 0)';
+    img.style.transform = 'scale(1) translate(0,0)';
     img.classList.remove('zoomed');
   }
 
   function initImageDrag() {
     const img = document.getElementById('lb-image');
-    
-    const startDrag = (e) => {
+    const start = e => {
       if (zoomLevel <= 1) return;
-      
       isDragging = true;
-      const touch = e.touches ? e.touches[0] : e;
-      dragStartX = touch.clientX;
-      dragStartY = touch.clientY;
-      
+      const t = e.touches ? e.touches[0] : e;
+      dragStartX = t.clientX; dragStartY = t.clientY;
       e.preventDefault();
     };
-
-    const drag = (e) => {
+    const drag = e => {
       if (!isDragging || zoomLevel <= 1) return;
-      
-      const touch = e.touches ? e.touches[0] : e;
-      const deltaX = (touch.clientX - dragStartX) / zoomLevel;
-      const deltaY = (touch.clientY - dragStartY) / zoomLevel;
-      
-      imageX += deltaX;
-      imageY += deltaY;
-      
-      dragStartX = touch.clientX;
-      dragStartY = touch.clientY;
-      
-      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px, ${imageY}px)`;
-      
+      const t = e.touches ? e.touches[0] : e;
+      imageX += (t.clientX - dragStartX) / zoomLevel;
+      imageY += (t.clientY - dragStartY) / zoomLevel;
+      dragStartX = t.clientX; dragStartY = t.clientY;
+      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;
       e.preventDefault();
     };
-
-    const stopDrag = () => {
-      isDragging = false;
-    };
-    
-    img.addEventListener('mousedown', startDrag);
-    img.addEventListener('touchstart', startDrag, { passive: false });
-    
+    const stop = () => { isDragging = false; };
+    img.addEventListener('mousedown', start);
+    img.addEventListener('touchstart', start, { passive: false });
     document.addEventListener('mousemove', drag);
     document.addEventListener('touchmove', drag, { passive: false });
-    
-    document.addEventListener('mouseup', stopDrag);
-    document.addEventListener('touchend', stopDrag);
+    document.addEventListener('mouseup', stop);
+    document.addEventListener('touchend', stop);
   }
 
   function initWheelZoom() {
     const wrap = document.getElementById('lbImageWrap');
-    wrap.addEventListener('wheel', (e) => {
+    wrap.addEventListener('wheel', e => {
       e.preventDefault();
-      if (e.deltaY < 0) {
-        zoomImage(1);
-      } else {
-        zoomImage(-1);
-      }
+      zoomImage(e.deltaY < 0 ? 1 : -1);
     }, { passive: false });
   }
 
-  /* ══════════════════════════════════════════════════════
-     SPAM PREVENTION
-  ══════════════════════════════════════════════════════ */
-  const SPAM_COOLDOWN_MS = 60000;
-  const LAST_POST_KEY = 'sei_last_post_time';
-
+  /* ── SPAM ── */
+  const SPAM_COOLDOWN_MS = 60000, LAST_POST_KEY = 'sei_last_post_time';
   function canPost() {
-    try {
-      const lastPost = localStorage.getItem(LAST_POST_KEY);
-      if (!lastPost) return true;
-      const elapsed = Date.now() - parseInt(lastPost);
-      return elapsed >= SPAM_COOLDOWN_MS;
-    } catch(_) {
-      return true;
-    }
+    try { const l = localStorage.getItem(LAST_POST_KEY); return !l || Date.now() - parseInt(l) >= SPAM_COOLDOWN_MS; } catch(_) { return true; }
   }
-
-  function updateLastPostTime() {
-    try {
-      localStorage.setItem(LAST_POST_KEY, String(Date.now()));
-    } catch(_) {}
-  }
-
+  function updateLastPostTime() { try { localStorage.setItem(LAST_POST_KEY, String(Date.now())); } catch(_) {} }
   function getTimeUntilCanPost() {
-    try {
-      const lastPost = localStorage.getItem(LAST_POST_KEY);
-      if (!lastPost) return 0;
-      const elapsed = Date.now() - parseInt(lastPost);
-      const remaining = SPAM_COOLDOWN_MS - elapsed;
-      return Math.max(0, Math.ceil(remaining / 1000));
-    } catch(_) {
-      return 0;
-    }
+    try { const l = localStorage.getItem(LAST_POST_KEY); if (!l) return 0; return Math.max(0, Math.ceil((SPAM_COOLDOWN_MS - (Date.now() - parseInt(l))) / 1000)); } catch(_) { return 0; }
   }
 
-  /* ══════════════════════════════════════════════════════
-     ADMIN AUTH
-  ══════════════════════════════════════════════════════ */
-  const ADMIN_TOKEN_KEY = 'sei_admin_token';
-  const ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
-
+  /* ── ADMIN AUTH ── */
+  const ADMIN_TOKEN_KEY = 'sei_admin_token', ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
   function isAdminSession() {
-    try {
-      const raw = sessionStorage.getItem(ADMIN_TOKEN_KEY);
-      if (!raw) return false;
-      const { token, ts } = JSON.parse(raw);
-      return token && (Date.now() - ts) < ADMIN_TOKEN_TTL;
-    } catch(_) {
-      return false;
-    }
+    try { const r = sessionStorage.getItem(ADMIN_TOKEN_KEY); if (!r) return false; const { token, ts } = JSON.parse(r); return token && (Date.now() - ts) < ADMIN_TOKEN_TTL; } catch(_) { return false; }
   }
+  function setAdminMode(active) { document.body.classList.toggle('admin-mode', active); }
 
-  function setAdminMode(active) {
-    if (active) {
-      document.body.classList.add('admin-mode');
-    } else {
-      document.body.classList.remove('admin-mode');
-    }
-  }
-
-  /* ══════════════════════════════════════════════════════
-     DATA ARRAYS
-  ══════════════════════════════════════════════════════ */
+  /* ── DATA ── */
   let artData = [
-    {
-      title: 'example_1.JPG',
-      category: 'painting',
-      images: ['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'],
-      desc: 'Im supposed to put an artist note here.',
-      meta: '2026'
-    },
-    {
-      title: 'example_2.PNG',
-      category: 'illustration',
-      images: ['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'],
-      desc: 'Anutha artist description.',
-      meta: 'EXPERIMENT'
-    },
-    {
-      title: 'example_3.JPG',
-      category: 'photography',
-      images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'],
-      desc: 'Mountains or something idk.',
-      meta: 'SCRAP'
-    },
-    {
-      title: 'series_01',
-      category: 'graphic',
-      images: [
-        'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600',
-        'https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600',
-        'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'
-      ],
-      desc: 'multi-pic carousel tester.',
-      meta: '2025'
-    }
+    { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
+    { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
+    { title:'example_3.JPG', category:'photography', images:['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'], desc:'Mountains or something idk.', meta:'SCRAP' },
+    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600','https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'multi-pic carousel tester.', meta:'2025' }
   ];
-
   let logsData = [
-    { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
-    { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
+    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out." },
+    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk" }
   ];
 
-  /* ══════════════════════════════════════════════════════
-     FIREBASE INITIALIZATION
-  ══════════════════════════════════════════════════════ */
+  /* ── FIREBASE ── */
   async function initFirebase() {
     try {
       firebase.initializeApp(firebaseConfig);
       db = firebase.database();
       msgRef = db.ref('board/messages');
-
-      msgRef.orderByChild('timestamp').on('child_added', snap => {
-        renderMessage(snap.key, snap.val());
-      });
-
+      msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
       onFirebaseReady();
-    } catch(e) {
-      console.error('Firebase init failed:', e);
-    }
+    } catch(e) { console.error('Firebase init failed:', e); }
   }
 
   function normalizeImages(val) {
     if (!val) return [];
     if (Array.isArray(val)) return val;
-    return Object.keys(val).sort((a, b) => Number(a) - Number(b)).map(k => val[k]);
+    return Object.keys(val).sort((a,b) => Number(a)-Number(b)).map(k => val[k]);
   }
 
   function onFirebaseReady() {
     const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-    const cutoff = Date.now() - MSG_TTL_MS;
-    
-    msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
-      snap.forEach(child => child.ref.remove());
+    msgRef.orderByChild('timestamp').endAt(Date.now() - MSG_TTL_MS).once('value', snap => {
+      snap.forEach(c => c.ref.remove());
     }).catch(e => console.error('Expiry purge failed:', e));
 
-    const seededRef = db.ref('board/seeded');
-    seededRef.once('value', snap => {
+    db.ref('board/seeded').once('value', snap => {
       if (!snap.val()) {
-        seededRef.set(true);
-        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+        db.ref('board/seeded').set(true);
+        ['Welcome to the board!','Sage worked really hard on this btw (her dad had to help).','be nice, you only get 500 chars :)','⋆˚꩜｡','click + drag me!']
           .forEach(t => addComment(t));
       }
     }).catch(e => console.error('Seed check failed:', e));
@@ -713,51 +411,30 @@
     db.ref('content/art').orderByChild('timestamp').once('value', snap => {
       artData = [];
       snap.forEach(child => {
-        const data = child.val();
-        data.images = normalizeImages(data.images);
-        data.id = child.key;
-        data.category = data.category || 'other';
-        artData.push(data);
+        const d = child.val(); d.images = normalizeImages(d.images); d.id = child.key; d.category = d.category || 'other'; artData.push(d);
       });
       renderArtGrid();
     }).catch(e => console.error('Art load failed:', e));
 
     db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
       logsData = [];
-      snap.forEach(child => {
-        logsData.push({ id: child.key, ...child.val() });
-      });
+      snap.forEach(child => logsData.push({ id: child.key, ...child.val() }));
       renderLogList();
     }).catch(e => console.error('Logs load failed:', e));
   }
 
-  /* ══════════════════════════════════════════════════════
-     ANONYMOUS NAMES
-  ══════════════════════════════════════════════════════ */
-  const ANON_ADJ = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
+  /* ── ANON NAMES ── */
+  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
   const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
+  function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
+  function nameFromKey(key) { let h=0; for(let i=0;i<key.length;i++) h=(Math.imul(h,31)+key.charCodeAt(i))>>>0; return `Anon. ${ANON_ADJ[h%ANON_ADJ.length]} ${ANON_NOUN[(h>>>8)%ANON_NOUN.length]}`; }
 
-  function genAnonName() {
-    const adj = ANON_ADJ[Math.floor(Math.random() * ANON_ADJ.length)];
-    const noun = ANON_NOUN[Math.floor(Math.random() * ANON_NOUN.length)];
-    return `Anon. ${adj} ${noun}`;
-  }
-
-  function nameFromKey(key) {
-    let h = 0;
-    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
-    return `Anon. ${ANON_ADJ[h % ANON_ADJ.length]} ${ANON_NOUN[(h >>> 8) % ANON_NOUN.length]}`;
-  }
-
-  /* ══════════════════════════════════════════════════════
-     DARK MODE
-  ══════════════════════════════════════════════════════ */
+  /* ── DARK MODE ── */
   function toggleDark() {
     const dark = document.body.classList.toggle('dark');
     document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
     try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
   }
-
   try {
     if (localStorage.getItem('darkMode') === '1') {
       document.body.classList.add('dark');
@@ -765,9 +442,7 @@
     }
   } catch(_) {}
 
-  /* ══════════════════════════════════════════════════════
-     NAVIGATION
-  ══════════════════════════════════════════════════════ */
+  /* ── NAVIGATION ── */
   function showPage(id) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
@@ -777,40 +452,23 @@
     document.getElementById('navLinks').classList.remove('show');
     window.scrollTo(0, 0);
   }
+  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
 
-  function toggleMenu() {
-    document.getElementById('navLinks').classList.toggle('show');
-  }
-
-  /* ══════════════════════════════════════════════════════
-     RENDERING
-  ══════════════════════════════════════════════════════ */
+  /* ── RENDER ── */
   function renderArtGrid() {
     const feed = document.getElementById('artFeed');
     feed.innerHTML = '';
-    
-    // Filter by category
-    const filtered = activeCategory === 'all' 
-      ? artData 
-      : artData.filter(piece => piece.category === activeCategory);
-    
-    if (filtered.length === 0) {
+    const filtered = activeCategory === 'all' ? artData : artData.filter(p => p.category === activeCategory);
+    if (!filtered.length) {
       feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';
       return;
     }
-    
-    filtered.forEach((piece) => {
-      // Find original index in artData
-      const originalIndex = artData.indexOf(piece);
-      
+    filtered.forEach(piece => {
+      const idx = artData.indexOf(piece);
       const el = document.createElement('div');
       el.className = 'art-post';
-      el.onclick = () => openLightbox(originalIndex);
-      el.innerHTML = `
-        <img src="${piece.images[0]}" alt="${piece.title}" />
-        <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
-        <button class="admin-delete-btn" onclick="event.stopPropagation(); adminDeleteArt(${originalIndex})">DELETE</button>
-      `;
+      el.onclick = () => openLightbox(idx);
+      el.innerHTML = `<img src="${piece.images[0]}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
       feed.appendChild(el);
     });
   }
@@ -822,486 +480,169 @@
       const el = document.createElement('div');
       el.className = 'blog-list-item';
       el.onclick = () => readLog(i);
-      el.innerHTML = `
-        <p class="post-label">${log.meta}</p>
-        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
-        <button class="admin-delete-btn" onclick="event.stopPropagation(); adminDeleteLog(${i})">DELETE</button>
-      `;
+      el.innerHTML = `<p class="post-label">${log.meta}</p><h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>`;
       list.appendChild(el);
     });
   }
 
   function readLog(i) {
-    const log = logsData[i];
-    if (!log) return;
-    document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
-      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
-    `;
+    const log = logsData[i]; if (!log) return;
+    document.getElementById('log-content').innerHTML = `<p class="post-label" style="margin-bottom:1rem">${log.meta}</p><h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1><div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>`;
     showPage('log-reader');
   }
 
-  /* ══════════════════════════════════════════════════════
-     LIGHTBOX
-  ══════════════════════════════════════════════════════ */
-  let lbPiece = null;
-  let lbIdx = 0;
-  let lbArtIndex = -1;
-
-  function openLightbox(i) {
-    lbPiece = artData[i];
-    lbIdx = 0;
-    lbArtIndex = i;
-    resetZoom();
-    renderLightbox();
-    document.getElementById('lightbox').classList.add('show');
-  }
-
+  /* ── LIGHTBOX ── */
+  let lbPiece = null, lbIdx = 0, lbArtIndex = -1;
+  function openLightbox(i) { lbPiece = artData[i]; lbIdx = 0; lbArtIndex = i; resetZoom(); renderLightbox(); document.getElementById('lightbox').classList.add('show'); }
   function renderLightbox() {
     const multi = lbPiece.images.length > 1;
     document.getElementById('lb-image').src = lbPiece.images[lbIdx];
     document.getElementById('lb-title').textContent = lbPiece.title;
     document.getElementById('lb-desc').textContent = lbPiece.desc;
     document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
-
-    const prev = document.getElementById('lb-prev');
-    const next = document.getElementById('lb-next');
-    const ctr = document.getElementById('lb-counter');
-    
+    const prev = document.getElementById('lb-prev'), next = document.getElementById('lb-next'), ctr = document.getElementById('lb-counter');
     prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
-    if (multi) ctr.textContent = `${lbIdx + 1} / ${lbPiece.images.length}`;
-    prev.disabled = lbIdx === 0;
-    next.disabled = lbIdx === lbPiece.images.length - 1;
+    if (multi) ctr.textContent = `${lbIdx+1} / ${lbPiece.images.length}`;
+    prev.disabled = lbIdx === 0; next.disabled = lbIdx === lbPiece.images.length - 1;
   }
+  function lbNav(dir) { lbIdx = Math.max(0, Math.min(lbPiece.images.length-1, lbIdx+dir)); resetZoom(); renderLightbox(); }
+  function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); lbPiece=null; lbIdx=0; lbArtIndex=-1; resetZoom(); }
 
-  function lbNav(dir) {
-    lbIdx = Math.max(0, Math.min(lbPiece.images.length - 1, lbIdx + dir));
-    resetZoom();
-    renderLightbox();
-  }
-
-  function closeLightbox() {
-    document.getElementById('lightbox').classList.remove('show');
-    lbPiece = null;
-    lbIdx = 0;
-    lbArtIndex = -1;
-    resetZoom();
-  }
-
-  /* ══════════════════════════════════════════════════════
-     STATUS PILL
-  ══════════════════════════════════════════════════════ */
-  function togglePill() {
-    document.getElementById('statusPill').classList.toggle('collapsed');
-  }
-
+  /* ── STATUS PILL ── */
+  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
   function updateLiveStatus() {
     const now = new Date();
-    const date = now.toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
-    const time = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true });
-    const el = document.getElementById('liveDateTime');
-    if (el) el.textContent = `${date} // ${time}`;
+    const date = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
+    const time = now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+    const el = document.getElementById('liveDateTime'); if (el) el.textContent = `${date} // ${time}`;
   }
 
-  /* ══════════════════════════════════════════════════════
-     DRAG UTILITY
-  ══════════════════════════════════════════════════════ */
+  /* ── DRAG UTILITY ── */
   let zTop = 100;
-
   function makeDraggable(el, handle, parent) {
-    let ox = 0, oy = 0, sx = 0, sy = 0;
+    let ox=0,oy=0,sx=0,sy=0;
     handle.onmousedown = handle.ontouchstart = start;
-
-    function start(e) {
-      e.preventDefault();
-      el.style.zIndex = ++zTop;
-      const { cx, cy } = pt(e);
-      sx = cx; sy = cy;
-      document.onmousemove = document.ontouchmove = move;
-      document.onmouseup = document.ontouchend = stop;
-    }
-
-    function move(e) {
-      const { cx, cy } = pt(e);
-      ox = sx - cx; oy = sy - cy; sx = cx; sy = cy;
-      let t = el.offsetTop - oy;
-      let l = el.offsetLeft - ox;
-      if (parent) {
-        t = Math.max(0, Math.min(t, parent.offsetHeight - el.offsetHeight));
-        l = Math.max(0, Math.min(l, parent.offsetWidth - el.offsetWidth));
-      }
-      el.style.top = t + 'px';
-      el.style.left = l + 'px';
-    }
-
-    function stop() {
-      document.onmousemove = document.onmouseup = null;
-      document.ontouchmove = document.ontouchend = null;
-    }
-
-    function pt(e) {
-      const src = (e.type === 'touchend' || e.type === 'touchcancel') ? e.changedTouches[0]
-                : e.touches ? e.touches[0] : e;
-      return { cx: src.clientX, cy: src.clientY };
-    }
+    function start(e) { e.preventDefault(); el.style.zIndex=++zTop; const {cx,cy}=pt(e); sx=cx;sy=cy; document.onmousemove=document.ontouchmove=move; document.onmouseup=document.ontouchend=stop; }
+    function move(e) { const {cx,cy}=pt(e); ox=sx-cx;oy=sy-cy;sx=cx;sy=cy; let t=el.offsetTop-oy,l=el.offsetLeft-ox; if(parent){t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));} el.style.top=t+'px';el.style.left=l+'px'; }
+    function stop() { document.onmousemove=document.onmouseup=null;document.ontouchmove=document.ontouchend=null; }
+    function pt(e) { const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e; return {cx:s.clientX,cy:s.clientY}; }
   }
 
-  /* ══════════════════════════════════════════════════════
-     BOARD RESIZE
-  ══════════════════════════════════════════════════════ */
+  /* ── BOARD RESIZE ── */
   function initBoardResize() {
-    const board = document.getElementById('board-section');
-    const handle = document.getElementById('boardResizeHandle');
-    let startX, startY, startW, startH;
-
-    function onDown(cx, cy) {
-      startX = cx; startY = cy;
-      startW = board.offsetWidth; startH = board.offsetHeight;
-      document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup', onUp);
-      document.addEventListener('touchmove', onTouchMove, { passive: false });
-      document.addEventListener('touchend', onUp);
-    }
-
-    function resize(cx, cy) {
-      const maxW = board.parentElement.offsetWidth;
-      board.style.width = Math.max(400, Math.min(maxW, startW + cx - startX)) + 'px';
-      board.style.height = Math.max(300, startH + cy - startY) + 'px';
-    }
-
-    function onMouseMove(e) { resize(e.clientX, e.clientY); }
-    function onTouchMove(e) { e.preventDefault(); const t = e.touches[0]; resize(t.clientX, t.clientY); }
-    function onUp() {
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup', onUp);
-      document.removeEventListener('touchmove', onTouchMove);
-      document.removeEventListener('touchend', onUp);
-    }
-
-    handle.addEventListener('mousedown', e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
-    handle.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive: false });
+    const board = document.getElementById('board-section'), handle = document.getElementById('boardResizeHandle');
+    let startX,startY,startW,startH;
+    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM,{passive:false});document.addEventListener('touchend',onUp);}
+    function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
+    function onMM(e){resize(e.clientX,e.clientY);}
+    function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
+    function onUp(){document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onUp);}
+    handle.addEventListener('mousedown',e=>{e.preventDefault();onDown(e.clientX,e.clientY);});
+    handle.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];onDown(t.clientX,t.clientY);},{passive:false});
   }
 
-  /* ══════════════════════════════════════════════════════
-     BULLETIN BOARD
-  ══════════════════════════════════════════════════════ */
-  const FALLBACK_W = 800, FALLBACK_H = 400;
-  const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-
+  /* ── BULLETIN BOARD ── */
+  const FALLBACK_W=800, FALLBACK_H=400, MSG_TTL_MS=7*24*60*60*1000;
   function renderMessage(id, msg) {
     if (renderedIds.has(id)) return;
-    if (msg.timestamp && (Date.now() - msg.timestamp) > MSG_TTL_MS) return;
+    if (msg.timestamp && (Date.now()-msg.timestamp) > MSG_TTL_MS) return;
     renderedIds.add(id);
-
     const canvas = document.getElementById('boardCanvas');
-    const bw = canvas.offsetWidth || FALLBACK_W;
-    const bh = canvas.offsetHeight || FALLBACK_H;
-
-    const popup = document.createElement('div');
-    popup.className = 'comment-popup';
-    popup.style.left = Math.max(10, (msg.xPct / 100) * bw) + 'px';
-    popup.style.top = Math.max(10, (msg.yPct / 100) * bh) + 'px';
-
-    const hdr = document.createElement('div');
-    hdr.className = 'comment-header';
-    const name = msg.name || nameFromKey(id);
-    const dateStr = msg.date ? `${msg.date} · ` : '';
-    hdr.innerHTML = `<span>${name}</span><span>${dateStr}${msg.time}</span>`;
-
-    const bdy = document.createElement('div');
-    bdy.className = 'comment-body';
-    bdy.textContent = msg.text;
-
-    popup.append(hdr, bdy);
-    canvas.appendChild(popup);
-    makeDraggable(popup, hdr, canvas);
+    const bw = canvas.offsetWidth||FALLBACK_W, bh = canvas.offsetHeight||FALLBACK_H;
+    const popup = document.createElement('div'); popup.className='comment-popup';
+    popup.style.left = Math.max(10,(msg.xPct/100)*bw)+'px';
+    popup.style.top  = Math.max(10,(msg.yPct/100)*bh)+'px';
+    const hdr = document.createElement('div'); hdr.className='comment-header';
+    hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${msg.date?msg.date+' · ':''}${msg.time}</span>`;
+    const bdy = document.createElement('div'); bdy.className='comment-body'; bdy.textContent=msg.text;
+    popup.append(hdr,bdy); canvas.appendChild(popup); makeDraggable(popup,hdr,canvas);
   }
 
-  function addComment(preset = null) {
+  function addComment(preset=null) {
     const input = document.getElementById('commentInput');
-    const text = preset || input.value.trim();
-    if (!text) return;
-
-    if (!msgRef) {
-      console.warn('Board unavailable: Firebase not connected.');
-      return;
-    }
-
+    const text = preset || input.value.trim(); if (!text) return;
+    if (!msgRef) { console.warn('Board unavailable.'); return; }
     if (!preset && !canPost()) {
-      const warning = document.getElementById('spamWarning');
-      const remaining = getTimeUntilCanPost();
-      warning.textContent = `// Please wait ${remaining}s before posting again...`;
-      warning.style.display = 'block';
-      setTimeout(() => { warning.style.display = 'none'; }, 3000);
-      return;
+      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
     }
+    const xPct=Math.max(2,Math.random()*72), yPct=Math.max(2,Math.random()*68), now=new Date();
+    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),name:genAnonName(),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
+    msgRef.push(payload).then(()=>{
+      if(!preset) updateLastPostTime();
+      msgRef.orderByChild('timestamp').once('value',snap=>{ if(snap.numChildren()>MAX_MSGS) msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());}); });
+    }).catch(e=>console.error('Post failed:',e));
+    if (!preset) { input.value=''; const c=document.getElementById('charCounter'); c.textContent='0 / 500'; c.classList.remove('warn'); }
+  }
+  function submitComment() { addComment(); }
 
-    const xPct = Math.max(2, Math.random() * 72);
-    const yPct = Math.max(2, Math.random() * 68);
-    const now = new Date();
+  /* ── ADMIN ── */
+  function openModal(id){document.getElementById(id).style.display='flex';} function closeModal(id){document.getElementById(id).style.display='none';}
+  function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
+  function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
+  async function verifyAdminPass(){
+    const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
+    err.style.display='none';
+    if(pw==='sage2026'){sessionStorage.setItem(ADMIN_TOKEN_KEY,JSON.stringify({token:'admin_'+Date.now(),ts:Date.now()}));closeAdminLogin();setAdminMode(true);openModal('adminPanelModal');}
+    else{err.textContent='// ACCESS DENIED.';err.style.display='block';}
+  }
+  function closeAdminPanel(){closeModal('adminPanelModal');}
+  function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
 
-    const payload = {
-      text,
-      time: now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
-      date: now.toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.'),
-      name: genAnonName(),
-      xPct,
-      yPct,
-      timestamp: firebase.database.ServerValue.TIMESTAMP
-    };
-
-    msgRef.push(payload).then(() => {
-      if (!preset) updateLastPostTime();
-      
-      msgRef.orderByChild('timestamp').once('value', snap => {
-        if (snap.numChildren() > MAX_MSGS) {
-          msgRef.orderByChild('timestamp').limitToFirst(1).once('value', oldest => {
-            oldest.forEach(child => child.ref.remove());
-          });
-        }
-      });
-    }).catch(e => console.error('Post failed:', e));
-
-    if (!preset) {
-      input.value = '';
-      const ctr = document.getElementById('charCounter');
-      ctr.textContent = '0 / 500';
-      ctr.classList.remove('warn');
-    }
+  function adminAddArt(){
+    if(!isAdminSession()) return;
+    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim()||String(new Date().getFullYear());
+    if(!title||!imgRaw) return; const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean); if(!images.length) return;
+    const piece={title,category,images,desc,meta};
+    if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
+    else{artData.push(piece);renderArtGrid();}
+    ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value=''); document.getElementById('artCategory').value='painting';
+    const s=document.getElementById('artSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
   }
 
-  function submitComment() {
-    addComment();
+  function adminAddLog(){
+    if(!isAdminSession()) return;
+    const title=document.getElementById('logTitle').value.trim(), meta=document.getElementById('logMeta').value.trim(), body=document.getElementById('logBody').value.trim();
+    if(!title||!body) return; const log={title,meta:meta||'LOG.TXT',body};
+    if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();}).catch(e=>console.error('Log push failed:',e));}
+    else{logsData.push(log);renderLogList();}
+    ['logTitle','logMeta','logBody'].forEach(id=>document.getElementById(id).value='');
+    const s=document.getElementById('logSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
   }
 
-  /* ══════════════════════════════════════════════════════
-     ADMIN FUNCTIONS
-  ══════════════════════════════════════════════════════ */
-  function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-  function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
-  function showAdminLogin() {
-    if (isAdminSession()) {
-      setAdminMode(true);
-      openModal('adminPanelModal');
-      return;
-    }
-    openModal('adminLoginModal');
-    setTimeout(() => document.getElementById('adminPassInput').focus(), 50);
+  function adminDeleteArt(idx){
+    if(!isAdminSession()) return; const piece=artData[idx]; if(!confirm(`Delete "${piece.title}"?`)) return;
+    if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}
+    else{artData.splice(idx,1);renderArtGrid();}
   }
 
-  function closeAdminLogin() {
-    closeModal('adminLoginModal');
-    document.getElementById('adminPassInput').value = '';
-    document.getElementById('adminPassError').style.display = 'none';
+  function adminDeleteLog(idx){
+    if(!isAdminSession()) return; const log=logsData[idx]; if(!confirm(`Delete "${log.title}"?`)) return;
+    if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();}).catch(e=>console.error('Delete log failed:',e));}
+    else{logsData.splice(idx,1);renderLogList();}
   }
 
-  async function verifyAdminPass() {
-    const password = document.getElementById('adminPassInput').value;
-    const errEl = document.getElementById('adminPassError');
-    errEl.style.display = 'none';
+  function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0) return; closeLightbox(); adminDeleteArt(lbArtIndex);}
 
-    const ADMIN_PASSWORD = 'sage2026';
-    
-    if (password === ADMIN_PASSWORD) {
-      const token = 'admin_' + Date.now();
-      sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token, ts: Date.now() }));
-      closeAdminLogin();
-      setAdminMode(true);
-      openModal('adminPanelModal');
-    } else {
-      errEl.textContent = '// ACCESS DENIED.';
-      errEl.style.display = 'block';
-    }
-  }
+  /* ── STICKERS ── */
+  function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
 
-  function closeAdminPanel() {
-    closeModal('adminPanelModal');
-  }
-
-  function switchAdminTab(tab) {
-    document.getElementById('adminArtForm').style.display = tab === 'art' ? 'flex' : 'none';
-    document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
-    document.getElementById('tab-art').classList.toggle('active', tab === 'art');
-    document.getElementById('tab-logs').classList.toggle('active', tab === 'logs');
-  }
-
-  function adminAddArt() {
-    if (!isAdminSession()) return;
-    
-    const title = document.getElementById('artTitle').value.trim();
-    const category = document.getElementById('artCategory').value;
-    const imgRaw = document.getElementById('artImages').value.trim();
-    const desc = document.getElementById('artDesc').value.trim();
-    const meta = document.getElementById('artMeta').value.trim() || String(new Date().getFullYear());
-
-    if (!title || !imgRaw) return;
-    const images = imgRaw.split('\n').map(u => u.trim()).filter(Boolean);
-    if (!images.length) return;
-
-    const piece = { title, category, images, desc, meta };
-
-    if (db) {
-      db.ref('content/art').push({
-        ...piece,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      }).then(ref => {
-        piece.id = ref.key;
-        artData.push(piece);
-        renderArtGrid();
-      }).catch(e => console.error('Art push failed:', e));
-    } else {
-      artData.push(piece);
-      renderArtGrid();
-    }
-
-    ['artTitle','artImages','artDesc','artMeta'].forEach(id => {
-      document.getElementById(id).value = '';
-    });
-    document.getElementById('artCategory').value = 'painting';
-    
-    const s = document.getElementById('artSuccess');
-    s.style.display = 'block';
-    setTimeout(() => { s.style.display = 'none'; }, 3000);
-  }
-
-  function adminAddLog() {
-    if (!isAdminSession()) return;
-    
-    const title = document.getElementById('logTitle').value.trim();
-    const meta = document.getElementById('logMeta').value.trim();
-    const body = document.getElementById('logBody').value.trim();
-
-    if (!title || !body) return;
-
-    const log = { title, meta: meta || 'LOG.TXT', body };
-
-    if (db) {
-      db.ref('content/logs').push({
-        ...log,
-        timestamp: firebase.database.ServerValue.TIMESTAMP
-      }).then(ref => {
-        log.id = ref.key;
-        logsData.push(log);
-        renderLogList();
-      }).catch(e => console.error('Log push failed:', e));
-    } else {
-      logsData.push(log);
-      renderLogList();
-    }
-
-    ['logTitle','logMeta','logBody'].forEach(id => {
-      document.getElementById(id).value = '';
-    });
-    
-    const s = document.getElementById('logSuccess');
-    s.style.display = 'block';
-    setTimeout(() => { s.style.display = 'none'; }, 3000);
-  }
-
-  function adminDeleteArt(idx) {
-    if (!isAdminSession()) return;
-    
-    const piece = artData[idx];
-    if (!confirm(`Delete "${piece.title}"?`)) return;
-
-    if (db && piece.id) {
-      db.ref('content/art/' + piece.id).remove()
-        .then(() => {
-          artData.splice(idx, 1);
-          renderArtGrid();
-        })
-        .catch(e => console.error('Delete art failed:', e));
-    } else {
-      artData.splice(idx, 1);
-      renderArtGrid();
-    }
-  }
-
-  function adminDeleteLog(idx) {
-    if (!isAdminSession()) return;
-    
-    const log = logsData[idx];
-    if (!confirm(`Delete "${log.title}"?`)) return;
-
-    if (db && log.id) {
-      db.ref('content/logs/' + log.id).remove()
-        .then(() => {
-          logsData.splice(idx, 1);
-          renderLogList();
-        })
-        .catch(e => console.error('Delete log failed:', e));
-    } else {
-      logsData.splice(idx, 1);
-      renderLogList();
-    }
-  }
-
-  function adminDeleteCurrentArt() {
-    if (!isAdminSession() || lbArtIndex < 0) return;
-    closeLightbox();
-    adminDeleteArt(lbArtIndex);
-  }
-
-  /* ══════════════════════════════════════════════════════
-     STICKERS
-  ══════════════════════════════════════════════════════ */
-  function initStickers() {
-    const section = document.getElementById('about');
-    document.querySelectorAll('.sticker').forEach(s => makeDraggable(s, s, section));
-  }
-
-  /* ══════════════════════════════════════════════════════
-     INIT
-  ══════════════════════════════════════════════════════ */
+  /* ── INIT ── */
   document.addEventListener('keydown', e => {
-    if (e.key === 'Escape') {
-      closeLightbox();
-      closeAdminLogin();
-      closeAdminPanel();
-    }
-    if (lbPiece) {
-      if (e.key === 'ArrowRight') lbNav(1);
-      if (e.key === 'ArrowLeft') lbNav(-1);
-    }
+    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
+    if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderArtGrid();
-    renderLogList();
-    initCategoryTabs();
-
-    const input = document.getElementById('commentInput');
-    input.addEventListener('keydown', e => {
-      if (e.key === 'Enter') submitComment();
-    });
-    input.addEventListener('input', function() {
-      const n = this.value.length;
-      const ctr = document.getElementById('charCounter');
-      ctr.textContent = `${n} / 500`;
-      ctr.classList.toggle('warn', n >= 450);
-    });
-
-    document.getElementById('adminPassInput').addEventListener('keydown', e => {
-      if (e.key === 'Enter') verifyAdminPass();
-    });
-
-    if (isAdminSession()) {
-      setAdminMode(true);
-    }
-    
-    initImageDrag();
-    initWheelZoom();
+    renderArtGrid(); renderLogList(); initCategoryTabs();
+    const input=document.getElementById('commentInput');
+    input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
+    input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
+    document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
+    if(isAdminSession()) setAdminMode(true);
+    initImageDrag(); initWheelZoom();
   });
 
-  window.onload = () => {
-    initFirebase();
-    initStickers();
-    initBoardResize();
-    updateLiveStatus();
-    setInterval(updateLiveStatus, 1000);
-  };
+  window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
 </script>
 </body>
 </html>
