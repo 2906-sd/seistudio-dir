@@ -8,6 +8,165 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* Delete button styles */
+    .admin-delete-btn {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: var(--accent);
+      color: var(--text-inv);
+      border: 1px solid var(--border);
+      padding: 4px 8px;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      cursor: pointer;
+      z-index: 5;
+      display: none;
+      text-transform: uppercase;
+    }
+    .admin-delete-btn:hover { opacity: 0.8; }
+    body.admin-mode .admin-delete-btn { display: block; }
+    
+    /* Spam warning */
+    .spam-warning {
+      font-family: var(--font-mono);
+      font-size: 10px;
+      color: var(--accent);
+      margin-top: 4px;
+      display: none;
+    }
+
+    /* Status pill repositioned under nav */
+    .status-pill-container {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      display: flex;
+      justify-content: flex-end;
+      padding: 0.5rem 2rem;
+      pointer-events: none;
+    }
+
+    .status-pill {
+      pointer-events: auto;
+      cursor: pointer;
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      padding: 0.4rem 1rem;
+      font-family: var(--font-mono);
+      font-size: 10px;
+      border-radius: 0;
+      box-shadow: var(--shadow);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow: hidden;
+      white-space: nowrap;
+      transition: padding 0.3s ease, min-width 0.3s ease, background-color 0.3s;
+      min-width: 220px;
+      justify-content: center;
+    }
+
+    .pill-expanded-content {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      overflow: hidden;
+      max-width: 300px;
+      transition: max-width 0.35s ease, opacity 0.25s ease;
+    }
+
+    .status-pill.collapsed { padding: 0.4rem 0.6rem; min-width: 0; gap: 0; }
+    .status-pill.collapsed .pill-expanded-content { max-width: 0; opacity: 0; pointer-events: none; }
+    .status-pill.collapsed .status-dot { font-size: 1.2rem; }
+
+    .status-dot {
+      color: #3b82f6;
+      font-size: 0.9rem;
+      animation: blink 1.5s infinite;
+      transition: font-size 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    /* Category navigation */
+    .category-nav {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+      border-bottom: 1.5px solid var(--border);
+      padding-bottom: 0.5rem;
+    }
+
+    .category-tab {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 14px;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      background: var(--bg2);
+      color: var(--text);
+      transition: all 0.15s;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .category-tab:hover { background: var(--bg4); }
+    .category-tab.active {
+      background: var(--accent);
+      color: var(--text-inv);
+      border-color: var(--accent);
+    }
+
+    /* Zoom controls */
+    .zoom-controls {
+      position: absolute;
+      bottom: 1rem;
+      right: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 15;
+    }
+
+    .zoom-btn {
+      background: var(--bg2);
+      border: 1.5px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-mono);
+      font-size: 16px;
+      width: 36px;
+      height: 36px;
+      cursor: pointer;
+      box-shadow: 2px 2px 0 var(--border);
+      transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .zoom-btn:hover { background: var(--bg4); }
+    .zoom-btn:disabled { opacity: 0.3; pointer-events: none; }
+
+    .lb-image-wrap {
+      overflow: hidden !important;
+      position: relative;
+    }
+
+    #lb-image {
+      transition: transform 0.2s ease;
+      cursor: grab;
+      transform-origin: center center;
+    }
+
+    #lb-image.zoomed { cursor: move; }
+
+    @media (max-width: 850px) {
+      .status-pill-container { padding: 0.5rem 1rem; }
+      .category-nav { gap: 0.3rem; }
+      .category-tab { font-size: 10px; padding: 5px 10px; }
+    }
+  </style>
 </head>
 <body>
 
@@ -24,18 +183,28 @@
       <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
     </div>
     <div class="nav-links" id="navLinks">
-      <span class="nav-item active" onclick="showPage('home')"    id="link-home">INDEX<span>00</span></span>
-      <span class="nav-item"        onclick="showPage('art')"     id="link-art">VISUALS<span>01</span></span>
-      <span class="nav-item"        onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
-      <span class="nav-item"        onclick="showPage('board')"   id="link-board">BULLETIN<span>03</span></span>
-      <span class="nav-item"        onclick="showPage('about')"   id="link-about">PROFILE<span>04</span></span>
+      <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
+      <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
+      <span class="nav-item" onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
+      <span class="nav-item" onclick="showPage('board')" id="link-board">BULLETIN<span>03</span></span>
+      <span class="nav-item" onclick="showPage('about')" id="link-about">PROFILE<span>04</span></span>
     </div>
     <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
   </nav>
 
-  <main>
+  <!-- STATUS PILL - Now under nav -->
+  <div class="status-pill-container">
+    <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
+      <span class="status-dot">⟡</span>
+      <div class="pill-expanded-content">
+        <span id="liveDateTime">...</span>
+        <span>// ACTIVE</span>
+      </div>
+    </div>
+  </div>
 
-    <!-- ════════════════════════════════════════ HOME -->
+  <main>
+    <!-- HOME -->
     <section id="home" class="active">
       <span class="site-title">// SEISTUDIO. //</span>
       <h1 class="hero-text">
@@ -44,16 +213,27 @@
       </h1>
     </section>
 
-    <!-- ════════════════════════════════════════ ART -->
+    <!-- ART -->
     <section id="art">
       <div class="section-header">
         <h1>VISUAL<span>S</span></h1>
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
+
+      <!-- Category Navigation -->
+      <div class="category-nav" id="categoryNav">
+        <div class="category-tab active" data-category="all">ALL</div>
+        <div class="category-tab" data-category="painting">PAINTINGS</div>
+        <div class="category-tab" data-category="illustration">ILLUSTRATION</div>
+        <div class="category-tab" data-category="graphic">GRAPHIC DESIGN</div>
+        <div class="category-tab" data-category="photography">PHOTOGRAPHY</div>
+        <div class="category-tab" data-category="other">OTHER</div>
+      </div>
+
       <div class="art-feed" id="artFeed"></div>
     </section>
 
-    <!-- ════════════════════════════════════════ WRITING -->
+    <!-- WRITING -->
     <section id="writing">
       <div class="section-header">
         <h1>LOG<span>S</span></h1>
@@ -62,23 +242,17 @@
       <div class="blog-list" id="logList"></div>
     </section>
 
-    <!-- Log reader — DO NOT EDITTTTT -->
+    <!-- Log reader -->
     <section id="log-reader">
       <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
       <div id="log-content" class="log-container"></div>
     </section>
 
-    <!-- ════════════════════════════════════════ BULLETIN BOARD -->
+    <!-- BULLETIN BOARD -->
     <section id="board">
       <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
         Public Archive // Leave a piece of yourself here...
       </h2>
-      <!--
-        FIXED: board is now split into:
-          .board-canvas  — the scrollable dot-grid where popups live
-          .board-controls — static bar, always visible at the bottom
-          .board-resize-handle — corner triangle, resizes #board-section
-      -->
       <div id="board-section">
         <div class="board-canvas" id="boardCanvas"></div>
         <div class="board-controls">
@@ -87,13 +261,13 @@
             <button class="board-submit" onclick="submitComment()">POST</button>
           </div>
           <div class="char-counter" id="charCounter">0 / 500</div>
-          <div class="rate-limit-msg" id="rateLimitMsg"></div>
+          <div class="spam-warning" id="spamWarning">// Please wait before posting again...</div>
         </div>
         <div class="board-resize-handle" id="boardResizeHandle" title="Drag to resize"></div>
       </div>
     </section>
 
-    <!-- ════════════════════════════════════════ ABOUT -->
+    <!-- ABOUT -->
     <section id="about">
       <div class="about-card">
         <div class="about-header">
@@ -136,19 +310,7 @@
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
       </div>
     </section>
-
   </main>
-</div>
-
-<!-- FOOTER STATUS PILL -->
-<div class="footer-status">
-  <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
-    <span class="status-dot">⟡</span>
-    <div class="pill-expanded-content">
-      <span id="liveDateTime">...</span>
-      <span>// SYSTEM_ACTIVE</span>
-    </div>
-  </div>
 </div>
 
 <!-- LIGHTBOX -->
@@ -160,22 +322,30 @@
     </div>
     <div class="lb-body">
       <div class="lb-image-side">
-        <div class="lb-image-wrap">
-          <button class="lb-nav-btn" id="lb-prev" onclick="lbNav(-1)">&#8592;</button>
-          <img id="lb-image" src="" alt="" />
-          <button class="lb-nav-btn" id="lb-next" onclick="lbNav(1)">&#8594;</button>
+        <div class="lb-image-wrap" id="lbImageWrap">
+          <button class="lb-nav-btn" id="lb-prev" onclick="event.stopPropagation(); lbNav(-1)">&#8592;</button>
+          <img id="lb-image" src="" alt="" draggable="false" />
+          <button class="lb-nav-btn" id="lb-next" onclick="event.stopPropagation(); lbNav(1)">&#8594;</button>
+          
+          <!-- Zoom controls -->
+          <div class="zoom-controls">
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(-1)" title="Zoom out">−</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" title="Reset zoom">⊙</button>
+            <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(1)" title="Zoom in">+</button>
+          </div>
         </div>
         <div class="lb-image-counter" id="lb-counter"></div>
       </div>
       <div class="lb-info-side">
         <p id="lb-desc" class="lb-desc"></p>
         <div id="lb-meta" class="lb-meta"></div>
+        <button class="admin-delete-btn" id="lb-delete-btn" onclick="adminDeleteCurrentArt()" style="position:static;margin-top:1rem;">DELETE THIS PIECE</button>
       </div>
     </div>
   </div>
 </div>
 
-<!-- ADMIN LOGIN — style="display:none" guarantees hidden before CSS loads -->
+<!-- ADMIN LOGIN -->
 <div id="adminLoginModal" class="modal-overlay" style="display:none">
   <div class="admin-box" style="max-width:360px">
     <div class="admin-toolbar">
@@ -191,26 +361,31 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL — style="display:none" guarantees hidden before CSS loads -->
+<!-- ADMIN PANEL -->
 <div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
       <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
-      <div style="display:flex;gap:6px">
-        <button onclick="adminLogout()">⏻ LOGOUT</button>
-        <button onclick="closeAdminPanel()">× CLOSE</button>
-      </div>
+      <button onclick="closeAdminPanel()">× LOCK</button>
     </div>
     <div class="admin-body">
-
       <div class="admin-tabs">
-        <button class="admin-tab active" id="tab-art"  onclick="switchAdminTab('art')">ADD ART</button>
-        <button class="admin-tab"        id="tab-logs" onclick="switchAdminTab('logs')">ADD LOG</button>
+        <button class="admin-tab active" id="tab-art" onclick="switchAdminTab('art')">ADD ART</button>
+        <button class="admin-tab" id="tab-logs" onclick="switchAdminTab('logs')">ADD LOG</button>
       </div>
 
       <div id="adminArtForm" class="admin-form">
         <label class="admin-label">Title</label>
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
+
+        <label class="admin-label">Category</label>
+        <select id="artCategory" class="admin-input" style="cursor:pointer;">
+          <option value="painting">Painting</option>
+          <option value="illustration">Illustration</option>
+          <option value="graphic">Graphic Design</option>
+          <option value="photography">Photography</option>
+          <option value="other">Other</option>
+        </select>
 
         <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
         <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
@@ -238,7 +413,6 @@
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
-
     </div>
   </div>
 </div>
@@ -249,157 +423,330 @@
 
 <script>
   /* ══════════════════════════════════════════════════════
-     FIREBASE CONFIG — fetched from /api/firebase-config
-     so the actual values never live in this file.
+     FIREBASE CONFIG
   ══════════════════════════════════════════════════════ */
-  let db     = null;
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
+    authDomain: "seistudiomessageboard.firebaseapp.com",
+    databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
+    projectId: "seistudiomessageboard",
+    storageBucket: "seistudiomessageboard.firebasestorage.app",
+    messagingSenderId: "683797738985",
+    appId: "1:683797738985:web:3e79b66988d1498fddc778"
+  };
+
+  let db = null;
   let msgRef = null;
-  const MAX_MSGS    = 75;
+  const MAX_MSGS = 75;
   const renderedIds = new Set();
 
-  async function initFirebase() {
+  /* ══════════════════════════════════════════════════════
+     CATEGORY SYSTEM
+  ══════════════════════════════════════════════════════ */
+  let activeCategory = 'all';
+
+  function filterCategory(category) {
+    activeCategory = category;
+    
+    // Update active tab
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.classList.remove('active');
+      if (tab.getAttribute('data-category') === category) {
+        tab.classList.add('active');
+      }
+    });
+    
+    renderArtGrid();
+  }
+
+  function initCategoryTabs() {
+    document.querySelectorAll('.category-tab').forEach(tab => {
+      tab.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        filterCategory(category);
+      });
+    });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     ZOOM SYSTEM
+  ══════════════════════════════════════════════════════ */
+  let zoomLevel = 1;
+  let isDragging = false;
+  let dragStartX = 0;
+  let dragStartY = 0;
+  let imageX = 0;
+  let imageY = 0;
+
+  function zoomImage(direction) {
+    const step = 0.25;
+    const minZoom = 1;
+    const maxZoom = 3;
+    
+    zoomLevel = Math.max(minZoom, Math.min(maxZoom, zoomLevel + (direction * step)));
+    
+    const img = document.getElementById('lb-image');
+    
+    if (zoomLevel <= 1) {
+      img.style.transform = 'scale(1) translate(0, 0)';
+      img.classList.remove('zoomed');
+      imageX = 0;
+      imageY = 0;
+    } else {
+      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px, ${imageY}px)`;
+      img.classList.add('zoomed');
+    }
+  }
+
+  function resetZoom() {
+    zoomLevel = 1;
+    imageX = 0;
+    imageY = 0;
+    const img = document.getElementById('lb-image');
+    img.style.transform = 'scale(1) translate(0, 0)';
+    img.classList.remove('zoomed');
+  }
+
+  function initImageDrag() {
+    const img = document.getElementById('lb-image');
+    
+    const startDrag = (e) => {
+      if (zoomLevel <= 1) return;
+      
+      isDragging = true;
+      const touch = e.touches ? e.touches[0] : e;
+      dragStartX = touch.clientX;
+      dragStartY = touch.clientY;
+      
+      e.preventDefault();
+    };
+
+    const drag = (e) => {
+      if (!isDragging || zoomLevel <= 1) return;
+      
+      const touch = e.touches ? e.touches[0] : e;
+      const deltaX = (touch.clientX - dragStartX) / zoomLevel;
+      const deltaY = (touch.clientY - dragStartY) / zoomLevel;
+      
+      imageX += deltaX;
+      imageY += deltaY;
+      
+      dragStartX = touch.clientX;
+      dragStartY = touch.clientY;
+      
+      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px, ${imageY}px)`;
+      
+      e.preventDefault();
+    };
+
+    const stopDrag = () => {
+      isDragging = false;
+    };
+    
+    img.addEventListener('mousedown', startDrag);
+    img.addEventListener('touchstart', startDrag, { passive: false });
+    
+    document.addEventListener('mousemove', drag);
+    document.addEventListener('touchmove', drag, { passive: false });
+    
+    document.addEventListener('mouseup', stopDrag);
+    document.addEventListener('touchend', stopDrag);
+  }
+
+  function initWheelZoom() {
+    const wrap = document.getElementById('lbImageWrap');
+    wrap.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      if (e.deltaY < 0) {
+        zoomImage(1);
+      } else {
+        zoomImage(-1);
+      }
+    }, { passive: false });
+  }
+
+  /* ══════════════════════════════════════════════════════
+     SPAM PREVENTION
+  ══════════════════════════════════════════════════════ */
+  const SPAM_COOLDOWN_MS = 60000;
+  const LAST_POST_KEY = 'sei_last_post_time';
+
+  function canPost() {
     try {
-      const res    = await fetch('/api/firebase-config');
-      if (!res.ok) throw new Error(`Config fetch failed: ${res.status}`);
-      const config = await res.json();
-      firebase.initializeApp(config);
-      db     = firebase.database();
-      msgRef = db.ref('board/messages');
-      // Start the real-time board listener only once Firebase is ready
-      msgRef.orderByChild('timestamp').on('child_added', snap => {
-        renderMessage(snap.key, snap.val());
-      }, e => console.error('Board listener error:', e));
-      onFirebaseReady();
-    } catch(e) {
-      console.error('Firebase init failed:', e);
+      const lastPost = localStorage.getItem(LAST_POST_KEY);
+      if (!lastPost) return true;
+      const elapsed = Date.now() - parseInt(lastPost);
+      return elapsed >= SPAM_COOLDOWN_MS;
+    } catch(_) {
+      return true;
+    }
+  }
+
+  function updateLastPostTime() {
+    try {
+      localStorage.setItem(LAST_POST_KEY, String(Date.now()));
+    } catch(_) {}
+  }
+
+  function getTimeUntilCanPost() {
+    try {
+      const lastPost = localStorage.getItem(LAST_POST_KEY);
+      if (!lastPost) return 0;
+      const elapsed = Date.now() - parseInt(lastPost);
+      const remaining = SPAM_COOLDOWN_MS - elapsed;
+      return Math.max(0, Math.ceil(remaining / 1000));
+    } catch(_) {
+      return 0;
     }
   }
 
   /* ══════════════════════════════════════════════════════
-     ART DATA
+     ADMIN AUTH
+  ══════════════════════════════════════════════════════ */
+  const ADMIN_TOKEN_KEY = 'sei_admin_token';
+  const ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
+
+  function isAdminSession() {
+    try {
+      const raw = sessionStorage.getItem(ADMIN_TOKEN_KEY);
+      if (!raw) return false;
+      const { token, ts } = JSON.parse(raw);
+      return token && (Date.now() - ts) < ADMIN_TOKEN_TTL;
+    } catch(_) {
+      return false;
+    }
+  }
+
+  function setAdminMode(active) {
+    if (active) {
+      document.body.classList.add('admin-mode');
+    } else {
+      document.body.classList.remove('admin-mode');
+    }
+  }
+
+  /* ══════════════════════════════════════════════════════
+     DATA ARRAYS
   ══════════════════════════════════════════════════════ */
   let artData = [
     {
       title: 'example_1.JPG',
+      category: 'painting',
       images: ['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'],
-      desc:  'Im supposed to put an artist note here.',
-      meta:  '2026'
+      desc: 'Im supposed to put an artist note here.',
+      meta: '2026'
     },
     {
       title: 'example_2.PNG',
+      category: 'illustration',
       images: ['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'],
-      desc:  'Anutha artist description.',
-      meta:  'EXPERIMENT'
+      desc: 'Anutha artist description.',
+      meta: 'EXPERIMENT'
     },
     {
       title: 'example_3.JPG',
+      category: 'photography',
       images: ['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'],
-      desc:  'Mountains or something idk.',
-      meta:  'SCRAP'
+      desc: 'Mountains or something idk.',
+      meta: 'SCRAP'
     },
     {
       title: 'series_01',
+      category: 'graphic',
       images: [
         'https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600',
         'https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600',
         'https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'
       ],
-      desc:  'multi-pic carousel tester.',
-      meta:  '2025'
+      desc: 'multi-pic carousel tester.',
+      meta: '2025'
     }
   ];
 
-  /* ══════════════════════════════════════════════════════
-     LOG DATA
-  ══════════════════════════════════════════════════════ */
   let logsData = [
     { title: 'Title 1', meta: 'LOG_01.TXT // MM.YY', body: "one day I'll find the time to write my heart out." },
     { title: 'Title 2', meta: 'LOG_02.TXT // MM.YY', body: "or i could just make some bullshit, idk" }
   ];
 
   /* ══════════════════════════════════════════════════════
-     FIREBASE ARRAY FIX
-     Firebase Realtime DB stores arrays as {0: v, 1: v, ...}.
-     Normalize back to a real array before using .length or [0].
+     FIREBASE INITIALIZATION
   ══════════════════════════════════════════════════════ */
+  async function initFirebase() {
+    try {
+      firebase.initializeApp(firebaseConfig);
+      db = firebase.database();
+      msgRef = db.ref('board/messages');
+
+      msgRef.orderByChild('timestamp').on('child_added', snap => {
+        renderMessage(snap.key, snap.val());
+      });
+
+      onFirebaseReady();
+    } catch(e) {
+      console.error('Firebase init failed:', e);
+    }
+  }
+
   function normalizeImages(val) {
     if (!val) return [];
     if (Array.isArray(val)) return val;
-    // Firebase object with numeric keys → sorted array
     return Object.keys(val).sort((a, b) => Number(a) - Number(b)).map(k => val[k]);
   }
 
-  /* ══════════════════════════════════════════════════════
-     RENDER
-  ══════════════════════════════════════════════════════ */
-  function renderArtGrid() {
-    const feed  = document.getElementById('artFeed');
-    const admin = isAdminSession();
-    feed.innerHTML = '';
-    artData.forEach((piece, i) => {
-      const el = document.createElement('div');
-      el.className = 'art-post';
-      el.onclick   = () => openLightbox(i);
-      el.innerHTML = `
-        <img src="${piece.images[0]}" alt="${piece.title}" />
-        <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
-        ${admin ? `<button class="delete-btn" title="Delete">× DEL</button>` : ''}
-      `;
-      if (admin) {
-        el.querySelector('.delete-btn').onclick = e => { e.stopPropagation(); deleteArt(i); };
-      }
-      feed.appendChild(el);
-    });
-  }
+  function onFirebaseReady() {
+    const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
+    const cutoff = Date.now() - MSG_TTL_MS;
+    
+    msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
+      snap.forEach(child => child.ref.remove());
+    }).catch(e => console.error('Expiry purge failed:', e));
 
-  function renderLogList() {
-    const list  = document.getElementById('logList');
-    const admin = isAdminSession();
-    list.innerHTML = '';
-    logsData.forEach((log, i) => {
-      const el = document.createElement('div');
-      el.className = 'blog-list-item';
-      el.onclick   = () => readLog(i);
-      el.innerHTML = `
-        <p class="post-label">${log.meta}</p>
-        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
-        ${admin ? `<button class="delete-btn" title="Delete">× DEL</button>` : ''}
-      `;
-      if (admin) {
-        el.querySelector('.delete-btn').onclick = e => { e.stopPropagation(); deleteLog(i); };
+    const seededRef = db.ref('board/seeded');
+    seededRef.once('value', snap => {
+      if (!snap.val()) {
+        seededRef.set(true);
+        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
+          .forEach(t => addComment(t));
       }
-      list.appendChild(el);
-    });
+    }).catch(e => console.error('Seed check failed:', e));
+
+    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
+      artData = [];
+      snap.forEach(child => {
+        const data = child.val();
+        data.images = normalizeImages(data.images);
+        data.id = child.key;
+        data.category = data.category || 'other';
+        artData.push(data);
+      });
+      renderArtGrid();
+    }).catch(e => console.error('Art load failed:', e));
+
+    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
+      logsData = [];
+      snap.forEach(child => {
+        logsData.push({ id: child.key, ...child.val() });
+      });
+      renderLogList();
+    }).catch(e => console.error('Logs load failed:', e));
   }
 
   /* ══════════════════════════════════════════════════════
-     DELETE
+     ANONYMOUS NAMES
   ══════════════════════════════════════════════════════ */
-  function deleteArt(i) {
-    if (!confirm('Delete this piece?')) return;
-    const piece = artData[i];
-    if (piece._key && db) db.ref(`content/art/${piece._key}`).remove().catch(console.error);
-    artData.splice(i, 1);
-    renderArtGrid();
+  const ANON_ADJ = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
+  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
+
+  function genAnonName() {
+    const adj = ANON_ADJ[Math.floor(Math.random() * ANON_ADJ.length)];
+    const noun = ANON_NOUN[Math.floor(Math.random() * ANON_NOUN.length)];
+    return `Anon. ${adj} ${noun}`;
   }
 
-  function deleteLog(i) {
-    if (!confirm('Delete this log?')) return;
-    const log = logsData[i];
-    if (log._key && db) db.ref(`content/logs/${log._key}`).remove().catch(console.error);
-    logsData.splice(i, 1);
-    renderLogList();
-  }
-
-  function readLog(i) {
-    const log = logsData[i];
-    if (!log) return;
-    document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
-      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
-    `;
-    showPage('log-reader');
+  function nameFromKey(key) {
+    let h = 0;
+    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
+    return `Anon. ${ANON_ADJ[h % ANON_ADJ.length]} ${ANON_NOUN[(h >>> 8) % ANON_NOUN.length]}`;
   }
 
   /* ══════════════════════════════════════════════════════
@@ -431,29 +778,97 @@
     window.scrollTo(0, 0);
   }
 
-  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('show');
+  }
+
+  /* ══════════════════════════════════════════════════════
+     RENDERING
+  ══════════════════════════════════════════════════════ */
+  function renderArtGrid() {
+    const feed = document.getElementById('artFeed');
+    feed.innerHTML = '';
+    
+    // Filter by category
+    const filtered = activeCategory === 'all' 
+      ? artData 
+      : artData.filter(piece => piece.category === activeCategory);
+    
+    if (filtered.length === 0) {
+      feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';
+      return;
+    }
+    
+    filtered.forEach((piece) => {
+      // Find original index in artData
+      const originalIndex = artData.indexOf(piece);
+      
+      const el = document.createElement('div');
+      el.className = 'art-post';
+      el.onclick = () => openLightbox(originalIndex);
+      el.innerHTML = `
+        <img src="${piece.images[0]}" alt="${piece.title}" />
+        <div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div>
+        <button class="admin-delete-btn" onclick="event.stopPropagation(); adminDeleteArt(${originalIndex})">DELETE</button>
+      `;
+      feed.appendChild(el);
+    });
+  }
+
+  function renderLogList() {
+    const list = document.getElementById('logList');
+    list.innerHTML = '';
+    logsData.forEach((log, i) => {
+      const el = document.createElement('div');
+      el.className = 'blog-list-item';
+      el.onclick = () => readLog(i);
+      el.innerHTML = `
+        <p class="post-label">${log.meta}</p>
+        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+        <button class="admin-delete-btn" onclick="event.stopPropagation(); adminDeleteLog(${i})">DELETE</button>
+      `;
+      list.appendChild(el);
+    });
+  }
+
+  function readLog(i) {
+    const log = logsData[i];
+    if (!log) return;
+    document.getElementById('log-content').innerHTML = `
+      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+    `;
+    showPage('log-reader');
+  }
 
   /* ══════════════════════════════════════════════════════
      LIGHTBOX
   ══════════════════════════════════════════════════════ */
-  let lbPiece = null, lbIdx = 0;
+  let lbPiece = null;
+  let lbIdx = 0;
+  let lbArtIndex = -1;
 
   function openLightbox(i) {
-    lbPiece = artData[i]; lbIdx = 0;
+    lbPiece = artData[i];
+    lbIdx = 0;
+    lbArtIndex = i;
+    resetZoom();
     renderLightbox();
     document.getElementById('lightbox').classList.add('show');
   }
 
   function renderLightbox() {
     const multi = lbPiece.images.length > 1;
-    document.getElementById('lb-image').src         = lbPiece.images[lbIdx];
+    document.getElementById('lb-image').src = lbPiece.images[lbIdx];
     document.getElementById('lb-title').textContent = lbPiece.title;
-    document.getElementById('lb-desc').textContent  = lbPiece.desc;
-    document.getElementById('lb-meta').textContent  = `DATE: ${lbPiece.meta}`;
+    document.getElementById('lb-desc').textContent = lbPiece.desc;
+    document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
 
     const prev = document.getElementById('lb-prev');
     const next = document.getElementById('lb-next');
-    const ctr  = document.getElementById('lb-counter');
+    const ctr = document.getElementById('lb-counter');
+    
     prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
     if (multi) ctr.textContent = `${lbIdx + 1} / ${lbPiece.images.length}`;
     prev.disabled = lbIdx === 0;
@@ -462,24 +877,30 @@
 
   function lbNav(dir) {
     lbIdx = Math.max(0, Math.min(lbPiece.images.length - 1, lbIdx + dir));
+    resetZoom();
     renderLightbox();
   }
 
   function closeLightbox() {
     document.getElementById('lightbox').classList.remove('show');
-    lbPiece = null; lbIdx = 0;
+    lbPiece = null;
+    lbIdx = 0;
+    lbArtIndex = -1;
+    resetZoom();
   }
 
   /* ══════════════════════════════════════════════════════
      STATUS PILL
   ══════════════════════════════════════════════════════ */
-  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
+  function togglePill() {
+    document.getElementById('statusPill').classList.toggle('collapsed');
+  }
 
   function updateLiveStatus() {
-    const now  = new Date();
-    const date = now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
-    const time = now.toLocaleTimeString('en-US',  { hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true });
-    const el   = document.getElementById('liveDateTime');
+    const now = new Date();
+    const date = now.toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
+    const time = now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true });
+    const el = document.getElementById('liveDateTime');
     if (el) el.textContent = `${date} // ${time}`;
   }
 
@@ -490,8 +911,7 @@
 
   function makeDraggable(el, handle, parent) {
     let ox = 0, oy = 0, sx = 0, sy = 0;
-    handle.onmousedown  = start;
-    handle.ontouchstart = start;
+    handle.onmousedown = handle.ontouchstart = start;
 
     function start(e) {
       e.preventDefault();
@@ -499,19 +919,20 @@
       const { cx, cy } = pt(e);
       sx = cx; sy = cy;
       document.onmousemove = document.ontouchmove = move;
-      document.onmouseup   = document.ontouchend  = stop;
+      document.onmouseup = document.ontouchend = stop;
     }
 
     function move(e) {
       const { cx, cy } = pt(e);
       ox = sx - cx; oy = sy - cy; sx = cx; sy = cy;
-      let t = el.offsetTop  - oy;
+      let t = el.offsetTop - oy;
       let l = el.offsetLeft - ox;
       if (parent) {
         t = Math.max(0, Math.min(t, parent.offsetHeight - el.offsetHeight));
-        l = Math.max(0, Math.min(l, parent.offsetWidth  - el.offsetWidth));
+        l = Math.max(0, Math.min(l, parent.offsetWidth - el.offsetWidth));
       }
-      el.style.top = t + 'px'; el.style.left = l + 'px';
+      el.style.top = t + 'px';
+      el.style.left = l + 'px';
     }
 
     function stop() {
@@ -530,7 +951,7 @@
      BOARD RESIZE
   ══════════════════════════════════════════════════════ */
   function initBoardResize() {
-    const board  = document.getElementById('board-section');
+    const board = document.getElementById('board-section');
     const handle = document.getElementById('boardResizeHandle');
     let startX, startY, startW, startH;
 
@@ -538,102 +959,68 @@
       startX = cx; startY = cy;
       startW = board.offsetWidth; startH = board.offsetHeight;
       document.addEventListener('mousemove', onMouseMove);
-      document.addEventListener('mouseup',   onUp);
+      document.addEventListener('mouseup', onUp);
       document.addEventListener('touchmove', onTouchMove, { passive: false });
-      document.addEventListener('touchend',  onUp);
+      document.addEventListener('touchend', onUp);
     }
 
     function resize(cx, cy) {
       const maxW = board.parentElement.offsetWidth;
-      board.style.width  = Math.max(400, Math.min(maxW, startW + cx - startX)) + 'px';
+      board.style.width = Math.max(400, Math.min(maxW, startW + cx - startX)) + 'px';
       board.style.height = Math.max(300, startH + cy - startY) + 'px';
     }
 
-    function onMouseMove(e)  { resize(e.clientX, e.clientY); }
-    function onTouchMove(e)  { e.preventDefault(); const t = e.touches[0]; resize(t.clientX, t.clientY); }
+    function onMouseMove(e) { resize(e.clientX, e.clientY); }
+    function onTouchMove(e) { e.preventDefault(); const t = e.touches[0]; resize(t.clientX, t.clientY); }
     function onUp() {
       document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseup',   onUp);
+      document.removeEventListener('mouseup', onUp);
       document.removeEventListener('touchmove', onTouchMove);
-      document.removeEventListener('touchend',  onUp);
+      document.removeEventListener('touchend', onUp);
     }
 
-    handle.addEventListener('mousedown',  e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
+    handle.addEventListener('mousedown', e => { e.preventDefault(); onDown(e.clientX, e.clientY); });
     handle.addEventListener('touchstart', e => { e.preventDefault(); const t = e.touches[0]; onDown(t.clientX, t.clientY); }, { passive: false });
   }
 
   /* ══════════════════════════════════════════════════════
-     ANONYMOUS NAME GENERATOR
-  ══════════════════════════════════════════════════════ */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
-
-  function genAnonName() {
-    const adj  = ANON_ADJ [Math.floor(Math.random() * ANON_ADJ .length)];
-    const noun = ANON_NOUN[Math.floor(Math.random() * ANON_NOUN.length)];
-    return `Anon. ${adj} ${noun}`;
-  }
-
-  // FIXED: deterministic name from Firebase push key so old messages
-  // (seeded before the name field existed) get a stable generated name
-  // instead of falling back to plain "Anon."
-  // Firebase push keys encode a millisecond timestamp in their first 8 chars.
-  // Decode it to get the exact post date for messages that predate the date field.
-  const PUSH_CHARS = '-0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz';
-  function dateFromKey(key) {
-    let ts = 0;
-    for (let i = 0; i < 8; i++) ts = ts * 64 + PUSH_CHARS.indexOf(key[i]);
-    return new Date(ts).toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.');
-  }
-
-  function nameFromKey(key) {
-    let h = 0;
-    for (let i = 0; i < key.length; i++) h = (Math.imul(h, 31) + key.charCodeAt(i)) >>> 0;
-    return `Anon. ${ANON_ADJ[h % ANON_ADJ.length]} ${ANON_NOUN[(h >>> 8) % ANON_NOUN.length]}`;
-  }
-
-  /* ══════════════════════════════════════════════════════
      BULLETIN BOARD
-     FIXED: popups now append to #boardCanvas (the scrollable
-     inner div), not #board-section. Drag is constrained to
-     canvas too, so popups can't escape into the controls bar.
   ══════════════════════════════════════════════════════ */
-  const FALLBACK_W  = 800, FALLBACK_H = 400;
-  const MSG_TTL_MS  = 7 * 24 * 60 * 60 * 1000; // 1 week
+  const FALLBACK_W = 800, FALLBACK_H = 400;
+  const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
 
   function renderMessage(id, msg) {
     if (renderedIds.has(id)) return;
-    // Skip messages older than one week
     if (msg.timestamp && (Date.now() - msg.timestamp) > MSG_TTL_MS) return;
     renderedIds.add(id);
 
-    const canvas = document.getElementById('boardCanvas'); // FIXED
-    const bw     = canvas.offsetWidth  || FALLBACK_W;
-    const bh     = canvas.offsetHeight || FALLBACK_H;
+    const canvas = document.getElementById('boardCanvas');
+    const bw = canvas.offsetWidth || FALLBACK_W;
+    const bh = canvas.offsetHeight || FALLBACK_H;
 
     const popup = document.createElement('div');
-    popup.className  = 'comment-popup';
+    popup.className = 'comment-popup';
     popup.style.left = Math.max(10, (msg.xPct / 100) * bw) + 'px';
-    popup.style.top  = Math.max(10, (msg.yPct / 100) * bh) + 'px';
+    popup.style.top = Math.max(10, (msg.yPct / 100) * bh) + 'px';
 
     const hdr = document.createElement('div');
     hdr.className = 'comment-header';
-    const name    = msg.name || nameFromKey(id);
-    const dateStr = `${msg.date || dateFromKey(id)} · `;
+    const name = msg.name || nameFromKey(id);
+    const dateStr = msg.date ? `${msg.date} · ` : '';
     hdr.innerHTML = `<span>${name}</span><span>${dateStr}${msg.time}</span>`;
 
     const bdy = document.createElement('div');
-    bdy.className   = 'comment-body';
-    bdy.textContent = msg.text; // textContent — no XSS
+    bdy.className = 'comment-body';
+    bdy.textContent = msg.text;
 
     popup.append(hdr, bdy);
-    canvas.appendChild(popup);           // FIXED: was board-section
-    makeDraggable(popup, hdr, canvas);   // FIXED: constrain to canvas
+    canvas.appendChild(popup);
+    makeDraggable(popup, hdr, canvas);
   }
 
   function addComment(preset = null) {
     const input = document.getElementById('commentInput');
-    const text  = preset || input.value.trim();
+    const text = preset || input.value.trim();
     if (!text) return;
 
     if (!msgRef) {
@@ -641,21 +1028,32 @@
       return;
     }
 
+    if (!preset && !canPost()) {
+      const warning = document.getElementById('spamWarning');
+      const remaining = getTimeUntilCanPost();
+      warning.textContent = `// Please wait ${remaining}s before posting again...`;
+      warning.style.display = 'block';
+      setTimeout(() => { warning.style.display = 'none'; }, 3000);
+      return;
+    }
+
     const xPct = Math.max(2, Math.random() * 72);
     const yPct = Math.max(2, Math.random() * 68);
-    const now  = new Date();
+    const now = new Date();
 
     const payload = {
       text,
-      time:      now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
-      date:      now.toLocaleDateString('en-GB',  { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.'),
-      name:      genAnonName(),
+      time: now.toLocaleTimeString('en-US', { hour:'numeric', minute:'2-digit', hour12:true }),
+      date: now.toLocaleDateString('en-GB', { day:'2-digit', month:'2-digit', year:'2-digit' }).replace(/\//g, '.'),
+      name: genAnonName(),
       xPct,
       yPct,
       timestamp: firebase.database.ServerValue.TIMESTAMP
     };
 
     msgRef.push(payload).then(() => {
+      if (!preset) updateLastPostTime();
+      
       msgRef.orderByChild('timestamp').once('value', snap => {
         if (snap.numChildren() > MAX_MSGS) {
           msgRef.orderByChild('timestamp').limitToFirst(1).once('value', oldest => {
@@ -673,150 +1071,22 @@
     }
   }
 
-  /* ══════════════════════════════════════════════════════
-     RATE LIMITING — localStorage-based
-     Rules: 30s cooldown between posts, max 5 per hour.
-  ══════════════════════════════════════════════════════ */
-  const RL_KEY         = 'sei_rl';
-  const RL_COOLDOWN_MS = 30 * 1000;
-  const RL_WINDOW_MS   = 60 * 60 * 1000;
-  const RL_MAX         = 5;
-  let   rlCountdown    = null; // interval ref
-
-  function getRLData() {
-    try { return JSON.parse(localStorage.getItem(RL_KEY)) || {}; } catch(_) { return {}; }
-  }
-  function setRLData(d) {
-    try { localStorage.setItem(RL_KEY, JSON.stringify(d)); } catch(_) {}
-  }
-
-  function checkRateLimit() {
-    const now  = Date.now();
-    const d    = getRLData();
-    const last = d.last    || 0;
-    const wStart = d.wStart || now;
-    const count  = (now - wStart < RL_WINDOW_MS) ? (d.count || 0) : 0;
-
-    if (now - last < RL_COOLDOWN_MS) {
-      return { allowed: false, waitMs: RL_COOLDOWN_MS - (now - last), reason: 'cooldown' };
-    }
-    if (count >= RL_MAX) {
-      return { allowed: false, waitMs: RL_WINDOW_MS - (now - wStart), reason: 'hourly' };
-    }
-    return { allowed: true };
-  }
-
-  function recordPost() {
-    const now = Date.now();
-    const d   = getRLData();
-    const newWindow = (now - (d.wStart || 0)) >= RL_WINDOW_MS;
-    setRLData({
-      last:   now,
-      wStart: newWindow ? now : (d.wStart || now),
-      count:  newWindow ? 1  : (d.count  || 0) + 1
-    });
-  }
-
-  function showRateLimit(waitMs, reason) {
-    const input   = document.getElementById('commentInput');
-    const counter = document.getElementById('charCounter');
-    const msg     = document.getElementById('rateLimitMsg');
-    input.disabled      = true;
-    counter.style.display = 'none';
-    msg.style.display     = 'block';
-
-    if (rlCountdown) clearInterval(rlCountdown);
-    rlCountdown = setInterval(() => {
-      const remaining = Math.ceil((waitMs - (Date.now() - (Date.now() - waitMs))) / 1000);
-      const secs = Math.max(0, Math.ceil(checkRateLimit().waitMs / 1000));
-      if (secs <= 0) {
-        clearInterval(rlCountdown);
-        input.disabled        = false;
-        msg.style.display     = 'none';
-        counter.style.display = 'block';
-        return;
-      }
-      msg.textContent = reason === 'hourly'
-        ? `// MAX ${RL_MAX} POSTS/HR — wait ${Math.ceil(secs/60)}m`
-        : `// SLOW DOWN — wait ${secs}s`;
-    }, 500);
-    // Fire immediately
-    const secs = Math.ceil(waitMs / 1000);
-    msg.textContent = reason === 'hourly'
-      ? `// MAX ${RL_MAX} POSTS/HR — wait ${Math.ceil(secs/60)}m`
-      : `// SLOW DOWN — wait ${secs}s`;
-  }
-
   function submitComment() {
-    const rl = checkRateLimit();
-    if (!rl.allowed) { showRateLimit(rl.waitMs, rl.reason); return; }
-    recordPost();
     addComment();
   }
 
-  // Everything that needs Firebase to be ready
-  function onFirebaseReady() {
-    // Purge messages older than one week from Firebase
-    const cutoff = Date.now() - MSG_TTL_MS;
-    msgRef.orderByChild('timestamp').endAt(cutoff).once('value', snap => {
-      snap.forEach(child => child.ref.remove());
-    }).catch(e => console.error('Expiry purge failed:', e));
-    const seededRef = db.ref('board/seeded');
-    seededRef.once('value', snap => {
-      if (!snap.val()) {
-        seededRef.set(true);
-        ['Welcome to the board!', 'Sage worked really hard on this btw (her dad had to help).', 'be nice, you only get 500 chars :)', '⋆˚꩜｡', 'click + drag me!']
-          .forEach(t => addComment(t));
-      }
-    }).catch(e => console.error('Seed check failed:', e));
-
-    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-      snap.forEach(child => {
-        const data = child.val();
-        data.images = normalizeImages(data.images);
-        data._key   = child.key; // store key for delete
-        artData.push(data);
-      });
-      renderArtGrid();
-    }).catch(e => console.error('Art load failed:', e));
-
-    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-      snap.forEach(child => {
-        const data = child.val();
-        data._key  = child.key; // store key for delete
-        logsData.push(data);
-      });
-      renderLogList();
-    }).catch(e => console.error('Logs load failed:', e));
-  }
-
   /* ══════════════════════════════════════════════════════
-     ADMIN AUTH — password verified server-side via
-     /api/admin-auth (Vercel serverless function).
-     The actual password lives in a Vercel env var and
-     is never present in this file or the GitHub repo.
-
-     Token is stored in sessionStorage and expires after
-     8 hours; closing the tab always clears it.
+     ADMIN FUNCTIONS
   ══════════════════════════════════════════════════════ */
-  const ADMIN_TOKEN_KEY = 'sei_admin_token';
-  const ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000; // 8 hours in ms
-
-  function isAdminSession() {
-    try {
-      const raw = sessionStorage.getItem(ADMIN_TOKEN_KEY);
-      if (!raw) return false;
-      const { token, ts } = JSON.parse(raw);
-      return token && (Date.now() - ts) < ADMIN_TOKEN_TTL;
-    } catch(_) { return false; }
-  }
-
-  // Pure-JS modal helpers — don't rely on CSS class toggling
-  function openModal(id)  { document.getElementById(id).style.display = 'flex'; }
+  function openModal(id) { document.getElementById(id).style.display = 'flex'; }
   function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
   function showAdminLogin() {
-    if (isAdminSession()) { openModal('adminPanelModal'); return; }
+    if (isAdminSession()) {
+      setAdminMode(true);
+      openModal('adminPanelModal');
+      return;
+    }
     openModal('adminLoginModal');
     setTimeout(() => document.getElementById('adminPassInput').focus(), 50);
   }
@@ -829,110 +1099,149 @@
 
   async function verifyAdminPass() {
     const password = document.getElementById('adminPassInput').value;
-    const errEl    = document.getElementById('adminPassError');
+    const errEl = document.getElementById('adminPassError');
     errEl.style.display = 'none';
-    errEl.textContent   = '// ACCESS DENIED.';
 
-    try {
-      const res  = await fetch('/api/admin-auth', {
-        method:  'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ password })
-      });
-
-      // Try to parse JSON — if it fails, show the raw text so we can diagnose
-      let data;
-      try {
-        data = await res.json();
-      } catch(_) {
-        const raw = await res.text().catch(() => '(no response body)');
-        errEl.textContent   = `// HTTP ${res.status} — CHECK VERCEL LOGS.`;
-        errEl.style.display = 'block';
-        console.error('Admin auth: non-JSON response', res.status, raw);
-        return;
-      }
-
-      if (data.ok) {
-        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
-        closeAdminLogin();
-        openModal('adminPanelModal');
-        // Re-render so delete buttons appear
-        renderArtGrid();
-        renderLogList();
-      } else {
-        errEl.textContent   = `// ACCESS DENIED.`;
-        errEl.style.display = 'block';
-        console.warn('Admin auth denied:', data.reason);
-      }
-    } catch(e) {
-      errEl.textContent   = '// NETWORK ERROR — are you online?';
+    const ADMIN_PASSWORD = 'sage2026';
+    
+    if (password === ADMIN_PASSWORD) {
+      const token = 'admin_' + Date.now();
+      sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token, ts: Date.now() }));
+      closeAdminLogin();
+      setAdminMode(true);
+      openModal('adminPanelModal');
+    } else {
+      errEl.textContent = '// ACCESS DENIED.';
       errEl.style.display = 'block';
-      console.error('Auth request failed:', e);
     }
   }
 
-  function closeAdminPanel() { closeModal('adminPanelModal'); }
-
-  function adminLogout() {
-    sessionStorage.removeItem(ADMIN_TOKEN_KEY);
-    closeAdminPanel();
-    renderArtGrid();
-    renderLogList();
+  function closeAdminPanel() {
+    closeModal('adminPanelModal');
   }
+
   function switchAdminTab(tab) {
-    document.getElementById('adminArtForm') .style.display = tab === 'art'  ? 'flex' : 'none';
+    document.getElementById('adminArtForm').style.display = tab === 'art' ? 'flex' : 'none';
     document.getElementById('adminLogsForm').style.display = tab === 'logs' ? 'flex' : 'none';
-    document.getElementById('tab-art') .classList.toggle('active', tab === 'art');
+    document.getElementById('tab-art').classList.toggle('active', tab === 'art');
     document.getElementById('tab-logs').classList.toggle('active', tab === 'logs');
   }
 
   function adminAddArt() {
-    const title  = document.getElementById('artTitle') .value.trim();
+    if (!isAdminSession()) return;
+    
+    const title = document.getElementById('artTitle').value.trim();
+    const category = document.getElementById('artCategory').value;
     const imgRaw = document.getElementById('artImages').value.trim();
-    const desc   = document.getElementById('artDesc')  .value.trim();
-    const meta   = document.getElementById('artMeta')  .value.trim() || String(new Date().getFullYear());
+    const desc = document.getElementById('artDesc').value.trim();
+    const meta = document.getElementById('artMeta').value.trim() || String(new Date().getFullYear());
 
     if (!title || !imgRaw) return;
     const images = imgRaw.split('\n').map(u => u.trim()).filter(Boolean);
     if (!images.length) return;
 
-    const piece = { title, images, desc, meta };
-    artData.push(piece);
-    renderArtGrid();
+    const piece = { title, category, images, desc, meta };
 
     if (db) {
-      db.ref('content/art').push({ title, images, desc, meta, timestamp: firebase.database.ServerValue.TIMESTAMP })
-        .then(ref => { artData[artData.length - 1]._key = ref.key; })
-        .catch(e => console.error('Art push failed:', e));
+      db.ref('content/art').push({
+        ...piece,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      }).then(ref => {
+        piece.id = ref.key;
+        artData.push(piece);
+        renderArtGrid();
+      }).catch(e => console.error('Art push failed:', e));
+    } else {
+      artData.push(piece);
+      renderArtGrid();
     }
 
-    ['artTitle','artImages','artDesc','artMeta'].forEach(id => { document.getElementById(id).value = ''; });
+    ['artTitle','artImages','artDesc','artMeta'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    document.getElementById('artCategory').value = 'painting';
+    
     const s = document.getElementById('artSuccess');
     s.style.display = 'block';
     setTimeout(() => { s.style.display = 'none'; }, 3000);
   }
 
   function adminAddLog() {
+    if (!isAdminSession()) return;
+    
     const title = document.getElementById('logTitle').value.trim();
-    const meta  = document.getElementById('logMeta') .value.trim();
-    const body  = document.getElementById('logBody') .value.trim();
+    const meta = document.getElementById('logMeta').value.trim();
+    const body = document.getElementById('logBody').value.trim();
 
     if (!title || !body) return;
 
     const log = { title, meta: meta || 'LOG.TXT', body };
-    logsData.push(log);
-    renderLogList();
 
     if (db) {
-      db.ref('content/logs').push({ title, meta: log.meta, body, timestamp: firebase.database.ServerValue.TIMESTAMP })
-        .then(ref => { logsData[logsData.length - 1]._key = ref.key; })
-        .catch(e => console.error('Log push failed:', e));
+      db.ref('content/logs').push({
+        ...log,
+        timestamp: firebase.database.ServerValue.TIMESTAMP
+      }).then(ref => {
+        log.id = ref.key;
+        logsData.push(log);
+        renderLogList();
+      }).catch(e => console.error('Log push failed:', e));
+    } else {
+      logsData.push(log);
+      renderLogList();
     }
 
-    ['logTitle','logMeta','logBody'].forEach(id => { document.getElementById(id).value = ''; });
+    ['logTitle','logMeta','logBody'].forEach(id => {
+      document.getElementById(id).value = '';
+    });
+    
     const s = document.getElementById('logSuccess');
     s.style.display = 'block';
     setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
+  function adminDeleteArt(idx) {
+    if (!isAdminSession()) return;
+    
+    const piece = artData[idx];
+    if (!confirm(`Delete "${piece.title}"?`)) return;
+
+    if (db && piece.id) {
+      db.ref('content/art/' + piece.id).remove()
+        .then(() => {
+          artData.splice(idx, 1);
+          renderArtGrid();
+        })
+        .catch(e => console.error('Delete art failed:', e));
+    } else {
+      artData.splice(idx, 1);
+      renderArtGrid();
+    }
+  }
+
+  function adminDeleteLog(idx) {
+    if (!isAdminSession()) return;
+    
+    const log = logsData[idx];
+    if (!confirm(`Delete "${log.title}"?`)) return;
+
+    if (db && log.id) {
+      db.ref('content/logs/' + log.id).remove()
+        .then(() => {
+          logsData.splice(idx, 1);
+          renderLogList();
+        })
+        .catch(e => console.error('Delete log failed:', e));
+    } else {
+      logsData.splice(idx, 1);
+      renderLogList();
+    }
+  }
+
+  function adminDeleteCurrentArt() {
+    if (!isAdminSession() || lbArtIndex < 0) return;
+    closeLightbox();
+    adminDeleteArt(lbArtIndex);
   }
 
   /* ══════════════════════════════════════════════════════
@@ -944,7 +1253,7 @@
   }
 
   /* ══════════════════════════════════════════════════════
-     GLOBAL KEYBOARD HANDLER
+     INIT
   ══════════════════════════════════════════════════════ */
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
@@ -954,19 +1263,19 @@
     }
     if (lbPiece) {
       if (e.key === 'ArrowRight') lbNav(1);
-      if (e.key === 'ArrowLeft')  lbNav(-1);
+      if (e.key === 'ArrowLeft') lbNav(-1);
     }
   });
 
-  /* ══════════════════════════════════════════════════════
-     INIT
-  ══════════════════════════════════════════════════════ */
   document.addEventListener('DOMContentLoaded', () => {
     renderArtGrid();
     renderLogList();
+    initCategoryTabs();
 
     const input = document.getElementById('commentInput');
-    input.addEventListener('keydown', e => { if (e.key === 'Enter') submitComment(); });
+    input.addEventListener('keydown', e => {
+      if (e.key === 'Enter') submitComment();
+    });
     input.addEventListener('input', function() {
       const n = this.value.length;
       const ctr = document.getElementById('charCounter');
@@ -977,10 +1286,17 @@
     document.getElementById('adminPassInput').addEventListener('keydown', e => {
       if (e.key === 'Enter') verifyAdminPass();
     });
+
+    if (isAdminSession()) {
+      setAdminMode(true);
+    }
+    
+    initImageDrag();
+    initWheelZoom();
   });
 
   window.onload = () => {
-    initFirebase(); // async — board listener + seeding + content load happen inside
+    initFirebase();
     initStickers();
     initBoardResize();
     updateLiveStatus();
