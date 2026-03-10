@@ -546,6 +546,28 @@ input.admin-input:focus, textarea.admin-input:focus { border-color: var(--accent
 textarea.admin-input { resize: vertical; min-height: 80px; }
 .admin-success { font-family: var(--font-mono); font-size: 10px; color: #22c55e; display: none; }
 
+/* ── LOG TAGS (tumblr-style) ─────────────────────────── */
+.log-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 0.75rem;
+}
+
+.log-tag {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  cursor: default;
+  transition: color 0.15s;
+  letter-spacing: 0.02em;
+}
+.log-tag:hover { color: var(--accent); }
+
+/* Tags in the full log reader get slightly larger */
+.log-container .log-tags { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); }
+.log-container .log-tag  { font-size: 12px; }
+
 /* ── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 850px) {
   .page-wrapper { flex-direction: column; padding: 1rem 1rem 8rem; gap: 0; }
