@@ -592,7 +592,9 @@
     popup.style.left = Math.max(10,(msg.xPct/100)*bw)+'px';
     popup.style.top  = Math.max(10,(msg.yPct/100)*bh)+'px';
     const hdr = document.createElement('div'); hdr.className='comment-header';
-    hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${msg.date?msg.date+' · ':''}${msg.time}</span>`;
+    const displayDate = msg.date
+  || (msg.timestamp ? new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.') : '');
+hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
     const bdy = document.createElement('div'); bdy.className='comment-body'; bdy.textContent=msg.text;
     popup.append(hdr,bdy); canvas.appendChild(popup); makeDraggable(popup,hdr,canvas);
   }
@@ -623,7 +625,7 @@
     err.style.display='none';
     if (!pw) return;
     try {
-      const res = await fetch('/api/auth', {
+      const res = await fetch('/api/admin-auth', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw })
