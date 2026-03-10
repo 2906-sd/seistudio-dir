@@ -35,7 +35,6 @@
       <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
     </nav>
 
-    <!-- Status pill - beneath nav -->
     <div class="status-pill-container">
       <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
         <span class="status-dot">⟡</span>
@@ -46,7 +45,6 @@
       </div>
     </div>
 
-    <!-- Dark mode toggle - standalone beneath pill -->
     <button class="dark-toggle-standalone" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
   </div>
 
@@ -67,12 +65,12 @@
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
 
+      <!-- Photography removed -->
       <div class="category-nav" id="categoryNav">
         <div class="category-tab active" data-category="all">ALL</div>
         <div class="category-tab" data-category="painting">PAINTINGS</div>
         <div class="category-tab" data-category="illustration">ILLUSTRATION</div>
         <div class="category-tab" data-category="graphic">GRAPHIC DESIGN</div>
-        <div class="category-tab" data-category="photography">PHOTOGRAPHY</div>
         <div class="category-tab" data-category="other">OTHER</div>
       </div>
 
@@ -221,20 +219,25 @@
       <div id="adminArtForm" class="admin-form">
         <label class="admin-label">Title</label>
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
+
         <label class="admin-label">Category</label>
+        <!-- Photography removed -->
         <select id="artCategory" class="admin-input" style="cursor:pointer;">
           <option value="painting">Painting</option>
           <option value="illustration">Illustration</option>
           <option value="graphic">Graphic Design</option>
-          <option value="photography">Photography</option>
           <option value="other">Other</option>
         </select>
+
         <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
         <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
+
         <label class="admin-label">Artist Note</label>
         <textarea id="artDesc" class="admin-input" placeholder="Say something about the piece..."></textarea>
+
         <label class="admin-label">Date / Meta tag</label>
         <input type="text" id="artMeta" class="admin-input" placeholder="2026" />
+
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddArt()">POST ART →</button>
         <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
@@ -242,10 +245,16 @@
       <div id="adminLogsForm" class="admin-form" style="display:none">
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
+
         <label class="admin-label">Meta Label (shown on the list card)</label>
         <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
+
+        <label class="admin-label">Tags — space or comma separated (# optional)</label>
+        <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
+
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
@@ -287,6 +296,21 @@
     document.querySelectorAll('.category-tab').forEach(tab => {
       tab.addEventListener('click', function() { filterCategory(this.getAttribute('data-category')); });
     });
+  }
+
+  /* ── TAG HELPERS ── */
+  // Parse a raw tag string into a clean array: "#personal, art rambling" → ["personal","art","rambling"]
+  function parseTags(raw) {
+    if (!raw) return [];
+    return raw
+      .split(/[\s,]+/)
+      .map(t => t.replace(/^#+/, '').trim().toLowerCase())
+      .filter(Boolean);
+  }
+
+  function renderTagsHTML(tags) {
+    if (!tags || !tags.length) return '';
+    return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
   }
 
   /* ── ZOOM ── */
@@ -369,12 +393,12 @@
   let artData = [
     { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
     { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
-    { title:'example_3.JPG', category:'photography', images:['https://images.unsplash.com/photo-1506905925346-21bda4d32df4?q=80&w=1600'], desc:'Mountains or something idk.', meta:'SCRAP' },
     { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600','https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'multi-pic carousel tester.', meta:'2025' }
   ];
+
   let logsData = [
-    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out." },
-    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk" }
+    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out.", tags:['personal','wip'] },
+    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk", tags:['rambling'] }
   ];
 
   /* ── FIREBASE ── */
@@ -418,7 +442,12 @@
 
     db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
       logsData = [];
-      snap.forEach(child => logsData.push({ id: child.key, ...child.val() }));
+      snap.forEach(child => {
+        const d = child.val();
+        // Normalize tags: stored as array or missing
+        d.tags = Array.isArray(d.tags) ? d.tags : [];
+        logsData.push({ id: child.key, ...d });
+      });
       renderLogList();
     }).catch(e => console.error('Logs load failed:', e));
   }
@@ -480,14 +509,24 @@
       const el = document.createElement('div');
       el.className = 'blog-list-item';
       el.onclick = () => readLog(i);
-      el.innerHTML = `<p class="post-label">${log.meta}</p><h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>`;
+      el.innerHTML = `
+        <p class="post-label">${log.meta}</p>
+        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+        ${renderTagsHTML(log.tags)}
+        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>
+      `;
       list.appendChild(el);
     });
   }
 
   function readLog(i) {
     const log = logsData[i]; if (!log) return;
-    document.getElementById('log-content').innerHTML = `<p class="post-label" style="margin-bottom:1rem">${log.meta}</p><h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1><div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>`;
+    document.getElementById('log-content').innerHTML = `
+      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+      ${renderTagsHTML(log.tags)}
+    `;
     showPage('log-reader');
   }
 
@@ -582,8 +621,28 @@
   async function verifyAdminPass(){
     const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
     err.style.display='none';
-    if(pw==='sage2026'){sessionStorage.setItem(ADMIN_TOKEN_KEY,JSON.stringify({token:'admin_'+Date.now(),ts:Date.now()}));closeAdminLogin();setAdminMode(true);openModal('adminPanelModal');}
-    else{err.textContent='// ACCESS DENIED.';err.style.display='block';}
+    if (!pw) return;
+    try {
+      const res = await fetch('/api/auth', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: 'admin_' + Date.now(), ts: Date.now() }));
+        closeAdminLogin();
+        setAdminMode(true);
+        openModal('adminPanelModal');
+      } else {
+        err.textContent = '// ACCESS DENIED.';
+        err.style.display = 'block';
+      }
+    } catch(e) {
+      err.textContent = '// CONNECTION ERROR.';
+      err.style.display = 'block';
+      console.error('Auth failed:', e);
+    }
   }
   function closeAdminPanel(){closeModal('adminPanelModal');}
   function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
@@ -602,10 +661,12 @@
   function adminAddLog(){
     if(!isAdminSession()) return;
     const title=document.getElementById('logTitle').value.trim(), meta=document.getElementById('logMeta').value.trim(), body=document.getElementById('logBody').value.trim();
-    if(!title||!body) return; const log={title,meta:meta||'LOG.TXT',body};
+    if(!title||!body) return;
+    const tags = parseTags(document.getElementById('logTags').value);
+    const log={title, meta:meta||'LOG.TXT', body, tags};
     if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();}).catch(e=>console.error('Log push failed:',e));}
     else{logsData.push(log);renderLogList();}
-    ['logTitle','logMeta','logBody'].forEach(id=>document.getElementById(id).value='');
+    ['logTitle','logMeta','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
     const s=document.getElementById('logSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
   }
 
