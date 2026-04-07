@@ -246,8 +246,7 @@
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
-        <label class="admin-label">Meta Label (shown on the list card)</label>
-        <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+    
 
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
@@ -662,13 +661,21 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
 
   function adminAddLog(){
     if(!isAdminSession()) return;
-    const title=document.getElementById('logTitle').value.trim(), meta=document.getElementById('logMeta').value.trim(), body=document.getElementById('logBody').value.trim();
+    const title=document.getElementById('logTitle').value.trim(), body=document.getElementById('logBody').value.trim();
+    if(!title||!body) return;
++   const now=new Date();
++   const mm=String(now.getMonth()+1).padStart(2,'0');
++   const yy=String(now.getFullYear()).slice(-2);
++   const num=String(logsData.length+1).padStart(2,'0');
++   const meta=`LOG_${num}.TXT // ${mm}.${yy}`;
+    const tags = parseTags(document.getElementById('logTags').value);
+    const log={title, meta, body, tags};
     if(!title||!body) return;
     const tags = parseTags(document.getElementById('logTags').value);
     const log={title, meta:meta||'LOG.TXT', body, tags};
     if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();}).catch(e=>console.error('Log push failed:',e));}
     else{logsData.push(log);renderLogList();}
-    ['logTitle','logMeta','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
+    ['logTitle','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
     const s=document.getElementById('logSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
   }
 
