@@ -666,15 +666,18 @@ function adminAddLog(){
   const body = document.getElementById('logBody').value.trim();
   if(!title || !body) return;
 
+  // 1. Automatically generate metadata: LOG_XX.TXT // MM.YY
   const now = new Date();
   const mm = String(now.getMonth() + 1).padStart(2, '0');
   const yy = String(now.getFullYear()).slice(-2);
   const num = String(logsData.length + 1).padStart(2, '0');
   const meta = `LOG_${num}.TXT // ${mm}.${yy}`;
   
+  // 2. Parse tags and package the log item
   const tags = parseTags(document.getElementById('logTags').value);
   const log = { title, meta, body, tags };
 
+  // 3. Save to Firebase Database
   if(db){
     db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
       .then(ref => {
@@ -688,6 +691,7 @@ function adminAddLog(){
     renderLogList();
   }
 
+  // 4. Reset inputs and show success message
   ['logTitle', 'logBody', 'logTags'].forEach(id => document.getElementById(id).value = '');
   const s = document.getElementById('logSuccess'); 
   s.style.display = 'block'; 
