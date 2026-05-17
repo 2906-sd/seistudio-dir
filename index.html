@@ -660,43 +660,40 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
   }
 
 function adminAddLog(){
-  if(!isAdminSession()) return;
-  
-  const title = document.getElementById('logTitle').value.trim();
-  const body = document.getElementById('logBody').value.trim();
-  if(!title || !body) return;
+    if(!isAdminSession()) return;
+    
+    const title = document.getElementById('logTitle').value.trim();
+    const body = document.getElementById('logBody').value.trim();
+    if(!title || !body) return;
 
-  // 1. Automatically generate metadata: LOG_XX.TXT // MM.YY
-  const now = new Date();
-  const mm = String(now.getMonth() + 1).padStart(2, '0');
-  const yy = String(now.getFullYear()).slice(-2);
-  const num = String(logsData.length + 1).padStart(2, '0');
-  const meta = `LOG_${num}.TXT // ${mm}.${yy}`;
-  
-  // 2. Parse tags and package the log item
-  const tags = parseTags(document.getElementById('logTags').value);
-  const log = { title, meta, body, tags };
+    // Automatically generate metadata: LOG_XX.TXT // MM.YY
+    const now = new Date();
+    const mm = String(now.getMonth() + 1).padStart(2, '0');
+    const yy = String(now.getFullYear()).slice(-2);
+    const num = String(logsData.length + 1).padStart(2, '0');
+    const meta = `LOG_${num}.TXT // ${mm}.${yy}`;
+    
+    const tags = parseTags(document.getElementById('logTags').value);
+    const log = { title, meta, body, tags };
 
-  // 3. Save to Firebase Database
-  if(db){
-    db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
-      .then(ref => {
-        log.id = ref.key;
-        logsData.push(log);
-        renderLogList();
-      })
-      .catch(e => console.error('Log push failed:', e));
-  } else {
-    logsData.push(log);
-    renderLogList();
+    if(db){
+      db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
+        .then(ref => {
+          log.id = ref.key;
+          logsData.push(log);
+          renderLogList();
+        })
+        .catch(e => console.error('Log push failed:', e));
+    } else {
+      logsData.push(log);
+      renderLogList();
+    }
+
+    ['logTitle', 'logBody', 'logTags'].forEach(id => document.getElementById(id).value = '');
+    const s = document.getElementById('logSuccess'); 
+    s.style.display = 'block'; 
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
   }
-
-  // 4. Reset inputs and show success message
-  ['logTitle', 'logBody', 'logTags'].forEach(id => document.getElementById(id).value = '');
-  const s = document.getElementById('logSuccess'); 
-  s.style.display = 'block'; 
-  setTimeout(() => { s.style.display = 'none'; }, 3000);
-}
   function adminDeleteArt(idx){
     if(!isAdminSession()) return; const piece=artData[idx]; if(!confirm(`Delete "${piece.title}"?`)) return;
     if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}
