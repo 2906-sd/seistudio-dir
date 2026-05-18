@@ -1,14 +1,25 @@
 /**
- * Vercel Serverless Function — /api/firebase-config
- * Serves the Firebase client config from environment variables
- * so nothing sensitive lives in source code or GitHub.
+ * Vercel Serverless Function — /api/firebase-config.js
+ * Serves Firebase client config from environment variables
+ * Keeps sensitive credentials out of source code
  */
 
 module.exports = function handler(req, res) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'GET') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
+  // Build config from environment variables
   const config = {
     apiKey:            process.env.FIREBASE_API_KEY,
     authDomain:        process.env.FIREBASE_AUTH_DOMAIN,
@@ -19,14 +30,21 @@ module.exports = function handler(req, res) {
     appId:             process.env.FIREBASE_APP_ID,
   };
 
-  // Make sure every value loaded — if an env var is missing, fail loudly
-  const missing = Object.entries(config).filter(([, v]) => !v).map(([k]) => k);
-  if (missing.length) {
-    console.error('Missing Firebase env vars:', missing);
-    return res.status(500).json({ error: 'Server misconfiguration' });
+  // Validate all required env vars are present
+  const missing = Object.entries(config)
+    .filter(([, value]) => !value)
+    .map(([key]) => key);
+
+  if (missing.length > 0) {
+    console.error('Missing Firebase environment variables:', missing);
+    return res.status(500).json({ 
+      error: 'Server misconfiguration',
+      missing: missing 
+    });
   }
 
-  // Cache for 5 minutes — config never changes at runtime
-  res.setHeader('Cache-Control', 'public, max-age=300');
+  // Cache for 5 minutes - config is static
+  res.setHeader('Cache-Control', 'public, max-age=300, s-maxage=300');
+  
   return res.status(200).json(config);
 };
