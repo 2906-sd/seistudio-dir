@@ -1,57 +1,76 @@
 /**
  * Vercel Serverless Function — /api/admin-auth.js
+ * Handles admin authentication with proper CORS and body parsing
  */
 
 const crypto = require('crypto');
 
-// Vercel doesn't always auto-parse req.body — do it explicitly
-async function parseBody(req) {
-  // Already parsed (Vercel does this in some configurations)
-  if (req.body && typeof req.body === 'object') return req.body;
-  // Raw string body
-  if (req.body && typeof req.body === 'string') {
-    try { return JSON.parse(req.body); } catch(_) { return {}; }
-  }
-  // Stream — read and parse manually
-  return new Promise((resolve) => {
-    let data = '';
-    req.on('data', chunk => { data += chunk; });
-    req.on('end', () => {
-      try { resolve(JSON.parse(data)); } catch(_) { resolve({}); }
-    });
-    req.on('error', () => resolve({}));
-  });
-}
-
 module.exports = async function handler(req, res) {
+  // CORS headers - allow all origins for development, restrict in production
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+  
+  // Handle preflight
+  if (req.method === 'OPTIONS') {
+    return res.status(200).end();
+  }
+
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const body     = await parseBody(req);
-  const password = body.password;
+  let password;
+  
+  try {
+    // Vercel automatically parses JSON bodies in most cases
+    // But we'll handle both parsed and unparsed scenarios
+    if (typeof req.body === 'string') {
+      const parsed = JSON.parse(req.body);
+      password = parsed.password;
+    } else if (req.body && typeof req.body === 'object') {
+      password = req.body.password;
+    } else {
+      return res.status(400).json({ ok: false, reason: 'Invalid request body' });
+    }
+  } catch (e) {
+    console.error('Body parsing error:', e);
+    return res.status(400).json({ ok: false, reason: 'Invalid JSON' });
+  }
 
   if (!password || typeof password !== 'string') {
-    return res.status(400).json({ ok: false, reason: 'missing password' });
+    return res.status(400).json({ ok: false, reason: 'Password required' });
   }
 
   const secret = process.env.ADMIN_PASSWORD;
 
   if (!secret) {
-    console.error('ADMIN_PASSWORD env var is not set.');
-    return res.status(500).json({ ok: false, reason: 'server misconfiguration' });
+    console.error('ADMIN_PASSWORD environment variable is not set');
+    return res.status(500).json({ ok: false, reason: 'Server misconfiguration' });
   }
 
-  if (password !== secret) {
-    await new Promise(resolve => setTimeout(resolve, 400));
-    return res.status(401).json({ ok: false, reason: 'wrong password' });
+  // Constant-time comparison to prevent timing attacks
+  const isValid = crypto.timingSafeEqual(
+    Buffer.from(password),
+    Buffer.from(secret)
+  );
+
+  if (!isValid) {
+    // Add small delay to prevent brute force
+    await new Promise(resolve => setTimeout(resolve, 500));
+    return res.status(401).json({ ok: false, reason: 'Invalid credentials' });
   }
 
-  const ts    = Date.now();
+  // Generate session token
+  const ts = Date.now();
   const token = crypto
     .createHmac('sha256', secret)
     .update(String(ts))
     .digest('hex');
 
-  return res.status(200).json({ ok: true, token, ts });
+  return res.status(200).json({ 
+    ok: true, 
+    token, 
+    ts 
+  });
 };
