@@ -251,16 +251,6 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
-    authDomain: "seistudiomessageboard.firebaseapp.com",
-    databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
-    projectId: "seistudiomessageboard",
-    storageBucket: "seistudiomessageboard.firebasestorage.app",
-    messagingSenderId: "683797738985",
-    appId: "1:683797738985:web:3e79b66988d1498fddc778"
-  };
-
   let db = null, msgRef = null;
   const MAX_MSGS = 75;
   const renderedIds = new Set();
@@ -387,12 +377,29 @@
   /* ── FIREBASE ── */
   async function initFirebase() {
     try {
+      // Fetch Firebase config from serverless function
+      const configResponse = await fetch('/api/firebase-config');
+      if (!configResponse.ok) {
+        console.error('Failed to fetch Firebase config:', configResponse.status);
+        // Continue with offline mode - render existing data
+        renderArtGrid();
+        renderLogList();
+        return;
+      }
+      
+      const firebaseConfig = await configResponse.json();
+      
       firebase.initializeApp(firebaseConfig);
       db = firebase.database();
       msgRef = db.ref('board/messages');
       msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
       onFirebaseReady();
-    } catch(e) { console.error('Firebase init failed:', e); }
+    } catch(e) {
+      console.error('Firebase init failed:', e);
+      // Graceful fallback - render static data
+      renderArtGrid();
+      renderLogList();
+    }
   }
 
   function normalizeImages(val) {
@@ -419,7 +426,7 @@
       artData = [];
       snap.forEach(child => {
         const d = child.val(); d.images = normalizeImages(d.images); d.id = child.key; d.category = d.category || 'other'; 
-        artData.unshift(d); // Sort reverse-chronologically (newest first)
+        artData.unshift(d);
       });
       renderArtGrid();
     }).catch(e => console.error('Art load failed:', e));
@@ -429,7 +436,7 @@
       snap.forEach(child => {
         const d = child.val();
         d.tags = Array.isArray(d.tags) ? d.tags : [];
-        logsData.unshift({ id: child.key, ...d }); // Sort reverse-chronologically (newest first)
+        logsData.unshift({ id: child.key, ...d });
       });
       renderLogList();
     }).catch(e => console.error('Logs load failed:', e));
@@ -572,7 +579,6 @@
     const canvas = document.getElementById('boardCanvas');
     const popup = document.createElement('div'); popup.className='comment-popup';
     
-    // Fix: directly layout with percentage to survive background tab initialization
     popup.style.left = msg.xPct + '%';
     popup.style.top  = msg.yPct + '%';
     
@@ -586,7 +592,7 @@
   function addComment(preset=null) {
     const input = document.getElementById('commentInput');
     const text = preset || input.value.trim(); if (!text) return;
-    if (!msgRef) { console.warn('Board unavailable.'); return; }
+    if (!msgRef) { console.warn('Board unavailable - Firebase not connected.'); return; }
     if (!preset && !canPost()) {
       const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
     }
@@ -604,6 +610,7 @@
   function openModal(id){document.getElementById(id).style.display='flex';} function closeModal(id){document.getElementById(id).style.display='none';}
   function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
   function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
+  
   async function verifyAdminPass(){
     const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
     err.style.display='none';
@@ -614,9 +621,16 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw })
       });
+      
+      if (!res.ok) {
+        err.textContent = '// ACCESS DENIED.';
+        err.style.display = 'block';
+        return;
+      }
+      
       const data = await res.json();
       if (data.ok) {
-        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: 'admin_' + Date.now(), ts: Date.now() }));
+        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
         closeAdminLogin();
         setAdminMode(true);
         openModal('adminPanelModal');
@@ -630,6 +644,7 @@
       console.error('Auth failed:', e);
     }
   }
+  
   function closeAdminPanel(){closeModal('adminPanelModal');}
   function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
 
@@ -641,7 +656,7 @@
     if(db){
       db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{
         piece.id=ref.key;
-        artData.unshift(piece); // Prepend locally so it displays at the top
+        artData.unshift(piece);
         renderArtGrid();
       }).catch(e=>console.error('Art push failed:',e));
     } else {
@@ -671,7 +686,7 @@
       db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
         .then(ref => {
           log.id = ref.key;
-          logsData.unshift(log); // Prepend locally so it displays at the top
+          logsData.unshift(log);
           renderLogList();
         })
         .catch(e => console.error('Log push failed:', e));
