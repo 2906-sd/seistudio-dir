@@ -11,19 +11,24 @@
 </head>
 <body>
 
-<div class="page-wrapper">
+<div class="top-bar">
+  <div class="top-bar-left">
+    <span class="site-title-top">// SEISTUDIO. //</span>
+    <div class="marquee-top">
+      <div class="marquee-container-top">
+        <div class="marquee-content-top">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+      </div>
+    </div>
+  </div>
+  <div class="top-bar-right">
+    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">MENU</button>
+    <button class="dark-toggle-top" id="darkToggleTop" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
+  </div>
+</div>
 
-  <div class="left-col">
+<div class="page-wrapper">
+  <div class="left-col" id="leftCol">
     <nav id="navbar">
-      <div class="nav-header">
-        <div class="marquee-container">
-          <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
-        </div>
-      </div>
-      <div class="logo-area">
-        <span class="logo" onclick="showPage('home')">NAV</span>
-        <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
-      </div>
       <div class="nav-links" id="navLinks">
         <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
         <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
@@ -33,26 +38,13 @@
       </div>
       <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
     </nav>
-
-    <div class="status-pill-container">
-      <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
-        <span class="status-dot">⟡</span>
-        <div class="pill-expanded-content">
-          <span id="liveDateTime">...</span>
-          <span>// ACTIVE</span>
-        </div>
-      </div>
-    </div>
-
-    <button class="dark-toggle-standalone" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
   </div>
 
   <main>
     <section id="home" class="active">
-      <span class="site-title">// SEISTUDIO. //</span>
-      <h1 class="hero-text">
-        A collection of <br />colors from the <i>heart,</i> silly things,<br />and
-        <i>unsent</i> drafts. Made unapologetically by Sage.
+      <h1 class="hero-text" id="heroText">
+        A collection of <br />colors from the <span class="color-swap"><i>heart,</i></span> silly things,<br />and
+        <span class="color-swap"><i>unsent</i></span> drafts. Made unapologetically by Sage.
       </h1>
     </section>
 
@@ -236,6 +228,9 @@
 
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
+
+        <label class="admin-label">Sticker Images — one URL per line (optional PNG)</label>
+        <textarea id="logStickers" class="admin-input" placeholder="https://example.com/sticker1.png&#10;https://example.com/sticker2.png"></textarea>
 
         <label class="admin-label">Tags — space or comma separated (# optional)</label>
         <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
@@ -436,6 +431,7 @@
       snap.forEach(child => {
         const d = child.val();
         d.tags = Array.isArray(d.tags) ? d.tags : [];
+        d.stickers = Array.isArray(d.stickers) ? d.stickers : [];
         logsData.unshift({ id: child.key, ...d });
       });
       renderLogList();
@@ -451,13 +447,19 @@
   /* ── DARK MODE ── */
   function toggleDark() {
     const dark = document.body.classList.toggle('dark');
-    document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
+    const toggleElements = [document.getElementById('darkToggleTop')];
+    toggleElements.forEach(el => {
+      if (el) el.textContent = dark ? '◑ MODE' : '◐ MODE';
+    });
     try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
   }
   try {
     if (localStorage.getItem('darkMode') === '1') {
       document.body.classList.add('dark');
-      document.getElementById('darkToggle').textContent = '◑ MODE';
+      const toggleElements = [document.getElementById('darkToggleTop')];
+      toggleElements.forEach(el => {
+        if (el) el.textContent = '◑ MODE';
+      });
     }
   } catch(_) {}
 
@@ -468,10 +470,10 @@
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
     if (link) link.classList.add('active');
-    document.getElementById('navLinks').classList.remove('show');
+    document.getElementById('leftCol').classList.remove('show');
     window.scrollTo(0, 0);
   }
-  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+  function toggleMenu() { document.getElementById('leftCol').classList.toggle('show'); }
 
   /* ── RENDER ── */
   function renderArtGrid() {
@@ -511,13 +513,25 @@
 
   function readLog(i) {
     const log = logsData[i]; if (!log) return;
+    let stickerHTML = '';
+    if (log.stickers && log.stickers.length > 0) {
+      stickerHTML = `<div class="log-sticker-gallery">${log.stickers.map((url, idx) => `<div class="log-sticker-item" id="sticker-${idx}"><img src="${url}" alt="sticker" draggable="false" style="-webkit-user-select:none;user-select:none;"/></div>`).join('')}</div>`;
+    }
     document.getElementById('log-content').innerHTML = `
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+      <div class="log-container-body">${log.body}</div>
+      ${stickerHTML}
       ${renderTagsHTML(log.tags)}
     `;
     showPage('log-reader');
+    makeLogStickersEditable(i);
+  }
+
+  function makeLogStickersEditable(logIndex) {
+    document.querySelectorAll('.log-sticker-item').forEach((sticker, idx) => {
+      makeDraggable(sticker, sticker, document.getElementById('log-content'));
+    });
   }
 
   /* ── LIGHTBOX ── */
@@ -678,9 +692,11 @@
     const yy = String(now.getFullYear()).slice(-2);
     const num = String(logsData.length + 1).padStart(2, '0');
     const meta = `LOG_${num}.TXT // ${mm}.${yy}`;
-    
+
     const tags = parseTags(document.getElementById('logTags').value);
-    const log = { title, meta, body, tags };
+    const stickerRaw = document.getElementById('logStickers').value.trim();
+    const stickers = stickerRaw ? stickerRaw.split('\n').map(u => u.trim()).filter(Boolean) : [];
+    const log = { title, meta, body, tags, stickers };
 
     if(db){
       db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
@@ -695,9 +711,9 @@
       renderLogList();
     }
 
-    ['logTitle', 'logBody', 'logTags'].forEach(id => document.getElementById(id).value = '');
-    const s = document.getElementById('logSuccess'); 
-    s.style.display = 'block'; 
+    ['logTitle', 'logBody', 'logTags', 'logStickers'].forEach(id => document.getElementById(id).value = '');
+    const s = document.getElementById('logSuccess');
+    s.style.display = 'block';
     setTimeout(() => { s.style.display = 'none'; }, 3000);
   }
 
@@ -724,6 +740,64 @@
     if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
   });
 
+  /* ── TYPING ANIMATION ── */
+  async function typeHero() {
+    const heroEl = document.getElementById('heroText');
+    if (!heroEl) return;
+
+    heroEl.innerHTML = '';
+    const delay = (ms) => new Promise(r => setTimeout(r, ms));
+
+    let textNode = document.createTextNode('');
+    heroEl.appendChild(textNode);
+
+    const parts = [
+      { text: 'A collection of colors from the ', isColored: false },
+      { text: 'heart,', isColored: true },
+      { text: ' silly things,', isColored: false, hasBreak: true },
+      { text: 'and ', isColored: false },
+      { text: 'unsent', isColored: true },
+      { text: ' drafts. Made unapologetically by Sage.', isColored: false }
+    ];
+
+    for (const part of parts) {
+      if (part.isColored) {
+        const span = document.createElement('span');
+        span.className = 'color-swap';
+        const i = document.createElement('i');
+        span.appendChild(i);
+        heroEl.appendChild(span);
+
+        for (const char of part.text) {
+          i.textContent += char;
+          await delay(30);
+        }
+
+        for (let k = part.text.length - 1; k >= 0; k--) {
+          i.textContent = part.text.substring(0, k);
+          await delay(20);
+        }
+
+        for (let k = 0; k < part.text.length; k++) {
+          i.textContent = part.text.substring(0, k + 1);
+          await delay(30);
+        }
+      } else {
+        for (const char of part.text) {
+          textNode.textContent += char;
+          await delay(30);
+        }
+      }
+
+      if (part.hasBreak) {
+        const br = document.createElement('br');
+        heroEl.appendChild(br);
+        textNode = document.createTextNode('');
+        heroEl.appendChild(textNode);
+      }
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
     renderArtGrid(); renderLogList(); initCategoryTabs();
     const input=document.getElementById('commentInput');
@@ -732,6 +806,7 @@
     document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
     if(isAdminSession()) setAdminMode(true);
     initImageDrag(); initWheelZoom();
+    typeHero();
   });
 
   window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
