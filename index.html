@@ -11,139 +11,119 @@
 </head>
 <body>
 
+<!-- TOP BAR -->
 <div class="top-bar">
-  <div class="top-bar-left">
-    <span class="site-title-top">// SEISTUDIO. //</span>
-    <div class="marquee-top">
-      <div class="marquee-container-top">
-        <div class="marquee-content-top">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+  <div class="site-logo" onclick="showPage('home')">// SEISTUDIO. //</div>
+  
+  <div class="marquee-container">
+    <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+  </div>
+
+  <div class="nav-toggle-container">
+    <div class="status-pill" id="statusPill" onclick="togglePill()" title="Toggle status">
+      <span class="status-dot">⟡</span>
+      <div class="pill-expanded-content">
+        <span id="liveDateTime">...</span>
+        <span>// ACTIVE</span>
       </div>
     </div>
-  </div>
-  <div class="top-bar-right">
-    <button class="nav-hamburger" id="navHamburger" onclick="toggleMenu()">MENU</button>
-    <button class="dark-toggle-top" id="darkToggleTop" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
+    <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐</button>
+    <button class="nav-trigger" id="navTrigger" onclick="toggleNav()">MENU</button>
   </div>
 </div>
 
-<div class="page-wrapper">
-  <div class="left-col" id="leftCol">
-    <nav id="navbar">
-      <div class="nav-links" id="navLinks">
-        <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
-        <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
-        <span class="nav-item" onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
-        <span class="nav-item" onclick="showPage('board')" id="link-board">BULLETIN<span>03</span></span>
-        <span class="nav-item" onclick="showPage('about')" id="link-about">PROFILE<span>04</span></span>
-      </div>
-      <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</div>
-    </nav>
+<!-- SIDE NAV (slides in from right) -->
+<nav id="sideNav" class="side-nav">
+  <div class="side-nav-header">
+    <div class="win-dots"><span></span><span></span><span></span></div>
+    <span>NAVIGATION</span>
+    <button class="side-nav-close" onclick="toggleNav()">× CLOSE</button>
   </div>
+  <div class="nav-links">
+    <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
+    <span class="nav-item" onclick="showPage('art')" id="link-art">VISUALS<span>01</span></span>
+    <span class="nav-item" onclick="showPage('writing')" id="link-writing">LOGS<span>02</span></span>
+    <span class="nav-item" onclick="showPage('about')" id="link-about">PROFILE<span>03</span></span>
+  </div>
+  <div class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈ ADMIN</div>
+</nav>
 
-  <main>
-    <section id="home" class="active">
-      <h1 class="hero-text" id="heroText">
-        A collection of <br />colors from the <span class="color-swap"><i>heart,</i></span> silly things,<br />and
-        <span class="color-swap"><i>unsent</i></span> drafts. Made unapologetically by Sage.
-      </h1>
-    </section>
+<!-- MAIN CONTENT -->
+<main class="main-content">
+  <!-- HOME -->
+  <section id="home" class="active">
+    <h1 class="hero-text" id="heroText"></h1>
+  </section>
 
-    <section id="art">
-      <div class="section-header">
-        <h1>VISUAL<span>S</span></h1>
-        <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
+  <!-- ART -->
+  <section id="art">
+    <div class="section-header">
+      <h1>VISUAL<span>S</span></h1>
+      <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
+    </div>
+    <div class="category-nav" id="categoryNav">
+      <div class="category-tab active" data-category="all">ALL</div>
+      <div class="category-tab" data-category="painting">PAINTINGS</div>
+      <div class="category-tab" data-category="illustration">ILLUSTRATION</div>
+      <div class="category-tab" data-category="graphic">GRAPHIC DESIGN</div>
+      <div class="category-tab" data-category="other">OTHER</div>
+    </div>
+    <div class="art-feed" id="artFeed"></div>
+  </section>
+
+  <!-- WRITING -->
+  <section id="writing">
+    <div class="section-header">
+      <h1>LOG<span>S</span></h1>
+      <p>// notes, drafts, and things that don't have anywhere to go.</p>
+    </div>
+    <div class="blog-list" id="logList"></div>
+  </section>
+
+  <!-- LOG READER -->
+  <section id="log-reader">
+    <a href="javascript:void(0)" onclick="showPage('writing')" class="back-link">← BACK_TO_LIST</a>
+    <div id="log-content" class="log-container"></div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="about-card">
+      <div class="about-header">
+        <div class="win-dots"><span></span><span></span><span></span></div>
+        <span class="about-header-title">USER_PROFILE.EXE</span>
+        <span>_ X</span>
       </div>
-
-      <div class="category-nav" id="categoryNav">
-        <div class="category-tab active" data-category="all">ALL</div>
-        <div class="category-tab" data-category="painting">PAINTINGS</div>
-        <div class="category-tab" data-category="illustration">ILLUSTRATION</div>
-        <div class="category-tab" data-category="graphic">GRAPHIC DESIGN</div>
-        <div class="category-tab" data-category="other">OTHER</div>
-      </div>
-
-      <div class="art-feed" id="artFeed"></div>
-    </section>
-
-    <section id="writing">
-      <div class="section-header">
-        <h1>LOG<span>S</span></h1>
-        <p>// notes, drafts, and things that don't have anywhere to go.</p>
-      </div>
-      <div class="blog-list" id="logList"></div>
-    </section>
-
-    <section id="log-reader">
-      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
-      <div id="log-content" class="log-container"></div>
-    </section>
-
-    <section id="board">
-      <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
-        Public Archive // Leave a piece of yourself here...
-      </h2>
-      <div id="board-section">
-        <div class="board-canvas" id="boardCanvas"></div>
-        <div class="board-controls">
-          <div class="board-input-row">
-            <input class="board-input" type="text" id="commentInput" placeholder="Say something..." maxlength="500" />
-            <button class="board-submit" onclick="submitComment()">POST</button>
-          </div>
-          <div class="char-counter" id="charCounter">0 / 500</div>
-          <div class="spam-warning" id="spamWarning">// Please wait before posting again...</div>
-        </div>
-        <div class="board-resize-handle" id="boardResizeHandle" title="Drag to resize"></div>
-      </div>
-    </section>
-
-    <section id="about">
-      <div class="about-card">
-        <div class="about-header">
-          <span>USER_PROFILE.EXE</span><span>_ X</span>
-        </div>
-        <div class="about-body">
-          <div class="profile-header">
-            <img src="https://img.icons8.com/?size=100&id=z-JBA_KtSkxG&format=png&color=000000" class="profile-img" alt="Avatar" />
-            <div class="profile-meta">
-              <h3>Sage</h3>
-              <p>Art Student // 24</p>
-            </div>
-          </div>
-          <p class="about-bio">Multimedia student exploring human emotion, identity and things that heal the whimsy inside. DFW based. (the links don't work.)</p>
-          <div class="tag-list">
-            <span class="tag">#ART</span>
-            <span class="tag">#MULTIMEDIA</span>
-            <span class="tag">#SOME BULLLLLSHITTTTTT</span>
-          </div>
-          <div class="about-links">
-            <a href="#">INSTAGRAM</a>
-            <a href="#">EMAIL</a>
+      <div class="about-body">
+        <div class="profile-header">
+          <img src="https://img.icons8.com/?size=100&id=z-JBA_KtSkxG&format=png&color=000000" class="profile-img" alt="Avatar" />
+          <div class="profile-meta">
+            <h3>Sage</h3>
+            <p>Art Student // 24</p>
           </div>
         </div>
+        <p class="about-bio">Multimedia student exploring human emotion, identity and things that heal the whimsy inside. DFW based. (the links don't work.)</p>
+        <div class="tag-list">
+          <span class="tag">#ART</span>
+          <span class="tag">#MULTIMEDIA</span>
+          <span class="tag">#SOME BULLLLLSHITTTTTT</span>
+        </div>
+        <div class="about-links">
+          <a href="#">INSTAGRAM</a>
+          <a href="#">EMAIL</a>
+        </div>
       </div>
+    </div>
 
-      <div class="sticker" style="top:6%; left:74%; transform:rotate(-14deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:24%; left:82%; transform:rotate(9deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:48%; left:76%; transform:rotate(-6deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:65%; left:60%; transform:rotate(12deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/fox-Photoroom.png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
-      </div>
-    </section>
-  </main>
-</div>
+    <div id="stickersContainer"></div>
+  </section>
+</main>
 
+<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <div class="lightbox-content" onclick="event.stopPropagation()">
     <div class="lb-toolbar">
+      <div class="win-dots"><span></span><span></span><span></span></div>
       <span class="lb-toolbar-title" id="lb-title">FILE</span>
       <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
     </div>
@@ -170,10 +150,12 @@
   </div>
 </div>
 
+<!-- ADMIN LOGIN -->
 <div id="adminLoginModal" class="modal-overlay" style="display:none">
   <div class="admin-box" style="max-width:360px">
     <div class="admin-toolbar">
-      <span>ADMIN_ACCESS.EXE</span>
+      <div class="win-dots"><span></span><span></span><span></span></div>
+      <span class="admin-toolbar-label">ADMIN_ACCESS.EXE</span>
       <button onclick="closeAdminLogin()">× CLOSE</button>
     </div>
     <div class="admin-body">
@@ -185,39 +167,37 @@
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
-      <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
+      <div class="win-dots"><span></span><span></span><span></span></div>
+      <span class="admin-toolbar-label">ADMIN_PANEL.EXE // SAGE_STUDIO</span>
       <button onclick="closeAdminPanel()">× LOCK</button>
     </div>
     <div class="admin-body">
       <div class="admin-tabs">
         <button class="admin-tab active" id="tab-art" onclick="switchAdminTab('art')">ADD ART</button>
         <button class="admin-tab" id="tab-logs" onclick="switchAdminTab('logs')">ADD LOG</button>
+        <button class="admin-tab" id="tab-stickers" onclick="switchAdminTab('stickers')">ADD STICKER</button>
       </div>
 
       <div id="adminArtForm" class="admin-form">
         <label class="admin-label">Title</label>
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
-
         <label class="admin-label">Category</label>
-        <select id="artCategory" class="admin-input" style="cursor:pointer;">
+        <select id="artCategory" class="admin-input">
           <option value="painting">Painting</option>
           <option value="illustration">Illustration</option>
           <option value="graphic">Graphic Design</option>
           <option value="other">Other</option>
         </select>
-
-        <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
+        <label class="admin-label">Image URLs — one per line (first = grid thumbnail)</label>
         <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
-
         <label class="admin-label">Artist Note</label>
         <textarea id="artDesc" class="admin-input" placeholder="Say something about the piece..."></textarea>
-
         <label class="admin-label">Date / Meta tag</label>
         <input type="text" id="artMeta" class="admin-input" placeholder="2026" />
-
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddArt()">POST ART →</button>
         <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
@@ -225,34 +205,49 @@
       <div id="adminLogsForm" class="admin-form" style="display:none">
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
-
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
-
-        <label class="admin-label">Sticker Images — one URL per line (optional PNG)</label>
-        <textarea id="logStickers" class="admin-input" placeholder="https://example.com/sticker1.png&#10;https://example.com/sticker2.png"></textarea>
-
         <label class="admin-label">Tags — space or comma separated (# optional)</label>
         <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
-
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
+      </div>
+
+      <div id="adminStickersForm" class="admin-form" style="display:none">
+        <label class="admin-label">Sticker Image URL</label>
+        <input type="text" id="stickerUrl" class="admin-input" placeholder="https://..." />
+        <label class="admin-label">Position (% from top)</label>
+        <input type="number" id="stickerTop" class="admin-input" placeholder="10" min="0" max="90" />
+        <label class="admin-label">Position (% from left)</label>
+        <input type="number" id="stickerLeft" class="admin-input" placeholder="70" min="0" max="90" />
+        <label class="admin-label">Rotation (degrees)</label>
+        <input type="number" id="stickerRotation" class="admin-input" placeholder="-14" min="-180" max="180" />
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddSticker()">ADD STICKER →</button>
+        <p id="stickerSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
     </div>
   </div>
 </div>
 
+<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  let db = null, msgRef = null;
-  const MAX_MSGS = 75;
-  const renderedIds = new Set();
+  const firebaseConfig = {
+    apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
+    authDomain: "seistudiomessageboard.firebaseapp.com",
+    databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
+    projectId: "seistudiomessageboard",
+    storageBucket: "seistudiomessageboard.firebasestorage.app",
+    messagingSenderId: "683797738985",
+    appId: "1:683797738985:web:3e79b66988d1498fddc778"
+  };
 
-  /* ── CATEGORY ── */
+  let db = null;
   let activeCategory = 'all';
 
+  /* ── CATEGORY ── */
   function filterCategory(category) {
     activeCategory = category;
     document.querySelectorAll('.category-tab').forEach(tab => {
@@ -270,10 +265,7 @@
   /* ── TAG HELPERS ── */
   function parseTags(raw) {
     if (!raw) return [];
-    return raw
-      .split(/[\s,]+/)
-      .map(t => t.replace(/^#+/, '').trim().toLowerCase())
-      .filter(Boolean);
+    return raw.split(/[\s,]+/).map(t => t.replace(/^#+/, '').trim().toLowerCase()).filter(Boolean);
   }
 
   function renderTagsHTML(tags) {
@@ -340,16 +332,6 @@
     }, { passive: false });
   }
 
-  /* ── SPAM ── */
-  const SPAM_COOLDOWN_MS = 60000, LAST_POST_KEY = 'sei_last_post_time';
-  function canPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); return !l || Date.now() - parseInt(l) >= SPAM_COOLDOWN_MS; } catch(_) { return true; }
-  }
-  function updateLastPostTime() { try { localStorage.setItem(LAST_POST_KEY, String(Date.now())); } catch(_) {} }
-  function getTimeUntilCanPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); if (!l) return 0; return Math.max(0, Math.ceil((SPAM_COOLDOWN_MS - (Date.now() - parseInt(l))) / 1000)); } catch(_) { return 0; }
-  }
-
   /* ── ADMIN AUTH ── */
   const ADMIN_TOKEN_KEY = 'sei_admin_token', ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
   function isAdminSession() {
@@ -360,40 +342,32 @@
   /* ── DATA ── */
   let artData = [
     { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
-    { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
-    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600','https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'multi-pic carousel tester.', meta:'2025' }
+    { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' }
   ];
 
   let logsData = [
-    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out.", tags:['personal','wip'] },
-    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk", tags:['rambling'] }
+    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out.", tags:['personal','wip'] }
+  ];
+
+  let stickersData = [
+    {url:'https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png',top:6,left:74,rotation:-14},
+    {url:'https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png',top:24,left:82,rotation:9},
+    {url:'https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png',top:48,left:76,rotation:-6},
+    {url:'https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/fox-Photoroom.png',top:65,left:60,rotation:12},
+    {url:'https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png',top:72,left:82,rotation:-10}
   ];
 
   /* ── FIREBASE ── */
   async function initFirebase() {
     try {
-      // Fetch Firebase config from serverless function
-      const configResponse = await fetch('/api/firebase-config');
-      if (!configResponse.ok) {
-        console.error('Failed to fetch Firebase config:', configResponse.status);
-        // Continue with offline mode - render existing data
-        renderArtGrid();
-        renderLogList();
-        return;
-      }
-      
-      const firebaseConfig = await configResponse.json();
-      
       firebase.initializeApp(firebaseConfig);
       db = firebase.database();
-      msgRef = db.ref('board/messages');
-      msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
       onFirebaseReady();
     } catch(e) {
       console.error('Firebase init failed:', e);
-      // Graceful fallback - render static data
       renderArtGrid();
       renderLogList();
+      renderStickers();
     }
   }
 
@@ -404,23 +378,13 @@
   }
 
   function onFirebaseReady() {
-    const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-    msgRef.orderByChild('timestamp').endAt(Date.now() - MSG_TTL_MS).once('value', snap => {
-      snap.forEach(c => c.ref.remove());
-    }).catch(e => console.error('Expiry purge failed:', e));
-
-    db.ref('board/seeded').once('value', snap => {
-      if (!snap.val()) {
-        db.ref('board/seeded').set(true);
-        ['Welcome to the board!','Sage worked really hard on this btw (her dad had to help).','be nice, you only get 500 chars :)','⋆˚꩜｡','click + drag me!']
-          .forEach(t => addComment(t));
-      }
-    }).catch(e => console.error('Seed check failed:', e));
-
     db.ref('content/art').orderByChild('timestamp').once('value', snap => {
       artData = [];
       snap.forEach(child => {
-        const d = child.val(); d.images = normalizeImages(d.images); d.id = child.key; d.category = d.category || 'other'; 
+        const d = child.val();
+        d.images = normalizeImages(d.images);
+        d.id = child.key;
+        d.category = d.category || 'other';
         artData.unshift(d);
       });
       renderArtGrid();
@@ -431,35 +395,30 @@
       snap.forEach(child => {
         const d = child.val();
         d.tags = Array.isArray(d.tags) ? d.tags : [];
-        d.stickers = Array.isArray(d.stickers) ? d.stickers : [];
         logsData.unshift({ id: child.key, ...d });
       });
       renderLogList();
     }).catch(e => console.error('Logs load failed:', e));
-  }
 
-  /* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
-  function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
-  function nameFromKey(key) { let h=0; for(let i=0;i<key.length;i++) h=(Math.imul(h,31)+key.charCodeAt(i))>>>0; return `Anon. ${ANON_ADJ[h%ANON_ADJ.length]} ${ANON_NOUN[(h>>>8)%ANON_NOUN.length]}`; }
+    db.ref('content/stickers').orderByChild('timestamp').once('value', snap => {
+      stickersData = [];
+      snap.forEach(child => {
+        stickersData.push({ id: child.key, ...child.val() });
+      });
+      renderStickers();
+    }).catch(e => console.error('Stickers load failed:', e));
+  }
 
   /* ── DARK MODE ── */
   function toggleDark() {
     const dark = document.body.classList.toggle('dark');
-    const toggleElements = [document.getElementById('darkToggleTop')];
-    toggleElements.forEach(el => {
-      if (el) el.textContent = dark ? '◑ MODE' : '◐ MODE';
-    });
+    document.getElementById('darkToggle').textContent = dark ? '◑' : '◐';
     try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
   }
   try {
     if (localStorage.getItem('darkMode') === '1') {
       document.body.classList.add('dark');
-      const toggleElements = [document.getElementById('darkToggleTop')];
-      toggleElements.forEach(el => {
-        if (el) el.textContent = '◑ MODE';
-      });
+      document.getElementById('darkToggle').textContent = '◑';
     }
   } catch(_) {}
 
@@ -470,10 +429,18 @@
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
     if (link) link.classList.add('active');
-    document.getElementById('leftCol').classList.remove('show');
+    toggleNav(false);
     window.scrollTo(0, 0);
   }
-  function toggleMenu() { document.getElementById('leftCol').classList.toggle('show'); }
+
+  function toggleNav(state) {
+    const nav = document.getElementById('sideNav');
+    if (state === false) {
+      nav.classList.remove('open');
+    } else {
+      nav.classList.toggle('open');
+    }
+  }
 
   /* ── RENDER ── */
   function renderArtGrid() {
@@ -481,7 +448,7 @@
     feed.innerHTML = '';
     const filtered = activeCategory === 'all' ? artData : artData.filter(p => p.category === activeCategory);
     if (!filtered.length) {
-      feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';
+      feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1;">// No pieces in this category yet.</p>';
       return;
     }
     filtered.forEach(piece => {
@@ -503,7 +470,7 @@
       el.onclick = () => readLog(i);
       el.innerHTML = `
         <p class="post-label">${log.meta}</p>
-        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.4rem;">${log.title}</h2>
         ${renderTagsHTML(log.tags)}
         <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>
       `;
@@ -512,44 +479,71 @@
   }
 
   function readLog(i) {
-    const log = logsData[i]; if (!log) return;
-    let stickerHTML = '';
-    if (log.stickers && log.stickers.length > 0) {
-      stickerHTML = `<div class="log-sticker-gallery">${log.stickers.map((url, idx) => `<div class="log-sticker-item" id="sticker-${idx}"><img src="${url}" alt="sticker" draggable="false" style="-webkit-user-select:none;user-select:none;"/></div>`).join('')}</div>`;
-    }
+    const log = logsData[i];
+    if (!log) return;
+    const bodyWithBreaks = log.body.replace(/\n/g, '<br>');
     document.getElementById('log-content').innerHTML = `
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div class="log-container-body">${log.body}</div>
-      ${stickerHTML}
+      <div class="log-body-text">${bodyWithBreaks}</div>
       ${renderTagsHTML(log.tags)}
     `;
     showPage('log-reader');
-    makeLogStickersEditable(i);
   }
 
-  function makeLogStickersEditable(logIndex) {
-    document.querySelectorAll('.log-sticker-item').forEach((sticker, idx) => {
-      makeDraggable(sticker, sticker, document.getElementById('log-content'));
+  function renderStickers() {
+    const container = document.getElementById('stickersContainer');
+    container.innerHTML = '';
+    stickersData.forEach((sticker, idx) => {
+      const el = document.createElement('div');
+      el.className = 'sticker';
+      el.style.top = sticker.top + '%';
+      el.style.left = sticker.left + '%';
+      el.style.transform = `rotate(${sticker.rotation}deg)`;
+      el.innerHTML = `<img src="${sticker.url}" alt="sticker" /><button class="admin-delete-btn sticker-delete" onclick="event.stopPropagation();adminDeleteSticker(${idx})">×</button>`;
+      container.appendChild(el);
+      makeDraggable(el, el, document.getElementById('about'));
     });
   }
 
   /* ── LIGHTBOX ── */
   let lbPiece = null, lbIdx = 0, lbArtIndex = -1;
-  function openLightbox(i) { lbPiece = artData[i]; lbIdx = 0; lbArtIndex = i; resetZoom(); renderLightbox(); document.getElementById('lightbox').classList.add('show'); }
+  function openLightbox(i) {
+    lbPiece = artData[i];
+    lbIdx = 0;
+    lbArtIndex = i;
+    resetZoom();
+    renderLightbox();
+    document.getElementById('lightbox').classList.add('show');
+  }
+
   function renderLightbox() {
     const multi = lbPiece.images.length > 1;
     document.getElementById('lb-image').src = lbPiece.images[lbIdx];
     document.getElementById('lb-title').textContent = lbPiece.title;
-    document.getElementById('lb-desc').textContent = lbPiece.desc;
+    const descWithBreaks = (lbPiece.desc || '').replace(/\n/g, '<br>');
+    document.getElementById('lb-desc').innerHTML = descWithBreaks;
     document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
     const prev = document.getElementById('lb-prev'), next = document.getElementById('lb-next'), ctr = document.getElementById('lb-counter');
     prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
     if (multi) ctr.textContent = `${lbIdx+1} / ${lbPiece.images.length}`;
-    prev.disabled = lbIdx === 0; next.disabled = lbIdx === lbPiece.images.length - 1;
+    prev.disabled = lbIdx === 0;
+    next.disabled = lbIdx === lbPiece.images.length - 1;
   }
-  function lbNav(dir) { lbIdx = Math.max(0, Math.min(lbPiece.images.length-1, lbIdx+dir)); resetZoom(); renderLightbox(); }
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); lbPiece=null; lbIdx=0; lbArtIndex=-1; resetZoom(); }
+
+  function lbNav(dir) {
+    lbIdx = Math.max(0, Math.min(lbPiece.images.length-1, lbIdx+dir));
+    resetZoom();
+    renderLightbox();
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('show');
+    lbPiece=null;
+    lbIdx=0;
+    lbArtIndex=-1;
+    resetZoom();
+  }
 
   /* ── STATUS PILL ── */
   function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
@@ -557,7 +551,8 @@
     const now = new Date();
     const date = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
     const time = now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
-    const el = document.getElementById('liveDateTime'); if (el) el.textContent = `${date} // ${time}`;
+    const el = document.getElementById('liveDateTime');
+    if (el) el.textContent = `${date} // ${time}`;
   }
 
   /* ── DRAG UTILITY ── */
@@ -565,66 +560,52 @@
   function makeDraggable(el, handle, parent) {
     let ox=0,oy=0,sx=0,sy=0;
     handle.onmousedown = handle.ontouchstart = start;
-    function start(e) { e.preventDefault(); el.style.zIndex=++zTop; const {cx,cy}=pt(e); sx=cx;sy=cy; document.onmousemove=document.ontouchmove=move; document.onmouseup=document.ontouchend=stop; }
-    function move(e) { const {cx,cy}=pt(e); ox=sx-cx;oy=sy-cy;sx=cx;sy=cy; let t=el.offsetTop-oy,l=el.offsetLeft-ox; if(parent){t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));} el.style.top=t+'px';el.style.left=l+'px'; }
-    function stop() { document.onmousemove=document.onmouseup=null;document.ontouchmove=document.ontouchend=null; }
-    function pt(e) { const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e; return {cx:s.clientX,cy:s.clientY}; }
-  }
-
-  /* ── BOARD RESIZE ── */
-  function initBoardResize() {
-    const board = document.getElementById('board-section'), handle = document.getElementById('boardResizeHandle');
-    let startX,startY,startW,startH;
-    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM,{passive:false});document.addEventListener('touchend',onUp);}
-    function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
-    function onMM(e){resize(e.clientX,e.clientY);}
-    function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
-    function onUp(){document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onUp);}
-    handle.addEventListener('mousedown',e=>{e.preventDefault();onDown(e.clientX,e.clientY);});
-    handle.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];onDown(t.clientX,t.clientY);},{passive:false});
-  }
-
-  /* ── BULLETIN BOARD ── */
-  const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-  function renderMessage(id, msg) {
-    if (renderedIds.has(id)) return;
-    if (msg.timestamp && (Date.now()-msg.timestamp) > MSG_TTL_MS) return;
-    renderedIds.add(id);
-    const canvas = document.getElementById('boardCanvas');
-    const popup = document.createElement('div'); popup.className='comment-popup';
-    
-    popup.style.left = msg.xPct + '%';
-    popup.style.top  = msg.yPct + '%';
-    
-    const hdr = document.createElement('div'); hdr.className='comment-header';
-    const displayDate = msg.date || (msg.timestamp ? new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.') : '');
-    hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
-    const bdy = document.createElement('div'); bdy.className='comment-body'; bdy.textContent=msg.text;
-    popup.append(hdr,bdy); canvas.appendChild(popup); makeDraggable(popup,hdr,canvas);
-  }
-
-  function addComment(preset=null) {
-    const input = document.getElementById('commentInput');
-    const text = preset || input.value.trim(); if (!text) return;
-    if (!msgRef) { console.warn('Board unavailable - Firebase not connected.'); return; }
-    if (!preset && !canPost()) {
-      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
+    function start(e) {
+      e.preventDefault();
+      el.style.zIndex=++zTop;
+      const {cx,cy}=pt(e);
+      sx=cx;sy=cy;
+      document.onmousemove=document.ontouchmove=move;
+      document.onmouseup=document.ontouchend=stop;
     }
-    const xPct=Math.max(2,Math.random()*72), yPct=Math.max(2,Math.random()*68), now=new Date();
-    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),name:genAnonName(),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
-    msgRef.push(payload).then(()=>{
-      if(!preset) updateLastPostTime();
-      msgRef.orderByChild('timestamp').once('value',snap=>{ if(snap.numChildren()>MAX_MSGS) msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());}); });
-    }).catch(e=>console.error('Post failed:',e));
-    if (!preset) { input.value=''; const c=document.getElementById('charCounter'); c.textContent='0 / 500'; c.classList.remove('warn'); }
+    function move(e) {
+      const {cx,cy}=pt(e);
+      ox=sx-cx;oy=sy-cy;sx=cx;sy=cy;
+      let t=el.offsetTop-oy,l=el.offsetLeft-ox;
+      if(parent){
+        t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));
+        l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));
+      }
+      el.style.top=t+'px';el.style.left=l+'px';
+    }
+    function stop() {
+      document.onmousemove=document.onmouseup=null;
+      document.ontouchmove=document.ontouchend=null;
+    }
+    function pt(e) {
+      const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e;
+      return {cx:s.clientX,cy:s.clientY};
+    }
   }
-  function submitComment() { addComment(); }
 
   /* ── ADMIN ── */
-  function openModal(id){document.getElementById(id).style.display='flex';} function closeModal(id){document.getElementById(id).style.display='none';}
-  function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
-  function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
-  
+  function openModal(id){document.getElementById(id).style.display='flex';}
+  function closeModal(id){document.getElementById(id).style.display='none';}
+  function showAdminLogin(){
+    if(isAdminSession()){
+      setAdminMode(true);
+      openModal('adminPanelModal');
+      return;
+    }
+    openModal('adminLoginModal');
+    setTimeout(()=>document.getElementById('adminPassInput').focus(),50);
+  }
+  function closeAdminLogin(){
+    closeModal('adminLoginModal');
+    document.getElementById('adminPassInput').value='';
+    document.getElementById('adminPassError').style.display='none';
+  }
+
   async function verifyAdminPass(){
     const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
     err.style.display='none';
@@ -635,13 +616,11 @@
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ password: pw })
       });
-      
       if (!res.ok) {
         err.textContent = '// ACCESS DENIED.';
         err.style.display = 'block';
         return;
       }
-      
       const data = await res.json();
       if (data.ok) {
         sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: data.token, ts: data.ts }));
@@ -658,27 +637,41 @@
       console.error('Auth failed:', e);
     }
   }
-  
+
   function closeAdminPanel(){closeModal('adminPanelModal');}
-  function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
+  function switchAdminTab(tab){
+    document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';
+    document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';
+    document.getElementById('adminStickersForm').style.display=tab==='stickers'?'flex':'none';
+    document.getElementById('tab-art').classList.toggle('active',tab==='art');
+    document.getElementById('tab-logs').classList.toggle('active',tab==='logs');
+    document.getElementById('tab-stickers').classList.toggle('active',tab==='stickers');
+  }
 
   function adminAddArt(){
     if(!isAdminSession()) return;
-    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim()||String(new Date().getFullYear());
-    if(!title||!imgRaw) return; const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean); if(!images.length) return;
+    const title=document.getElementById('artTitle').value.trim(),
+          category=document.getElementById('artCategory').value,
+          imgRaw=document.getElementById('artImages').value.trim(),
+          desc=document.getElementById('artDesc').value.trim(),
+          meta=document.getElementById('artMeta').value.trim()||String(new Date().getFullYear());
+    if(!title||!imgRaw) return;
+    const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean);
+    if(!images.length) return;
     const piece={title,category,images,desc,meta};
     if(db){
-      db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{
-        piece.id=ref.key;
-        artData.unshift(piece);
-        renderArtGrid();
-      }).catch(e=>console.error('Art push failed:',e));
+      db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP})
+        .then(ref=>{piece.id=ref.key;artData.unshift(piece);renderArtGrid();})
+        .catch(e=>console.error('Art push failed:',e));
     } else {
       artData.unshift(piece);
       renderArtGrid();
     }
-    ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value=''); document.getElementById('artCategory').value='painting';
-    const s=document.getElementById('artSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
+    ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('artCategory').value='painting';
+    const s=document.getElementById('artSuccess');
+    s.style.display='block';
+    setTimeout(()=>{s.style.display='none';},3000);
   }
 
   function adminAddLog(){
@@ -686,130 +679,202 @@
     const title = document.getElementById('logTitle').value.trim();
     const body = document.getElementById('logBody').value.trim();
     if(!title || !body) return;
-
     const now = new Date();
     const mm = String(now.getMonth() + 1).padStart(2, '0');
     const yy = String(now.getFullYear()).slice(-2);
     const num = String(logsData.length + 1).padStart(2, '0');
     const meta = `LOG_${num}.TXT // ${mm}.${yy}`;
-
     const tags = parseTags(document.getElementById('logTags').value);
-    const stickerRaw = document.getElementById('logStickers').value.trim();
-    const stickers = stickerRaw ? stickerRaw.split('\n').map(u => u.trim()).filter(Boolean) : [];
-    const log = { title, meta, body, tags, stickers };
-
+    const log = { title, meta, body, tags };
     if(db){
       db.ref('content/logs').push({...log, timestamp: firebase.database.ServerValue.TIMESTAMP})
-        .then(ref => {
-          log.id = ref.key;
-          logsData.unshift(log);
-          renderLogList();
-        })
+        .then(ref => {log.id = ref.key;logsData.unshift(log);renderLogList();})
         .catch(e => console.error('Log push failed:', e));
     } else {
       logsData.unshift(log);
       renderLogList();
     }
-
-    ['logTitle', 'logBody', 'logTags', 'logStickers'].forEach(id => document.getElementById(id).value = '');
+    ['logTitle', 'logBody', 'logTags'].forEach(id => document.getElementById(id).value = '');
     const s = document.getElementById('logSuccess');
     s.style.display = 'block';
     setTimeout(() => { s.style.display = 'none'; }, 3000);
   }
 
+  function adminAddSticker(){
+    if(!isAdminSession()) return;
+    const url = document.getElementById('stickerUrl').value.trim();
+    const top = parseFloat(document.getElementById('stickerTop').value) || 10;
+    const left = parseFloat(document.getElementById('stickerLeft').value) || 70;
+    const rotation = parseFloat(document.getElementById('stickerRotation').value) || 0;
+    if(!url) return;
+    const sticker = {url, top, left, rotation};
+    if(db){
+      db.ref('content/stickers').push({...sticker, timestamp: firebase.database.ServerValue.TIMESTAMP})
+        .then(ref => {sticker.id = ref.key;stickersData.push(sticker);renderStickers();})
+        .catch(e => console.error('Sticker push failed:', e));
+    } else {
+      stickersData.push(sticker);
+      renderStickers();
+    }
+    ['stickerUrl','stickerTop','stickerLeft','stickerRotation'].forEach(id => document.getElementById(id).value = '');
+    const s = document.getElementById('stickerSuccess');
+    s.style.display = 'block';
+    setTimeout(() => { s.style.display = 'none'; }, 3000);
+  }
+
   function adminDeleteArt(idx){
-    if(!isAdminSession()) return; const piece=artData[idx]; if(!confirm(`Delete "${piece.title}"?`)) return;
-    if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}
-    else{artData.splice(idx,1);renderArtGrid();}
-  }
-
-  function adminDeleteLog(idx){
-    if(!isAdminSession()) return; const log=logsData[idx]; if(!confirm(`Delete "${log.title}"?`)) return;
-    if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();}).catch(e=>console.error('Delete log failed:',e));}
-    else{logsData.splice(idx,1);renderLogList();}
-  }
-
-  function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0) return; closeLightbox(); adminDeleteArt(lbArtIndex);}
-
-  /* ── STICKERS ── */
-  function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
-
-  /* ── INIT ── */
-  document.addEventListener('keydown', e => {
-    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
-    if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
-  });
-
-  /* ── TYPING ANIMATION ── */
-  async function typeHero() {
-    const heroEl = document.getElementById('heroText');
-    if (!heroEl) return;
-
-    heroEl.innerHTML = '';
-    const delay = (ms) => new Promise(r => setTimeout(r, ms));
-
-    let textNode = document.createTextNode('');
-    heroEl.appendChild(textNode);
-
-    const parts = [
-      { text: 'A collection of colors from the ', isColored: false },
-      { text: 'heart,', isColored: true },
-      { text: ' silly things,', isColored: false, hasBreak: true },
-      { text: 'and ', isColored: false },
-      { text: 'unsent', isColored: true },
-      { text: ' drafts. Made unapologetically by Sage.', isColored: false }
-    ];
-
-    for (const part of parts) {
-      if (part.isColored) {
-        const span = document.createElement('span');
-        span.className = 'color-swap';
-        const i = document.createElement('i');
-        span.appendChild(i);
-        heroEl.appendChild(span);
-
-        for (const char of part.text) {
-          i.textContent += char;
-          await delay(30);
-        }
-
-        for (let k = part.text.length - 1; k >= 0; k--) {
-          i.textContent = part.text.substring(0, k);
-          await delay(20);
-        }
-
-        for (let k = 0; k < part.text.length; k++) {
-          i.textContent = part.text.substring(0, k + 1);
-          await delay(30);
-        }
-      } else {
-        for (const char of part.text) {
-          textNode.textContent += char;
-          await delay(30);
-        }
-      }
-
-      if (part.hasBreak) {
-        const br = document.createElement('br');
-        heroEl.appendChild(br);
-        textNode = document.createTextNode('');
-        heroEl.appendChild(textNode);
-      }
+    if(!isAdminSession()) return;
+    const piece=artData[idx];
+    if(!confirm(`Delete "${piece.title}"?`)) return;
+    if(db&&piece.id){
+      db.ref('content/art/'+piece.id).remove()
+        .then(()=>{artData.splice(idx,1);renderArtGrid();})
+        .catch(e=>console.error('Delete art failed:',e));
+    } else {
+      artData.splice(idx,1);
+      renderArtGrid();
     }
   }
 
+  function adminDeleteLog(idx){
+    if(!isAdminSession()) return;
+    const log=logsData[idx];
+    if(!confirm(`Delete "${log.title}"?`)) return;
+    if(db&&log.id){
+      db.ref('content/logs/'+log.id).remove()
+        .then(()=>{logsData.splice(idx,1);renderLogList();})
+        .catch(e=>console.error('Delete log failed:',e));
+    } else {
+      logsData.splice(idx,1);
+      renderLogList();
+    }
+  }
+
+  function adminDeleteSticker(idx){
+    if(!isAdminSession()) return;
+    const sticker=stickersData[idx];
+    if(!confirm('Delete this sticker?')) return;
+    if(db&&sticker.id){
+      db.ref('content/stickers/'+sticker.id).remove()
+        .then(()=>{stickersData.splice(idx,1);renderStickers();})
+        .catch(e=>console.error('Delete sticker failed:',e));
+    } else {
+      stickersData.splice(idx,1);
+      renderStickers();
+    }
+  }
+
+  function adminDeleteCurrentArt(){
+    if(!isAdminSession()||lbArtIndex<0) return;
+    closeLightbox();
+    adminDeleteArt(lbArtIndex);
+  }
+
+  /* ── TYPING ANIMATION ── */
+  function typeHero() {
+    const el = document.getElementById('heroText');
+    const fullText = [
+      { text: 'A collection of ', color: false },
+      { text: 'colors from the ', color: false },
+      { text: 'heart', color: false, recolor: 'heart' },
+      { text: ', silly things,', color: false },
+      { text: ' and ', color: false },
+      { text: 'unsent', color: false, recolor: 'unsent' },
+      { text: ' drafts. Made unapologetically by ', color: false },
+      { text: 'Sage', color: false, recolor: 'Sage' },
+      { text: '.', color: false }
+    ];
+    
+    let segmentIdx = 0;
+    let charIdx = 0;
+    let currentHTML = '';
+    
+    function typeChar() {
+      if (segmentIdx >= fullText.length) return;
+      const segment = fullText[segmentIdx];
+      
+      if (charIdx < segment.text.length) {
+        currentHTML += segment.text[charIdx];
+        el.innerHTML = currentHTML + '<span class="cursor">|</span>';
+        charIdx++;
+        setTimeout(typeChar, 30);
+      } else {
+        // Segment complete
+        if (segment.recolor) {
+          // Backspace and retype in color
+          setTimeout(() => backspaceWord(segment.text, segment.recolor), 500);
+        } else {
+          segmentIdx++;
+          charIdx = 0;
+          setTimeout(typeChar, 30);
+        }
+      }
+    }
+    
+    function backspaceWord(word, recolorWord) {
+      let backIdx = word.length;
+      function back() {
+        if (backIdx > 0) {
+          currentHTML = currentHTML.slice(0, -1);
+          el.innerHTML = currentHTML + '<span class="cursor">|</span>';
+          backIdx--;
+          setTimeout(back, 20);
+        } else {
+          setTimeout(() => retypeColored(word, recolorWord), 200);
+        }
+      }
+      back();
+    }
+    
+    function retypeColored(word, recolorWord) {
+      let reIdx = 0;
+      function retype() {
+        if (reIdx < word.length) {
+          currentHTML += word[reIdx];
+          const colored = `<i style="color:var(--accent);font-style:italic;">${word.slice(0, reIdx+1)}</i>`;
+          const before = currentHTML.slice(0, -word.slice(0, reIdx+1).length);
+          el.innerHTML = before + colored + '<span class="cursor">|</span>';
+          reIdx++;
+          setTimeout(retype, 30);
+        } else {
+          currentHTML = currentHTML.slice(0, -(word.length)) + `<i style="color:var(--accent);font-style:italic;">${word}</i>`;
+          segmentIdx++;
+          charIdx = 0;
+          setTimeout(typeChar, 100);
+        }
+      }
+      retype();
+    }
+    
+    typeChar();
+  }
+
+  /* ── INIT ── */
+  document.addEventListener('keydown', e => {
+    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();toggleNav(false);}
+    if(lbPiece){
+      if(e.key==='ArrowRight')lbNav(1);
+      if(e.key==='ArrowLeft')lbNav(-1);
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
-    renderArtGrid(); renderLogList(); initCategoryTabs();
-    const input=document.getElementById('commentInput');
-    input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
-    input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
+    renderArtGrid();
+    renderLogList();
+    renderStickers();
+    initCategoryTabs();
     document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
     if(isAdminSession()) setAdminMode(true);
-    initImageDrag(); initWheelZoom();
+    initImageDrag();
+    initWheelZoom();
     typeHero();
   });
 
-  window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
+  window.onload = () => {
+    initFirebase();
+    updateLiveStatus();
+    setInterval(updateLiveStatus,1000);
+  };
 </script>
 </body>
 </html>
