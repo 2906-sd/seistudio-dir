@@ -1,4 +1,4 @@
-</html><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
@@ -242,7 +242,7 @@
         <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
 
-      <div id="adminLogsForm" class="admin-form" style="display:none">
+     <div id="adminLogsForm" class="admin-form" style="display:none">
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
@@ -253,16 +253,10 @@
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
 
         <label class="admin-label">Sticker PNG URLs — one per line</label>
-<textarea
-  id="logStickers"
-  class="admin-input"
-  placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"
-></textarea>
+        <textarea id="logStickers" class="admin-input" placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"></textarea>
+
         <label class="admin-label">Tags — space or comma separated (# optional)</label>
         <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
-
-        <label class="admin-label">Sticker PNG URLs — one per line</label>
-        <textarea id="logStickers" class="admin-input" placeholder="https://your-sticker.png"></textarea>
 
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
