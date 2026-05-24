@@ -394,6 +394,8 @@ body.admin-mode .admin-delete-btn { display: block; }
   padding: 3rem;
   box-shadow: var(--shadow-lg);
   max-width: 800px;
+   font-family: var(--font-mono); /* Force log text to monospace */
+  white-space: pre-wrap;
 }
 
 /* ── BULLETIN BOARD ──────────────────────────────────── */
@@ -519,7 +521,8 @@ body.dark .tag { color: #FFFFFF; }
 #lb-prev { left: 0; } #lb-next { right: 0; }
 
 .lb-image-counter { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-align: center; flex-shrink: 0; display: none; }
-.lb-desc { font-size: 1rem; color: var(--text); line-height: 1.6; }
+.lb-desc { font-size: 1rem; font-family: var(--font-mono);
+  white-space: pre-wrap; color: var(--text); line-height: 1.6; }
 .lb-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
 
 /* ── ZOOM CONTROLS ───────────────────────────────────── */
@@ -567,6 +570,26 @@ textarea.admin-input { resize: vertical; min-height: 80px; }
 /* Tags in the full log reader get slightly larger */
 .log-container .log-tags { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); }
 .log-container .log-tag  { font-size: 12px; }
+
+/* ── LOG STICKERS ── */
+.log-container-wrapper {
+  position: relative; /* Anchor container for absolute sticker placements */
+  max-width: 800px;
+}
+
+.log-sticker {
+  position: absolute;
+  width: 45px;       /* Small sticker size */
+  height: auto;
+  z-index: 10;
+  pointer-events: none; /* Mouse actions drop right through to text highlights below */
+}
+
+.log-sticker img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
 
 /* ── MOBILE ──────────────────────────────────────────── */
 @media (max-width: 850px) {
