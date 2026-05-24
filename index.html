@@ -13,7 +13,6 @@
 
 <div class="page-wrapper">
 
-  <!-- LEFT COLUMN: nav + status pill + dark toggle -->
   <div class="left-col">
     <nav id="navbar">
       <div class="nav-header">
@@ -49,7 +48,6 @@
   </div>
 
   <main>
-    <!-- HOME -->
     <section id="home" class="active">
       <span class="site-title">// SEISTUDIO. //</span>
       <h1 class="hero-text">
@@ -58,14 +56,12 @@
       </h1>
     </section>
 
-    <!-- ART -->
     <section id="art">
       <div class="section-header">
         <h1>VISUAL<span>S</span></h1>
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
 
-      <!-- Photography removed -->
       <div class="category-nav" id="categoryNav">
         <div class="category-tab active" data-category="all">ALL</div>
         <div class="category-tab" data-category="painting">PAINTINGS</div>
@@ -77,7 +73,6 @@
       <div class="art-feed" id="artFeed"></div>
     </section>
 
-    <!-- WRITING -->
     <section id="writing">
       <div class="section-header">
         <h1>LOG<span>S</span></h1>
@@ -86,15 +81,13 @@
       <div class="blog-list" id="logList"></div>
     </section>
 
-    <!-- Log reader -->
-<section id="log-reader">
-  <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
-  <div class="log-container-wrapper">
-    <div id="log-content" class="log-container"></div>
-  </div>
-</section>
+    <section id="log-reader">
+      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
+      <div class="log-container-wrapper">
+        <div id="log-content" class="log-container"></div>
+      </div>
+    </section>
 
-    <!-- BULLETIN BOARD -->
     <section id="board">
       <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
         Public Archive // Leave a piece of yourself here...
@@ -113,7 +106,6 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
     <section id="about">
       <div class="about-card">
         <div class="about-header">
@@ -159,7 +151,6 @@
   </main>
 </div>
 
-<!-- LIGHTBOX -->
 <div id="lightbox" class="lightbox" onclick="closeLightbox()">
   <div class="lightbox-content" onclick="event.stopPropagation()">
     <div class="lb-toolbar">
@@ -189,7 +180,6 @@
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
 <div id="adminLoginModal" class="modal-overlay" style="display:none">
   <div class="admin-box" style="max-width:360px">
     <div class="admin-toolbar">
@@ -205,7 +195,6 @@
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
@@ -223,7 +212,6 @@
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
 
         <label class="admin-label">Category</label>
-        <!-- Photography removed -->
         <select id="artCategory" class="admin-input" style="cursor:pointer;">
           <option value="painting">Painting</option>
           <option value="illustration">Illustration</option>
@@ -248,8 +236,6 @@
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
-    
-
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
 
@@ -263,7 +249,6 @@
   </div>
 </div>
 
-<!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
@@ -300,7 +285,6 @@
   }
 
   /* ── TAG HELPERS ── */
-  // Parse a raw tag string into a clean array: "#personal, art rambling" → ["personal","art","rambling"]
   function parseTags(raw) {
     if (!raw) return [];
     return raw
@@ -332,7 +316,8 @@
   }
 
   function resetZoom() {
-    zoomLevel = 1; imageX = imageY = 0;
+    zoomLevel = 1;
+    imageX = imageY = 0;
     const img = document.getElementById('lb-image');
     img.style.transform = 'scale(1) translate(0,0)';
     img.classList.remove('zoomed');
@@ -344,7 +329,8 @@
       if (zoomLevel <= 1) return;
       isDragging = true;
       const t = e.touches ? e.touches[0] : e;
-      dragStartX = t.clientX; dragStartY = t.clientY;
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
       e.preventDefault();
     };
     const drag = e => {
@@ -352,175 +338,87 @@
       const t = e.touches ? e.touches[0] : e;
       imageX += (t.clientX - dragStartX) / zoomLevel;
       imageY += (t.clientY - dragStartY) / zoomLevel;
-      dragStartX = t.clientX; dragStartY = t.clientY;
+      dragStartX = t.clientX;
+      dragStartY = t.clientY;
       img.style.transform = `scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;
-      e.preventDefault();
     };
-    const stop = () => { isDragging = false; };
+    const stop = () => isDragging = false;
+
     img.addEventListener('mousedown', start);
-    img.addEventListener('touchstart', start, { passive: false });
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('touchmove', drag, { passive: false });
-    document.addEventListener('mouseup', stop);
-    document.addEventListener('touchend', stop);
+    window.addEventListener('mousemove', drag);
+    window.addEventListener('mouseup', stop);
+
+    img.addEventListener('touchstart', start);
+    window.addEventListener('touchmove', drag);
+    window.addEventListener('touchend', stop);
   }
 
-  function initWheelZoom() {
-    const wrap = document.getElementById('lbImageWrap');
-    wrap.addEventListener('wheel', e => {
-      e.preventDefault();
-      zoomImage(e.deltaY < 0 ? 1 : -1);
-    }, { passive: false });
-  }
-
-  /* ── SPAM ── */
-  const SPAM_COOLDOWN_MS = 60000, LAST_POST_KEY = 'sei_last_post_time';
-  function canPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); return !l || Date.now() - parseInt(l) >= SPAM_COOLDOWN_MS; } catch(_) { return true; }
-  }
-  function updateLastPostTime() { try { localStorage.setItem(LAST_POST_KEY, String(Date.now())); } catch(_) {} }
-  function getTimeUntilCanPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); if (!l) return 0; return Math.max(0, Math.ceil((SPAM_COOLDOWN_MS - (Date.now() - parseInt(l))) / 1000)); } catch(_) { return 0; }
-  }
-
-  /* ── ADMIN AUTH ── */
-  const ADMIN_TOKEN_KEY = 'sei_admin_token', ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
-  function isAdminSession() {
-    try { const r = sessionStorage.getItem(ADMIN_TOKEN_KEY); if (!r) return false; const { token, ts } = JSON.parse(r); return token && (Date.now() - ts) < ADMIN_TOKEN_TTL; } catch(_) { return false; }
-  }
-  function setAdminMode(active) { document.body.classList.toggle('admin-mode', active); }
-
-  /* ── DATA ── */
-  let artData = [
-    { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
-    { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
-    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600','https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'multi-pic carousel tester.', meta:'2025' }
-  ];
-
-  let logsData = [
-    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out.", tags:['personal','wip'] },
-    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk", tags:['rambling'] }
-  ];
-
-  /* ── FIREBASE ── */
-  async function initFirebase() {
-    try {
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-      msgRef = db.ref('board/messages');
-      msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
-      onFirebaseReady();
-    } catch(e) { console.error('Firebase init failed:', e); }
-  }
-
-  function normalizeImages(val) {
-    if (!val) return [];
-    if (Array.isArray(val)) return val;
-    return Object.keys(val).sort((a,b) => Number(a)-Number(b)).map(k => val[k]);
-  }
-
-  function onFirebaseReady() {
-    const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-    msgRef.orderByChild('timestamp').endAt(Date.now() - MSG_TTL_MS).once('value', snap => {
-      snap.forEach(c => c.ref.remove());
-    }).catch(e => console.error('Expiry purge failed:', e));
-
-    db.ref('board/seeded').once('value', snap => {
-      if (!snap.val()) {
-        db.ref('board/seeded').set(true);
-        ['Welcome to the board!','Sage worked really hard on this btw (her dad had to help).','be nice, you only get 500 chars :)','⋆˚꩜｡','click + drag me!']
-          .forEach(t => addComment(t));
-      }
-    }).catch(e => console.error('Seed check failed:', e));
-
-    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-      artData = [];
-      snap.forEach(child => {
-        const d = child.val(); d.images = normalizeImages(d.images); d.id = child.key; d.category = d.category || 'other'; artData.push(d);
-      });
-      renderArtGrid();
-    }).catch(e => console.error('Art load failed:', e));
-
-    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-      logsData = [];
-      snap.forEach(child => {
-        const d = child.val();
-        // Normalize tags: stored as array or missing
-        d.tags = Array.isArray(d.tags) ? d.tags : [];
-        logsData.push({ id: child.key, ...d });
-      });
-      renderLogList();
-    }).catch(e => console.error('Logs load failed:', e));
-  }
-
-  /* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
-  function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
-  function nameFromKey(key) { let h=0; for(let i=0;i<key.length;i++) h=(Math.imul(h,31)+key.charCodeAt(i))>>>0; return `Anon. ${ANON_ADJ[h%ANON_ADJ.length]} ${ANON_NOUN[(h>>>8)%ANON_NOUN.length]}`; }
-
-  /* ── DARK MODE ── */
-  function toggleDark() {
-    const dark = document.body.classList.toggle('dark');
-    document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
-    try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
-  }
-  try {
-    if (localStorage.getItem('darkMode') === '1') {
-      document.body.classList.add('dark');
-      document.getElementById('darkToggle').textContent = '◑ MODE';
-    }
-  } catch(_) {}
-
-  /* ── NAVIGATION ── */
+  /* ── ROUTING ── */
   function showPage(id) {
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
-    if (link) link.classList.add('active');
-    document.getElementById('navLinks').classList.remove('show');
-    window.scrollTo(0, 0);
-  }
-  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+    document.querySelectorAll('main > section').forEach(s => s.classList.remove('active'));
+    const target = document.getElementById(id);
+    if (target) target.classList.add('active');
 
-  /* ── RENDER ── */
-  function renderArtGrid() {
-    const feed = document.getElementById('artFeed');
-    feed.innerHTML = '';
-    const filtered = activeCategory === 'all' ? artData : artData.filter(p => p.category === activeCategory);
-    if (!filtered.length) {
-      feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';
-      return;
+    document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+    const link = document.getElementById(`link-${id}`);
+    if (link) link.classList.add('active');
+    else if (id === 'log-reader') {
+      const logLink = document.getElementById('link-writing');
+      if (logLink) logLink.classList.add('active');
     }
-    filtered.forEach(piece => {
-      const idx = artData.indexOf(piece);
-      const el = document.createElement('div');
-      el.className = 'art-post';
-      el.onclick = () => openLightbox(idx);
-      el.innerHTML = `<img src="${piece.images[0]}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
-      feed.appendChild(el);
-    });
+
+    if (id === 'board') {
+      setTimeout(recalculatePinnedPositions, 50);
+    }
+    window.scrollTo({ top: 0 });
+    closeMenu();
   }
+
+  function toggleMenu() {
+    const links = document.getElementById('navLinks');
+    const trigger = document.getElementById('menuTrigger');
+    if (links && trigger) {
+      links.classList.toggle('show');
+      trigger.textContent = links.classList.contains('show') ? 'DIR [^]' : 'DIR [v]';
+    }
+  }
+
+  function closeMenu() {
+    const links = document.getElementById('navLinks');
+    const trigger = document.getElementById('menuTrigger');
+    if (links && trigger) {
+      links.classList.remove('show');
+      trigger.textContent = 'DIR [v]';
+    }
+  }
+
+  /* ── LOGS RENDERING ── */
+  let logsData = [];
 
   function renderLogList() {
     const list = document.getElementById('logList');
-    list.innerHTML = '';
+    if (!list) return;
+    if (!logsData.length) {
+      list.innerHTML = `<p style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted)">// NO_ENTRIES_FOUND.</p>`;
+      return;
+    }
+    let html = '';
     logsData.forEach((log, i) => {
-      const el = document.createElement('div');
-      el.className = 'blog-list-item';
-      el.onclick = () => readLog(i);
-      el.innerHTML = `
-        <p class="post-label">${log.meta}</p>
-        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
-        ${renderTagsHTML(log.tags)}
-        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>
+      html += `
+        <div class="blog-item" onclick="readLog(${i})">
+          <div class="blog-meta-line">
+            <span>${log.meta || 'UNTITLED'}</span>
+            <span>LOG_${String(i).padStart(2,'0')}</span>
+          </div>
+          <h2 class="blog-title-link">${log.title}</h2>
+          ${isAdminSession() ? `<button class="admin-delete-btn" style="display:block;position:static;margin-top:0.5rem;" onclick="event.stopPropagation(); adminDeleteLog(${i})">DELETE LOG</button>` : ''}
+        </div>
       `;
-      list.appendChild(el);
     });
+    list.innerHTML = html;
   }
 
-function readLog(i) {
+  function readLog(i) {
     const log = logsData[i]; if (!log) return;
     
     // 1. Separate regular text from sticker URLs written on their own lines
@@ -532,36 +430,36 @@ function readLog(i) {
     lines.forEach(line => {
       const trimmed = line.trim();
       if (urlRegex.test(trimmed)) {
-        stickerUrls.push(trimmed); // Gather valid image URLs to use as stickers
+        stickerUrls.push(trimmed);
       } else {
-        cleanBodyLines.push(line);  // Keep standard draft text
+        cleanBodyLines.push(line);
       }
     });
 
     const cleanBody = cleanBodyLines.join('\n');
 
-    // 2. Render the log content layout structure
+    // 2. Render layout content
     document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
+      <p class="post-label" style="margin-bottom:1rem"><span>${log.meta}</span></p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${cleanBody}</div>
+      <div class="log-body-text" style="font-size:1.1rem;line-height:1.8;">${cleanBody}</div>
       ${renderTagsHTML(log.tags)}
     `;
 
-    // 3. Clear out any stickers left over from previously viewed logs
+    // 3. Clear lingering assets from previous logs
     document.querySelectorAll('.log-sticker').forEach(s => s.remove());
 
-    // 4. Fixed coordinate spots along the log border edges
+    // 4. Coordinates mapped around border frames
     const borderPlacements = [
-      { top: '-15px', left: '10%', rotation: '-10deg' },   // Top border left
-      { top: '-20px', right: '15%', rotation: '12deg' },   // Top border right
-      { bottom: '-15px', left: '20%', rotation: '8deg' },  // Bottom border left
-      { bottom: '-20px', right: '8%', rotation: '-15deg' }, // Bottom border right
-      { top: '35%', left: '-22px', rotation: '6deg' },     // Left border edge
-      { top: '65%', right: '-22px', rotation: '-12deg' }   // Right border edge
+      { top: '-15px', left: '10%', rotation: '-10deg' },
+      { top: '-20px', right: '15%', rotation: '12deg' },
+      { bottom: '-15px', left: '20%', rotation: '8deg' },
+      { bottom: '-20px', right: '8%', rotation: '-15deg' },
+      { top: '35%', left: '-22px', rotation: '6deg' },
+      { top: '65%', right: '-22px', rotation: '-12deg' }
     ];
 
-    // 5. Inject the sticker elements directly into the container wrapper
+    // 5. Append dynamic image stickers
     const wrapper = document.querySelector('.log-container-wrapper');
     if (wrapper) {
       stickerUrls.forEach((url, index) => {
@@ -575,7 +473,7 @@ function readLog(i) {
         if (pos.right) stickerDiv.style.right = pos.right;
         stickerDiv.style.transform = `rotate(${pos.rotation})`;
 
-        stickerDiv.innerHTML = `<img src="${url}" alt="sticker" style="width:100%; height:auto; display:block;" />`;
+        stickerDiv.innerHTML = `<img src="${url}" alt="sticker" />`;
         wrapper.appendChild(stickerDiv);
       });
     }
@@ -583,190 +481,263 @@ function readLog(i) {
     showPage('log-reader');
   }
 
-  /* ── LIGHTBOX ── */
-  let lbPiece = null, lbIdx = 0, lbArtIndex = -1;
-  function openLightbox(i) { lbPiece = artData[i]; lbIdx = 0; lbArtIndex = i; resetZoom(); renderLightbox(); document.getElementById('lightbox').classList.add('show'); }
-  function renderLightbox() {
-    const multi = lbPiece.images.length > 1;
-    document.getElementById('lb-image').src = lbPiece.images[lbIdx];
-    document.getElementById('lb-title').textContent = lbPiece.title;
-    document.getElementById('lb-desc').textContent = lbPiece.desc;
-    document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
-    const prev = document.getElementById('lb-prev'), next = document.getElementById('lb-next'), ctr = document.getElementById('lb-counter');
-    prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
-    if (multi) ctr.textContent = `${lbIdx+1} / ${lbPiece.images.length}`;
-    prev.disabled = lbIdx === 0; next.disabled = lbIdx === lbPiece.images.length - 1;
-  }
-  function lbNav(dir) { lbIdx = Math.max(0, Math.min(lbPiece.images.length-1, lbIdx+dir)); resetZoom(); renderLightbox(); }
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); lbPiece=null; lbIdx=0; lbArtIndex=-1; resetZoom(); }
+  /* ── GALLERY LIGHTBOX ── */
+  let artData = [];
+  let lbPiece = null;
+  let lbArtIndex = -1;
 
-  /* ── STATUS PILL ── */
-  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
-  function updateLiveStatus() {
-    const now = new Date();
-    const date = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
-    const time = now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
-    const el = document.getElementById('liveDateTime'); if (el) el.textContent = `${date} // ${time}`;
-  }
-
-  /* ── DRAG UTILITY ── */
-  let zTop = 100;
-  function makeDraggable(el, handle, parent) {
-    let ox=0,oy=0,sx=0,sy=0;
-    handle.onmousedown = handle.ontouchstart = start;
-    function start(e) { e.preventDefault(); el.style.zIndex=++zTop; const {cx,cy}=pt(e); sx=cx;sy=cy; document.onmousemove=document.ontouchmove=move; document.onmouseup=document.ontouchend=stop; }
-    function move(e) { const {cx,cy}=pt(e); ox=sx-cx;oy=sy-cy;sx=cx;sy=cy; let t=el.offsetTop-oy,l=el.offsetLeft-ox; if(parent){t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));} el.style.top=t+'px';el.style.left=l+'px'; }
-    function stop() { document.onmousemove=document.onmouseup=null;document.ontouchmove=document.ontouchend=null; }
-    function pt(e) { const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e; return {cx:s.clientX,cy:s.clientY}; }
-  }
-
-  /* ── BOARD RESIZE ── */
-  function initBoardResize() {
-    const board = document.getElementById('board-section'), handle = document.getElementById('boardResizeHandle');
-    let startX,startY,startW,startH;
-    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM,{passive:false});document.addEventListener('touchend',onUp);}
-    function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
-    function onMM(e){resize(e.clientX,e.clientY);}
-    function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
-    function onUp(){document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onUp);}
-    handle.addEventListener('mousedown',e=>{e.preventDefault();onDown(e.clientX,e.clientY);});
-    handle.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];onDown(t.clientX,t.clientY);},{passive:false});
-  }
-
-  /* ── BULLETIN BOARD ── */
-  const FALLBACK_W=800, FALLBACK_H=400, MSG_TTL_MS=7*24*60*60*1000;
-  function renderMessage(id, msg) {
-    if (renderedIds.has(id)) return;
-    if (msg.timestamp && (Date.now()-msg.timestamp) > MSG_TTL_MS) return;
-    renderedIds.add(id);
-    const canvas = document.getElementById('boardCanvas');
-    const bw = canvas.offsetWidth||FALLBACK_W, bh = canvas.offsetHeight||FALLBACK_H;
-    const popup = document.createElement('div'); popup.className='comment-popup';
-    popup.style.left = Math.max(10,(msg.xPct/100)*bw)+'px';
-    popup.style.top  = Math.max(10,(msg.yPct/100)*bh)+'px';
-    const hdr = document.createElement('div'); hdr.className='comment-header';
-    const displayDate = msg.date
-  || (msg.timestamp ? new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.') : '');
-hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
-    const bdy = document.createElement('div'); bdy.className='comment-body'; bdy.textContent=msg.text;
-    popup.append(hdr,bdy); canvas.appendChild(popup); makeDraggable(popup,hdr,canvas);
-  }
-
-  function addComment(preset=null) {
-    const input = document.getElementById('commentInput');
-    const text = preset || input.value.trim(); if (!text) return;
-    if (!msgRef) { console.warn('Board unavailable.'); return; }
-    if (!preset && !canPost()) {
-      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
+  function renderArtGrid() {
+    const feed = document.getElementById('artFeed');
+    if (!feed) return;
+    const filtered = activeCategory === 'all' ? artData : artData.filter(a => a.category === activeCategory);
+    if (!filtered.length) {
+      feed.innerHTML = `<p style="font-family:var(--font-mono);font-size:11px;color:var(--text-muted);grid-column:span 2">// NO_PIECES_FOUND.</p>`;
+      return;
     }
-    const xPct=Math.max(2,Math.random()*72), yPct=Math.max(2,Math.random()*68), now=new Date();
-    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),name:genAnonName(),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
-    msgRef.push(payload).then(()=>{
-      if(!preset) updateLastPostTime();
-      msgRef.orderByChild('timestamp').once('value',snap=>{ if(snap.numChildren()>MAX_MSGS) msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());}); });
-    }).catch(e=>console.error('Post failed:',e));
-    if (!preset) { input.value=''; const c=document.getElementById('charCounter'); c.textContent='0 / 500'; c.classList.remove('warn'); }
+    let html = '';
+    artData.forEach((art, originalIndex) => {
+      if (activeCategory !== 'all' && art.category !== activeCategory) return;
+      const thumb = (art.images && art.images.length) ? art.images[0] : '';
+      html += `
+        <div class="art-post" onclick="openLightbox(${originalIndex})">
+          ${thumb ? `<img src="${thumb}" alt="${art.title}" loading="lazy" />` : ''}
+          <div class="post-label">
+            <span>${art.title}</span>
+            <span>${art.meta || ''}</span>
+          </div>
+          ${isAdminSession() ? `<button class="admin-delete-btn" style="display:block" onclick="event.stopPropagation(); adminDeleteArt(${originalIndex})">DEL</button>` : ''}
+        </div>
+      `;
+    });
+    feed.innerHTML = html;
   }
-  function submitComment() { addComment(); }
 
-  /* ── ADMIN ── */
-  function openModal(id){document.getElementById(id).style.display='flex';} function closeModal(id){document.getElementById(id).style.display='none';}
-  function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
-  function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
-  async function verifyAdminPass(){
-    const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
-    err.style.display='none';
-    if (!pw) return;
-    try {
-      const res = await fetch('/api/admin-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw })
-      });
-      const data = await res.json();
-      if (data.ok) {
-        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: 'admin_' + Date.now(), ts: Date.now() }));
-        closeAdminLogin();
+  function openLightbox(idx) {
+    lbArtIndex = idx;
+    lbPiece = artData[idx];
+    if (!lbPiece) return;
+    resetZoom();
+    document.getElementById('lb-title').textContent = lbPiece.title.toUpperCase();
+    document.getElementById('lb-image').src = lbPiece.images && lbPiece.images.length ? lbPiece.images[0] : '';
+    document.getElementById('lb-desc').textContent = lbPiece.desc || '';
+    document.getElementById('lb-meta').innerHTML = `<span>CAT // ${lbPiece.category.toUpperCase()}</span><span>DATE // ${lbPiece.meta || 'N/A'}</span>`;
+    document.getElementById('lb-counter').textContent = `[ 1 / 1 ]`;
+    document.getElementById('lb-prev').style.display = 'none';
+    document.getElementById('lb-next').style.display = 'none';
+    document.getElementById('lb-delete-btn').style.display = isAdminSession() ? 'block' : 'none';
+    document.getElementById('lightbox').classList.add('active');
+  }
+
+  function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    lbPiece = null; lbArtIndex = -1;
+  }
+
+  function lbNav(dir) {
+    // Single image implementation kept simple
+  }
+
+  /* ── ADMIN MANAGEMENT ── */
+  function isAdminSession() { return localStorage.getItem('studio_admin') === 'true'; }
+  function showAdminLogin() { document.getElementById('adminLoginModal').style.display = 'flex'; document.getElementById('adminPassInput').focus(); }
+  function closeAdminLogin() { document.getElementById('adminLoginModal').style.display = 'none'; document.getElementById('adminPassInput').value = ''; document.getElementById('adminPassError').style.display = 'none'; }
+  function showAdminPanel() { document.getElementById('adminPanelModal').style.display = 'flex'; }
+  function closeAdminPanel() { document.getElementById('adminPanelModal').style.display = 'none'; }
+  function switchAdminTab(t) {
+    document.querySelectorAll('.admin-tab').forEach(b => b.classList.remove('active'));
+    document.getElementById(`tab-${t}`).classList.add('active');
+    document.getElementById('adminArtForm').style.display = t === 'art' ? 'block' : 'none';
+    document.getElementById('adminLogsForm').style.display = t === 'logs' ? 'block' : 'none';
+  }
+
+  function verifyAdminPass() {
+    const pass = document.getElementById('adminPassInput').value;
+    fetch('/api/admin-auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: pass })
+    })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok) {
+        localStorage.setItem('studio_admin', 'true');
         setAdminMode(true);
-        openModal('adminPanelModal');
+        closeAdminLogin();
+        showAdminPanel();
       } else {
-        err.textContent = '// ACCESS DENIED.';
-        err.style.display = 'block';
+        document.getElementById('adminPassError').style.display = 'block';
       }
-    } catch(e) {
-      err.textContent = '// CONNECTION ERROR.';
-      err.style.display = 'block';
-      console.error('Auth failed:', e);
+    })
+    .catch(() => { document.getElementById('adminPassError').style.display = 'block'; });
+  }
+
+  function setAdminMode(on) {
+    document.querySelectorAll('.admin-delete-btn').forEach(b => b.style.display = on ? 'block' : 'none');
+    renderArtGrid(); renderLogList();
+  }
+
+  function adminAddArt() {
+    if (!isAdminSession()) return;
+    const title = document.getElementById('artTitle').value.trim() || 'untitled.png';
+    const category = document.getElementById('artCategory').value;
+    const images = document.getElementById('artImages').value.split('\n').map(u => u.trim()).filter(Boolean);
+    const desc = document.getElementById('artDesc').value.trim();
+    const meta = document.getElementById('artMeta').value.trim() || '2026';
+
+    if (!images.length) { alert('Include at least one image link'); return; }
+    const newItem = { title, category, images, desc, meta };
+    if (db) {
+      db.ref('gallery').push(newItem).then(() => {
+        document.getElementById('artSuccess').style.display = 'block';
+        setTimeout(() => { document.getElementById('artSuccess').style.display = 'none'; }, 2000);
+        document.getElementById('artTitle').value = '';
+        document.getElementById('artImages').value = '';
+        document.getElementById('artDesc').value = '';
+        document.getElementById('artMeta').value = '';
+      });
+    } else {
+      artData.push(newItem); renderArtGrid(); closeAdminPanel();
     }
   }
-  function closeAdminPanel(){closeModal('adminPanelModal');}
-  function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
 
-  function adminAddArt(){
-    if(!isAdminSession()) return;
-    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim()||String(new Date().getFullYear());
-    if(!title||!imgRaw) return; const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean); if(!images.length) return;
-    const piece={title,category,images,desc,meta};
-    if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
-    else{artData.push(piece);renderArtGrid();}
-    ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value=''); document.getElementById('artCategory').value='painting';
-    const s=document.getElementById('artSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
-  }
-
-  function adminAddLog(){
-    if(!isAdminSession()) return;
-    const title=document.getElementById('logTitle').value.trim(), body=document.getElementById('logBody').value.trim();
-    if(!title||!body) return;
-+   const now=new Date();
-+   const mm=String(now.getMonth()+1).padStart(2,'0');
-+   const yy=String(now.getFullYear()).slice(-2);
-+   const num=String(logsData.length+1).padStart(2,'0');
-+   const meta=`LOG_${num}.TXT // ${mm}.${yy}`;
+  function adminAddLog() {
+    if (!isAdminSession()) return;
+    const title = document.getElementById('logTitle').value.trim() || 'Untitled Log';
+    const body = document.getElementById('logBody').value;
     const tags = parseTags(document.getElementById('logTags').value);
-    const log={title, meta, body, tags};
-    if(!title||!body) return;
-    const tags = parseTags(document.getElementById('logTags').value);
-    const log={title, meta:meta||'LOG.TXT', body, tags};
-    if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();}).catch(e=>console.error('Log push failed:',e));}
-    else{logsData.push(log);renderLogList();}
-    ['logTitle','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
-    const s=document.getElementById('logSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
+    const meta = new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }).toUpperCase();
+
+    const newItem = { title, body, tags, meta };
+    if (db) {
+      db.ref('logs').push(newItem).then(() => {
+        document.getElementById('logSuccess').style.display = 'block';
+        setTimeout(() => { document.getElementById('logSuccess').style.display = 'none'; }, 2000);
+        document.getElementById('logTitle').value = '';
+        document.getElementById('logBody').value = '';
+        document.getElementById('logTags').value = '';
+      });
+    } else {
+      logsData.push(newItem); renderLogList(); closeAdminPanel();
+    }
   }
 
-  function adminDeleteArt(idx){
-    if(!isAdminSession()) return; const piece=artData[idx]; if(!confirm(`Delete "${piece.title}"?`)) return;
-    if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}
-    else{artData.splice(idx,1);renderArtGrid();}
+  function adminDeleteArt(idx) {
+    if (!isAdminSession()) return;
+    if (!confirm('Delete this artwork?')) return;
+    const item = artData[idx];
+    if (db && item && item.id) {
+      db.ref(`gallery/${item.id}`).remove().then(() => {
+        artData.splice(idx, 1); renderArtGrid();
+      }).catch(e => console.error('Delete art failed:', e));
+    } else {
+      artData.splice(idx,1); renderArtGrid();
+    }
   }
 
-  function adminDeleteLog(idx){
-    if(!isAdminSession()) return; const log=logsData[idx]; if(!confirm(`Delete "${log.title}"?`)) return;
-    if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();}).catch(e=>console.error('Delete log failed:',e));}
-    else{logsData.splice(idx,1);renderLogList();}
+  function adminDeleteLog(idx) {
+    if (!isAdminSession()) return;
+    if (!confirm('Delete this log?')) return;
+    const item = logsData[idx];
+    if (db && item && item.id) {
+      db.ref(`logs/${item.id}`).remove().then(() => {
+        logsData.splice(idx,1); renderLogList();
+      }).catch(e => console.error('Delete log failed:', e));
+    } else {
+      logsData.splice(idx,1); renderLogList();
+    }
   }
 
-  function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0) return; closeLightbox(); adminDeleteArt(lbArtIndex);}
+  function adminDeleteCurrentArt() { if (!isAdminSession() || lbArtIndex < 0) return; closeLightbox(); adminDeleteArt(lbArtIndex); }
 
   /* ── STICKERS ── */
-  function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
+  function initStickers() { const s = document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st => makeDraggable(st, st, s)); }
+
+  /* ── DRAGGING STICKERS ── */
+  function makeDraggable(elmnt, handle, container) {
+    let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    handle.onmousedown = dragMouseDown;
+    handle.ontouchstart = dragMouseDown;
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      const t = e.touches ? e.touches[0] : e;
+      pos3 = t.clientX;
+      pos4 = t.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+      document.ontouchend = closeDragElement;
+      document.ontouchmove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      const t = e.touches ? e.touches[0] : e;
+      pos1 = pos3 - t.clientX;
+      pos2 = pos4 - t.clientY;
+      pos3 = t.clientX;
+      pos4 = t.clientY;
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+      document.ontouchend = null;
+      document.ontouchmove = null;
+    }
+  }
+
+  /* ── MESSAGE BOARD CANVAS ── */
+  function recalculatePinnedPositions() {}
+  function submitComment() {}
+
+  /* ── STATUS PILL TOGGLE ── */
+  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
+  function toggleDark() { document.body.classList.toggle('dark'); }
+  function initClock() {
+    setInterval(() => {
+      document.getElementById('liveDateTime').textContent = new Date().toLocaleString();
+    }, 1000);
+  }
 
   /* ── INIT ── */
   document.addEventListener('keydown', e => {
-    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
-    if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
+    if (e.key === 'Escape') { closeLightbox(); closeAdminLogin(); closeAdminPanel(); }
   });
 
   document.addEventListener('DOMContentLoaded', () => {
-    renderArtGrid(); renderLogList(); initCategoryTabs();
-    const input=document.getElementById('commentInput');
-    input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
-    input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
-    document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
-    if(isAdminSession()) setAdminMode(true);
-    initImageDrag(); initWheelZoom();
-  });
+    initClock();
+    initCategoryTabs();
+    initImageDrag();
+    initStickers();
 
-  window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
+    // Setup Firebase Connection
+    fetch('/api/firebase-config')
+      .then(res => res.json())
+      .then(config => {
+        firebase.initializeApp(config);
+        db = firebase.database();
+        
+        // Fetch Art
+        db.ref('gallery').on('value', snap => {
+          artData = [];
+          snap.forEach(child => { artData.push({ id: child.key, ...child.val() }); });
+          renderArtGrid();
+        });
+
+        // Fetch Logs
+        db.ref('logs').on('value', snap => {
+          logsData = [];
+          snap.forEach(child => { logsData.push({ id: child.key, ...child.val() }); });
+          renderLogList();
+        });
+      })
+      .catch(() => {
+        renderArtGrid();
+        renderLogList();
+      });
+  });
 </script>
 </body>
 </html>
