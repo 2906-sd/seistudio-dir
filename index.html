@@ -252,6 +252,12 @@
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
 
+        <label class="admin-label">Sticker PNG URLs — one per line</label>
+<textarea
+  id="logStickers"
+  class="admin-input"
+  placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"
+></textarea>
         <label class="admin-label">Tags — space or comma separated (# optional)</label>
         <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
 
@@ -315,7 +321,28 @@
     if (!tags || !tags.length) return '';
     return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
   }
+function renderLogStickers(stickers) {
+  if (!stickers || !stickers.length) return '';
 
+  const positions = [
+    'top: -24px; left: -18px; transform: rotate(-12deg);',
+    'top: -24px; right: -18px; transform: rotate(10deg);',
+    'bottom: -24px; left: -14px; transform: rotate(8deg);',
+    'bottom: -24px; right: -14px; transform: rotate(-10deg);',
+    'top: 45%; left: -28px; transform: rotate(-6deg);',
+    'top: 45%; right: -28px; transform: rotate(6deg);'
+  ];
+
+  return `
+    <div class="log-stickers">
+      ${stickers.map((src, i) => `
+        <div class="log-sticker" style="${positions[i % positions.length]}">
+          <img src="${src}" alt="sticker" />
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
   /* ── ZOOM ── */
   let zoomLevel = 1, isDragging = false;
   let dragStartX = 0, dragStartY = 0, imageX = 0, imageY = 0;
@@ -544,17 +571,34 @@
     return body.replace(/\n/g, '<br />');
   }
 
-  function readLog(i) {
-    const log = logsData[i]; if (!log) return;
-    document.getElementById('log-content').innerHTML = `
-      ${renderLogStickers(log.stickers)}
+function readLog(i) {
+  const log = logsData[i];
+  if (!log) return;
+
+  document.getElementById('log-content').innerHTML = `
+    <div class="log-content-wrap">
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
-      <h1 class="log-title">${log.title}</h1>
-      <div class="log-body">${formatLogBody(log.body)}</div>
+
+      <h1
+        style="
+          margin-bottom:2rem;
+          font-family:var(--font-tech);
+          text-transform:uppercase;
+        "
+      >
+        ${log.title}
+      </h1>
+
+      <div class="log-body-text">${log.body}</div>
+
       ${renderTagsHTML(log.tags)}
-    `;
-    showPage('log-reader');
-  }
+
+      ${renderLogStickers(log.stickers)}
+    </div>
+  `;
+
+  showPage('log-reader');
+}
 
   /* ── LIGHTBOX ── */
   let lbPiece = null, lbIdx = 0, lbArtIndex = -1;
@@ -689,14 +733,22 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
 function adminAddLog(){
   if(!isAdminSession()) return;
 
-  const title=document.getElementById('logTitle').value.trim(),
-        body=document.getElementById('logBody').value.trim();
+  const title = document.getElementById('logTitle').value.trim();
+  const body = document.getElementById('logBody').value.trim();
 
-  if(!title||!body) return;
+  if(!title || !body) return;
 
   const tags = parseTags(document.getElementById('logTags').value);
 
-  // AUTO META GENERATION
+  // STICKERS
+  const stickers = document
+    .getElementById('logStickers')
+    .value
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean);
+
+  // AUTO META
   const logNumber = String(logsData.length + 1).padStart(2, '0');
 
   const now = new Date();
@@ -705,11 +757,12 @@ function adminAddLog(){
 
   const autoMeta = `LOG_${logNumber} // ${day}.${month}`;
 
-  const log={
+  const log = {
     title,
-    meta:autoMeta,
+    meta: autoMeta,
     body,
-    tags
+    tags,
+    stickers
   };
 
   if(db){
@@ -726,9 +779,9 @@ function adminAddLog(){
     renderLogList();
   }
 
-  ['logTitle','logBody','logTags'].forEach(
-    id=>document.getElementById(id).value=''
-  );
+  ['logTitle','logBody','logTags','logStickers'].forEach(id=>{
+    document.getElementById(id).value='';
+  });
 
   const s=document.getElementById('logSuccess');
   s.style.display='block';
