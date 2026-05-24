@@ -743,13 +743,15 @@ function adminAddLog(){
     .filter(Boolean);
 
   // AUTO META
+// AUTO META
   const logNumber = String(logsData.length + 1).padStart(2, '0');
 
   const now = new Date();
-  const day = String(now.getDate()).padStart(2, '0');
+  const yyyy = now.getFullYear();
   const month = String(now.getMonth() + 1).padStart(2, '0');
+  const day = String(now.getDate()).padStart(2, '0');
 
-  const autoMeta = `LOG_${logNumber} // ${day}.${month}`;
+  const autoMeta = `LOG_${logNumber} // ${yyyy}.${month}.${day}`;
 
   const log = {
     title,
