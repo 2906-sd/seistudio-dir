@@ -87,10 +87,12 @@
     </section>
 
     <!-- Log reader -->
-    <section id="log-reader">
-      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
-      <div id="log-content" class="log-container"></div>
-    </section>
+<section id="log-reader">
+  <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);text-decoration:none;color:var(--text);background:var(--bg2);cursor:pointer;">← BACK_TO_LIST</a>
+  <div class="log-container-wrapper">
+    <div id="log-content" class="log-container"></div>
+  </div>
+</section>
 
     <!-- BULLETIN BOARD -->
     <section id="board">
@@ -518,14 +520,66 @@
     });
   }
 
-  function readLog(i) {
+function readLog(i) {
     const log = logsData[i]; if (!log) return;
+    
+    // 1. Separate regular text from sticker URLs written on their own lines
+    const lines = log.body.split('\n');
+    const stickerUrls = [];
+    const cleanBodyLines = [];
+    const urlRegex = /^(https?:\/\/[^\s]+)$/i;
+
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      if (urlRegex.test(trimmed)) {
+        stickerUrls.push(trimmed); // Gather valid image URLs to use as stickers
+      } else {
+        cleanBodyLines.push(line);  // Keep standard draft text
+      }
+    });
+
+    const cleanBody = cleanBodyLines.join('\n');
+
+    // 2. Render the log content layout structure
     document.getElementById('log-content').innerHTML = `
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
+      <div style="font-size:1.1rem;line-height:1.8;">${cleanBody}</div>
       ${renderTagsHTML(log.tags)}
     `;
+
+    // 3. Clear out any stickers left over from previously viewed logs
+    document.querySelectorAll('.log-sticker').forEach(s => s.remove());
+
+    // 4. Fixed coordinate spots along the log border edges
+    const borderPlacements = [
+      { top: '-15px', left: '10%', rotation: '-10deg' },   // Top border left
+      { top: '-20px', right: '15%', rotation: '12deg' },   // Top border right
+      { bottom: '-15px', left: '20%', rotation: '8deg' },  // Bottom border left
+      { bottom: '-20px', right: '8%', rotation: '-15deg' }, // Bottom border right
+      { top: '35%', left: '-22px', rotation: '6deg' },     // Left border edge
+      { top: '65%', right: '-22px', rotation: '-12deg' }   // Right border edge
+    ];
+
+    // 5. Inject the sticker elements directly into the container wrapper
+    const wrapper = document.querySelector('.log-container-wrapper');
+    if (wrapper) {
+      stickerUrls.forEach((url, index) => {
+        const pos = borderPlacements[index % borderPlacements.length];
+        const stickerDiv = document.createElement('div');
+        stickerDiv.className = 'log-sticker';
+        
+        if (pos.top) stickerDiv.style.top = pos.top;
+        if (pos.bottom) stickerDiv.style.bottom = pos.bottom;
+        if (pos.left) stickerDiv.style.left = pos.left;
+        if (pos.right) stickerDiv.style.right = pos.right;
+        stickerDiv.style.transform = `rotate(${pos.rotation})`;
+
+        stickerDiv.innerHTML = `<img src="${url}" alt="sticker" style="width:100%; height:auto; display:block;" />`;
+        wrapper.appendChild(stickerDiv);
+      });
+    }
+
     showPage('log-reader');
   }
 
