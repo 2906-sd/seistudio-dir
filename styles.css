@@ -395,7 +395,41 @@ body.admin-mode .admin-delete-btn { display: block; }
   box-shadow: var(--shadow-lg);
   max-width: 800px;
 }
+.log-content-wrap {
+  position: relative;
+}
 
+.log-body-text {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  line-height: 2;
+  white-space: pre-wrap;
+  color: var(--text);
+}
+
+.log-stickers {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.log-sticker {
+  position: absolute;
+  z-index: 5;
+}
+
+.log-sticker img {
+  width: 72px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.25));
+}
+
+@media (max-width: 700px) {
+  .log-sticker img {
+    width: 52px;
+  }
+}
 /* ── BULLETIN BOARD ──────────────────────────────────── */
 #board-section {
   width: 100%; min-height: 500px;
