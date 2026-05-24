@@ -11,26 +11,19 @@
 </head>
 <body>
 
-<div class="top-bar">
-    <span class="top-site-title" onclick="showPage('home')">// SEISTUDIO. //</span>
-
-    <div class="marquee-container top-marquee">
-      <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
-    </div>
-
-    <div class="top-nav-wrap">
-      <button class="menu-trigger desktop-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
-    </div>
-  </div>
-
 <div class="page-wrapper">
 
-  <!-- TOP RIGHT NAV -->
+  <!-- LEFT COLUMN: nav + status pill + dark toggle -->
   <div class="left-col">
     <nav id="navbar">
+      <div class="nav-header">
+        <div class="marquee-container">
+          <div class="marquee-content">* SAGE_SYSTEM_LOG * RE-FORMATTING MY EXISTENCE * 202_(uh?) ARCHIVE *</div>
+        </div>
+      </div>
       <div class="logo-area">
         <span class="logo" onclick="showPage('home')">NAV</span>
-        <button class="menu-trigger mobile-trigger" onclick="toggleMenu()">DIR [v]</button>
+        <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()">DIR [v]</button>
       </div>
       <div class="nav-links" id="navLinks">
         <span class="nav-item active" onclick="showPage('home')" id="link-home">INDEX<span>00</span></span>
@@ -59,7 +52,10 @@
     <!-- HOME -->
     <section id="home" class="active">
       <span class="site-title">// SEISTUDIO. //</span>
-      <h1 class="hero-text" id="typingHero"></h1>
+      <h1 class="hero-text">
+        A collection of <br />colors from the <i>heart,</i> silly things,<br />and
+        <i>unsent</i> drafts. Made unapologetically by Sage.
+      </h1>
     </section>
 
     <!-- ART -->
@@ -250,8 +246,7 @@
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
-        <label class="admin-label">Meta Label (shown on the list card)</label>
-        <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+    
 
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
@@ -462,66 +457,6 @@
   function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
   function nameFromKey(key) { let h=0; for(let i=0;i<key.length;i++) h=(Math.imul(h,31)+key.charCodeAt(i))>>>0; return `Anon. ${ANON_ADJ[h%ANON_ADJ.length]} ${ANON_NOUN[(h>>>8)%ANON_NOUN.length]}`; }
 
-  
-function formatLogBody(text) {
-    if (!text) return '';
-    return text
-      .split(/\n{2,}/)
-      .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
-      .join('');
-  }
-
-  const heroEl = document.getElementById('typingHero');
-  const typingSequence = [
-    { text: 'A collection of \ncolors from the heart, silly things,\nand unsent drafts. Made unapologetically by Sage.', highlight: 'heart', color: false },
-    { text: 'A collection of \ncolors from the heart, silly things,\nand unsent drafts. Made unapologetically by Sage.', highlight: 'heart', color: true },
-    { text: 'A collection of \ncolors from the heart, silly things,\nand unsent drafts. Made unapologetically by Sage.', highlight: 'unsent', color: true },
-    { text: 'A collection of \ncolors from the heart, silly things,\nand unsent drafts. Made unapologetically by Sage.', highlight: 'Sage', color: true }
-  ];
-
-  async function typeSequence() {
-    if (!heroEl) return;
-
-    for (const step of typingSequence) {
-      let output = '';
-      for (let i = 0; i < step.text.length; i++) {
-        output += step.text[i];
-        let rendered = output.replace(/\n/g, '<br />');
-
-        if (step.color) {
-          rendered = rendered.replace(
-            step.highlight,
-            `<span class="typed-accent">${step.highlight}</span>`
-          );
-        }
-
-        heroEl.innerHTML = rendered;
-        await new Promise(r => setTimeout(r, 28));
-      }
-
-      await new Promise(r => setTimeout(r, 700));
-
-      for (let j = step.text.length; j >= 0; j--) {
-        let shortened = step.text.slice(0, j).replace(/\n/g, '<br />');
-
-        if (step.color) {
-          shortened = shortened.replace(
-            step.highlight,
-            `<span class="typed-accent">${step.highlight}</span>`
-          );
-        }
-
-        heroEl.innerHTML = shortened;
-        await new Promise(r => setTimeout(r, 10));
-      }
-    }
-
-    heroEl.innerHTML = `A collection of <br />colors from the <span class="typed-accent"><i>heart</i></span>, silly things,<br />and <span class="typed-accent"><i>unsent</i></span> drafts. Made unapologetically by <span class="typed-accent">Sage</span>.`;
-  }
-
-  typeSequence();
-
-
   /* ── DARK MODE ── */
   function toggleDark() {
     const dark = document.body.classList.toggle('dark');
@@ -588,7 +523,7 @@ function formatLogBody(text) {
     document.getElementById('log-content').innerHTML = `
       <p class="post-label" style="margin-bottom:1rem">${log.meta}</p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title}</h1>
-      <div class="log-body-content">${formatLogBody(log.body)}</div>
+      <div style="font-size:1.1rem;line-height:1.8;">${log.body}</div>
       ${renderTagsHTML(log.tags)}
     `;
     showPage('log-reader');
@@ -726,13 +661,21 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
 
   function adminAddLog(){
     if(!isAdminSession()) return;
-    const title=document.getElementById('logTitle').value.trim(), meta=document.getElementById('logMeta').value.trim(), body=document.getElementById('logBody').value.trim();
+    const title=document.getElementById('logTitle').value.trim(), body=document.getElementById('logBody').value.trim();
+    if(!title||!body) return;
++   const now=new Date();
++   const mm=String(now.getMonth()+1).padStart(2,'0');
++   const yy=String(now.getFullYear()).slice(-2);
++   const num=String(logsData.length+1).padStart(2,'0');
++   const meta=`LOG_${num}.TXT // ${mm}.${yy}`;
+    const tags = parseTags(document.getElementById('logTags').value);
+    const log={title, meta, body, tags};
     if(!title||!body) return;
     const tags = parseTags(document.getElementById('logTags').value);
     const log={title, meta:meta||'LOG.TXT', body, tags};
     if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();}).catch(e=>console.error('Log push failed:',e));}
     else{logsData.push(log);renderLogList();}
-    ['logTitle','logMeta','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
+    ['logTitle','logBody','logTags'].forEach(id=>document.getElementById(id).value='');
     const s=document.getElementById('logSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
   }
 
