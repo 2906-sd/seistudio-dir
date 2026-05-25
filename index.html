@@ -315,28 +315,6 @@ function initCategoryTabs() {
     if (!tags || !tags.length) return '';
     return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
   }
-function renderLogStickers(stickers) {
-  if (!stickers || !stickers.length) return '';
-
-  const positions = [
-    'top: -24px; left: -18px; transform: rotate(-12deg);',
-    'top: -24px; right: -18px; transform: rotate(10deg);',
-    'bottom: -24px; left: -14px; transform: rotate(8deg);',
-    'bottom: -24px; right: -14px; transform: rotate(-10deg);',
-    'top: 45%; left: -28px; transform: rotate(-6deg);',
-    'top: 45%; right: -28px; transform: rotate(6deg);'
-  ];
-
-  return `
-    <div class="log-stickers">
-      ${stickers.map((src, i) => `
-        <div class="log-sticker" style="${positions[i % positions.length]}">
-          <img src="${src}" alt="sticker" />
-        </div>
-      `).join('')}
-    </div>
-  `;
-}
   /* ── ZOOM ── */
   let zoomLevel = 1, isDragging = false;
   let dragStartX = 0, dragStartY = 0, imageX = 0, imageY = 0;
@@ -544,21 +522,6 @@ function showPage(id) {
     });
   }
 
-
-  function renderLogStickers(stickers) {
-    if (!stickers || !stickers.length) return '';
-    const positions = [
-      'top:18px;left:-32px;transform:rotate(-10deg);',
-      'top:18px;right:-32px;transform:rotate(12deg);',
-      'bottom:24px;left:-36px;transform:rotate(8deg);',
-      'bottom:24px;right:-36px;transform:rotate(-14deg);',
-      'top:50%;left:-42px;transform:translateY(-50%) rotate(-6deg);',
-      'top:50%;right:-42px;transform:translateY(-50%) rotate(10deg);'
-    ];
-    return stickers.map((src, i) =>
-      `<div class="log-sticker" style="${positions[i % positions.length]}"><img src="${src}" alt="log sticker" /></div>`
-    ).join('');
-  }
 
   function formatLogBody(body) {
     if (!body) return '';
