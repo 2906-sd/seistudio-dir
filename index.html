@@ -295,11 +295,11 @@
     renderArtGrid();
   }
 
-  function initCategoryTabs() {
-    document.('.category-tab').forEach(tab => {
-      tab.addEventListener('click', function() { filterCategory(this.getAttribute('data-category')); });
-    });
-  }
+function initCategoryTabs() {
+  document.querySelectorAll('.category-tab').forEach(tab => {
+    tab.addEventListener('click', function() { filterCategory(this.getAttribute('data-category')); });
+  });
+}
 
   /* ── TAG HELPERS ── */
   // Parse a raw tag string into a clean array: "#personal, art rambling" → ["personal","art","rambling"]
@@ -497,15 +497,15 @@ function renderLogStickers(stickers) {
   } catch(_) {}
 
   /* ── NAVIGATION ── */
-  function showPage(id) {
-    document.('section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
-    document.('.nav-item').forEach(n => n.classList.remove('active'));
-    const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
-    if (link) link.classList.add('active');
-    document.getElementById('navLinks').classList.remove('show');
-    window.scrollTo(0, 0);
-  }
+function showPage(id) {
+  document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
+  if (link) link.classList.add('active');
+  document.getElementById('navLinks').classList.remove('show');
+  window.scrollTo(0, 0);
+}
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
 
   /* ── RENDER ── */
