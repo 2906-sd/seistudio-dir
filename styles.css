@@ -21,17 +21,17 @@
 }
 
 body.dark {
-  --bg:         #111111;
-  --bg2:        #1c1c1c;
-  --bg3:        #2a2a2a;
-  --bg4:        #000000;
-  --text:       #f0f0f0;
-  --text-muted: #888888;
-  --text-sub:   #bbbbbb;
-  --text-inv:   #f0f0f0;
-  --accent:     #0000FF;
-  --border:     #dddddd;
-  --border-lt:  #333333;
+  --bg:         #000000; /* Pure black foundation for maximum contrast */
+  --bg2:        #121212; /* Dark slate charcoal for content cards */
+  --bg3:        #1a1a1a; /* Elevated layer grey */
+  --bg4:        #080808; /* Deep terminal background accents */
+  --text:       #fbfbfb; /* Ultra-bright, crisp near-white prose */
+  --text-muted: #888888; /* Mid-tone neutral grey for secondary metadata */
+  --text-sub:   #cccccc; /* Highly readable cool grey for body descriptions */
+  --text-inv:   #000000; /* Inverted contrast text (e.g. over accent tags) */
+  --accent:     #ff3333; /* Bright, luminous crimson terminal accent */
+  --border:     #ffffff; /* Sharp white component borders */
+  --border-lt:  #222222; /* Clean, subtle grid line dividers */
 }
 
 /* ── BASE ────────────────────────────────────────────── */
@@ -90,10 +90,9 @@ nav {
 }
 
 .nav-header {
-  padding: 1rem;
+background: var(--bg4);
   border-bottom: 1.5px solid var(--border);
-  background: var(--accent);
-  color: var(--text-inv);
+  color: var(--text);
   overflow: hidden;
   white-space: nowrap;
   transition: background-color 0.3s;
