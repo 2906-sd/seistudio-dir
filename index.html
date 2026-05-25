@@ -426,13 +426,27 @@ function initCategoryTabs() {
       snap.forEach(c => c.ref.remove());
     }).catch(e => console.error('Expiry purge failed:', e));
 
-    db.ref('board/seeded').once('value', snap => {
-      if (!snap.val()) {
-        db.ref('board/seeded').set(true);
-        ['Welcome to the board!','Sage worked really hard on this btw (her dad had to help).','be nice, you only get 500 chars :)','⋆˚꩜｡','click + drag me!']
-          .forEach(t => addComment(t));
-      }
-    }).catch(e => console.error('Seed check failed:', e));
+// Option B: Render permanent system messages that bypass the database purge
+    const permanentSystemMessages = [
+      { text: 'Welcome to the board!', id: 'sys_msg_1' },
+      { text: 'Sage worked really hard on this btw (her dad had to help).', id: 'sys_msg_2' },
+      { text: 'be nice, you only get 500 chars :)', id: 'sys_msg_3' },
+      { text: '⋆˚꩜｡', id: 'sys_msg_4' },
+      { text: 'click + drag me!', id: 'sys_msg_5' }
+    ];
+
+    permanentSystemMessages.forEach((msg, index) => {
+      // Simulate fake positions so they scatter nicely on the canvas
+      const fakePosition = {
+        x: 50 + (index * 120) % 400,
+        y: 60 + (index * 70) % 250,
+        text: msg.text,
+        timestamp: Date.now() // Dynamically updates so they never trigger the old expiry check
+      };
+      
+      // Render directly to the canvas without pushing them back to Firebase
+      renderMessage(msg.id, fakePosition);
+    });
 
     db.ref('content/art').orderByChild('timestamp').once('value', snap => {
       artData = [];
