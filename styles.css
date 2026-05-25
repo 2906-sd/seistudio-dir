@@ -98,7 +98,7 @@ background: var(--bg4);
   transition: background-color 0.3s;
 }
 
-.marquee-container { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; }
+.marquee-container { font-family: var(--font-mono); font-size: 10px; text-transform: uppercase;}
 .marquee-content   { display: inline-block; animation: marquee 15s linear infinite; }
 @keyframes marquee { from { transform: translateX(50%); } to { transform: translateX(-100%); } }
 
