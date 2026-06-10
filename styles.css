@@ -10,7 +10,7 @@
   --text-muted:  #999999;
   --text-sub:    #555555;
   --text-inv:    #ffffff;
-  --accent:      #e60000;
+  --accent:      #405FFA;
   --border:      #100C08;
   --border-lt:   #eeeeee;
   --font-main:   'Newsreader', serif;
@@ -28,10 +28,13 @@ body.dark {
   --text:       #fbfbfb; /* Ultra-bright, crisp near-white prose */
   --text-muted: #888888; /* Mid-tone neutral grey for secondary metadata */
   --text-sub:   #cccccc; /* Highly readable cool grey for body descriptions */
-  --text-inv:   #000000; /* Inverted contrast text (e.g. over accent tags) */
-  --accent:     #ff3333; /* Bright, luminous crimson terminal accent */
-  --border:     #ffffff; /* Sharp white component borders */
+  --text-inv:   #ffffff; /* Inverted contrast text (e.g. over accent tags) */
+  --accent:     #405FFA; /* Electric blue terminal accent */
+  --border:     #3a3a3a; /* Soft grey component borders (no harsh white outline) */
   --border-lt:  #222222; /* Clean, subtle grid line dividers */
+  /* Subtle dark offset shadows so dark mode loses the glaring white drop-shadow */
+  --shadow:     4px 4px 0px rgba(0,0,0,0.55);
+  --shadow-lg:  8px 8px 0px rgba(0,0,0,0.55);
 }
 
 /* ── BASE ────────────────────────────────────────────── */
@@ -146,7 +149,9 @@ background: var(--bg4);
   transition: background 0.15s, color 0.15s;
 }
 .nav-item:last-child { border-bottom: none; }
-.nav-item:hover, .nav-item.active { background: var(--bg4); color: var(--accent); }
+.nav-item:hover { background: var(--bg4); color: var(--accent); }
+.nav-item.active { background: var(--accent); color: var(--text-inv); }
+.nav-item.active span { color: var(--text-inv); }
 .nav-item.active::after { content: "⟡"; font-size: 10px; }
 
 .nav-admin-trigger {
@@ -400,8 +405,8 @@ body.admin-mode .admin-delete-btn { display: block; }
 
 .log-body-text {
   font-family: var(--font-mono);
-  font-size: 1rem;
-  line-height: 2;
+  font-size: 0.95rem;
+  line-height: 1.7;
   white-space: pre-wrap;
   color: var(--text);
 }
@@ -608,9 +613,9 @@ textarea.admin-input { resize: vertical; min-height: 80px; }
   .left-col { width: 100%; position: relative; top: 0; gap: 0.4rem; margin-bottom: 1.5rem; }
   nav { width: 100%; }
 
-  .menu-trigger { display: block; }
-  .nav-links { display: none; }
-  .nav-links.show { display: flex; }
+  /* Keep the nav links visible on small screens so the buttons never disappear */
+  .menu-trigger { display: none; }
+  .nav-links { display: flex; }
 
   main { width: 100%; }
   .art-feed { grid-template-columns: 1fr; }

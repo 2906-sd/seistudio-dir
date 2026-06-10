@@ -420,6 +420,33 @@ function initCategoryTabs() {
     return Object.keys(val).sort((a,b) => Number(a)-Number(b)).map(k => val[k]);
   }
 
+  // This site's own GitHub repo. Files committed here are deployed alongside the site,
+  // so we can reference them same-origin (which also works while the repo is private).
+  const SITE_REPO = { owner: '2906-sd', repo: 'seistudio-dir' };
+
+  // GitHub "/blob/" links serve an HTML page, not an image, so <img> falls back to alt text.
+  // Normalize them so stickers/images actually render:
+  //   - files in this repo  -> root-relative path served by the site itself
+  //   - files in other repos -> raw.githubusercontent.com (works for public repos)
+  function normalizeImageUrl(url) {
+    if (!url || typeof url !== 'string') return url;
+    const u = url.trim();
+    // github.com/<owner>/<repo>/(blob|raw)/<branch>/<path>
+    let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
+    // raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>
+    if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
+    if (m) {
+      const owner = m[1], repo = m[2];
+      const path = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
+      if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
+          repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
+        return `/${path}`;
+      }
+      return `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
+    }
+    return u;
+  }
+
   function onFirebaseReady() {
     const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
     msgRef.orderByChild('timestamp').endAt(Date.now() - MSG_TTL_MS).once('value', snap => {
@@ -435,15 +462,22 @@ function initCategoryTabs() {
       { text: 'click + drag me!', id: 'sys_msg_5' }
     ];
 
-    permanentSystemMessages.forEach((msg, index) => {
-      // Simulate fake positions so they scatter nicely on the canvas
+    const sysNow = new Date();
+    const sysTime = sysNow.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
+    const sysDate = sysNow.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '.');
+    permanentSystemMessages.forEach(msg => {
+      // renderMessage positions popups via xPct/yPct, so scatter them with fresh random
+      // percentages on every load instead of fixed pixel coords that collapse to one corner.
       const fakePosition = {
-        x: 50 + (index * 120) % 400,
-        y: 60 + (index * 70) % 250,
         text: msg.text,
+        name: genAnonName(),
+        time: sysTime,
+        date: sysDate,
+        xPct: 2 + Math.random() * 70,
+        yPct: 4 + Math.random() * 62,
         timestamp: Date.now() // Dynamically updates so they never trigger the old expiry check
       };
-      
+
       // Render directly to the canvas without pushing them back to Firebase
       renderMessage(msg.id, fakePosition);
     });
@@ -470,10 +504,20 @@ function initCategoryTabs() {
   }
 
   /* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember'];
+  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Starlit','Lucid','Restless','Curious','Mellow','Electric','Hidden','Distant','Wistful','Feral','Lonely','Sunlit','Misty','Drifting','Hushed','Amber','Crimson','Indigo','Frosted','Wild','Secret'];
+  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember','Comet','Sparrow','Willow','Lantern','Harbor','Meadow','Specter','Nomad','Orchid','Raven','Pixel','Static','Wave','Fern','Aster','Cinder','Vapor','Glimmer','Thistle','Mirage'];
   function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
-  function nameFromKey(key) { let h=0; for(let i=0;i<key.length;i++) h=(Math.imul(h,31)+key.charCodeAt(i))>>>0; return `Anon. ${ANON_ADJ[h%ANON_ADJ.length]} ${ANON_NOUN[(h>>>8)%ANON_NOUN.length]}`; }
+  // Two independent hashes so the adjective and noun vary independently (avoids keys
+  // that share a prefix all collapsing onto the same noun, e.g. "...Leaf").
+  function nameFromKey(key) {
+    let h1 = 0, h2 = 5381;
+    for (let i = 0; i < key.length; i++) {
+      const c = key.charCodeAt(i);
+      h1 = (Math.imul(h1, 31) + c) >>> 0;
+      h2 = (Math.imul(h2, 33) ^ c) >>> 0;
+    }
+    return `Anon. ${ANON_ADJ[h1 % ANON_ADJ.length]} ${ANON_NOUN[h2 % ANON_NOUN.length]}`;
+  }
 
   /* ── DARK MODE ── */
   function toggleDark() {
@@ -514,7 +558,7 @@ function showPage(id) {
       const el = document.createElement('div');
       el.className = 'art-post';
       el.onclick = () => openLightbox(idx);
-      el.innerHTML = `<img src="${piece.images[0]}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
+      el.innerHTML = `<img src="${normalizeImageUrl(piece.images[0])}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
       feed.appendChild(el);
     });
   }
@@ -574,8 +618,8 @@ function readLog(i) {
     // 2. Render layout frame content safely
     document.getElementById('log-content').innerHTML = `
       <p class="post-label" style="margin-bottom:1rem"><span>${log.meta || ''}</span></p>
-      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;">${log.title || 'UNTITLED'}</h1>
-      <div class="log-body-text" style="font-size:1.1rem;line-height:1.8;">${cleanBody}</div>
+      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>
+      <div class="log-body-text">${cleanBody}</div>
       ${renderTagsHTML(log.tags)}
     `;
 
@@ -607,7 +651,7 @@ function readLog(i) {
         if (pos.right) stickerDiv.style.right = pos.right;
         stickerDiv.style.transform = `rotate(${pos.rotation})`;
 
-        stickerDiv.innerHTML = `<img src="${url}" alt="sticker" />`;
+        stickerDiv.innerHTML = `<img src="${normalizeImageUrl(url)}" alt="sticker" />`;
         wrapper.appendChild(stickerDiv);
       });
     }
@@ -620,7 +664,7 @@ function readLog(i) {
   function openLightbox(i) { lbPiece = artData[i]; lbIdx = 0; lbArtIndex = i; resetZoom(); renderLightbox(); document.getElementById('lightbox').classList.add('show'); }
   function renderLightbox() {
     const multi = lbPiece.images.length > 1;
-    document.getElementById('lb-image').src = lbPiece.images[lbIdx];
+    document.getElementById('lb-image').src = normalizeImageUrl(lbPiece.images[lbIdx]);
     document.getElementById('lb-title').textContent = lbPiece.title;
     document.getElementById('lb-desc').textContent = lbPiece.desc;
     document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
