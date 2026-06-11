@@ -382,7 +382,7 @@ body.admin-mode .admin-delete-btn { display: block; }
 
 .log-body-text {
   font-family: var(--font-mono);
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   line-height: 1.7;
   white-space: pre-wrap;
   color: var(--text);
