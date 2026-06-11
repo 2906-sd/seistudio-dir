@@ -159,17 +159,17 @@
         <div class="about-body">
           <div class="profile-header">
             <img src="https://img.icons8.com/?size=100&id=z-JBA_KtSkxG&format=png&color=000000" class="profile-img" alt="Avatar" />
-            <div class="profile-meta">
-              <h3>Sage</h3>
-              <p>Art Student // 24</p>
-            </div>
-          </div>
-          <p class="about-bio">Multimedia student exploring human emotion, identity and things that heal the whimsy inside. DFW based. (the links don't work.)</p>
-          <div class="tag-list">
-            <span class="tag">#ART</span>
-            <span class="tag">#MULTIMEDIA</span>
-            <span class="tag">#SOME BULLLLLSHITTTTTT</span>
-          </div>
+           <div class="profile-meta">
+  <h3>Sage</h3>
+  <p>Art Student // 24</p>
+</div>
+</div>
+<p class="about-bio"><code>[ ERROR: UNKNOWN_EMOTION_DETECTED ]</code> Art student trying to translate human longing into visual data. DFW based. 24 years of active uptime, still trying to locate where the whimsy resides in the source code. ✿</p>
+<div class="tag-list">
+<span class="tag">#HEART_ERR_404</span>
+<span class="tag">#SENTIENT_DUMP</span>
+<span class="tag">#GHOST_IN_THE_PIXEL</span>
+</div>
           <div class="about-links">
             <a href="#">INSTAGRAM</a>
             <a href="#">EMAIL</a>
@@ -572,8 +572,9 @@ function initCategoryTabs() {
   }
 
   /* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Whimsical'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember','Comet','Sparrow','Song'];
+/* ── ANON NAMES ── */
+  const ANON_ADJ  = ['Unsent', 'Static', 'Transient', 'Fleeting', 'Distant', 'Bitmapped', 'Fragile', 'Hushed', 'Blurry', 'Ghostly', 'Muted', 'Hollow', 'Latent', 'Outdated', 'Drifting', 'Somber', 'Digital', 'Overwritten', 'Submerged', 'Offline', 'Deprecated', 'Lingering'];
+  const ANON_NOUN = ['Draft', 'Log', 'Cache', 'Signal', 'Void', 'Echo', 'Pixel', 'Archive', 'Silhouette', 'Glitch', 'Buffer', 'Terminal', 'Trace', 'Memory', 'Whisper', 'Fragment', 'Node', 'Shell', 'Core', 'Cursor', 'Artifact', 'Frequency'];
   function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
   // Two independent hashes so the adjective and noun vary independently (avoids keys
   // that share a prefix all collapsing onto the same noun, e.g. "...Leaf").
