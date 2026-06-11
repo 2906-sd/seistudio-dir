@@ -122,13 +122,22 @@
       <div class="section-header">
         <h1>LOG<span>S</span></h1>
         <p>// notes, drafts, and things that don't have anywhere to go.</p>
-      </div>
+      <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 11px;">
+      <label for="logSortOrder" style="color: var(--text-sub); text-transform: uppercase;">Order // </label>
+      <select id="logSortOrder" onchange="renderLogList()" style="border: 1.5px solid var(--border); background: var(--bg2); color: var(--text); padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; border-radius: var(--radius); cursor: pointer; outline: none;">
+        <option value="latest">LATEST → OLDEST</option>
+        <option value="oldest">OLDEST → LATEST</option>
+      </select>
+    </div>
+  </div>
+  <div class="blog-list" id="logList"></div>
+</section></div>
       <div class="blog-list" id="logList"></div>
     </section>
 
     <!-- Log reader -->
     <section id="log-reader">
-      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);cursor:pointer;">← BACK</a>
+      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; margin-bottom:2rem; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">✿ BACK TO LOGS</a>
       <div id="log-content" class="log-container"></div>
     </section>
 
@@ -653,22 +662,37 @@ function showPage(id) {
     });
   }
 
-  function renderLogList() {
-    const list = document.getElementById('logList');
-    list.innerHTML = '';
-    logsData.forEach((log, i) => {
-      const el = document.createElement('div');
-      el.className = 'blog-list-item';
-      el.onclick = () => readLog(i);
-      el.innerHTML = `
-        <p class="post-label">${log.meta}</p>
-        <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
-        ${renderTagsHTML(log.tags)}
-        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${i})">DELETE</button>
-      `;
-      list.appendChild(el);
-    });
+function renderLogList() {
+  const list = document.getElementById('logList');
+  list.innerHTML = '';
+  
+  // Clone the logs array so we don't accidentally mutate the master array sequence
+  let displayLogs = [...logsData];
+  
+  // Read the dropdown sort choice
+  const sortOrder = document.getElementById('logSortOrder')?.value || 'latest';
+  
+  if (sortOrder === 'latest') {
+    // Show newest first (Firebase keys/entries build chronologically)
+    displayLogs.reverse();
   }
+
+  displayLogs.forEach((log) => {
+    // Find its true position index in the original logsData array so readLog() opens the correct item
+    const originalIndex = logsData.findIndex(item => item.id === log.id);
+    
+    const el = document.createElement('div');
+    el.className = 'blog-list-item';
+    el.onclick = () => readLog(originalIndex);
+    el.innerHTML = `
+      <p class="post-label">${log.meta}</p>
+      <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
+      ${renderTagsHTML(log.tags)}
+      <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
+    `;
+    list.appendChild(el);
+  });
+}
 
 
   function formatLogBody(body) {
