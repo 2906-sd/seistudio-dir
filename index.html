@@ -6,7 +6,7 @@
   <title>SEI // STUDIO.DIR</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ── CUSTOM LOADER ── */
@@ -64,7 +64,7 @@
 <!-- TOP NAV: site name (left) · marquee (center) · links (right) -->
 <header id="navbar" class="top-nav">
   <div class="nav-left">
-    <span class="logo" onclick="showPage('home')">SEI<span class="logo-slash">//</span>STUDIO.DIR</span>
+    <span class="logo" onclick="showPage('home')"<span class="logo-slash">[</span>SEI <span class="logo-slash">✿</span> STUDIO<span class="logo-slash">]</span></span>
   </div>
   <div class="nav-center">
     <div class="marquee-container">
@@ -127,7 +127,7 @@
 
     <!-- Log reader -->
     <section id="log-reader">
-      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;">← BACK</a>
+      <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono);font-size:10px;margin-bottom:2rem;display:inline-block;padding:4px 8px;border:1px solid var(--border);cursor:pointer;">← BACK</a>
       <div id="log-content" class="log-container"></div>
     </section>
 
@@ -463,7 +463,7 @@ function initCategoryTabs() {
   let artData = [
     { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
     { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
-    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'A series exploring color and form.', meta:'2026' }
+    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'A series of graphic works', meta:'2026' }
   ];
 
   let logsData = [
@@ -572,8 +572,8 @@ function initCategoryTabs() {
   }
 
   /* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Whispering','Dancing'];
-  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember','Comet','Sparrow','Whisper'];
+  const ANON_ADJ  = ['Dreaming','Wandering','Glowing','Quiet','Gentle','Hopeful','Golden','Cosmic','Soft','Vivid','Radiant','Tender','Brave','Serene','Bright','Velvet','Silver','Twilight','Fading','Whimsical'];
+  const ANON_NOUN = ['Dreamer','Wanderer','Star','Poet','Cloud','River','Bloom','Light','Moon','Echo','Flame','Tide','Dawn','Muse','Ghost','Leaf','Petal','Garden','Horizon','Ember','Comet','Sparrow','Song'];
   function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
   // Two independent hashes so the adjective and noun vary independently (avoids keys
   // that share a prefix all collapsing onto the same noun, e.g. "...Leaf").
@@ -772,7 +772,7 @@ function readLog(i) {
   function initBoardResize() {
     const board = document.getElementById('board-section'), handle = document.getElementById('boardResizeHandle');
     let startX,startY,startW,startH;
-    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM,{passive:false});document.addEventListener('touchend',onUp);}
+    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM);document.addEventListener('touchend',onUp);}
     function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
     function onMM(e){resize(e.clientX,e.clientY);}
     function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
@@ -805,10 +805,10 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
     const text = preset || input.value.trim(); if (!text) return;
     if (!msgRef) { console.warn('Board unavailable.'); return; }
     if (!preset && !canPost()) {
-      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},2000);return;
+      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
     }
     const xPct=Math.max(2,Math.random()*72), yPct=Math.max(2,Math.random()*68), now=new Date();
-    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),xPct,yPct,timestamp:Date.now()};
+    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
     msgRef.push(payload).then(()=>{
       if(!preset) updateLastPostTime();
       msgRef.orderByChild('timestamp').once('value',snap=>{ if(snap.numChildren()>MAX_MSGS) msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());}); });
@@ -852,7 +852,7 @@ hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?di
 
   function adminAddArt(){
     if(!isAdminSession()) return;
-    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim()||'2026';
+    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim();
     if(!title||!imgRaw) return; const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean); if(!images.length) return;
     const piece={title,category,images,desc,meta};
     if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
