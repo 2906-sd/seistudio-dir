@@ -704,8 +704,8 @@ textarea.admin-input { resize: vertical; min-height: 80px; }
 .log-sticker img {
   width: auto;
   height: auto;
-  max-width: 110px
-  max-height: 110px
+  max-width: 86px;
+  max-height: 86px;
   object-fit: contain;
   pointer-events: none;
   -webkit-user-drag: none;
