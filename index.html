@@ -52,22 +52,6 @@
       min-width: 200px;
       text-align: center;
     }
-
-    /* ── BACK TO LOGS BUTTON ── */
-    #backToLogsBtn {
-      transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease, letter-spacing 0.15s ease;
-    }
-    #backToLogsBtn:hover {
-      background: var(--text) !important;
-      color: var(--bg) !important;
-      box-shadow: 6px 6px 0px var(--border) !important;
-      transform: translateY(-2px);
-      letter-spacing: 0.06em;
-    }
-    #backToLogsBtn:active {
-      transform: translateY(1px) translateX(1px);
-      box-shadow: 2px 2px 0px var(--border) !important;
-    }
   </style>
 </head>
 <body>
@@ -91,7 +75,7 @@
   <div class="nav-right">
     <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">DIR [≡]</button>
     <div class="nav-links" id="navLinks">
-      <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>HOME</span>
+      <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>INDEX</span>
       <span class="nav-item" onclick="showPage('art')" id="link-art"><span>01</span>VISUALS</span>
       <span class="nav-item" onclick="showPage('writing')" id="link-writing"><span>02</span>LOGS</span>
       <span class="nav-item" onclick="showPage('board')" id="link-board"><span>03</span>BULLETIN</span>
@@ -153,7 +137,7 @@
     <section id="log-reader">
       <!-- Back button row -->
       <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0;">
-        <a href="javascript:void(0)" onclick="showPage('writing')" id="backToLogsBtn" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">← BACK TO LOGS</a>
+        <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">← BACK TO LOGS</a>
       </div>
 
       <!-- .log-container: white card background + sticker anchor point -->
@@ -519,27 +503,33 @@ let logsData = [];
   // Normalize them so stickers/images actually render:
   //   - files in this repo  -> root-relative path served by the site itself
   //   - files in other repos -> raw.githubusercontent.com (works for public repos)
-  function normalizeImageUrl(url) {
-    if (!url || typeof url !== 'string') return url;
-    const u = url.trim();
-    // github.com/<owner>/<repo>/(blob|raw)/<branch>/<path>
-    let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
-    // raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>
-    if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
-    if (m) {
-      const owner = m[1], repo = m[2];
-      // Decode then re-encode path to normalize any %20 / + / raw spaces in folder names
-      let path = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
-      // Decode %20 and + so we have a clean path, then percent-encode spaces for a valid URL
-      path = path.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg.replace(/\+/g, ' ')))).join('/');
-      if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
-          repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
-        return `/${path}`;
-      }
-      return `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
+function normalizeImageUrl(url) {
+  if (!url || typeof url !== 'string') return url;
+  let u = url.trim();
+
+  // 1. Convert GitHub browser (blob) or raw URLs to raw content delivery paths
+  let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
+  if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
+  
+  if (m) {
+    const owner = m[1];
+    const repo = m[2];
+    let path = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
+    
+    // Normalize spaces and URI characters
+    path = path.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg.replace(/\+/g, ' ')))).join('/');
+    
+    // If it belongs to your site's repository, reference it from the root directly
+    if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
+        repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
+      return `/${path}`;
     }
-    return u;
+    // For other GitHub repositories, fetch the raw image asset directly
+    return `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
   }
+  
+  return u;
+}
 
   function onFirebaseReady() {
     const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -792,7 +782,7 @@ function readLog(i) {
           src="${normalizeImageUrl(url)}"
           alt="sticker"
           draggable="false"
-          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/log%202/'+fn;}"
+          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/'+fn;}"
         />`;
         wrapper.appendChild(stickerDiv);
         makeDraggable(stickerDiv, stickerDiv, wrapper);
