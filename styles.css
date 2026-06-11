@@ -732,7 +732,7 @@ input.admin-input, textarea.admin-input, select.admin-input,
 
 /* Global default cursor */
 *, *::before, *::after {
-  cursor: url('cursors/Miffy-Normal.ani') 0 0, auto;
+  cursor: url('cursors/Miffy-Normal-64x64.png') 0 0, auto; /* Point to a larger PNG source */
 }
 
 /* Pointer — links and clickable elements */
@@ -740,7 +740,14 @@ a, button, [role="button"],
 input[type="submit"], input[type="button"],
 input[type="reset"], label[for],
 .clickable, [onclick] {
-  cursor: url('cursors/Miffy_Link.cur') 10 0, pointer;
+  cursor: url('cursors/Miffy_Link-64x64.png') 20 0, pointer; /* Hotspot coordinates adjusted for bigger scale */
+}
+
+/* Text selection */
+input[type="text"], input[type="email"],
+input[type="password"], input[type="search"],
+input[type="url"], textarea, [contenteditable] {
+  cursor: url('cursors/Miffy_Tex-64x64.png') 10 16, text;
 }
 
 /* Text selection */
