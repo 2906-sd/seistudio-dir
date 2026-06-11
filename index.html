@@ -614,10 +614,15 @@ function showPage(id) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
     const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
     if (link) link.classList.add('active');
     document.getElementById('navLinks').classList.remove('show');
     window.scrollTo(0, 0);
+    if (window.location.hash !== '#' + id) {
+      window.history.pushState(null, null, '#' + id);
+    }
+    
     hideLoader();
   }, 600);
 }
@@ -947,22 +952,48 @@ function adminAddLog(){
 
   /* ── STICKERS ── */
   function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
+// ── ROUTER HASH CHECKER ──
+function handleRouting() {
+  // Get the hash from the URL (e.g., "#art" becomes "art")
+  const currentHash = window.location.hash.replace('#', '');
+  
+  // Check if the section actually exists in your HTML
+  const targetSection = document.getElementById(currentHash);
+  
+  if (currentHash && targetSection) {
+    // If a valid hash exists, route there directly without a loader delay on initial load
+    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
+    targetSection.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+    
+    const link = document.getElementById(currentHash === 'log-reader' ? 'link-writing' : 'link-' + currentHash);
+    if (link) link.classList.add('active');
+  } else {
+    // Default fallback to home if hash is empty or invalid
+    showPage('home');
+  }
+}
 
+// Listen for browser Back/Forward navigation clicks
+window.addEventListener('hashchange', handleRouting);
   /* ── INIT ── */
   document.addEventListener('keydown', e => {
     if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
     if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    renderArtGrid(); renderLogList(); initCategoryTabs();
-    const input=document.getElementById('commentInput');
-    input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
-    input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
-    document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
-    if(isAdminSession()) setAdminMode(true);
-    initImageDrag(); initWheelZoom();
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  // ── KICK OFF ROUTING FIRST ON LOAD ──
+  handleRouting();
+
+  renderArtGrid(); renderLogList(); initCategoryTabs();
+  const input=document.getElementById('commentInput');
+  input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
+  input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
+  document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
+  if(isAdminSession()) setAdminMode(true);
+  initImageDrag(); initWheelZoom();
+});
 
   window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
 
