@@ -128,19 +128,23 @@
         <option value="latest">LATEST → OLDEST</option>
         <option value="oldest">OLDEST → LATEST</option>
       </select>
-    </div>
-  </div>
-  <div class="blog-list" id="logList"></div>
+        </div><!-- /.sort-order-row -->
+      </div><!-- /.section-header -->
+      <div class="blog-list" id="logList"></div>
     </section>
 
     <!-- Log reader -->
-<section id="log-reader">
-  <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0;">
-    <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">← BACK TO LOGS</a>
-  </div>
-  
-  <div id="log-content" style="max-width: 800px; margin: 0 auto;"></div>
-</section>
+    <section id="log-reader">
+      <!-- Back button row -->
+      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0;">
+        <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">← BACK TO LOGS</a>
+      </div>
+
+      <!-- .log-container: white card background + sticker anchor point -->
+      <div class="log-container" style="position: relative; overflow: visible;">
+        <div id="log-content"></div>
+      </div>
+    </section>
 
     <!-- BULLETIN BOARD -->
     <section id="board">
@@ -169,7 +173,7 @@
         </div>
         <div class="about-body">
           <div class="profile-header">
-            <img src="/pfp.jpg" class="profile-img" alt="Avatar" />
+            <img src="assets/pfp.jpg" class="profile-img" alt="Avatar" />
            <div class="profile-meta">
   <h3>Sage</h3>
   <p>Art Student // 24 // DFW</p>
@@ -765,7 +769,12 @@ function readLog(i) {
         stickerDiv.style.setProperty('--rot', pos.rotation);
         stickerDiv.style.transform = `rotate(${pos.rotation})`;
 
-        stickerDiv.innerHTML = `<img src="${normalizeImageUrl(url)}" alt="sticker" draggable="false" />`;
+        stickerDiv.innerHTML = `<img
+          src="${normalizeImageUrl(url)}"
+          alt="sticker"
+          draggable="false"
+          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/'+fn;}"
+        />`;
         wrapper.appendChild(stickerDiv);
         makeDraggable(stickerDiv, stickerDiv, wrapper);
       });
@@ -1029,5 +1038,6 @@ document.addEventListener('DOMContentLoaded', () => {
   window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
 
 </script>
+<!-- Firebase SDK loaded once above — do NOT add duplicate script tags here -->
 </body>
 </html>
