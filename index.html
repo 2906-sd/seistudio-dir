@@ -164,8 +164,9 @@
     <!-- Log reader -->
     <section id="log-reader">
       <!-- Back button row -->
-      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0;">
+      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
         <a href="javascript:void(0)" onclick="showPage('writing')" class="back-to-logs-btn">← BACK TO LOGS</a>
+        <button class="admin-edit-btn" id="logReaderEditBtn" style="display:none" onclick="editCurrentLog()">EDIT LOG</button>
       </div>
 
       <!-- .log-container: white card background + sticker anchor point -->
@@ -361,6 +362,41 @@
   </div>
 </div>
 
+<!-- EDIT LOG MODAL -->
+<div id="editLogModal" class="modal-overlay" style="display:none">
+  <div class="admin-box" style="max-width:640px">
+    <div class="admin-toolbar">
+      <span>EDIT_LOG.EXE</span>
+      <button onclick="closeEditLog()">× CLOSE</button>
+    </div>
+    <div class="admin-body">
+      <input type="hidden" id="editLogId" />
+
+      <label class="admin-label">Title</label>
+      <input type="text" id="editLogTitle" class="admin-input" placeholder="Entry title..." />
+
+      <label class="admin-label">Meta Label (shown on the list card)</label>
+      <input type="text" id="editLogMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+
+      <label class="admin-label">Body — basic HTML is fine</label>
+      <textarea id="editLogBody" class="admin-input" style="min-height:180px" placeholder="Write your heart out..."></textarea>
+
+      <label class="admin-label">Sticker PNG URLs — one per line</label>
+      <textarea id="editLogStickers" class="admin-input" placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"></textarea>
+
+      <label class="admin-label">Tags — space or comma separated (# optional)</label>
+      <input type="text" id="editLogTags" class="admin-input" placeholder="#personal #art #rambling" />
+
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+        <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditLog()">SAVE CHANGES →</button>
+        <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteLogFromEdit()">DELETE LOG</button>
+      </div>
+      <p id="editLogSuccess" class="admin-success" style="display:none;">// SAVED SUCCESSFULLY.</p>
+      <p id="editLogError" style="display:none;color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:6px;">// ERROR SAVING.</p>
+    </div>
+  </div>
+</div>
+
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
@@ -498,7 +534,14 @@ function initCategoryTabs() {
   function isAdminSession() {
     try { const r = sessionStorage.getItem(ADMIN_TOKEN_KEY); if (!r) return false; const { token, ts } = JSON.parse(r); return token && (Date.now() - ts) < ADMIN_TOKEN_TTL; } catch(_) { return false; }
   }
-  function setAdminMode(active) { document.body.classList.toggle('admin-mode', active); }
+  function setAdminMode(active) {
+    document.body.classList.toggle('admin-mode', active);
+    // Refresh log list so delete/edit buttons appear or hide
+    if (logsData.length) renderLogList();
+    // Refresh the in-reader edit button
+    const editBtn = document.getElementById('logReaderEditBtn');
+    if (editBtn) editBtn.style.display = active ? 'inline-block' : 'none';
+  }
 
   /* ── DATA ── */
 /* ── DATA ── */
@@ -685,9 +728,10 @@ function showPage(id) {
     showLoader();
     setTimeout(() => {
       _activateSection(id);
-      const cleanPath = id === 'home' ? '/' : '/' + id;
-      if (window.location.pathname !== cleanPath) {
-        window.history.pushState({ page: id }, '', cleanPath);
+      const hashVal = id === 'home' ? '' : id;
+      const newHash = hashVal ? '#' + hashVal : '#';
+      if (window.location.hash !== newHash && !(id === 'home' && window.location.hash === '')) {
+        window.history.pushState({ page: id }, '', hashVal ? '#' + hashVal : location.pathname + location.search);
       }
       hideLoader();
     }, 1500);
@@ -739,7 +783,10 @@ function renderLogList() {
       <p class="post-label">${log.meta}</p>
       <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
       ${renderTagsHTML(log.tags)}
-      <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
+      <div class="admin-log-actions">
+        <button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button>
+        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
+      </div>
     `;
     list.appendChild(el);
   });
@@ -754,6 +801,11 @@ function renderLogList() {
 function readLog(i) {
     const log = logsData[i]; if (!log) return;
     
+    // Track currently open log for the edit button
+    window._currentLogIndex = i;
+    const editBtn = document.getElementById('logReaderEditBtn');
+    if (editBtn) editBtn.style.display = isAdminSession() ? 'inline-block' : 'none';
+
     // 1. Collect stickers from the new database field, fallback to parsing body text
     let stickerUrls = [];
     let cleanBody = log.body || '';
@@ -826,12 +878,12 @@ function readLog(i) {
       });
     }
 
-    // 6. Push log key into path so a reload can restore this exact log
-    const cleanLogPath = `/log/${log.id}`;
-    if (window.location.pathname !== cleanLogPath) {
-      window.history.pushState({ page: 'log-reader', logId: log.id }, '', cleanLogPath);
+    // 6. Push log key into hash so a reload can restore this exact log
+    const logHash = '#log/' + log.id;
+    if (window.location.hash !== logHash) {
+      window.history.pushState({ page: 'log-reader', logId: log.id }, '', logHash);
     }
-    // Show the section directly (no pushState inside showPage — we already set path above)
+    // Show the section directly (no pushState inside showPage — we already set hash above)
     _activateSection('log-reader');
   }
 
@@ -1042,6 +1094,96 @@ function adminAddLog(){
 
   function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0) return; closeLightbox(); adminDeleteArt(lbArtIndex);}
 
+  function editCurrentLog() {
+    const idx = window._currentLogIndex;
+    if (idx === undefined || idx < 0) return;
+    openEditLog(idx);
+  }
+
+  /* ── EDIT LOG ── */
+  let _editLogOriginalIndex = -1;
+
+  function openEditLog(idx) {
+    if (!isAdminSession()) return;
+    const log = logsData[idx];
+    if (!log) return;
+    _editLogOriginalIndex = idx;
+
+    document.getElementById('editLogId').value = log.id || '';
+    document.getElementById('editLogTitle').value = log.title || '';
+    document.getElementById('editLogMeta').value = log.meta || '';
+    document.getElementById('editLogBody').value = log.body || '';
+    document.getElementById('editLogStickers').value = (log.stickers || []).join('\n');
+    document.getElementById('editLogTags').value = (log.tags || []).map(t => '#' + t).join(' ');
+
+    document.getElementById('editLogSuccess').style.display = 'none';
+    document.getElementById('editLogError').style.display = 'none';
+    document.getElementById('editLogModal').style.display = 'flex';
+  }
+
+  function closeEditLog() {
+    document.getElementById('editLogModal').style.display = 'none';
+    _editLogOriginalIndex = -1;
+  }
+
+  function adminSaveEditLog() {
+    if (!isAdminSession()) return;
+    const idx = _editLogOriginalIndex;
+    if (idx < 0 || idx >= logsData.length) return;
+
+    const log = logsData[idx];
+    const id = log.id;
+
+    const title = document.getElementById('editLogTitle').value.trim();
+    const meta = document.getElementById('editLogMeta').value.trim();
+    const body = document.getElementById('editLogBody').value.trim();
+    const tags = parseTags(document.getElementById('editLogTags').value);
+    const stickers = document.getElementById('editLogStickers').value
+      .split('\n').map(s => s.trim()).filter(Boolean);
+
+    if (!title || !body) {
+      document.getElementById('editLogError').textContent = '// TITLE AND BODY ARE REQUIRED.';
+      document.getElementById('editLogError').style.display = 'block';
+      return;
+    }
+
+    const updatedFields = { title, meta, body, tags, stickers };
+
+    if (db && id) {
+      db.ref('content/logs/' + id).update(updatedFields)
+        .then(() => {
+          Object.assign(logsData[idx], updatedFields);
+          renderLogList();
+          document.getElementById('editLogSuccess').style.display = 'block';
+          document.getElementById('editLogError').style.display = 'none';
+          setTimeout(() => {
+            document.getElementById('editLogSuccess').style.display = 'none';
+          }, 3000);
+        })
+        .catch(e => {
+          console.error('Edit log failed:', e);
+          document.getElementById('editLogError').textContent = '// ERROR SAVING.';
+          document.getElementById('editLogError').style.display = 'block';
+        });
+    } else {
+      // Offline fallback
+      Object.assign(logsData[idx], updatedFields);
+      renderLogList();
+      document.getElementById('editLogSuccess').style.display = 'block';
+      setTimeout(() => {
+        document.getElementById('editLogSuccess').style.display = 'none';
+      }, 3000);
+    }
+  }
+
+  function adminDeleteLogFromEdit() {
+    if (!isAdminSession()) return;
+    const idx = _editLogOriginalIndex;
+    if (idx < 0) return;
+    closeEditLog();
+    adminDeleteLog(idx);
+  }
+
   /* ── STICKERS ── */
   function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
 // ── ROUTER ──
@@ -1049,19 +1191,12 @@ function adminAddLog(){
 let _pendingLogKey = null;
 
 function handleRouting() {
-  // Handle GitHub Pages 404 redirect: /?redirect=/log/abc123
-  const params = new URLSearchParams(window.location.search);
-  const redirected = params.get('redirect');
-  if (redirected) {
-    // Silently replace URL and re-route using the restored path
-    window.history.replaceState(null, '', redirected);
-  }
+  // Read from hash (e.g. #writing, #log/abc123) — works on reload without 404
+  const hash = window.location.hash.replace(/^#/, '').replace(/\/$/, '');
 
-  const path = window.location.pathname.replace(/\/$/, '') || '';
-
-  // Format: "/log/FIREBASE_KEY" — restore a specific log after data loads
-  if (path.startsWith('/log/')) {
-    const key = path.slice('/log/'.length);
+  // Format: "log/FIREBASE_KEY" — restore a specific log after data loads
+  if (hash.startsWith('log/')) {
+    const key = hash.slice('log/'.length);
     _activateSection('log-reader'); // show the shell immediately
     const idx = logsData.findIndex(l => l.id === key);
     if (idx !== -1) {
@@ -1072,18 +1207,17 @@ function handleRouting() {
     return;
   }
 
-  // Map clean paths to section IDs
-  const pathMap = {
+  // Map hash values to section IDs
+  const hashMap = {
     '': 'home',
-    '/': 'home',
-    '/home': 'home',
-    '/art': 'art',
-    '/writing': 'writing',
-    '/board': 'board',
-    '/about': 'about'
+    'home': 'home',
+    'art': 'art',
+    'writing': 'writing',
+    'board': 'board',
+    'about': 'about'
   };
 
-  const sectionId = pathMap[path];
+  const sectionId = hashMap[hash];
   if (sectionId) {
     _activateSection(sectionId);
   } else {
@@ -1091,11 +1225,12 @@ function handleRouting() {
   }
 }
 
-// Listen for browser Back/Forward navigation
+// Listen for browser Back/Forward navigation (both hash changes and history API)
 window.addEventListener('popstate', handleRouting);
+window.addEventListener('hashchange', handleRouting);
   /* ── INIT ── */
   document.addEventListener('keydown', e => {
-    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
+    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();closeEditLog();}
     if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
   });
 
