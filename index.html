@@ -75,7 +75,7 @@
   <div class="nav-right">
     <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">DIR [≡]</button>
     <div class="nav-links" id="navLinks">
-      <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>INDEX</span>
+      <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>HOME</span>
       <span class="nav-item" onclick="showPage('art')" id="link-art"><span>01</span>VISUALS</span>
       <span class="nav-item" onclick="showPage('writing')" id="link-writing"><span>02</span>LOGS</span>
       <span class="nav-item" onclick="showPage('board')" id="link-board"><span>03</span>BULLETIN</span>
@@ -207,7 +207,7 @@
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="sticker" />
       </div>
       <div class="sticker" style="top:65%; left:60%; transform:rotate(12deg)">
-        <img src="https://www.pinterest.com/pin/4292562138861429/" alt="sticker" />
+        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/fox-Photoroom.png" alt="sticker" />
       </div>
       <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
@@ -503,33 +503,33 @@ let logsData = [];
   // Normalize them so stickers/images actually render:
   //   - files in this repo  -> root-relative path served by the site itself
   //   - files in other repos -> raw.githubusercontent.com (works for public repos)
-function normalizeImageUrl(url) {
-  if (!url || typeof url !== 'string') return url;
-  let u = url.trim();
-
-  // 1. Convert GitHub browser (blob) or raw URLs to raw content delivery paths
-  let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
-  if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
-  
-  if (m) {
-    const owner = m[1];
-    const repo = m[2];
-    let path = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
-    
-    // Normalize spaces and URI characters
-    path = path.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg.replace(/\+/g, ' ')))).join('/');
-    
-    // If it belongs to your site's repository, reference it from the root directly
-    if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
-        repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
-      return `/${path}`;
+  function normalizeImageUrl(url) {
+    if (!url || typeof url !== 'string') return url;
+    const u = url.trim();
+    // Encode a path string so spaces/special chars become valid URL segments
+    function encodePath(p) {
+      return p.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg))).join('/');
     }
-    // For other GitHub repositories, fetch the raw image asset directly
-    return `https://raw.githubusercontent.com/${owner}/${repo}/main/${path}`;
+    // github.com/<owner>/<repo>/(blob|raw)/<branch>/<path>
+    let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
+    // raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>
+    if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
+    if (m) {
+      const owner = m[1], repo = m[2];
+      const rawPath = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
+      const path = encodePath(rawPath);
+      if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
+          repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
+        return `/${path}`;
+      }
+      return `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
+    }
+    // Bare local paths that contain spaces (e.g. "assets/log 2/x.png")
+    if (!u.startsWith('http') && u.includes(' ')) {
+      return encodePath(u);
+    }
+    return u;
   }
-  
-  return u;
-}
 
   function onFirebaseReady() {
     const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
@@ -584,6 +584,12 @@ function normalizeImageUrl(url) {
         logsData.push({ id: child.key, ...d });
       });
       renderLogList();
+      // Restore a log that was requested before data was available (e.g. page reload on a log URL)
+      if (_pendingLogKey) {
+        const idx = logsData.findIndex(l => l.id === _pendingLogKey);
+        _pendingLogKey = null;
+        if (idx !== -1) readLog(idx);
+      }
     }).catch(e => console.error('Logs load failed:', e));
   }
 
@@ -636,25 +642,27 @@ function normalizeImageUrl(url) {
     '[ SCANNING_PIXEL_PERFECTION... ]',
     '[ LOADING_SAGE_SPACE... ]'
   ];
-function showPage(id) {
-  showLoader();
-  setTimeout(() => {
+function _activateSection(id) {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    document.getElementById(id).classList.add('active');
+    const sec = document.getElementById(id);
+    if (sec) sec.classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
     const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
     if (link) link.classList.add('active');
     document.getElementById('navLinks').classList.remove('show');
     window.scrollTo(0, 0);
-    
-    // Update hash routing if you implemented the previous step
-    if (window.location.hash !== '#' + id) {
-      window.history.pushState(null, null, '#' + id);
-    }
-    
-    hideLoader();
-  }, 1500); // ── CHANGED FROM 600 TO 1500 ──
-}
+  }
+
+function showPage(id) {
+    showLoader();
+    setTimeout(() => {
+      _activateSection(id);
+      if (window.location.hash !== '#' + id) {
+        window.history.pushState(null, null, '#' + id);
+      }
+      hideLoader();
+    }, 1500);
+  }
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
 
   /* ── RENDER ── */
@@ -782,14 +790,20 @@ function readLog(i) {
           src="${normalizeImageUrl(url)}"
           alt="sticker"
           draggable="false"
-          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/'+fn;}"
+          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/log%202/'+fn;}"
         />`;
         wrapper.appendChild(stickerDiv);
         makeDraggable(stickerDiv, stickerDiv, wrapper);
       });
     }
 
-    showPage('log-reader');
+    // 6. Push log key into hash so a reload can restore this exact log
+    const hashTarget = `log-reader:${log.id}`;
+    if (window.location.hash !== '#' + hashTarget) {
+      window.history.pushState(null, null, '#' + hashTarget);
+    }
+    // Show the section directly (no pushState inside showPage — we already set hash above)
+    _activateSection('log-reader');
   }
 
   /* ── LIGHTBOX ── */
@@ -1002,24 +1016,31 @@ function adminAddLog(){
   /* ── STICKERS ── */
   function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
 // ── ROUTER HASH CHECKER ──
+// Pending log key to open once Firebase finishes loading logsData
+let _pendingLogKey = null;
+
 function handleRouting() {
-  // Get the hash from the URL (e.g., "#art" becomes "art")
-  const currentHash = window.location.hash.replace('#', '');
-  
-  // Check if the section actually exists in your HTML
-  const targetSection = document.getElementById(currentHash);
-  
-  if (currentHash && targetSection) {
-    // If a valid hash exists, route there directly without a loader delay on initial load
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    targetSection.classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    
-    const link = document.getElementById(currentHash === 'log-reader' ? 'link-writing' : 'link-' + currentHash);
-    if (link) link.classList.add('active');
+  const hash = window.location.hash.replace('#', '');
+  if (!hash) { _activateSection('home'); return; }
+
+  // Format: "log-reader:FIREBASE_KEY" — restore a specific log after data loads
+  if (hash.startsWith('log-reader:')) {
+    const key = hash.slice('log-reader:'.length);
+    _activateSection('log-reader'); // show the shell immediately
+    const idx = logsData.findIndex(l => l.id === key);
+    if (idx !== -1) {
+      readLog(idx); // data already loaded (e.g. hashchange after first load)
+    } else {
+      _pendingLogKey = key; // data not yet loaded — flag for onFirebaseReady
+    }
+    return;
+  }
+
+  const targetSection = document.getElementById(hash);
+  if (targetSection) {
+    _activateSection(hash);
   } else {
-    // Default fallback to home if hash is empty or invalid
-    showPage('home');
+    _activateSection('home');
   }
 }
 
