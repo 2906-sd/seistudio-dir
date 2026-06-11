@@ -366,7 +366,7 @@ body.admin-mode .admin-delete-btn { display: block; }
 }
 .blog-list-item:hover { transform: translateY(-2px); }
 .blog-list-item:hover h2 { color: var(--accent); }
-.blog-list-item .post-label { margin-bottom: 0.5rem; }
+.blog-list-item .post-label { margin-bottom: 0.5rem; font-size: 1.05rem; }
 
 .log-container {
   background: var(--bg2);

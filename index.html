@@ -52,6 +52,34 @@
       min-width: 200px;
       text-align: center;
     }
+
+    /* ── BACK TO LOGS BUTTON ── */
+    .back-to-logs-btn {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      font-weight: bold;
+      text-decoration: none;
+      display: inline-block;
+      padding: 8px 16px;
+      border: 1.5px solid var(--border);
+      background: var(--accent);
+      color: var(--text-inv);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s, transform 0.12s, box-shadow 0.15s;
+      user-select: none;
+    }
+    .back-to-logs-btn:hover {
+      background: var(--text);
+      color: var(--bg);
+      box-shadow: 4px 4px 0 var(--accent);
+      transform: translate(-2px, -2px);
+    }
+    .back-to-logs-btn:active {
+      transform: translate(1px, 1px);
+      box-shadow: 1px 1px 0 var(--accent);
+    }
   </style>
 </head>
 <body>
@@ -137,7 +165,7 @@
     <section id="log-reader">
       <!-- Back button row -->
       <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0;">
-        <a href="javascript:void(0)" onclick="showPage('writing')" style="font-family:var(--font-mono); font-size:11px; font-weight:bold; text-decoration:none; display:inline-block; padding:8px 16px; border:1.5px solid var(--border); background:var(--accent); color:var(--text-inv); box-shadow:var(--shadow); border-radius:var(--radius); cursor:pointer;">← BACK TO LOGS</a>
+        <a href="javascript:void(0)" onclick="showPage('writing')" class="back-to-logs-btn">← BACK TO LOGS</a>
       </div>
 
       <!-- .log-container: white card background + sticker anchor point -->
@@ -524,8 +552,8 @@ let logsData = [];
       }
       return `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
     }
-    // Bare local paths that contain spaces (e.g. "assets/log 2/x.png")
-    if (!u.startsWith('http') && u.includes(' ')) {
+    // Bare local paths — always encode so spaces/special chars are valid URL segments
+    if (!u.startsWith('http')) {
       return encodePath(u);
     }
     return u;
@@ -657,8 +685,9 @@ function showPage(id) {
     showLoader();
     setTimeout(() => {
       _activateSection(id);
-      if (window.location.hash !== '#' + id) {
-        window.history.pushState(null, null, '#' + id);
+      const cleanPath = id === 'home' ? '/' : '/' + id;
+      if (window.location.pathname !== cleanPath) {
+        window.history.pushState({ page: id }, '', cleanPath);
       }
       hideLoader();
     }, 1500);
@@ -753,7 +782,7 @@ function readLog(i) {
 
     // 2. Render layout frame content safely
     document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem"><span>${log.meta || ''}</span></p>
+      <p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;"><span>${log.meta || ''}</span></p>
       <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>
       <div class="log-body-text">${cleanBody}</div>
       ${renderTagsHTML(log.tags)}
@@ -790,19 +819,19 @@ function readLog(i) {
           src="${normalizeImageUrl(url)}"
           alt="sticker"
           draggable="false"
-          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop();this.src='assets/log%202/'+fn;}"
+          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop().split('?')[0];this.src='assets/log%202/'+fn;}"
         />`;
         wrapper.appendChild(stickerDiv);
         makeDraggable(stickerDiv, stickerDiv, wrapper);
       });
     }
 
-    // 6. Push log key into hash so a reload can restore this exact log
-    const hashTarget = `log-reader:${log.id}`;
-    if (window.location.hash !== '#' + hashTarget) {
-      window.history.pushState(null, null, '#' + hashTarget);
+    // 6. Push log key into path so a reload can restore this exact log
+    const cleanLogPath = `/log/${log.id}`;
+    if (window.location.pathname !== cleanLogPath) {
+      window.history.pushState({ page: 'log-reader', logId: log.id }, '', cleanLogPath);
     }
-    // Show the section directly (no pushState inside showPage — we already set hash above)
+    // Show the section directly (no pushState inside showPage — we already set path above)
     _activateSection('log-reader');
   }
 
@@ -1015,37 +1044,55 @@ function adminAddLog(){
 
   /* ── STICKERS ── */
   function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
-// ── ROUTER HASH CHECKER ──
+// ── ROUTER ──
 // Pending log key to open once Firebase finishes loading logsData
 let _pendingLogKey = null;
 
 function handleRouting() {
-  const hash = window.location.hash.replace('#', '');
-  if (!hash) { _activateSection('home'); return; }
+  // Handle GitHub Pages 404 redirect: /?redirect=/log/abc123
+  const params = new URLSearchParams(window.location.search);
+  const redirected = params.get('redirect');
+  if (redirected) {
+    // Silently replace URL and re-route using the restored path
+    window.history.replaceState(null, '', redirected);
+  }
 
-  // Format: "log-reader:FIREBASE_KEY" — restore a specific log after data loads
-  if (hash.startsWith('log-reader:')) {
-    const key = hash.slice('log-reader:'.length);
+  const path = window.location.pathname.replace(/\/$/, '') || '';
+
+  // Format: "/log/FIREBASE_KEY" — restore a specific log after data loads
+  if (path.startsWith('/log/')) {
+    const key = path.slice('/log/'.length);
     _activateSection('log-reader'); // show the shell immediately
     const idx = logsData.findIndex(l => l.id === key);
     if (idx !== -1) {
-      readLog(idx); // data already loaded (e.g. hashchange after first load)
+      readLog(idx); // data already loaded (e.g. popstate after first load)
     } else {
       _pendingLogKey = key; // data not yet loaded — flag for onFirebaseReady
     }
     return;
   }
 
-  const targetSection = document.getElementById(hash);
-  if (targetSection) {
-    _activateSection(hash);
+  // Map clean paths to section IDs
+  const pathMap = {
+    '': 'home',
+    '/': 'home',
+    '/home': 'home',
+    '/art': 'art',
+    '/writing': 'writing',
+    '/board': 'board',
+    '/about': 'about'
+  };
+
+  const sectionId = pathMap[path];
+  if (sectionId) {
+    _activateSection(sectionId);
   } else {
     _activateSection('home');
   }
 }
 
-// Listen for browser Back/Forward navigation clicks
-window.addEventListener('hashchange', handleRouting);
+// Listen for browser Back/Forward navigation
+window.addEventListener('popstate', handleRouting);
   /* ── INIT ── */
   document.addEventListener('keydown', e => {
     if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();}
@@ -1065,7 +1112,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initImageDrag(); initWheelZoom();
 });
 
-  window.onload = () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); };
+window.addEventListener('load', () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); });
 
 </script>
 <!-- Firebase SDK loaded once above — do NOT add duplicate script tags here -->
