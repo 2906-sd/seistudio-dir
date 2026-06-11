@@ -1113,7 +1113,102 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 window.addEventListener('load', () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); });
+/**
+ * Miffy animated cursor — cross-browser JS implementation
+ * Sprite sheet approach: cycles through PNG frames on a canvas,
+ * applies it as a CSS cursor data URL on each tick.
+ *
+ * Uses the extracted sprite sheets (128×32 for 4-frame cursors,
+ * 768×32 for the 24-frame busy spinner).
+ *
+ * Drop the PNG files into your cursors/ folder:
+ *   cursors/normal_sprite.png   (4 frames, 32×32 each)
+ *   cursors/busy_sprite.png     (24 frames, 32×32 each)
+ *   cursors/pointer.png         (static, 32×32)
+ *   cursors/text.png            (static, 32×32)
+ */
+(function () {
+  const CURSORS = {
+    // [src, frameCount, frameW, frameH, hotspotX, hotspotY, frameMs]
+    normal:  ['cursors/normal_sprite.png',  4, 32, 32,  0,  0, 167],
+    busy:    ['cursors/busy_sprite.png',   24, 32, 32, 15, 14,  83],
+    pointer: ['cursors/pointer.png',        1, 32, 32, 10,  0,   0],
+    text:    ['cursors/text.png',           1, 32, 32,  5,  8,   0],
+  };
 
+  const canvas = document.createElement('canvas');
+  canvas.width = canvas.height = 32;
+  const ctx = canvas.getContext('2d');
+
+  const images = {};
+  let loaded = 0;
+  const total = Object.keys(CURSORS).length;
+
+  function getDataURL(key, frame) {
+    const [, , fw, fh] = CURSORS[key];
+    ctx.clearRect(0, 0, 32, 32);
+    ctx.drawImage(images[key], frame * fw, 0, fw, fh, 0, 0, 32, 32);
+    return canvas.toDataURL('image/png');
+  }
+
+  function applyCursor(key, frame) {
+    const [,, fw, fh, hx, hy] = CURSORS[key];
+    const url = getDataURL(key, frame);
+    const cssValue = `url('${url}') ${hx} ${hy}, auto`;
+
+    if (key === 'pointer') {
+      document.documentElement.style.setProperty('--mc-pointer', `url('${url}') ${hx} ${hy}, pointer`);
+    } else if (key === 'text') {
+      document.documentElement.style.setProperty('--mc-text', `url('${url}') ${hx} ${hy}, text`);
+    } else if (key === 'normal') {
+      document.documentElement.style.setProperty('--mc-default', cssValue);
+    } else if (key === 'busy') {
+      document.documentElement.style.setProperty('--mc-busy', `url('${url}') ${hx} ${hy}, wait`);
+    }
+  }
+
+  function startAnimations() {
+    // Inject CSS vars once images are ready
+    const style = document.createElement('style');
+    style.textContent = `
+      *, *::before, *::after { cursor: var(--mc-default, auto) !important; }
+      a, button, [role=button], input[type=submit],
+      input[type=button], label[for], .clickable, [onclick] {
+        cursor: var(--mc-pointer, pointer) !important;
+      }
+      input[type=text], input[type=email], input[type=password],
+      input[type=search], textarea, [contenteditable] {
+        cursor: var(--mc-text, text) !important;
+      }
+      [aria-busy=true], .loading, .busy {
+        cursor: var(--mc-busy, wait) !important;
+      }
+    `;
+    document.head.appendChild(style);
+
+    // Animate each animated cursor independently
+    ['normal', 'busy'].forEach(key => {
+      const [, frames,,,,, ms] = CURSORS[key];
+      let frame = 0;
+      applyCursor(key, frame);
+      setInterval(() => {
+        frame = (frame + 1) % frames;
+        applyCursor(key, frame);
+      }, ms);
+    });
+
+    // Static cursors — set once
+    applyCursor('pointer', 0);
+    applyCursor('text', 0);
+  }
+
+  // Preload images
+  Object.entries(CURSORS).forEach(([key, cfg]) => {
+    const img = new Image();
+    img.onload = () => { images[key] = img; if (++loaded === total) startAnimations(); };
+    img.src = cfg[0];
+  });
+})();
 </script>
 <!-- Firebase SDK loaded once above — do NOT add duplicate script tags here -->
 </body>

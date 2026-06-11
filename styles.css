@@ -695,3 +695,43 @@ input.admin-input, textarea.admin-input, select.admin-input,
 .about-card, .comment-popup, #board-section, .lightbox-content, .admin-box { overflow: hidden; }
 .board-resize-handle { border-bottom-right-radius: var(--radius); }
 .profile-img { border-radius: 50%; }
+
+/* ── MIFFY CURSORS ───────────────────────────────────── */
+/* .ani files animate natively on Windows; macOS falls    */
+/* back cleanly to the default system cursor.              */
+
+/* Global default cursor */
+*, *::before, *::after {
+  cursor: url('cursors/Miffy-Normal.ani') 0 0, auto;
+}
+
+/* Pointer — links and clickable elements */
+a, button, [role="button"],
+input[type="submit"], input[type="button"],
+input[type="reset"], label[for],
+.clickable, [onclick] {
+  cursor: url('cursors/Miffy_Link.cur') 10 0, pointer;
+}
+
+/* Text selection */
+input[type="text"], input[type="email"],
+input[type="password"], input[type="search"],
+input[type="url"], textarea, [contenteditable] {
+  cursor: url('cursors/Miffy_Tex.cur') 5 8, text;
+}
+
+/* Busy / loading states */
+[aria-busy="true"],
+.loading, .busy {
+  cursor: url('cursors/Miffy_Busy.ani') 15 14, wait;
+}
+
+/* Progress — background activity */
+.working {
+  cursor: url('cursors/Miffy_Working.ani') 0 0, progress;
+}
+
+/* Help */
+[title], abbr, .help {
+  cursor: url('cursors/Miffy-Help.ani') 0 0, help;
+}
