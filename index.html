@@ -370,13 +370,6 @@ function initCategoryTabs() {
     return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
   }
 
-  /* ── LOADER ── */
-  const LOADER_MESSAGES = [
-    '[ FETCHING_EMOTIONS... ]',
-    '[ INDEXING_MEMORY_BANK... ]',
-    '[ ACCESSING_CORE_DUMP... ]',
-    '[ BOOTING_UP_SEI_SYSTEM... ]'
-  ];
 
   function showLoader() {
     const loader = document.getElementById('loaderOverlay');
@@ -466,16 +459,10 @@ function initCategoryTabs() {
   function setAdminMode(active) { document.body.classList.toggle('admin-mode', active); }
 
   /* ── DATA ── */
-  let artData = [
-    { title:'example_1.JPG', category:'painting', images:['https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'Im supposed to put an artist note here.', meta:'2026' },
-    { title:'example_2.PNG', category:'illustration', images:['https://images.unsplash.com/photo-1595411425732-e69c1abe2763?q=80&w=1600'], desc:'Anutha artist description.', meta:'EXPERIMENT' },
-    { title:'series_01', category:'graphic', images:['https://images.unsplash.com/photo-1541701494587-cb58502866ab?q=80&w=1600','https://images.unsplash.com/photo-1604079628040-94301bb21b91?q=80&w=1600'], desc:'A series of graphic works', meta:'2026' }
-  ];
+/* ── DATA ── */
+  let artData = [];
 
-  let logsData = [
-    { title:'Title 1', meta:'LOG_01.TXT // MM.YY', body:"one day I'll find the time to write my heart out.", tags:['personal','wip'], stickers:[] },
-    { title:'Title 2', meta:'LOG_02.TXT // MM.YY', body:"or i could just make some bullshit, idk", tags:['rambling'], stickers:[] }
-  ];
+let logsData = [];
 
   /* ── FIREBASE ── */
   async function initFirebase() {
@@ -608,23 +595,42 @@ function initCategoryTabs() {
   } catch(_) {}
 
   /* ── NAVIGATION ── */
+    /* ── LOADER ── */
+/* ── LOADER ── */
+  const LOADER_MESSAGES = [
+    '[ FETCHING_EMOTIONS... ]',
+    '[ INDEXING_MEMORY_BANK... ]',
+    '[ ACCESSING_CORE_DUMP... ]',
+    '[ BOOTING_UP_SEI_SYSTEM... ]',
+    '[ RE-FORMATTING_EXISTENCE... ]',
+    '[ CLEARING_CACHED_REGRETS... ]',
+    '[ LEAVING_MARGINS_FOR_ERROR... ]',
+    '[ DE-FRAGMENTING_MIDNIGHT_DRAFTS... ]',
+    '[ SYNCHRONIZING_HEART_ERR_404... ]',
+    '[ RECALLING_UNSENT_TEXTS... ]',
+    '[ COMPILING_SILENT_THOUGHTS... ]',
+    '[ DOWNLOADING_WARMTH.EXE... ]',
+    '[ SCANNING_PIXEL_PERFECTION... ]',
+    '[ LOADING_SAGE_SPACE... ]'
+  ];
 function showPage(id) {
   showLoader();
   setTimeout(() => {
     document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
     document.getElementById(id).classList.add('active');
     document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    
     const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
     if (link) link.classList.add('active');
     document.getElementById('navLinks').classList.remove('show');
     window.scrollTo(0, 0);
+    
+    // Update hash routing if you implemented the previous step
     if (window.location.hash !== '#' + id) {
       window.history.pushState(null, null, '#' + id);
     }
     
     hideLoader();
-  }, 600);
+  }, 1500); // ── CHANGED FROM 600 TO 1500 ──
 }
   function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
 
