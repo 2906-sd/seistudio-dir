@@ -328,6 +328,36 @@ body.dark .art-post .post-label { background: rgba(20,20,20,0.88); color: #aaa; 
 .admin-delete-btn:hover { opacity: 0.8; }
 body.admin-mode .admin-delete-btn { display: block; }
 
+/* EDIT button — sits next to DELETE in the log list */
+.admin-edit-btn {
+  background: var(--bg2);
+  color: var(--accent);
+  border: 1.5px solid var(--accent);
+  padding: 4px 10px;
+  font-family: var(--font-mono);
+  font-size: 9px;
+  cursor: pointer;
+  text-transform: uppercase;
+  display: none;
+  transition: background 0.15s, color 0.15s;
+  z-index: 5;
+}
+.admin-edit-btn:hover { background: var(--accent); color: var(--text-inv); }
+body.admin-mode .admin-edit-btn { display: inline-block; }
+
+/* Container for edit + delete side-by-side in log list cards */
+.admin-log-actions {
+  display: none;
+  gap: 6px;
+  margin-top: 8px;
+  flex-wrap: wrap;
+}
+.admin-log-actions .admin-delete-btn,
+.admin-log-actions .admin-edit-btn {
+  position: static;
+}
+body.admin-mode .admin-log-actions { display: flex; }
+
 /* ── CATEGORY NAVIGATION ─────────────────────────────── */
 .category-nav {
   display: flex;
