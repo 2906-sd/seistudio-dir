@@ -12,74 +12,17 @@
   <style>
     /* ── CUSTOM LOADER ── */
     .loader-overlay {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background: rgba(244, 244, 244, 0.95);
       backdrop-filter: blur(2px);
-      z-index: 9999;
-      display: none;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 1.5rem;
+      z-index: 9999; display: none;
+      flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
     }
-    
-    body.dark .loader-overlay {
-      background: rgba(0, 0, 0, 0.95);
-    }
-    
-    .loader-overlay.show {
-      display: flex;
-    }
-    
-    .loader-flower {
-      font-size: 4.5rem;
-      animation: spin 2s linear infinite;
-      color: var(--accent);
-    }
-    
-    @keyframes spin {
-      from { transform: rotate(0deg); }
-      to { transform: rotate(360deg); }
-    }
-    
-    .loader-message {
-      font-family: var(--font-mono);
-      font-size: 0.85rem;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      min-width: 200px;
-      text-align: center;
-    }
-
-    /* ── BACK TO LOGS BUTTON ── */
-    .back-to-logs-btn {
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: bold;
-      text-decoration: none;
-      display: inline-block;
-      padding: 8px 16px;
-      border: 1.5px solid var(--border);
-      background: var(--accent);
-      color: var(--text-inv);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      cursor: pointer;
-      transition: background 0.18s, color 0.18s, transform 0.12s, box-shadow 0.15s;
-      user-select: none;
-    }
-    .back-to-logs-btn:hover {
-      background: var(--text);
-      color: var(--bg);
-      box-shadow: 4px 4px 0 var(--accent);
-      transform: translate(-2px, -2px);
-    }
-    .back-to-logs-btn:active {
-      transform: translate(1px, 1px);
-      box-shadow: 1px 1px 0 var(--accent);
-    }
+    body.dark .loader-overlay { background: rgba(0, 0, 0, 0.95); }
+    .loader-overlay.show { display: flex; }
+    .loader-flower { font-size: 4.5rem; animation: spin 2s linear infinite; color: var(--accent); }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .loader-message { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; min-width: 200px; text-align: center; }
   </style>
 </head>
 <body>
@@ -90,7 +33,7 @@
   <div class="loader-message" id="loaderMessage">[ FETCHING_EMOTIONS... ]</div>
 </div>
 
-<!-- TOP NAV: site name (left) · marquee (center) · links (right) -->
+<!-- TOP NAV -->
 <header id="navbar" class="top-nav">
   <div class="nav-left">
     <span class="logo" onclick="showPage('home')"><span class="logo-slash">[</span>SEI <span class="logo-slash">✿</span> STUDIO<span class="logo-slash">]</span></span>
@@ -106,8 +49,10 @@
       <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>HOME</span>
       <span class="nav-item" onclick="showPage('art')" id="link-art"><span>01</span>VISUALS</span>
       <span class="nav-item" onclick="showPage('writing')" id="link-writing"><span>02</span>LOGS</span>
-      <span class="nav-item" onclick="showPage('board')" id="link-board"><span>03</span>BULLETIN</span>
-      <span class="nav-item" onclick="showPage('about')" id="link-about"><span>04</span>PROFILE</span>
+      <span class="nav-item" onclick="showPage('shrines')" id="link-shrines"><span>03</span>SHRINES</span>
+      <span class="nav-item" onclick="showPage('letters')" id="link-letters"><span>04</span>LETTERS</span>
+      <span class="nav-item" onclick="showPage('board')" id="link-board"><span>05</span>BULLETIN</span>
+      <span class="nav-item" onclick="showPage('about')" id="link-about"><span>06</span>PROFILE</span>
       <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
       <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</span>
     </div>
@@ -115,25 +60,83 @@
 </header>
 
 <div class="page-wrapper">
-
   <main>
-    <!-- HOME -->
+
+    <!-- ══════════════════ HOME ══════════════════ -->
     <section id="home" class="active">
-      <span class="site-title">// SEISTUDIO. //</span>
-      <h1 class="hero-text">
-        A collection of <br />colors from the <i>heart,</i> silly things,<br />and
-        <i>unsent</i> drafts. Made unapologetically by Sage.
-      </h1>
+      <div class="home-grid">
+
+        <!-- HELLO -->
+        <div class="home-card hello-card">
+          <div class="home-card-header">HELLO.TXT</div>
+          <div class="home-card-body">
+            <p>hi! i'm <strong>Sage</strong> — art student, pixel dreamer, collector of feelings without names. this is my small, digital pocket of the internet.</p>
+            <p style="margin-top:0.8rem;color:var(--text-muted);">// DFW · she/her<br />// graphic design student<br />// powered by tiramisu + oscar isaac</p>
+          </div>
+        </div>
+
+        <!-- HERO -->
+        <div class="home-card hero-card">
+          <span class="site-title">// SEISTUDIO. //</span>
+          <h1 class="hero-text">
+            A collection of <br />colors from the <i>heart,</i> silly things,<br />and
+            <i>unsent</i> drafts. Made unapologetically by Sage.
+          </h1>
+        </div>
+
+        <!-- UPDATES -->
+        <div class="home-card updates-card">
+          <div class="home-card-header">UPDATES_LOG</div>
+          <div class="home-card-body" id="homeUpdates">
+            <p class="home-updates-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- STATUS -->
+        <div class="home-card status-card">
+          <div class="home-card-header">STATUS.EXE</div>
+          <div class="home-card-body">
+            <div class="status-row">
+              <span class="status-row-label">MOOD //</span>
+              <span class="status-row-val">somewhere between tired and inspired</span>
+            </div>
+            <div class="status-row">
+              <span class="status-row-label">LISTENING //</span>
+              <span class="status-row-val">whatever is on shuffle</span>
+            </div>
+            <div class="status-row">
+              <span class="status-row-label">WORKING ON //</span>
+              <span class="status-row-val">this very website</span>
+            </div>
+            <div class="status-row">
+              <span class="status-row-label">TIME //</span>
+              <span class="status-row-val" id="homeTime">...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- QUOTE -->
+        <div class="home-card quote-card">
+          <div class="home-card-header">
+            WORD_OF_THE_DAY
+            <button class="quote-refresh" onclick="newQuote()" title="new word">↻</button>
+          </div>
+          <div class="home-card-body">
+            <div class="quote-terminal" id="quoteTerminal">
+              <span class="qt-line">// initializing...</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
-    <!-- ART -->
+    <!-- ══════════════════ ART ══════════════════ -->
     <section id="art">
       <div class="section-header">
         <h1>VISUAL<span>S</span></h1>
         <p>// a collection of things made with my hands and heart and sometimes with a plan.</p>
       </div>
-
-      <!-- Photography removed -->
       <div class="category-nav" id="categoryNav">
         <div class="category-tab active" data-category="all">ALL</div>
         <div class="category-tab" data-category="painting">PAINTINGS</div>
@@ -141,41 +144,77 @@
         <div class="category-tab" data-category="graphic">GRAPHIC DESIGN</div>
         <div class="category-tab" data-category="other">OTHER</div>
       </div>
-
       <div class="art-feed" id="artFeed"></div>
     </section>
 
-    <!-- WRITING -->
+    <!-- ══════════════════ LOGS ══════════════════ -->
     <section id="writing">
       <div class="section-header">
         <h1>LOG<span>S</span></h1>
         <p>// notes, drafts, and things that don't have anywhere to go.</p>
-      <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 11px;">
-      <label for="logSortOrder" style="color: var(--text-sub); text-transform: uppercase;">Order // </label>
-      <select id="logSortOrder" onchange="renderLogList()" style="border: 1.5px solid var(--border); background: var(--bg2); color: var(--text); padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; border-radius: var(--radius); cursor: pointer; outline: none;">
-        <option value="latest">LATEST → OLDEST</option>
-        <option value="oldest">OLDEST → LATEST</option>
-      </select>
-        </div><!-- /.sort-order-row -->
-      </div><!-- /.section-header -->
+        <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 11px;">
+          <label for="logSortOrder" style="color: var(--text-sub); text-transform: uppercase;">Order // </label>
+          <select id="logSortOrder" onchange="renderLogList()" style="border: 1.5px solid var(--border); background: var(--bg2); color: var(--text); padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; border-radius: var(--radius); cursor: pointer; outline: none;">
+            <option value="latest">LATEST → OLDEST</option>
+            <option value="oldest">OLDEST → LATEST</option>
+          </select>
+        </div>
+      </div>
       <div class="blog-list" id="logList"></div>
     </section>
 
     <!-- Log reader -->
     <section id="log-reader">
-      <!-- Back button row -->
-      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; padding: 0; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
         <a href="javascript:void(0)" onclick="showPage('writing')" class="back-to-logs-btn">← BACK TO LOGS</a>
         <button class="admin-edit-btn" id="logReaderEditBtn" style="display:none" onclick="editCurrentLog()">EDIT LOG</button>
       </div>
-
-      <!-- .log-container: white card background + sticker anchor point -->
       <div class="log-container" style="position: relative; overflow: visible;">
         <div id="log-content"></div>
       </div>
     </section>
 
-    <!-- BULLETIN BOARD -->
+    <!-- ══════════════════ SHRINES ══════════════════ -->
+    <section id="shrines">
+      <div class="section-header">
+        <h1>SHRINE<span>S</span></h1>
+        <p>// dedicated spaces for the things i love a little too much.</p>
+      </div>
+      <div class="shrines-grid" id="shrineGrid"></div>
+    </section>
+
+    <!-- Shrine reader -->
+    <section id="shrine-reader">
+      <div style="max-width: 800px; margin: 0 auto 1.5rem auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <a href="javascript:void(0)" onclick="showPage('shrines')" class="back-to-logs-btn">← BACK TO SHRINES</a>
+        <button class="admin-edit-btn" id="shrineReaderEditBtn" style="display:none" onclick="editCurrentShrine()">EDIT SHRINE</button>
+      </div>
+      <div class="shrine-container" id="shrineContainer">
+        <div id="shrine-content"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ LETTERS ══════════════════ -->
+    <section id="letters">
+      <div class="section-header">
+        <h1>LETTER<span>S</span></h1>
+        <p>// things i never sent. you can read them.</p>
+      </div>
+      <div id="letterList"></div>
+    </section>
+
+    <!-- Letter reader -->
+    <section id="letter-reader">
+      <div style="max-width: 700px; margin: 0 auto 1.5rem auto; display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+        <a href="javascript:void(0)" onclick="showPage('letters')" class="back-to-logs-btn">← BACK TO LETTERS</a>
+        <button class="admin-edit-btn" id="letterReaderEditBtn" style="display:none" onclick="editCurrentLetter()">EDIT LETTER</button>
+      </div>
+      <div class="letter-container">
+        <div class="letter-paper" id="letter-content"></div>
+      </div>
+    </section>
+
+    <!-- ══════════════════ BULLETIN BOARD ══════════════════ -->
     <section id="board">
       <h2 style="font-family:var(--font-tech);text-transform:uppercase;margin-bottom:2rem;text-align:center;">
         Public Archive // Leave a piece of yourself here...
@@ -194,8 +233,10 @@
       </div>
     </section>
 
-    <!-- ABOUT -->
+    <!-- ══════════════════ ABOUT ══════════════════ -->
     <section id="about">
+
+      <!-- Main profile card -->
       <div class="about-card">
         <div class="about-header">
           <span>USER_PROFILE.EXE</span><span>_ X</span>
@@ -203,23 +244,23 @@
         <div class="about-body">
           <div class="profile-header">
             <img src="assets/pfp.jpg" class="profile-img" alt="Avatar" />
-           <div class="profile-meta">
-  <h3>Sage</h3>
-  <p>Art Student // 24 // DFW</p>
-</div>
-</div>
-<p class="about-bio"> Hi, I'm Sage. I'm an art student currently studying Graphic Design.
-  This is my small, digital space for feelings that are hard to name, a place for a version of myself that feels safe within the margins of pixel and code. No algorithm, numbers, comments or pressure for exposure. Just me (and you, visitor) and my thoughts - random, sometimes poetic, mostly ridiculous.</p>
-  <p class="about-bio"> I like to experiment with multimedia textures, human warmth and the lack of it, and my perception of the world through my hands. Occasionally, I like to code (guess who made this place?) and create other weird spaces as I learn more about coding.</p>
- <p class="about-bio"> My existence is powered by a love for silly little things, midnight drafts, half-baked ideas left out to breathe, healing the inner child, and a <del>petty</del> need to exist beyond what is expected of me.
-  Beyond the lines of code and pencil strokes, I love playing Monster Hunter, collecting trinkets, and dreaming about tiramisu and Oscar Isaac (are they mutually exclusive? maybe.)<p/>
- <p class="about-bio" style="color:#405FFA;"> Welcome to my pocket of the internet. ✿</p>
-          <p class="about-bio"> SYS_MESSAGE: The links don't work, for now. :)<p/>
-<div class="tag-list">
-<span class="tag">#HEART_ERR_404</span>
-<span class="tag">#ANOMALY</span>
-<span class="tag">#GHOST_IN_THE_PIXEL</span>
-</div>
+            <div class="profile-meta">
+              <h3>Sage</h3>
+              <p>Art Student // 24 // DFW</p>
+            </div>
+          </div>
+          <p class="about-bio">Hi, I'm Sage. I'm an art student currently studying Graphic Design.
+            This is my small, digital space for feelings that are hard to name, a place for a version of myself that feels safe within the margins of pixel and code. No algorithm, numbers, comments or pressure for exposure. Just me (and you, visitor) and my thoughts - random, sometimes poetic, mostly ridiculous.</p>
+          <p class="about-bio">I like to experiment with multimedia textures, human warmth and the lack of it, and my perception of the world through my hands. Occasionally, I like to code (guess who made this place?) and create other weird spaces as I learn more about coding.</p>
+          <p class="about-bio">My existence is powered by a love for silly little things, midnight drafts, half-baked ideas left out to breathe, healing the inner child, and a <del>petty</del> need to exist beyond what is expected of me.
+            Beyond the lines of code and pencil strokes, I love playing Monster Hunter, collecting trinkets, and dreaming about tiramisu and Oscar Isaac (are they mutually exclusive? maybe.)</p>
+          <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet. ✿</p>
+          <p class="about-bio">SYS_MESSAGE: The links don't work, for now. :)</p>
+          <div class="tag-list">
+            <span class="tag">#HEART_ERR_404</span>
+            <span class="tag">#ANOMALY</span>
+            <span class="tag">#GHOST_IN_THE_PIXEL</span>
+          </div>
           <div class="about-links">
             <a href="#">INSTAGRAM</a>
             <a href="#">EMAIL</a>
@@ -227,6 +268,36 @@
         </div>
       </div>
 
+      <!-- Extra personality widgets — drop your sticker imgs inside the .about-widget-body divs -->
+      <div class="about-extras-grid">
+        <div class="about-widget">
+          <div class="about-widget-header">FEELING //</div>
+          <div class="about-widget-body" id="widget-feeling">
+            <!-- drop sticker <img> tags here -->
+            <span class="widget-hint">// stickers loading...</span>
+          </div>
+        </div>
+        <div class="about-widget">
+          <div class="about-widget-header">LIKES //</div>
+          <div class="about-widget-body" id="widget-likes">
+            <span class="widget-hint">// stickers loading...</span>
+          </div>
+        </div>
+        <div class="about-widget">
+          <div class="about-widget-header">HOBBIES //</div>
+          <div class="about-widget-body" id="widget-hobbies">
+            <span class="widget-hint">// stickers loading...</span>
+          </div>
+        </div>
+        <div class="about-widget">
+          <div class="about-widget-header">MUSIC //</div>
+          <div class="about-widget-body" id="widget-music">
+            <span class="widget-hint">// stickers loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Floating decorative stickers around the about card -->
       <div class="sticker" style="top:6%; left:74%; transform:rotate(-14deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="sticker" />
       </div>
@@ -236,23 +307,18 @@
       <div class="sticker" style="top:48%; left:76%; transform:rotate(-6deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="sticker" />
       </div>
-      <div class="sticker" style="top:65%; left:60%; transform:rotate(12deg)">
-        <img src="https://github.com/2906-sd/seistudio-dir/blob/8fc01edd1b31825cff204a784112f20ef9874fc0/assets/profile%20page/e651b1166c63ce5ebc01cb355afbe94a-Photoroom.png" alt="sticker" />
-      </div>
       <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
         <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
       </div>
     </section>
+
   </main>
 </div>
 
-<!-- STATUS FOOTER -->
-<footer class="status-footer" id="statusPill" onclick="togglePill()" title="System status">
+<!-- STATUS FOOTER — simplified, time lives in STATUS card now -->
+<footer class="status-footer" id="statusPill">
   <span class="status-dot">❀</span>
-  <div class="pill-expanded-content">
-    <span id="liveDateTime">...</span>
-    <span class="footer-tag">// SYSTEM ACTIVE</span>
-  </div>
+  <span class="footer-tag">// SYSTEM ACTIVE</span>
 </footer>
 
 <!-- LIGHTBOX -->
@@ -287,7 +353,7 @@
 
 <!-- ADMIN LOGIN -->
 <div id="adminLoginModal" class="modal-overlay" style="display:none">
-  <div class="admin-box" style="max-width:360px">
+  <div class="admin-box" style="max-width:400px">
     <div class="admin-toolbar">
       <span>ADMIN_ACCESS.EXE</span>
       <button onclick="closeAdminLogin()">× CLOSE</button>
@@ -295,13 +361,13 @@
     <div class="admin-body">
       <label class="admin-label">Password</label>
       <input type="password" id="adminPassInput" class="admin-input" placeholder="Enter password..." />
-      <button class="board-submit" style="margin-top:6px;cursor:pointer" onclick="verifyAdminPass()">ENTER →</button>
+      <button class="board-submit" style="margin-top:8px;cursor:pointer" onclick="verifyAdminPass()">ENTER →</button>
       <p id="adminPassError" style="display:none;color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:6px;">// ACCESS DENIED.</p>
     </div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
+<!-- ADMIN PANEL — bigger, 4 tabs -->
 <div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
@@ -310,16 +376,19 @@
     </div>
     <div class="admin-body">
       <div class="admin-tabs">
-        <button class="admin-tab active" id="tab-art" onclick="switchAdminTab('art')">ADD ART</button>
-        <button class="admin-tab" id="tab-logs" onclick="switchAdminTab('logs')">ADD LOG</button>
+        <button class="admin-tab active" id="tab-art"     onclick="switchAdminTab('art')">ADD ART</button>
+        <button class="admin-tab"        id="tab-logs"    onclick="switchAdminTab('logs')">ADD LOG</button>
+        <button class="admin-tab"        id="tab-shrines" onclick="switchAdminTab('shrines')">ADD SHRINE</button>
+        <button class="admin-tab"        id="tab-letters" onclick="switchAdminTab('letters')">ADD LETTER</button>
+        <button class="admin-tab"        id="tab-decor"   onclick="switchAdminTab('decor')">HOME DECOR</button>
       </div>
 
+      <!-- ART FORM -->
       <div id="adminArtForm" class="admin-form">
         <label class="admin-label">Title</label>
         <input type="text" id="artTitle" class="admin-input" placeholder="piece_01.JPG" />
 
         <label class="admin-label">Category</label>
-        <!-- Photography removed -->
         <select id="artCategory" class="admin-input" style="cursor:pointer;">
           <option value="painting">Painting</option>
           <option value="illustration">Illustration</option>
@@ -327,7 +396,7 @@
           <option value="other">Other</option>
         </select>
 
-        <label class="admin-label">Image URLs — one per line (first URL = grid thumbnail)</label>
+        <label class="admin-label">Image URLs — one per line (first = thumbnail)</label>
         <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
 
         <label class="admin-label">Artist Note</label>
@@ -340,7 +409,8 @@
         <p id="artSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
 
-     <div id="adminLogsForm" class="admin-form" style="display:none">
+      <!-- LOG FORM -->
+      <div id="adminLogsForm" class="admin-form" style="display:none">
         <label class="admin-label">Title</label>
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
@@ -348,10 +418,10 @@
         <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
 
         <label class="admin-label">Body — basic HTML is fine</label>
-        <textarea id="logBody" class="admin-input" style="min-height:150px" placeholder="Write your heart out..."></textarea>
+        <textarea id="logBody" class="admin-input admin-body-field" placeholder="Write your heart out..."></textarea>
 
         <label class="admin-label">Sticker PNG URLs — one per line</label>
-        <textarea id="logStickers" class="admin-input" placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"></textarea>
+        <textarea id="logStickers" class="admin-input" placeholder="https://example.com/sticker.png"></textarea>
 
         <label class="admin-label">Tags — space or comma separated (# optional)</label>
         <input type="text" id="logTags" class="admin-input" placeholder="#personal #art #rambling" />
@@ -359,35 +429,96 @@
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLog()">POST LOG →</button>
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
+
+      <!-- HOME DECOR FORM -->
+      <div id="adminDecorForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // PNG images that peek out from behind home page cards.<br />
+          // Leave blank to hide. Same display size as profile stickers (~110px).
+        </p>
+        <div class="home-decor-grid">
+          <div>
+            <label class="admin-label">Behind HELLO.TXT (bottom-right)</label>
+            <input type="text" id="decorHello" class="admin-input" placeholder="https://...png" />
+          </div>
+          <div>
+            <label class="admin-label">Behind STATUS.EXE (top-right)</label>
+            <input type="text" id="decorStatus" class="admin-input" placeholder="https://...png" />
+          </div>
+          <div>
+            <label class="admin-label">Behind WORD_OF_THE_DAY (top-left)</label>
+            <input type="text" id="decorQuote" class="admin-input" placeholder="https://...png" />
+          </div>
+          <div>
+            <label class="admin-label">Hero card — bottom center</label>
+            <input type="text" id="decorHero" class="admin-input" placeholder="https://...png" />
+          </div>
+        </div>
+        <button class="board-submit" style="cursor:pointer;margin-top:10px;" onclick="adminSaveDecor()">SAVE DECOR →</button>
+        <p id="decorSuccess" class="admin-success">// SAVED.</p>
+      </div>
+
+      <!-- SHRINE FORM -->
+      <div id="adminShrinesForm" class="admin-form" style="display:none">
+        <label class="admin-label">Shrine Title</label>
+        <input type="text" id="shrineTitle" class="admin-input" placeholder="e.g. Monster Hunter" />
+
+        <label class="admin-label">Tagline / Short Description</label>
+        <input type="text" id="shrineTagline" class="admin-input" placeholder="a small love letter to..." />
+
+        <label class="admin-label">Cover Image URL</label>
+        <input type="text" id="shrineCover" class="admin-input" placeholder="https://..." />
+
+        <label class="admin-label">Body — HTML is fine</label>
+        <textarea id="shrineBody" class="admin-input admin-body-field" placeholder="Write your shrine content..."></textarea>
+
+        <label class="admin-label">Tags — space or comma separated</label>
+        <input type="text" id="shrineTags" class="admin-input" placeholder="#gaming #love" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddShrine()">OPEN SHRINE →</button>
+        <p id="shrineSuccess" class="admin-success">// SHRINE OPENED.</p>
+      </div>
+
+      <!-- LETTER FORM -->
+      <div id="adminLettersForm" class="admin-form" style="display:none">
+        <label class="admin-label">To:</label>
+        <input type="text" id="letterTo" class="admin-input" placeholder="to the version of me from last year..." />
+
+        <label class="admin-label">Subject / Title (Re:)</label>
+        <input type="text" id="letterSubject" class="admin-input" placeholder="we made it" />
+
+        <label class="admin-label">Body — HTML is fine</label>
+        <textarea id="letterBody" class="admin-input admin-body-field" style="min-height:240px" placeholder="Dear ...&#10;&#10;...&#10;&#10;— Sage"></textarea>
+
+        <label class="admin-label">Tags — space or comma separated</label>
+        <input type="text" id="letterTags" class="admin-input" placeholder="#personal #unsent" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLetter()">SEAL LETTER →</button>
+        <p id="letterSuccess" class="admin-success">// SEALED.</p>
+      </div>
     </div>
   </div>
 </div>
 
 <!-- EDIT LOG MODAL -->
 <div id="editLogModal" class="modal-overlay" style="display:none">
-  <div class="admin-box" style="max-width:640px">
+  <div class="admin-box">
     <div class="admin-toolbar">
       <span>EDIT_LOG.EXE</span>
       <button onclick="closeEditLog()">× CLOSE</button>
     </div>
     <div class="admin-body">
       <input type="hidden" id="editLogId" />
-
       <label class="admin-label">Title</label>
       <input type="text" id="editLogTitle" class="admin-input" placeholder="Entry title..." />
-
-      <label class="admin-label">Meta Label (shown on the list card)</label>
+      <label class="admin-label">Meta Label</label>
       <input type="text" id="editLogMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
-
       <label class="admin-label">Body — basic HTML is fine</label>
-      <textarea id="editLogBody" class="admin-input" style="min-height:180px" placeholder="Write your heart out..."></textarea>
-
+      <textarea id="editLogBody" class="admin-input admin-body-field" placeholder="Write your heart out..."></textarea>
       <label class="admin-label">Sticker PNG URLs — one per line</label>
-      <textarea id="editLogStickers" class="admin-input" placeholder="https://example.com/sticker.png&#10;https://example.com/sticker2.png"></textarea>
-
+      <textarea id="editLogStickers" class="admin-input" placeholder="https://example.com/sticker.png"></textarea>
       <label class="admin-label">Tags — space or comma separated (# optional)</label>
       <input type="text" id="editLogTags" class="admin-input" placeholder="#personal #art #rambling" />
-
       <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
         <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditLog()">SAVE CHANGES →</button>
         <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteLogFromEdit()">DELETE LOG</button>
@@ -398,35 +529,217 @@
   </div>
 </div>
 
+<!-- EDIT SHRINE MODAL -->
+<div id="editShrineModal" class="modal-overlay" style="display:none">
+  <div class="admin-box">
+    <div class="admin-toolbar">
+      <span>EDIT_SHRINE.EXE</span>
+      <button onclick="closeEditShrine()">× CLOSE</button>
+    </div>
+    <div class="admin-body">
+      <input type="hidden" id="editShrineId" />
+      <label class="admin-label">Shrine Title</label>
+      <input type="text" id="editShrineTitle" class="admin-input" />
+      <label class="admin-label">Tagline</label>
+      <input type="text" id="editShrineTagline" class="admin-input" />
+      <label class="admin-label">Cover Image URL</label>
+      <input type="text" id="editShrineCover" class="admin-input" />
+      <label class="admin-label">Body — HTML is fine</label>
+      <textarea id="editShrineBody" class="admin-input admin-body-field"></textarea>
+      <label class="admin-label">Tags</label>
+      <input type="text" id="editShrineTags" class="admin-input" />
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+        <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditShrine()">SAVE CHANGES →</button>
+        <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteShrineFromEdit()">DELETE SHRINE</button>
+      </div>
+      <p id="editShrineSuccess" class="admin-success" style="display:none;">// SAVED.</p>
+      <p id="editShrineError" style="display:none;color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:6px;">// ERROR.</p>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT LETTER MODAL -->
+<div id="editLetterModal" class="modal-overlay" style="display:none">
+  <div class="admin-box">
+    <div class="admin-toolbar">
+      <span>EDIT_LETTER.EXE</span>
+      <button onclick="closeEditLetter()">× CLOSE</button>
+    </div>
+    <div class="admin-body">
+      <input type="hidden" id="editLetterId" />
+      <label class="admin-label">To:</label>
+      <input type="text" id="editLetterTo" class="admin-input" />
+      <label class="admin-label">Subject / Title</label>
+      <input type="text" id="editLetterSubject" class="admin-input" />
+      <label class="admin-label">Body</label>
+      <textarea id="editLetterBody" class="admin-input admin-body-field" style="min-height:220px"></textarea>
+      <label class="admin-label">Tags</label>
+      <input type="text" id="editLetterTags" class="admin-input" />
+      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+        <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditLetter()">SAVE CHANGES →</button>
+        <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteLetterFromEdit()">DELETE LETTER</button>
+      </div>
+      <p id="editLetterSuccess" class="admin-success" style="display:none;">// SAVED.</p>
+      <p id="editLetterError" style="display:none;color:var(--accent);font-family:var(--font-mono);font-size:10px;margin-top:6px;">// ERROR.</p>
+    </div>
+  </div>
+</div>
+
 <!-- FIREBASE SDK -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
-    authDomain: "seistudiomessageboard.firebaseapp.com",
-    databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
-    projectId: "seistudiomessageboard",
-    storageBucket: "seistudiomessageboard.firebasestorage.app",
-    messagingSenderId: "683797738985",
-    appId: "1:683797738985:web:3e79b66988d1498fddc778"
-  };
+/* ═══════════════════════════════════════════════════════
+   FIREBASE CONFIG
+═══════════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyD0WwCtdV5JH5V2BSzlNr_ybTwCtCrgxV4",
+  authDomain: "seistudiomessageboard.firebaseapp.com",
+  databaseURL: "https://seistudiomessageboard-default-rtdb.firebaseio.com",
+  projectId: "seistudiomessageboard",
+  storageBucket: "seistudiomessageboard.firebasestorage.app",
+  messagingSenderId: "683797738985",
+  appId: "1:683797738985:web:3e79b66988d1498fddc778"
+};
 
-  let db = null, msgRef = null;
-  const MAX_MSGS = 75;
-  const renderedIds = new Set();
+let db = null, msgRef = null;
+const MAX_MSGS = 75;
+const renderedIds = new Set();
 
-  /* ── CATEGORY ── */
-  let activeCategory = 'all';
+/* ═══════════════════════════════════════════════════════
+   DICTIONARY OF OBSCURE SORROWS — embedded JSON
+═══════════════════════════════════════════════════════ */
+const DOS_WORDS = [
+  { word: "sonder",             pos: "n.", def: "the realization that each passerby has a life as vivid and complex as your own — an epic story that continues invisibly around you." },
+  { word: "opia",               pos: "n.", def: "the ambiguous intensity of looking someone in the eye, which can feel simultaneously invasive and vulnerable." },
+  { word: "monachopsis",        pos: "n.", def: "the subtle but persistent feeling of being out of place, as maladapted to your surroundings as a seal on a beach." },
+  { word: "exulansis",          pos: "n.", def: "the tendency to give up trying to talk about an experience because people are unable to relate to it." },
+  { word: "vellichor",          pos: "n.", def: "the strange wistfulness of used bookstores, which are somehow sad in a way that libraries are not." },
+  { word: "rubatosis",          pos: "n.", def: "the unsettling awareness of your own heartbeat." },
+  { word: "kenopsia",           pos: "n.", def: "the eerie, forlorn atmosphere of a place that's usually bustling with people but is now abandoned and quiet." },
+  { word: "mauerbauertraurigkeit", pos: "n.", def: "the inexplicable urge to push people away, even close friends who you genuinely like." },
+  { word: "jouska",             pos: "n.", def: "a hypothetical conversation that you compulsively play out in your head." },
+  { word: "chrysalism",         pos: "n.", def: "the amniotic tranquility of being indoors during a thunderstorm." },
+  { word: "vemödalen",          pos: "n.", def: "the frustration of photographing something amazing when thousands of identical photos already exist." },
+  { word: "anecdoche",          pos: "n.", def: "a conversation in which everyone is talking but nobody is listening." },
+  { word: "ellipsism",          pos: "n.", def: "a sadness that you'll never be able to know how history will turn out." },
+  { word: "kuebiko",            pos: "n.", def: "a state of exhaustion inspired by acts of senseless violence." },
+  { word: "lachesism",          pos: "n.", def: "the desire to be struck by disaster — to survive a plane crash, to lose everything in a fire." },
+  { word: "altschmerz",         pos: "n.", def: "weariness with the same old issues that you've always had — the same boring flaws and anxieties you've been gnawing on for years." },
+  { word: "liberosis",          pos: "n.", def: "the desire to care less about things — to loosen your grip on your life, to stop white-knuckling your routines and fears." },
+  { word: "onism",              pos: "n.", def: "the frustration of being stuck in just one body, that inhabits only one place at a time." },
+  { word: "nodus tollens",      pos: "n.", def: "the realization that the plot of your life doesn't make sense to you anymore." },
+  { word: "rückkehrunruhe",     pos: "n.", def: "the feeling of returning home after an immersive trip only to find it fading rapidly from your awareness." },
+  { word: "énouement",          pos: "n.", def: "the bittersweetness of having arrived in the future, seeing how things turned out, but not being able to tell your past self." },
+  { word: "zenosyne",           pos: "n.", def: "the sense that time keeps accelerating, that each year passes more quickly than the last." },
+  { word: "avenoir",            pos: "n.", def: "the desire that memory could flow backward — that you could feel all the experiences of your life in reverse." },
+  { word: "adronitis",          pos: "n.", def: "frustration with how long it takes to get to know someone." },
+  { word: "occhiolism",         pos: "n.", def: "the awareness of the smallness of your perspective, and the humbling irony that this very awareness makes you feel large." },
+];
 
-  function filterCategory(category) {
-    activeCategory = category;
-    document.querySelectorAll('.category-tab').forEach(tab => {
-      tab.classList.toggle('active', tab.getAttribute('data-category') === category);
-    });
-    renderArtGrid();
+let _lastQuoteIdx = -1;
+function newQuote() {
+  let idx;
+  do { idx = Math.floor(Math.random() * DOS_WORDS.length); } while (idx === _lastQuoteIdx && DOS_WORDS.length > 1);
+  _lastQuoteIdx = idx;
+  const w = DOS_WORDS[idx];
+  const terminal = document.getElementById('quoteTerminal');
+  terminal.innerHTML = '';
+
+  const lines = [
+    { text: '> scanning dictionary...', cls: 'qt-line' },
+    { text: '> found: ' + w.word, cls: 'qt-line' },
+    { text: '', cls: '' },
+    { text: w.word, cls: 'qt-word' },
+    { text: w.pos, cls: 'qt-pos' },
+    { text: w.def, cls: 'qt-def' },
+    { text: '> src: thedictionaryofobscuresorrows.com', cls: 'qt-source' },
+  ];
+
+  let i = 0;
+  function next() {
+    if (i >= lines.length) return;
+    const d = document.createElement('div');
+    d.className = lines[i].cls || '';
+    d.textContent = lines[i].text;
+    terminal.appendChild(d);
+    i++;
+    setTimeout(next, i <= 2 ? 120 : 35);
   }
+  next();
+}
+
+/* ═══════════════════════════════════════════════════════
+   DATA STORES
+═══════════════════════════════════════════════════════ */
+let artData     = [];
+let logsData    = [];
+let shrinesData = [];
+let lettersData = [];
+
+/* ═══════════════════════════════════════════════════════
+   HOME UPDATES BOX
+═══════════════════════════════════════════════════════ */
+function renderHomeUpdates() {
+  const el = document.getElementById('homeUpdates');
+  if (!el) return;
+
+  const items = [];
+  [...logsData].reverse().slice(0, 4).forEach(l => {
+    items.push({ type: 'LOG', title: l.title, meta: l.meta || '', section: 'log', id: l.id });
+  });
+  [...shrinesData].reverse().slice(0, 3).forEach(s => {
+    items.push({ type: 'SHRINE', title: s.title, meta: s.tagline || '', section: 'shrine', id: s.id });
+  });
+  [...lettersData].reverse().slice(0, 3).forEach(l => {
+    items.push({ type: 'LETTER', title: l.subject, meta: l.to || '', section: 'letter', id: l.id });
+  });
+
+  if (!items.length) {
+    el.innerHTML = '<p class="home-updates-empty">// no updates yet</p>';
+    return;
+  }
+
+  el.innerHTML = items.slice(0, 6).map(item =>
+    `<div class="home-update-item" onclick="openUpdateItem('${item.section}','${item.id}')">
+      <span class="home-update-type">${item.type}</span>
+      <span class="home-update-title">${escHtml(item.title)}</span>
+      <span class="home-update-meta">${escHtml(item.meta)}</span>
+    </div>`
+  ).join('');
+}
+
+function openUpdateItem(section, id) {
+  if (section === 'log') {
+    const idx = logsData.findIndex(l => l.id === id);
+    if (idx !== -1) readLog(idx);
+  } else if (section === 'shrine') {
+    const idx = shrinesData.findIndex(s => s.id === id);
+    if (idx !== -1) readShrine(idx);
+  } else if (section === 'letter') {
+    const idx = lettersData.findIndex(l => l.id === id);
+    if (idx !== -1) readLetter(idx);
+  }
+}
+
+function escHtml(str) {
+  if (!str) return '';
+  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+/* ═══════════════════════════════════════════════════════
+   CATEGORY
+═══════════════════════════════════════════════════════ */
+let activeCategory = 'all';
+
+function filterCategory(category) {
+  activeCategory = category;
+  document.querySelectorAll('.category-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.getAttribute('data-category') === category);
+  });
+  renderArtGrid();
+}
 
 function initCategoryTabs() {
   document.querySelectorAll('.category-tab').forEach(tab => {
@@ -434,918 +747,744 @@ function initCategoryTabs() {
   });
 }
 
-  /* ── TAG HELPERS ── */
-  // Parse a raw tag string into a clean array: "#personal, art rambling" → ["personal","art","rambling"]
-  function parseTags(raw) {
-    if (!raw) return [];
-    return raw
-      .split(/[\s,]+/)
-      .map(t => t.replace(/^#+/, '').trim().toLowerCase())
-      .filter(Boolean);
-  }
+/* ═══════════════════════════════════════════════════════
+   TAG HELPERS
+═══════════════════════════════════════════════════════ */
+function parseTags(raw) {
+  if (!raw) return [];
+  return raw.split(/[\s,]+/).map(t => t.replace(/^#+/, '').trim().toLowerCase()).filter(Boolean);
+}
 
-  function renderTagsHTML(tags) {
-    if (!tags || !tags.length) return '';
-    return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
-  }
+function renderTagsHTML(tags) {
+  if (!tags || !tags.length) return '';
+  return `<div class="log-tags">${tags.map(t => `<span class="log-tag">#${t}</span>`).join('')}</div>`;
+}
 
+/* ═══════════════════════════════════════════════════════
+   LOADER
+═══════════════════════════════════════════════════════ */
+const LOADER_MESSAGES = [
+  '[ FETCHING_EMOTIONS... ]', '[ INDEXING_MEMORY_BANK... ]', '[ ACCESSING_CORE_DUMP... ]',
+  '[ BOOTING_UP_SEI_SYSTEM... ]', '[ RE-FORMATTING_EXISTENCE... ]', '[ CLEARING_CACHED_REGRETS... ]',
+  '[ LEAVING_MARGINS_FOR_ERROR... ]', '[ DE-FRAGMENTING_MIDNIGHT_DRAFTS... ]',
+  '[ SYNCHRONIZING_HEART_ERR_404... ]', '[ RECALLING_UNSENT_TEXTS... ]',
+  '[ COMPILING_SILENT_THOUGHTS... ]', '[ DOWNLOADING_WARMTH.EXE... ]', '[ LOADING_SAGE_SPACE... ]'
+];
 
-  function showLoader() {
-    const loader = document.getElementById('loaderOverlay');
-    const msg = document.getElementById('loaderMessage');
-    msg.textContent = LOADER_MESSAGES[Math.floor(Math.random() * LOADER_MESSAGES.length)];
-    loader.classList.add('show');
-  }
+function showLoader() {
+  const msg = document.getElementById('loaderMessage');
+  msg.textContent = LOADER_MESSAGES[Math.floor(Math.random() * LOADER_MESSAGES.length)];
+  document.getElementById('loaderOverlay').classList.add('show');
+}
+function hideLoader() { document.getElementById('loaderOverlay').classList.remove('show'); }
 
-  function hideLoader() {
-    document.getElementById('loaderOverlay').classList.remove('show');
-  }
+/* ═══════════════════════════════════════════════════════
+   ZOOM
+═══════════════════════════════════════════════════════ */
+let zoomLevel = 1, isDragging = false, dragStartX = 0, dragStartY = 0, imageX = 0, imageY = 0;
 
-  /* ── ZOOM ── */
-  let zoomLevel = 1, isDragging = false;
-  let dragStartX = 0, dragStartY = 0, imageX = 0, imageY = 0;
+function zoomImage(dir) {
+  zoomLevel = Math.max(1, Math.min(3, zoomLevel + dir * 0.25));
+  const img = document.getElementById('lb-image');
+  if (zoomLevel <= 1) { img.style.transform='scale(1) translate(0,0)'; img.classList.remove('zoomed'); imageX=imageY=0; }
+  else { img.style.transform=`scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`; img.classList.add('zoomed'); }
+}
+function resetZoom() {
+  zoomLevel=1;imageX=imageY=0;
+  const img=document.getElementById('lb-image');
+  img.style.transform='scale(1) translate(0,0)';img.classList.remove('zoomed');
+}
+function initImageDrag() {
+  const img = document.getElementById('lb-image');
+  const start = e => { if(zoomLevel<=1)return;isDragging=true;const t=e.touches?e.touches[0]:e;dragStartX=t.clientX;dragStartY=t.clientY;e.preventDefault(); };
+  const drag = e => { if(!isDragging||zoomLevel<=1)return;const t=e.touches?e.touches[0]:e;imageX+=(t.clientX-dragStartX)/zoomLevel;imageY+=(t.clientY-dragStartY)/zoomLevel;dragStartX=t.clientX;dragStartY=t.clientY;img.style.transform=`scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;e.preventDefault(); };
+  const stop = () => { isDragging=false; };
+  img.addEventListener('mousedown',start);img.addEventListener('touchstart',start,{passive:false});
+  document.addEventListener('mousemove',drag);document.addEventListener('touchmove',drag,{passive:false});
+  document.addEventListener('mouseup',stop);document.addEventListener('touchend',stop);
+}
+function initWheelZoom() {
+  const wrap=document.getElementById('lbImageWrap');
+  wrap.addEventListener('wheel',e=>{e.preventDefault();zoomImage(e.deltaY<0?1:-1);},{passive:false});
+}
 
-  function zoomImage(dir) {
-    zoomLevel = Math.max(1, Math.min(3, zoomLevel + dir * 0.25));
-    const img = document.getElementById('lb-image');
-    if (zoomLevel <= 1) {
-      img.style.transform = 'scale(1) translate(0,0)';
-      img.classList.remove('zoomed');
-      imageX = imageY = 0;
-    } else {
-      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;
-      img.classList.add('zoomed');
-    }
-  }
+/* ═══════════════════════════════════════════════════════
+   SPAM
+═══════════════════════════════════════════════════════ */
+const SPAM_COOLDOWN_MS=60000,LAST_POST_KEY='sei_last_post_time';
+function canPost(){try{const l=localStorage.getItem(LAST_POST_KEY);return!l||Date.now()-parseInt(l)>=SPAM_COOLDOWN_MS;}catch(_){return true;}}
+function updateLastPostTime(){try{localStorage.setItem(LAST_POST_KEY,String(Date.now()));}catch(_){}}
+function getTimeUntilCanPost(){try{const l=localStorage.getItem(LAST_POST_KEY);if(!l)return 0;return Math.max(0,Math.ceil((SPAM_COOLDOWN_MS-(Date.now()-parseInt(l)))/1000));}catch(_){return 0;}}
 
-  function resetZoom() {
-    zoomLevel = 1; imageX = imageY = 0;
-    const img = document.getElementById('lb-image');
-    img.style.transform = 'scale(1) translate(0,0)';
-    img.classList.remove('zoomed');
-  }
+/* ═══════════════════════════════════════════════════════
+   ADMIN AUTH
+═══════════════════════════════════════════════════════ */
+const ADMIN_TOKEN_KEY='sei_admin_token',ADMIN_TOKEN_TTL=8*60*60*1000;
+function isAdminSession(){try{const r=sessionStorage.getItem(ADMIN_TOKEN_KEY);if(!r)return false;const{token,ts}=JSON.parse(r);return token&&(Date.now()-ts)<ADMIN_TOKEN_TTL;}catch(_){return false;}}
+function setAdminMode(active){
+  document.body.classList.toggle('admin-mode',active);
+  if(logsData.length) renderLogList();
+  if(shrinesData.length) renderShrineGrid();
+  if(lettersData.length) renderLetterList();
+  const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
+  const sb=document.getElementById('shrineReaderEditBtn');if(sb)sb.style.display=active?'inline-block':'none';
+  const lb=document.getElementById('letterReaderEditBtn');if(lb)lb.style.display=active?'inline-block':'none';
+}
 
-  function initImageDrag() {
-    const img = document.getElementById('lb-image');
-    const start = e => {
-      if (zoomLevel <= 1) return;
-      isDragging = true;
-      const t = e.touches ? e.touches[0] : e;
-      dragStartX = t.clientX; dragStartY = t.clientY;
-      e.preventDefault();
-    };
-    const drag = e => {
-      if (!isDragging || zoomLevel <= 1) return;
-      const t = e.touches ? e.touches[0] : e;
-      imageX += (t.clientX - dragStartX) / zoomLevel;
-      imageY += (t.clientY - dragStartY) / zoomLevel;
-      dragStartX = t.clientX; dragStartY = t.clientY;
-      img.style.transform = `scale(${zoomLevel}) translate(${imageX}px,${imageY}px)`;
-      e.preventDefault();
-    };
-    const stop = () => { isDragging = false; };
-    img.addEventListener('mousedown', start);
-    img.addEventListener('touchstart', start, { passive: false });
-    document.addEventListener('mousemove', drag);
-    document.addEventListener('touchmove', drag, { passive: false });
-    document.addEventListener('mouseup', stop);
-    document.addEventListener('touchend', stop);
-  }
+/* ═══════════════════════════════════════════════════════
+   IMAGE URL NORMALIZER
+═══════════════════════════════════════════════════════ */
+const SITE_REPO={owner:'2906-sd',repo:'seistudio-dir'};
+function normalizeImages(val){if(!val)return[];if(Array.isArray(val))return val;return Object.keys(val).sort((a,b)=>Number(a)-Number(b)).map(k=>val[k]);}
+function normalizeImageUrl(url){
+  if(!url||typeof url!=='string')return url;
+  const u=url.trim();
+  function encodePath(p){return p.split('/').map(seg=>encodeURIComponent(decodeURIComponent(seg))).join('/');}
+  let m=u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
+  if(!m)m=u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
+  if(m){const owner=m[1],repo=m[2];const rawPath=m[3].replace(/^refs\/heads\/[^/]+\//,'').replace(/[?#].*$/,'');const path=encodePath(rawPath);if(owner.toLowerCase()===SITE_REPO.owner.toLowerCase()&&repo.toLowerCase()===SITE_REPO.repo.toLowerCase())return'/'+path;return`https://raw.githubusercontent.com/${owner}/${repo}/${path}`;}
+  if(!u.startsWith('http'))return encodePath(u);
+  return u;
+}
 
-  function initWheelZoom() {
-    const wrap = document.getElementById('lbImageWrap');
-    wrap.addEventListener('wheel', e => {
-      e.preventDefault();
-      zoomImage(e.deltaY < 0 ? 1 : -1);
-    }, { passive: false });
-  }
-
-  /* ── SPAM ── */
-  const SPAM_COOLDOWN_MS = 60000, LAST_POST_KEY = 'sei_last_post_time';
-  function canPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); return !l || Date.now() - parseInt(l) >= SPAM_COOLDOWN_MS; } catch(_) { return true; }
-  }
-  function updateLastPostTime() { try { localStorage.setItem(LAST_POST_KEY, String(Date.now())); } catch(_) {} }
-  function getTimeUntilCanPost() {
-    try { const l = localStorage.getItem(LAST_POST_KEY); if (!l) return 0; return Math.max(0, Math.ceil((SPAM_COOLDOWN_MS - (Date.now() - parseInt(l))) / 1000)); } catch(_) { return 0; }
-  }
-
-  /* ── ADMIN AUTH ── */
-  const ADMIN_TOKEN_KEY = 'sei_admin_token', ADMIN_TOKEN_TTL = 8 * 60 * 60 * 1000;
-  function isAdminSession() {
-    try { const r = sessionStorage.getItem(ADMIN_TOKEN_KEY); if (!r) return false; const { token, ts } = JSON.parse(r); return token && (Date.now() - ts) < ADMIN_TOKEN_TTL; } catch(_) { return false; }
-  }
-  function setAdminMode(active) {
-    document.body.classList.toggle('admin-mode', active);
-    // Refresh log list so delete/edit buttons appear or hide
-    if (logsData.length) renderLogList();
-    // Refresh the in-reader edit button
-    const editBtn = document.getElementById('logReaderEditBtn');
-    if (editBtn) editBtn.style.display = active ? 'inline-block' : 'none';
-  }
-
-  /* ── DATA ── */
-/* ── DATA ── */
-  let artData = [];
-
-let logsData = [];
-
-  /* ── FIREBASE ── */
-  async function initFirebase() {
-    try {
-      firebase.initializeApp(firebaseConfig);
-      db = firebase.database();
-      msgRef = db.ref('board/messages');
-      msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
-      onFirebaseReady();
-    } catch(e) { console.error('Firebase init failed:', e); }
-  }
-
-  function normalizeImages(val) {
-    if (!val) return [];
-    if (Array.isArray(val)) return val;
-    return Object.keys(val).sort((a,b) => Number(a)-Number(b)).map(k => val[k]);
-  }
-
-  // This site's own GitHub repo. Files committed here are deployed alongside the site,
-  // so we can reference them same-origin (which also works while the repo is private).
-  const SITE_REPO = { owner: '2906-sd', repo: 'seistudio-dir' };
-
-  // GitHub "/blob/" links serve an HTML page, not an image, so <img> falls back to alt text.
-  // Normalize them so stickers/images actually render:
-  //   - files in this repo  -> root-relative path served by the site itself
-  //   - files in other repos -> raw.githubusercontent.com (works for public repos)
-  function normalizeImageUrl(url) {
-    if (!url || typeof url !== 'string') return url;
-    const u = url.trim();
-    // Encode a path string so spaces/special chars become valid URL segments
-    function encodePath(p) {
-      return p.split('/').map(seg => encodeURIComponent(decodeURIComponent(seg))).join('/');
-    }
-    // github.com/<owner>/<repo>/(blob|raw)/<branch>/<path>
-    let m = u.match(/^https?:\/\/github\.com\/([^/]+)\/([^/]+)\/(?:blob|raw)\/[^/]+\/(.+)$/i);
-    // raw.githubusercontent.com/<owner>/<repo>/<branch>/<path>
-    if (!m) m = u.match(/^https?:\/\/raw\.githubusercontent\.com\/([^/]+)\/([^/]+)\/[^/]+\/(.+)$/i);
-    if (m) {
-      const owner = m[1], repo = m[2];
-      const rawPath = m[3].replace(/^refs\/heads\/[^/]+\//, '').replace(/[?#].*$/, '');
-      const path = encodePath(rawPath);
-      if (owner.toLowerCase() === SITE_REPO.owner.toLowerCase() &&
-          repo.toLowerCase() === SITE_REPO.repo.toLowerCase()) {
-        return `/${path}`;
-      }
-      return `https://raw.githubusercontent.com/${owner}/${repo}/${path}`;
-    }
-    // Bare local paths — always encode so spaces/special chars are valid URL segments
-    if (!u.startsWith('http')) {
-      return encodePath(u);
-    }
-    return u;
-  }
-
-  function onFirebaseReady() {
-    const MSG_TTL_MS = 7 * 24 * 60 * 60 * 1000;
-    msgRef.orderByChild('timestamp').endAt(Date.now() - MSG_TTL_MS).once('value', snap => {
-      snap.forEach(c => c.ref.remove());
-    }).catch(e => console.error('Expiry purge failed:', e));
-
-// Option B: Render permanent system messages that bypass the database purge
-    const permanentSystemMessages = [
-      { text: 'Welcome to the board!', id: 'sys_msg_1' },
-      { text: 'Sage worked really hard on this btw (her dad had to help).', id: 'sys_msg_2' },
-      { text: 'be nice, you only get 500 chars :)', id: 'sys_msg_3' },
-      { text: '⋆˚꩜｡', id: 'sys_msg_4' },
-      { text: 'click + drag me!', id: 'sys_msg_5' }
-    ];
-
-    const sysNow = new Date();
-    const sysTime = sysNow.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
-    const sysDate = sysNow.toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: '2-digit' }).replace(/\//g, '.');
-    permanentSystemMessages.forEach(msg => {
-      // renderMessage positions popups via xPct/yPct, so scatter them with fresh random
-      // percentages on every load instead of fixed pixel coords that collapse to one corner.
-      const fakePosition = {
-        text: msg.text,
-        name: genAnonName(),
-        time: sysTime,
-        date: sysDate,
-        xPct: 2 + Math.random() * 70,
-        yPct: 4 + Math.random() * 62,
-        timestamp: Date.now() // Dynamically updates so they never trigger the old expiry check
-      };
-
-      // Render directly to the canvas without pushing them back to Firebase
-      renderMessage(msg.id, fakePosition);
-    });
-
-    db.ref('content/art').orderByChild('timestamp').once('value', snap => {
-      artData = [];
-      snap.forEach(child => {
-        const d = child.val(); d.images = normalizeImages(d.images); d.id = child.key; d.category = d.category || 'other'; artData.push(d);
-      });
-      renderArtGrid();
-    }).catch(e => console.error('Art load failed:', e));
-
-    db.ref('content/logs').orderByChild('timestamp').once('value', snap => {
-      logsData = [];
-      snap.forEach(child => {
-        const d = child.val();
-        // Normalize tags: stored as array or missing
-        d.tags = Array.isArray(d.tags) ? d.tags : [];
-        d.stickers = Array.isArray(d.stickers) ? d.stickers : [];
-        logsData.push({ id: child.key, ...d });
-      });
-      renderLogList();
-      // Restore a log that was requested before data was available (e.g. page reload on a log URL)
-      if (_pendingLogKey) {
-        const idx = logsData.findIndex(l => l.id === _pendingLogKey);
-        _pendingLogKey = null;
-        if (idx !== -1) readLog(idx);
-      }
-    }).catch(e => console.error('Logs load failed:', e));
-  }
-
-  /* ── ANON NAMES ── */
-/* ── ANON NAMES ── */
-  const ANON_ADJ  = ['Unsent', 'Static', 'Transient', 'Fleeting', 'Distant', 'Bitmapped', 'Fragile', 'Hushed', 'Blurry', 'Ghostly', 'Muted', 'Hollow', 'Latent', 'Outdated', 'Drifting', 'Somber', 'Digital', 'Overwritten', 'Submerged', 'Offline', 'Deprecated', 'Lingering'];
-  const ANON_NOUN = ['Draft', 'Log', 'Cache', 'Signal', 'Void', 'Echo', 'Pixel', 'Archive', 'Silhouette', 'Glitch', 'Buffer', 'Terminal', 'Trace', 'Memory', 'Whisper', 'Fragment', 'Node', 'Shell', 'Core', 'Cursor', 'Artifact', 'Frequency'];
-  function genAnonName() { return `Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`; }
-  // Two independent hashes so the adjective and noun vary independently (avoids keys
-  // that share a prefix all collapsing onto the same noun, e.g. "...Leaf").
-  function nameFromKey(key) {
-    let h1 = 0, h2 = 5381;
-    for (let i = 0; i < key.length; i++) {
-      const c = key.charCodeAt(i);
-      h1 = (Math.imul(h1, 31) + c) >>> 0;
-      h2 = (Math.imul(h2, 33) ^ c) >>> 0;
-    }
-    return `Anon. ${ANON_ADJ[h1 % ANON_ADJ.length]} ${ANON_NOUN[h2 % ANON_NOUN.length]}`;
-  }
-
-  /* ── DARK MODE ── */
-  function toggleDark() {
-    const dark = document.body.classList.toggle('dark');
-    document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
-    try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch(_) {}
-  }
+/* ═══════════════════════════════════════════════════════
+   FIREBASE INIT
+═══════════════════════════════════════════════════════ */
+async function initFirebase() {
   try {
-    if (localStorage.getItem('darkMode') === '1') {
-      document.body.classList.add('dark');
-      document.getElementById('darkToggle').textContent = '◑ MODE';
-    }
-  } catch(_) {}
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    msgRef = db.ref('board/messages');
+    msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
+    onFirebaseReady();
+  } catch(e) { console.error('Firebase init failed:', e); }
+}
 
-  /* ── NAVIGATION ── */
-    /* ── LOADER ── */
-/* ── LOADER ── */
-  const LOADER_MESSAGES = [
-    '[ FETCHING_EMOTIONS... ]',
-    '[ INDEXING_MEMORY_BANK... ]',
-    '[ ACCESSING_CORE_DUMP... ]',
-    '[ BOOTING_UP_SEI_SYSTEM... ]',
-    '[ RE-FORMATTING_EXISTENCE... ]',
-    '[ CLEARING_CACHED_REGRETS... ]',
-    '[ LEAVING_MARGINS_FOR_ERROR... ]',
-    '[ DE-FRAGMENTING_MIDNIGHT_DRAFTS... ]',
-    '[ SYNCHRONIZING_HEART_ERR_404... ]',
-    '[ RECALLING_UNSENT_TEXTS... ]',
-    '[ COMPILING_SILENT_THOUGHTS... ]',
-    '[ DOWNLOADING_WARMTH.EXE... ]',
-    '[ SCANNING_PIXEL_PERFECTION... ]',
-    '[ LOADING_SAGE_SPACE... ]'
+function onFirebaseReady() {
+  const MSG_TTL_MS = 7*24*60*60*1000;
+  msgRef.orderByChild('timestamp').endAt(Date.now()-MSG_TTL_MS).once('value',snap=>{snap.forEach(c=>c.ref.remove());}).catch(()=>{});
+
+  const permanentSystemMessages = [
+    {text:'Welcome to the board!',id:'sys_msg_1'},
+    {text:'Sage worked really hard on this btw (her dad had to help).',id:'sys_msg_2'},
+    {text:'be nice, you only get 500 chars :)',id:'sys_msg_3'},
+    {text:'⋆˚꩜｡',id:'sys_msg_4'},
+    {text:'click + drag me!',id:'sys_msg_5'}
   ];
-function _activateSection(id) {
-    document.querySelectorAll('section').forEach(s => s.classList.remove('active'));
-    const sec = document.getElementById(id);
-    if (sec) sec.classList.add('active');
-    document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-    const link = document.getElementById(id === 'log-reader' ? 'link-writing' : 'link-' + id);
-    if (link) link.classList.add('active');
-    document.getElementById('navLinks').classList.remove('show');
-    window.scrollTo(0, 0);
-  }
+  const sysNow=new Date();
+  const sysTime=sysNow.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
+  const sysDate=sysNow.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
+  permanentSystemMessages.forEach(msg=>{
+    renderMessage(msg.id,{text:msg.text,name:genAnonName(),time:sysTime,date:sysDate,xPct:2+Math.random()*70,yPct:4+Math.random()*62,timestamp:Date.now()});
+  });
 
-function showPage(id) {
-    showLoader();
-    setTimeout(() => {
-      _activateSection(id);
-      const hashVal = id === 'home' ? '' : id;
-      const newHash = hashVal ? '#' + hashVal : '#';
-      if (window.location.hash !== newHash && !(id === 'home' && window.location.hash === '')) {
-        window.history.pushState({ page: id }, '', hashVal ? '#' + hashVal : location.pathname + location.search);
-      }
-      hideLoader();
-    }, 1500);
-  }
-  function toggleMenu() { document.getElementById('navLinks').classList.toggle('show'); }
+  // Load home decor stickers
+  loadDecorStickers();
 
-  /* ── RENDER ── */
-  function renderArtGrid() {
-    const feed = document.getElementById('artFeed');
-    feed.innerHTML = '';
-    const filtered = activeCategory === 'all' ? artData : artData.filter(p => p.category === activeCategory);
-    if (!filtered.length) {
-      feed.innerHTML = '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';
-      return;
+  // Load art
+  db.ref('content/art').orderByChild('timestamp').once('value',snap=>{
+    artData=[];
+    snap.forEach(child=>{const d=child.val();d.images=normalizeImages(d.images);d.id=child.key;d.category=d.category||'other';artData.push(d);});
+    renderArtGrid();
+  }).catch(e=>console.error('Art load failed:',e));
+
+  // Load logs
+  db.ref('content/logs').orderByChild('timestamp').once('value',snap=>{
+    logsData=[];
+    snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];d.stickers=Array.isArray(d.stickers)?d.stickers:[];logsData.push({id:child.key,...d});});
+    renderLogList();
+    renderHomeUpdates();
+    if(_pendingLogKey){const idx=logsData.findIndex(l=>l.id===_pendingLogKey);_pendingLogKey=null;if(idx!==-1)readLog(idx);}
+  }).catch(e=>console.error('Logs load failed:',e));
+
+  // Load shrines
+  db.ref('content/shrines').orderByChild('timestamp').once('value',snap=>{
+    shrinesData=[];
+    snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];shrinesData.push({id:child.key,...d});});
+    renderShrineGrid();
+    renderHomeUpdates();
+    if(_pendingShrineKey){const idx=shrinesData.findIndex(s=>s.id===_pendingShrineKey);_pendingShrineKey=null;if(idx!==-1)readShrine(idx);}
+  }).catch(e=>console.error('Shrines load failed:',e));
+
+  // Load letters
+  db.ref('content/letters').orderByChild('timestamp').once('value',snap=>{
+    lettersData=[];
+    snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];lettersData.push({id:child.key,...d});});
+    renderLetterList();
+    renderHomeUpdates();
+    if(_pendingLetterKey){const idx=lettersData.findIndex(l=>l.id===_pendingLetterKey);_pendingLetterKey=null;if(idx!==-1)readLetter(idx);}
+  }).catch(e=>console.error('Letters load failed:',e));
+}
+
+/* ═══════════════════════════════════════════════════════
+   ANON NAMES
+═══════════════════════════════════════════════════════ */
+const ANON_ADJ=['Unsent','Static','Transient','Fleeting','Distant','Bitmapped','Fragile','Hushed','Blurry','Ghostly','Muted','Hollow','Latent','Outdated','Drifting','Somber','Digital','Overwritten','Submerged','Offline','Deprecated','Lingering'];
+const ANON_NOUN=['Draft','Log','Cache','Signal','Void','Echo','Pixel','Archive','Silhouette','Glitch','Buffer','Terminal','Trace','Memory','Whisper','Fragment','Node','Shell','Core','Cursor','Artifact','Frequency'];
+function genAnonName(){return`Anon. ${ANON_ADJ[Math.floor(Math.random()*ANON_ADJ.length)]} ${ANON_NOUN[Math.floor(Math.random()*ANON_NOUN.length)]}`;}
+function nameFromKey(key){let h1=0,h2=5381;for(let i=0;i<key.length;i++){const c=key.charCodeAt(i);h1=(Math.imul(h1,31)+c)>>>0;h2=(Math.imul(h2,33)^c)>>>0;}return`Anon. ${ANON_ADJ[h1%ANON_ADJ.length]} ${ANON_NOUN[h2%ANON_NOUN.length]}`;}
+
+/* ═══════════════════════════════════════════════════════
+   DARK MODE
+═══════════════════════════════════════════════════════ */
+function toggleDark(){const dark=document.body.classList.toggle('dark');document.getElementById('darkToggle').textContent=dark?'◑ MODE':'◐ MODE';try{localStorage.setItem('darkMode',dark?'1':'0');}catch(_){}}
+try{if(localStorage.getItem('darkMode')==='1'){document.body.classList.add('dark');document.getElementById('darkToggle').textContent='◑ MODE';}}catch(_){}
+
+/* ═══════════════════════════════════════════════════════
+   NAVIGATION
+═══════════════════════════════════════════════════════ */
+function _activateSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  const sec=document.getElementById(id);if(sec)sec.classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  const navMap={'log-reader':'writing','shrine-reader':'shrines','letter-reader':'letters'};
+  const linkId='link-'+(navMap[id]||id);
+  const link=document.getElementById(linkId);if(link)link.classList.add('active');
+  document.getElementById('navLinks').classList.remove('show');
+  window.scrollTo(0,0);
+}
+
+function showPage(id){
+  showLoader();
+  setTimeout(()=>{
+    _activateSection(id);
+    const hashVal=id==='home'?'':id;
+    const newHash=hashVal?'#'+hashVal:'#';
+    if(window.location.hash!==newHash&&!(id==='home'&&window.location.hash==='')){
+      window.history.pushState({page:id},'',hashVal?'#'+hashVal:location.pathname+location.search);
     }
-    filtered.forEach(piece => {
-      const idx = artData.indexOf(piece);
-      const el = document.createElement('div');
-      el.className = 'art-post';
-      el.onclick = () => openLightbox(idx);
-      el.innerHTML = `<img src="${normalizeImageUrl(piece.images[0])}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
-      feed.appendChild(el);
-    });
-  }
+    hideLoader();
+  },1200);
+}
 
-function renderLogList() {
-  const list = document.getElementById('logList');
-  list.innerHTML = '';
-  
-  // Clone the logs array so we don't accidentally mutate the master array sequence
-  let displayLogs = [...logsData];
-  
-  // Read the dropdown sort choice
-  const sortOrder = document.getElementById('logSortOrder')?.value || 'latest';
-  
-  if (sortOrder === 'latest') {
-    // Show newest first (Firebase keys/entries build chronologically)
-    displayLogs.reverse();
-  }
+function toggleMenu(){document.getElementById('navLinks').classList.toggle('show');}
 
-  displayLogs.forEach((log) => {
-    // Find its true position index in the original logsData array so readLog() opens the correct item
-    const originalIndex = logsData.findIndex(item => item.id === log.id);
-    
-    const el = document.createElement('div');
-    el.className = 'blog-list-item';
-    el.onclick = () => readLog(originalIndex);
-    el.innerHTML = `
-      <p class="post-label">${log.meta}</p>
-      <h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.5rem;">${log.title}</h2>
-      ${renderTagsHTML(log.tags)}
-      <div class="admin-log-actions">
-        <button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button>
-        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
-      </div>
-    `;
+/* ═══════════════════════════════════════════════════════
+   RENDER — ART
+═══════════════════════════════════════════════════════ */
+function renderArtGrid(){
+  const feed=document.getElementById('artFeed');feed.innerHTML='';
+  const filtered=activeCategory==='all'?artData:artData.filter(p=>p.category===activeCategory);
+  if(!filtered.length){feed.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No pieces in this category yet.</p>';return;}
+  filtered.forEach(piece=>{
+    const idx=artData.indexOf(piece);
+    const el=document.createElement('div');el.className='art-post';el.onclick=()=>openLightbox(idx);
+    el.innerHTML=`<img src="${normalizeImageUrl(piece.images[0])}" alt="${piece.title}" /><div class="post-label"><span>${piece.title}</span><span>${piece.meta}</span></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteArt(${idx})">DELETE</button>`;
+    feed.appendChild(el);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER — LOGS
+═══════════════════════════════════════════════════════ */
+function renderLogList(){
+  const list=document.getElementById('logList');list.innerHTML='';
+  let displayLogs=[...logsData];
+  const sortOrder=document.getElementById('logSortOrder')?.value||'latest';
+  if(sortOrder==='latest')displayLogs.reverse();
+  displayLogs.forEach(log=>{
+    const originalIndex=logsData.findIndex(item=>item.id===log.id);
+    const el=document.createElement('div');el.className='blog-list-item';el.onclick=()=>readLog(originalIndex);
+    el.innerHTML=`<p class="post-label">${log.meta}</p><h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.4rem;">${log.title}</h2>${renderTagsHTML(log.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button></div>`;
     list.appendChild(el);
   });
 }
 
+function readLog(i){
+  const log=logsData[i];if(!log)return;
+  window._currentLogIndex=i;
+  const editBtn=document.getElementById('logReaderEditBtn');
+  if(editBtn)editBtn.style.display=isAdminSession()?'inline-block':'none';
 
-  function formatLogBody(body) {
-    if (!body) return '';
-    return body.replace(/\n/g, '<br />');
+  let stickerUrls=[],cleanBody=log.body||'';
+  if(log.stickers&&Array.isArray(log.stickers)){stickerUrls=log.stickers;}
+  else if(log.stickers&&typeof log.stickers==='object'){stickerUrls=Object.values(log.stickers);}
+  else{const lines=cleanBody.split('\n'),cb=[],re=/^(https?:\/\/[^\s]+)$/i;lines.forEach(l=>{const t=l.trim();if(re.test(t))stickerUrls.push(t);else cb.push(l);});cleanBody=cb.join('\n');}
+
+  document.getElementById('log-content').innerHTML=`<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta||''}</p><h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title||'UNTITLED'}</h1><div class="log-body-text">${cleanBody}</div>${renderTagsHTML(log.tags)}`;
+
+  document.querySelectorAll('.log-sticker').forEach(s=>s.remove());
+  const borderPlacements=[{top:'12px',left:'3%',rotation:'-10deg'},{top:'14px',left:'78%',rotation:'12deg'},{top:'42%',left:'1%',rotation:'8deg'},{top:'58%',left:'82%',rotation:'-15deg'},{top:'84%',left:'10%',rotation:'6deg'},{top:'80%',left:'68%',rotation:'-12deg'}];
+  const wrapper=document.querySelector('.log-container');
+  if(wrapper&&stickerUrls.length){
+    stickerUrls.forEach((url,index)=>{
+      if(!url)return;
+      const pos=borderPlacements[index%borderPlacements.length];
+      const sd=document.createElement('div');sd.className='log-sticker';sd.style.top=pos.top;sd.style.left=pos.left;sd.style.transform=`rotate(${pos.rotation})`;
+      sd.innerHTML=`<img src="${normalizeImageUrl(url)}" alt="sticker" draggable="false" onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop().split('?')[0];this.src='assets/log%202/'+fn;}" />`;
+      wrapper.appendChild(sd);makeDraggable(sd,sd,wrapper);
+    });
   }
 
-function readLog(i) {
-    const log = logsData[i]; if (!log) return;
-    
-    // Track currently open log for the edit button
-    window._currentLogIndex = i;
-    const editBtn = document.getElementById('logReaderEditBtn');
-    if (editBtn) editBtn.style.display = isAdminSession() ? 'inline-block' : 'none';
-
-    // 1. Collect stickers from the new database field, fallback to parsing body text
-    let stickerUrls = [];
-    let cleanBody = log.body || '';
-
-    if (log.stickers && Array.isArray(log.stickers)) {
-      stickerUrls = log.stickers;
-    } else if (log.stickers && typeof log.stickers === 'object') {
-      // Handles cases where Firebase returns an indexed object instead of a clean array
-      stickerUrls = Object.values(log.stickers);
-    } else {
-      // Legacy fallback: Extract standalone image links directly out of body text
-      const lines = cleanBody.split('\n');
-      const cleanBodyLines = [];
-      const urlRegex = /^(https?:\/\/[^\s]+)$/i;
-
-      lines.forEach(line => {
-        const trimmed = line.trim();
-        if (urlRegex.test(trimmed)) {
-          stickerUrls.push(trimmed);
-        } else {
-          cleanBodyLines.push(line);
-        }
-      });
-      cleanBody = cleanBodyLines.join('\n');
-    }
-
-    // 2. Render layout frame content safely
-    document.getElementById('log-content').innerHTML = `
-      <p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;"><span>${log.meta || ''}</span></p>
-      <h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>
-      <div class="log-body-text">${cleanBody}</div>
-      ${renderTagsHTML(log.tags)}
-    `;
-
-    // 3. Clear lingering sticker elements from previous logs
-    document.querySelectorAll('.log-sticker').forEach(s => s.remove());
-
-    // 4. Initial sticker positions inside the log frame (draggable from here)
-    const borderPlacements = [
-      { top: '12px',  left: '3%',  rotation: '-10deg' },
-      { top: '14px',  left: '78%', rotation: '12deg' },
-      { top: '42%',   left: '1%',  rotation: '8deg' },
-      { top: '58%',   left: '82%', rotation: '-15deg' },
-      { top: '84%',   left: '10%', rotation: '6deg' },
-      { top: '80%',   left: '68%', rotation: '-12deg' }
-    ];
-
-    // 5. Append dynamic image stickers to layout wrapper, draggable within it
-    const wrapper = document.querySelector('.log-container');
-    if (wrapper && stickerUrls.length) {
-      stickerUrls.forEach((url, index) => {
-        if (!url) return;
-        const pos = borderPlacements[index % borderPlacements.length];
-        const stickerDiv = document.createElement('div');
-        stickerDiv.className = 'log-sticker';
-
-        stickerDiv.style.top = pos.top;
-        stickerDiv.style.left = pos.left;
-        stickerDiv.style.setProperty('--rot', pos.rotation);
-        stickerDiv.style.transform = `rotate(${pos.rotation})`;
-
-        stickerDiv.innerHTML = `<img
-          src="${normalizeImageUrl(url)}"
-          alt="sticker"
-          draggable="false"
-          onerror="if(!this.dataset.tried){this.dataset.tried='1';const fn=this.src.split('/').pop().split('?')[0];this.src='assets/log%202/'+fn;}"
-        />`;
-        wrapper.appendChild(stickerDiv);
-        makeDraggable(stickerDiv, stickerDiv, wrapper);
-      });
-    }
-
-    // 6. Push log key into hash so a reload can restore this exact log
-    const logHash = '#log/' + log.id;
-    if (window.location.hash !== logHash) {
-      window.history.pushState({ page: 'log-reader', logId: log.id }, '', logHash);
-    }
-    // Show the section directly (no pushState inside showPage — we already set hash above)
-    _activateSection('log-reader');
-  }
-
-  /* ── LIGHTBOX ── */
-  let lbPiece = null, lbIdx = 0, lbArtIndex = -1;
-  function openLightbox(i) { lbPiece = artData[i]; lbIdx = 0; lbArtIndex = i; resetZoom(); renderLightbox(); document.getElementById('lightbox').classList.add('show'); }
-  function renderLightbox() {
-    const multi = lbPiece.images.length > 1;
-    document.getElementById('lb-image').src = normalizeImageUrl(lbPiece.images[lbIdx]);
-    document.getElementById('lb-title').textContent = lbPiece.title;
-    document.getElementById('lb-desc').textContent = lbPiece.desc;
-    document.getElementById('lb-meta').textContent = `DATE: ${lbPiece.meta}`;
-    const prev = document.getElementById('lb-prev'), next = document.getElementById('lb-next'), ctr = document.getElementById('lb-counter');
-    prev.style.display = next.style.display = ctr.style.display = multi ? 'block' : 'none';
-    if (multi) ctr.textContent = `${lbIdx+1} / ${lbPiece.images.length}`;
-    prev.disabled = lbIdx === 0; next.disabled = lbIdx === lbPiece.images.length - 1;
-  }
-  function lbNav(dir) { lbIdx = Math.max(0, Math.min(lbPiece.images.length-1, lbIdx+dir)); resetZoom(); renderLightbox(); }
-  function closeLightbox() { document.getElementById('lightbox').classList.remove('show'); lbPiece=null; lbIdx=0; lbArtIndex=-1; resetZoom(); }
-
-  /* ── STATUS PILL ── */
-  function togglePill() { document.getElementById('statusPill').classList.toggle('collapsed'); }
-  function updateLiveStatus() {
-    const now = new Date();
-    const date = now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
-    const time = now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
-    const el = document.getElementById('liveDateTime'); if (el) el.textContent = `${date} // ${time}`;
-  }
-
-  /* ── DRAG UTILITY ── */
-  let zTop = 100;
-  function makeDraggable(el, handle, parent) {
-    let ox=0,oy=0,sx=0,sy=0;
-    handle.onmousedown = handle.ontouchstart = start;
-    function start(e) { e.preventDefault(); el.style.zIndex=++zTop; const {cx,cy}=pt(e); sx=cx;sy=cy; document.onmousemove=document.ontouchmove=move; document.onmouseup=document.ontouchend=stop; }
-    function move(e) { const {cx,cy}=pt(e); ox=sx-cx;oy=sy-cy;sx=cx;sy=cy; let t=el.offsetTop-oy,l=el.offsetLeft-ox; if(parent){t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));}el.style.top=t+'px';el.style.left=l+'px'; }
-    function stop() { document.onmousemove=document.onmouseup=null;document.ontouchmove=document.ontouchend=null; }
-    function pt(e) { const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e; return {cx:s.clientX,cy:s.clientY}; }
-  }
-
-  /* ── BOARD RESIZE ── */
-  function initBoardResize() {
-    const board = document.getElementById('board-section'), handle = document.getElementById('boardResizeHandle');
-    let startX,startY,startW,startH;
-    function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM);document.addEventListener('touchend',onUp);}
-    function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
-    function onMM(e){resize(e.clientX,e.clientY);}
-    function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
-    function onUp(){document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onUp);}
-    handle.addEventListener('mousedown',e=>{e.preventDefault();onDown(e.clientX,e.clientY);});
-    handle.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];onDown(t.clientX,t.clientY);},{passive:false});
-  }
-
-  /* ── BULLETIN BOARD ── */
-  const FALLBACK_W=800, FALLBACK_H=400, MSG_TTL_MS=7*24*60*60*1000;
-  function renderMessage(id, msg) {
-    if (renderedIds.has(id)) return;
-    if (msg.timestamp && (Date.now()-msg.timestamp) > MSG_TTL_MS) return;
-    renderedIds.add(id);
-    const canvas = document.getElementById('boardCanvas');
-    const bw = canvas.offsetWidth||FALLBACK_W, bh = canvas.offsetHeight||FALLBACK_H;
-    const popup = document.createElement('div'); popup.className='comment-popup';
-    popup.style.left = Math.max(10,(msg.xPct/100)*bw)+'px';
-    popup.style.top  = Math.max(10,(msg.yPct/100)*bh)+'px';
-    const hdr = document.createElement('div'); hdr.className='comment-header';
-    const displayDate = msg.date
-  || (msg.timestamp ? new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.') : '');
-hdr.innerHTML = `<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
-    const bdy = document.createElement('div'); bdy.className='comment-body'; bdy.textContent=msg.text;
-    popup.append(hdr,bdy); canvas.appendChild(popup); makeDraggable(popup,hdr,canvas);
-  }
-
-  function addComment(preset=null) {
-    const input = document.getElementById('commentInput');
-    const text = preset || input.value.trim(); if (!text) return;
-    if (!msgRef) { console.warn('Board unavailable.'); return; }
-    if (!preset && !canPost()) {
-      const w=document.getElementById('spamWarning'); w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`; w.style.display='block'; setTimeout(()=>{w.style.display='none';},3000); return;
-    }
-    const xPct=Math.max(2,Math.random()*72), yPct=Math.max(2,Math.random()*68), now=new Date();
-    const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
-    msgRef.push(payload).then(()=>{
-      if(!preset) updateLastPostTime();
-      msgRef.orderByChild('timestamp').once('value',snap=>{ if(snap.numChildren()>MAX_MSGS) msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());}); });
-    }).catch(e=>console.error('Post failed:',e));
-    if (!preset) { input.value=''; const c=document.getElementById('charCounter'); c.textContent='0 / 500'; c.classList.remove('warn'); }
-  }
-  function submitComment() { addComment(); }
-
-  /* ── ADMIN ── */
-  function openModal(id){document.getElementById(id).style.display='flex';} function closeModal(id){document.getElementById(id).style.display='none';}
-  function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
-  function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
-  async function verifyAdminPass(){
-    const pw=document.getElementById('adminPassInput').value, err=document.getElementById('adminPassError');
-    err.style.display='none';
-    if (!pw) return;
-    try {
-      const res = await fetch('/api/admin-auth', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ password: pw })
-      });
-      const data = await res.json();
-      if (data.ok) {
-        sessionStorage.setItem(ADMIN_TOKEN_KEY, JSON.stringify({ token: 'admin_' + Date.now(), ts: Date.now() }));
-        closeAdminLogin();
-        setAdminMode(true);
-        openModal('adminPanelModal');
-      } else {
-        err.textContent = '// ACCESS DENIED.';
-        err.style.display = 'block';
-      }
-    } catch(e) {
-      err.textContent = '// CONNECTION ERROR.';
-      err.style.display = 'block';
-      console.error('Auth failed:', e);
-    }
-  }
-  function closeAdminPanel(){closeModal('adminPanelModal');}
-  function switchAdminTab(tab){document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';document.getElementById('tab-art').classList.toggle('active',tab==='art');document.getElementById('tab-logs').classList.toggle('active',tab==='logs');}
-
-  function adminAddArt(){
-    if(!isAdminSession()) return;
-    const title=document.getElementById('artTitle').value.trim(), category=document.getElementById('artCategory').value, imgRaw=document.getElementById('artImages').value.trim(), desc=document.getElementById('artDesc').value.trim(), meta=document.getElementById('artMeta').value.trim();
-    if(!title||!imgRaw) return; const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean); if(!images.length) return;
-    const piece={title,category,images,desc,meta};
-    if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
-    else{artData.push(piece);renderArtGrid();}
-    ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value=''); document.getElementById('artCategory').value='painting';
-    const s=document.getElementById('artSuccess'); s.style.display='block'; setTimeout(()=>{s.style.display='none';},3000);
-  }
-
-function adminAddLog(){
-  if(!isAdminSession()) return;
-
-  const title = document.getElementById('logTitle').value.trim();
-  const body = document.getElementById('logBody').value.trim();
-
-  if(!title || !body) return;
-
-  const tags = parseTags(document.getElementById('logTags').value);
-
-  // STICKERS
-  const stickers = document
-    .getElementById('logStickers')
-    .value
-    .split('\n')
-    .map(s => s.trim())
-    .filter(Boolean);
-
-  // AUTO META
-// AUTO META
-  const logNumber = String(logsData.length + 1).padStart(2, '0');
-
-  const now = new Date();
-  const yyyy = now.getFullYear();
-  const month = String(now.getMonth() + 1).padStart(2, '0');
-  const day = String(now.getDate()).padStart(2, '0');
-
-  const autoMeta = `LOG_${logNumber} // ${yyyy}.${month}.${day}`;
-
-  const log = {
-    title,
-    meta: autoMeta,
-    body,
-    tags,
-    stickers
-  };
-
-  if(db){
-    db.ref('content/logs')
-      .push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP})
-      .then(ref=>{
-        log.id=ref.key;
-        logsData.push(log);
-        renderLogList();
-      })
-      .catch(e=>console.error('Log push failed:',e));
-  } else {
-    logsData.push(log);
-    renderLogList();
-  }
-
-  ['logTitle','logBody','logTags','logStickers'].forEach(id=>{
-    document.getElementById(id).value='';
-  });
-
-  const s=document.getElementById('logSuccess');
-  s.style.display='block';
-
-  setTimeout(()=>{
-    s.style.display='none';
-  },3000);
+  const logHash='#log/'+log.id;
+  if(window.location.hash!==logHash)window.history.pushState({page:'log-reader',logId:log.id},'',logHash);
+  _activateSection('log-reader');
 }
 
-  function adminDeleteArt(idx){
-    if(!isAdminSession()) return; const piece=artData[idx]; if(!confirm(`Delete "${piece.title}"?`)) return;
-    if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}
-    else{artData.splice(idx,1);renderArtGrid();}
-  }
-
-  function adminDeleteLog(idx){
-    if(!isAdminSession()) return; const log=logsData[idx]; if(!confirm(`Delete "${log.title}"?`)) return;
-    if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();}).catch(e=>console.error('Delete log failed:',e));}
-    else{logsData.splice(idx,1);renderLogList();}
-  }
-
-  function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0) return; closeLightbox(); adminDeleteArt(lbArtIndex);}
-
-  function editCurrentLog() {
-    const idx = window._currentLogIndex;
-    if (idx === undefined || idx < 0) return;
-    openEditLog(idx);
-  }
-
-  /* ── EDIT LOG ── */
-  let _editLogOriginalIndex = -1;
-
-  function openEditLog(idx) {
-    if (!isAdminSession()) return;
-    const log = logsData[idx];
-    if (!log) return;
-    _editLogOriginalIndex = idx;
-
-    document.getElementById('editLogId').value = log.id || '';
-    document.getElementById('editLogTitle').value = log.title || '';
-    document.getElementById('editLogMeta').value = log.meta || '';
-    document.getElementById('editLogBody').value = log.body || '';
-    document.getElementById('editLogStickers').value = (log.stickers || []).join('\n');
-    document.getElementById('editLogTags').value = (log.tags || []).map(t => '#' + t).join(' ');
-
-    document.getElementById('editLogSuccess').style.display = 'none';
-    document.getElementById('editLogError').style.display = 'none';
-    document.getElementById('editLogModal').style.display = 'flex';
-  }
-
-  function closeEditLog() {
-    document.getElementById('editLogModal').style.display = 'none';
-    _editLogOriginalIndex = -1;
-  }
-
-  function adminSaveEditLog() {
-    if (!isAdminSession()) return;
-    const idx = _editLogOriginalIndex;
-    if (idx < 0 || idx >= logsData.length) return;
-
-    const log = logsData[idx];
-    const id = log.id;
-
-    const title = document.getElementById('editLogTitle').value.trim();
-    const meta = document.getElementById('editLogMeta').value.trim();
-    const body = document.getElementById('editLogBody').value.trim();
-    const tags = parseTags(document.getElementById('editLogTags').value);
-    const stickers = document.getElementById('editLogStickers').value
-      .split('\n').map(s => s.trim()).filter(Boolean);
-
-    if (!title || !body) {
-      document.getElementById('editLogError').textContent = '// TITLE AND BODY ARE REQUIRED.';
-      document.getElementById('editLogError').style.display = 'block';
-      return;
-    }
-
-    const updatedFields = { title, meta, body, tags, stickers };
-
-    if (db && id) {
-      db.ref('content/logs/' + id).update(updatedFields)
-        .then(() => {
-          Object.assign(logsData[idx], updatedFields);
-          renderLogList();
-          document.getElementById('editLogSuccess').style.display = 'block';
-          document.getElementById('editLogError').style.display = 'none';
-          setTimeout(() => {
-            document.getElementById('editLogSuccess').style.display = 'none';
-          }, 3000);
-        })
-        .catch(e => {
-          console.error('Edit log failed:', e);
-          document.getElementById('editLogError').textContent = '// ERROR SAVING.';
-          document.getElementById('editLogError').style.display = 'block';
-        });
-    } else {
-      // Offline fallback
-      Object.assign(logsData[idx], updatedFields);
-      renderLogList();
-      document.getElementById('editLogSuccess').style.display = 'block';
-      setTimeout(() => {
-        document.getElementById('editLogSuccess').style.display = 'none';
-      }, 3000);
-    }
-  }
-
-  function adminDeleteLogFromEdit() {
-    if (!isAdminSession()) return;
-    const idx = _editLogOriginalIndex;
-    if (idx < 0) return;
-    closeEditLog();
-    adminDeleteLog(idx);
-  }
-
-  /* ── STICKERS ── */
-  function initStickers(){const s=document.getElementById('about'); document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
-// ── ROUTER ──
-// Pending log key to open once Firebase finishes loading logsData
-let _pendingLogKey = null;
-
-function handleRouting() {
-  // Read from hash (e.g. #writing, #log/abc123) — works on reload without 404
-  const hash = window.location.hash.replace(/^#/, '').replace(/\/$/, '');
-
-  // Format: "log/FIREBASE_KEY" — restore a specific log after data loads
-  if (hash.startsWith('log/')) {
-    const key = hash.slice('log/'.length);
-    _activateSection('log-reader'); // show the shell immediately
-    const idx = logsData.findIndex(l => l.id === key);
-    if (idx !== -1) {
-      readLog(idx); // data already loaded (e.g. popstate after first load)
-    } else {
-      _pendingLogKey = key; // data not yet loaded — flag for onFirebaseReady
-    }
-    return;
-  }
-
-  // Map hash values to section IDs
-  const hashMap = {
-    '': 'home',
-    'home': 'home',
-    'art': 'art',
-    'writing': 'writing',
-    'board': 'board',
-    'about': 'about'
-  };
-
-  const sectionId = hashMap[hash];
-  if (sectionId) {
-    _activateSection(sectionId);
-  } else {
-    _activateSection('home');
-  }
+/* ═══════════════════════════════════════════════════════
+   RENDER — SHRINES
+═══════════════════════════════════════════════════════ */
+function renderShrineGrid(){
+  const grid=document.getElementById('shrineGrid');if(!grid)return;
+  grid.innerHTML='';
+  if(!shrinesData.length){grid.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No shrines yet. Open one from admin.</p>';return;}
+  shrinesData.forEach((shrine,idx)=>{
+    const el=document.createElement('div');el.className='shrine-card';el.onclick=()=>readShrine(idx);
+    const imgHtml=shrine.coverImage
+      ?`<img class="shrine-card-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
+      :`<div class="shrine-card-img-placeholder">✿</div>`;
+    el.innerHTML=`${imgHtml}<div class="shrine-card-label"><div class="shrine-card-title">${shrine.title}</div><div class="shrine-card-desc">${shrine.tagline||''}</div></div><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteShrine(${idx})">DELETE</button>`;
+    grid.appendChild(el);
+  });
 }
 
-// Listen for browser Back/Forward navigation (both hash changes and history API)
-window.addEventListener('popstate', handleRouting);
-window.addEventListener('hashchange', handleRouting);
-  /* ── INIT ── */
-  document.addEventListener('keydown', e => {
-    if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();closeEditLog();}
-    if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
+function readShrine(i){
+  const shrine=shrinesData[i];if(!shrine)return;
+  window._currentShrineIndex=i;
+  const editBtn=document.getElementById('shrineReaderEditBtn');
+  if(editBtn)editBtn.style.display=isAdminSession()?'inline-block':'none';
+
+  const container=document.getElementById('shrine-content');
+  const imgHtml=shrine.coverImage?`<img class="shrine-hero-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`:'';
+  container.innerHTML=`${imgHtml}<div class="shrine-content"><p class="post-label" style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--accent);">SHRINE // ${shrine.tagline||''}</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.75rem;">${shrine.title}</h1><div class="log-body-text" style="white-space:normal;">${shrine.body||''}</div>${renderTagsHTML(shrine.tags)}</div>`;
+
+  const h='#shrine/'+shrine.id;
+  if(window.location.hash!==h)window.history.pushState({page:'shrine-reader',shrineId:shrine.id},'',h);
+  _activateSection('shrine-reader');
+}
+
+function editCurrentShrine(){const idx=window._currentShrineIndex;if(idx===undefined||idx<0)return;openEditShrine(idx);}
+
+/* ═══════════════════════════════════════════════════════
+   RENDER — LETTERS
+═══════════════════════════════════════════════════════ */
+function renderLetterList(){
+  const list=document.getElementById('letterList');if(!list)return;
+  list.innerHTML='';
+  if(!lettersData.length){list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No letters yet.</p>';return;}
+  const display=[...lettersData].reverse();
+  display.forEach(letter=>{
+    const originalIndex=lettersData.findIndex(l=>l.id===letter.id);
+    const now=letter.timestamp?new Date(letter.timestamp):null;
+    const dateStr=now?now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'):'';
+    const el=document.createElement('div');el.className='letter-card';el.onclick=()=>readLetter(originalIndex);
+    el.innerHTML=`<div class="letter-stamp">UNSENT<br/>${dateStr}</div><div class="letter-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-subject">${escHtml(letter.subject||'(untitled)')}</div>${renderTagsHTML(letter.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
+    list.appendChild(el);
   });
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-  // ── KICK OFF ROUTING FIRST ON LOAD ──
-  handleRouting();
+function readLetter(i){
+  const letter=lettersData[i];if(!letter)return;
+  window._currentLetterIndex=i;
+  const editBtn=document.getElementById('letterReaderEditBtn');
+  if(editBtn)editBtn.style.display=isAdminSession()?'inline-block':'none';
 
-  renderArtGrid(); renderLogList(); initCategoryTabs();
+  const content=document.getElementById('letter-content');
+  content.innerHTML=`<div class="letter-paper-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-paper-re">${escHtml(letter.subject||'(untitled)')}</div><div class="letter-body-text">${letter.body||''}</div>${renderTagsHTML(letter.tags)}<div class="letter-unsent-stamp"><span class="letter-unsent-badge">UNSENT</span>// this letter was never delivered.</div>`;
+
+  const h='#letter/'+letter.id;
+  if(window.location.hash!==h)window.history.pushState({page:'letter-reader',letterId:letter.id},'',h);
+  _activateSection('letter-reader');
+}
+
+function editCurrentLetter(){const idx=window._currentLetterIndex;if(idx===undefined||idx<0)return;openEditLetter(idx);}
+
+/* ═══════════════════════════════════════════════════════
+   LIGHTBOX
+═══════════════════════════════════════════════════════ */
+let lbPiece=null,lbIdx=0,lbArtIndex=-1;
+function openLightbox(i){lbPiece=artData[i];lbIdx=0;lbArtIndex=i;resetZoom();renderLightbox();document.getElementById('lightbox').classList.add('show');}
+function renderLightbox(){
+  const multi=lbPiece.images.length>1;
+  document.getElementById('lb-image').src=normalizeImageUrl(lbPiece.images[lbIdx]);
+  document.getElementById('lb-title').textContent=lbPiece.title;
+  document.getElementById('lb-desc').textContent=lbPiece.desc;
+  document.getElementById('lb-meta').textContent='DATE: '+lbPiece.meta;
+  const prev=document.getElementById('lb-prev'),next=document.getElementById('lb-next'),ctr=document.getElementById('lb-counter');
+  prev.style.display=next.style.display=ctr.style.display=multi?'block':'none';
+  if(multi)ctr.textContent=`${lbIdx+1} / ${lbPiece.images.length}`;
+  prev.disabled=lbIdx===0;next.disabled=lbIdx===lbPiece.images.length-1;
+}
+function lbNav(dir){lbIdx=Math.max(0,Math.min(lbPiece.images.length-1,lbIdx+dir));resetZoom();renderLightbox();}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show');lbPiece=null;lbIdx=0;lbArtIndex=-1;resetZoom();}
+
+/* ═══════════════════════════════════════════════════════
+   STATUS PILL + LIVE TIME
+═══════════════════════════════════════════════════════ */
+function updateLiveStatus(){
+  const now=new Date();
+  const date=now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
+  const time=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
+  const ht=document.getElementById('homeTime');
+  if(ht)ht.textContent=`${date}  ${time}`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   DRAG UTILITY
+═══════════════════════════════════════════════════════ */
+let zTop=100;
+function makeDraggable(el,handle,parent){
+  let ox=0,oy=0,sx=0,sy=0;
+  handle.onmousedown=handle.ontouchstart=start;
+  function start(e){e.preventDefault();el.style.zIndex=++zTop;const{cx,cy}=pt(e);sx=cx;sy=cy;document.onmousemove=document.ontouchmove=move;document.onmouseup=document.ontouchend=stop;}
+  function move(e){const{cx,cy}=pt(e);ox=sx-cx;oy=sy-cy;sx=cx;sy=cy;let t=el.offsetTop-oy,l=el.offsetLeft-ox;if(parent){t=Math.max(0,Math.min(t,parent.offsetHeight-el.offsetHeight));l=Math.max(0,Math.min(l,parent.offsetWidth-el.offsetWidth));}el.style.top=t+'px';el.style.left=l+'px';}
+  function stop(){document.onmousemove=document.onmouseup=null;document.ontouchmove=document.ontouchend=null;}
+  function pt(e){const s=(e.type==='touchend'||e.type==='touchcancel')?e.changedTouches[0]:e.touches?e.touches[0]:e;return{cx:s.clientX,cy:s.clientY};}
+}
+
+/* ═══════════════════════════════════════════════════════
+   BOARD RESIZE
+═══════════════════════════════════════════════════════ */
+function initBoardResize(){
+  const board=document.getElementById('board-section'),handle=document.getElementById('boardResizeHandle');
+  let startX,startY,startW,startH;
+  function onDown(cx,cy){startX=cx;startY=cy;startW=board.offsetWidth;startH=board.offsetHeight;document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onUp);document.addEventListener('touchmove',onTM);document.addEventListener('touchend',onUp);}
+  function resize(cx,cy){const mx=board.parentElement.offsetWidth;board.style.width=Math.max(400,Math.min(mx,startW+cx-startX))+'px';board.style.height=Math.max(300,startH+cy-startY)+'px';}
+  function onMM(e){resize(e.clientX,e.clientY);}
+  function onTM(e){e.preventDefault();const t=e.touches[0];resize(t.clientX,t.clientY);}
+  function onUp(){document.removeEventListener('mousemove',onMM);document.removeEventListener('mouseup',onUp);document.removeEventListener('touchmove',onTM);document.removeEventListener('touchend',onUp);}
+  handle.addEventListener('mousedown',e=>{e.preventDefault();onDown(e.clientX,e.clientY);});
+  handle.addEventListener('touchstart',e=>{e.preventDefault();const t=e.touches[0];onDown(t.clientX,t.clientY);},{passive:false});
+}
+
+/* ═══════════════════════════════════════════════════════
+   BULLETIN BOARD
+═══════════════════════════════════════════════════════ */
+const FALLBACK_W=800,FALLBACK_H=400,MSG_TTL_MS=7*24*60*60*1000;
+function renderMessage(id,msg){
+  if(renderedIds.has(id))return;if(msg.timestamp&&(Date.now()-msg.timestamp)>MSG_TTL_MS)return;renderedIds.add(id);
+  const canvas=document.getElementById('boardCanvas');
+  const bw=canvas.offsetWidth||FALLBACK_W,bh=canvas.offsetHeight||FALLBACK_H;
+  const popup=document.createElement('div');popup.className='comment-popup';
+  popup.style.left=Math.max(10,(msg.xPct/100)*bw)+'px';popup.style.top=Math.max(10,(msg.yPct/100)*bh)+'px';
+  const hdr=document.createElement('div');hdr.className='comment-header';
+  const displayDate=msg.date||(msg.timestamp?new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'):'');
+  hdr.innerHTML=`<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
+  const bdy=document.createElement('div');bdy.className='comment-body';bdy.textContent=msg.text;
+  popup.append(hdr,bdy);canvas.appendChild(popup);makeDraggable(popup,hdr,canvas);
+}
+
+function submitComment(){
   const input=document.getElementById('commentInput');
-  input.addEventListener('keydown', e=>{if(e.key==='Enter') submitComment();});
-  input.addEventListener('input', function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
-  document.getElementById('adminPassInput').addEventListener('keydown', e=>{if(e.key==='Enter') verifyAdminPass();});
-  if(isAdminSession()) setAdminMode(true);
-  initImageDrag(); initWheelZoom();
+  const text=input.value.trim();if(!text)return;
+  if(!msgRef){console.warn('Board unavailable.');return;}
+  if(!canPost()){const w=document.getElementById('spamWarning');w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`;w.style.display='block';setTimeout(()=>{w.style.display='none';},3000);return;}
+  const xPct=Math.max(2,Math.random()*72),yPct=Math.max(2,Math.random()*68),now=new Date();
+  const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
+  msgRef.push(payload).then(()=>{
+    updateLastPostTime();
+    msgRef.orderByChild('timestamp').once('value',snap=>{if(snap.numChildren()>MAX_MSGS)msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());});});
+  }).catch(e=>console.error('Post failed:',e));
+  input.value='';const c=document.getElementById('charCounter');c.textContent='0 / 500';c.classList.remove('warn');
+}
+
+/* ═══════════════════════════════════════════════════════
+   ADMIN — AUTH + MODAL
+═══════════════════════════════════════════════════════ */
+function openModal(id){document.getElementById(id).style.display='flex';}
+function closeModal(id){document.getElementById(id).style.display='none';}
+function showAdminLogin(){if(isAdminSession()){setAdminMode(true);openModal('adminPanelModal');return;}openModal('adminLoginModal');setTimeout(()=>document.getElementById('adminPassInput').focus(),50);}
+function closeAdminLogin(){closeModal('adminLoginModal');document.getElementById('adminPassInput').value='';document.getElementById('adminPassError').style.display='none';}
+async function verifyAdminPass(){
+  const pw=document.getElementById('adminPassInput').value,err=document.getElementById('adminPassError');
+  err.style.display='none';if(!pw)return;
+  try{
+    const res=await fetch('/api/admin-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
+    const data=await res.json();
+    if(data.ok){sessionStorage.setItem(ADMIN_TOKEN_KEY,JSON.stringify({token:'admin_'+Date.now(),ts:Date.now()}));closeAdminLogin();setAdminMode(true);openModal('adminPanelModal');}
+    else{err.textContent='// ACCESS DENIED.';err.style.display='block';}
+  }catch(e){err.textContent='// CONNECTION ERROR.';err.style.display='block';console.error('Auth failed:',e);}
+}
+function closeAdminPanel(){closeModal('adminPanelModal');}
+
+function switchAdminTab(tab){
+  document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';
+  document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';
+  document.getElementById('adminShrinesForm').style.display=tab==='shrines'?'flex':'none';
+  document.getElementById('adminLettersForm').style.display=tab==='letters'?'flex':'none';
+  document.getElementById('adminDecorForm').style.display=tab==='decor'?'flex':'none';
+  ['art','logs','shrines','letters','decor'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  });
+}
+
+/* ── ADD ART ── */
+function adminAddArt(){
+  if(!isAdminSession())return;
+  const title=document.getElementById('artTitle').value.trim(),category=document.getElementById('artCategory').value,imgRaw=document.getElementById('artImages').value.trim(),desc=document.getElementById('artDesc').value.trim(),meta=document.getElementById('artMeta').value.trim();
+  if(!title||!imgRaw)return;const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean);if(!images.length)return;
+  const piece={title,category,images,desc,meta};
+  if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
+  else{artData.push(piece);renderArtGrid();}
+  ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value='');document.getElementById('artCategory').value='painting';
+  const s=document.getElementById('artSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
+}
+
+/* ── ADD LOG ── */
+function adminAddLog(){
+  if(!isAdminSession())return;
+  const title=document.getElementById('logTitle').value.trim(),body=document.getElementById('logBody').value.trim();
+  if(!title||!body)return;
+  const tags=parseTags(document.getElementById('logTags').value);
+  const stickers=document.getElementById('logStickers').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  const logNumber=String(logsData.length+1).padStart(2,'0');
+  const now=new Date();
+  const autoMeta=`LOG_${logNumber} // ${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+  const meta=document.getElementById('logMeta').value.trim()||autoMeta;
+  const log={title,meta,body,tags,stickers};
+  if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();renderHomeUpdates();}).catch(e=>console.error('Log push failed:',e));}
+  else{logsData.push(log);renderLogList();renderHomeUpdates();}
+  ['logTitle','logBody','logTags','logStickers','logMeta'].forEach(id=>document.getElementById(id).value='');
+  const s=document.getElementById('logSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
+}
+
+/* ── ADD SHRINE ── */
+function adminAddShrine(){
+  if(!isAdminSession())return;
+  const title=document.getElementById('shrineTitle').value.trim(),body=document.getElementById('shrineBody').value.trim();
+  if(!title||!body)return;
+  const tagline=document.getElementById('shrineTagline').value.trim();
+  const coverImage=document.getElementById('shrineCover').value.trim();
+  const tags=parseTags(document.getElementById('shrineTags').value);
+  const shrine={title,tagline,coverImage,body,tags};
+  if(db){db.ref('content/shrines').push({...shrine,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{shrine.id=ref.key;shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Shrine push failed:',e));}
+  else{shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}
+  ['shrineTitle','shrineTagline','shrineCover','shrineBody','shrineTags'].forEach(id=>document.getElementById(id).value='');
+  const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
+}
+
+/* ── ADD LETTER ── */
+function adminAddLetter(){
+  if(!isAdminSession())return;
+  const to=document.getElementById('letterTo').value.trim(),subject=document.getElementById('letterSubject').value.trim(),body=document.getElementById('letterBody').value.trim();
+  if(!subject||!body)return;
+  const tags=parseTags(document.getElementById('letterTags').value);
+  const letter={to,subject,body,tags};
+  if(db){db.ref('content/letters').push({...letter,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{letter.id=ref.key;lettersData.push(letter);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Letter push failed:',e));}
+  else{lettersData.push(letter);renderLetterList();renderHomeUpdates();}
+  ['letterTo','letterSubject','letterBody','letterTags'].forEach(id=>document.getElementById(id).value='');
+  const s=document.getElementById('letterSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
+}
+
+/* ── DELETE ART / LOG ── */
+function adminDeleteArt(idx){if(!isAdminSession())return;const piece=artData[idx];if(!confirm(`Delete "${piece.title}"?`))return;if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}else{artData.splice(idx,1);renderArtGrid();}}
+function adminDeleteLog(idx){if(!isAdminSession())return;const log=logsData[idx];if(!confirm(`Delete "${log.title}"?`))return;if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}).catch(e=>console.error('Delete log failed:',e));}else{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}}
+function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0)return;closeLightbox();adminDeleteArt(lbArtIndex);}
+
+/* ── DELETE SHRINE ── */
+function adminDeleteShrine(idx){if(!isAdminSession())return;const s=shrinesData[idx];if(!confirm(`Delete shrine "${s.title}"?`))return;if(db&&s.id){db.ref('content/shrines/'+s.id).remove().then(()=>{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Delete shrine failed:',e));}else{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}}
+function adminDeleteShrineFromEdit(){if(!isAdminSession())return;const idx=_editShrineOriginalIndex;if(idx<0)return;closeEditShrine();adminDeleteShrine(idx);}
+
+/* ── DELETE LETTER ── */
+function adminDeleteLetter(idx){if(!isAdminSession())return;const l=lettersData[idx];if(!confirm(`Delete letter "${l.subject}"?`))return;if(db&&l.id){db.ref('content/letters/'+l.id).remove().then(()=>{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Delete letter failed:',e));}else{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}}
+function adminDeleteLetterFromEdit(){if(!isAdminSession())return;const idx=_editLetterOriginalIndex;if(idx<0)return;closeEditLetter();adminDeleteLetter(idx);}
+
+/* ═══════════════════════════════════════════════════════
+   HOME DECOR (peek stickers)
+═══════════════════════════════════════════════════════ */
+function applyDecorStickers(data){
+  if(!data)return;
+  const map={hello:'peekHello',status:'peekStatus',quote:'peekQuote',hero:'peekHero'};
+  Object.entries(map).forEach(([key,id])=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const url=(data[key]||'').trim();
+    el.src=url;
+    el.style.display=url?'block':'none';
+  });
+}
+
+function loadDecorStickers(){
+  if(!db){return;}
+  db.ref('content/homeDecor').once('value',snap=>{
+    applyDecorStickers(snap.val());
+    // Pre-fill admin inputs
+    const d=snap.val()||{};
+    const f=document.getElementById('decorHello');if(f)f.value=d.hello||'';
+    const s=document.getElementById('decorStatus');if(s)s.value=d.status||'';
+    const q=document.getElementById('decorQuote');if(q)q.value=d.quote||'';
+    const h=document.getElementById('decorHero');if(h)h.value=d.hero||'';
+  }).catch(e=>console.error('Decor load failed:',e));
+}
+
+function adminSaveDecor(){
+  if(!isAdminSession())return;
+  const data={
+    hello:document.getElementById('decorHello').value.trim(),
+    status:document.getElementById('decorStatus').value.trim(),
+    quote:document.getElementById('decorQuote').value.trim(),
+    hero:document.getElementById('decorHero').value.trim(),
+  };
+  if(db){
+    db.ref('content/homeDecor').set(data)
+      .then(()=>{
+        applyDecorStickers(data);
+        const s=document.getElementById('decorSuccess');
+        s.style.display='block';
+        setTimeout(()=>s.style.display='none',3000);
+      })
+      .catch(e=>console.error('Decor save failed:',e));
+  }else{
+    applyDecorStickers(data);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
+   EDIT LOG
+═══════════════════════════════════════════════════════ */
+let _editLogOriginalIndex=-1;
+function openEditLog(idx){
+  if(!isAdminSession())return;const log=logsData[idx];if(!log)return;
+  _editLogOriginalIndex=idx;
+  document.getElementById('editLogId').value=log.id||'';
+  document.getElementById('editLogTitle').value=log.title||'';
+  document.getElementById('editLogMeta').value=log.meta||'';
+  document.getElementById('editLogBody').value=log.body||'';
+  document.getElementById('editLogStickers').value=(log.stickers||[]).join('\n');
+  document.getElementById('editLogTags').value=(log.tags||[]).map(t=>'#'+t).join(' ');
+  document.getElementById('editLogSuccess').style.display='none';document.getElementById('editLogError').style.display='none';
+  document.getElementById('editLogModal').style.display='flex';
+}
+function closeEditLog(){document.getElementById('editLogModal').style.display='none';_editLogOriginalIndex=-1;}
+function editCurrentLog(){const idx=window._currentLogIndex;if(idx===undefined||idx<0)return;openEditLog(idx);}
+function adminSaveEditLog(){
+  if(!isAdminSession())return;const idx=_editLogOriginalIndex;if(idx<0||idx>=logsData.length)return;
+  const log=logsData[idx],id=log.id;
+  const title=document.getElementById('editLogTitle').value.trim(),meta=document.getElementById('editLogMeta').value.trim(),body=document.getElementById('editLogBody').value.trim();
+  const tags=parseTags(document.getElementById('editLogTags').value);
+  const stickers=document.getElementById('editLogStickers').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  if(!title||!body){document.getElementById('editLogError').textContent='// TITLE AND BODY ARE REQUIRED.';document.getElementById('editLogError').style.display='block';return;}
+  const updated={title,meta,body,tags,stickers};
+  if(db&&id){db.ref('content/logs/'+id).update(updated).then(()=>{Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();document.getElementById('editLogSuccess').style.display='block';document.getElementById('editLogError').style.display='none';setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);}).catch(e=>{console.error('Edit log failed:',e);document.getElementById('editLogError').textContent='// ERROR SAVING.';document.getElementById('editLogError').style.display='block';});}
+  else{Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();document.getElementById('editLogSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);}
+}
+function adminDeleteLogFromEdit(){if(!isAdminSession())return;const idx=_editLogOriginalIndex;if(idx<0)return;closeEditLog();adminDeleteLog(idx);}
+
+/* ═══════════════════════════════════════════════════════
+   EDIT SHRINE
+═══════════════════════════════════════════════════════ */
+let _editShrineOriginalIndex=-1;
+function openEditShrine(idx){
+  if(!isAdminSession())return;const shrine=shrinesData[idx];if(!shrine)return;
+  _editShrineOriginalIndex=idx;
+  document.getElementById('editShrineId').value=shrine.id||'';
+  document.getElementById('editShrineTitle').value=shrine.title||'';
+  document.getElementById('editShrineTagline').value=shrine.tagline||'';
+  document.getElementById('editShrineCover').value=shrine.coverImage||'';
+  document.getElementById('editShrineBody').value=shrine.body||'';
+  document.getElementById('editShrineTags').value=(shrine.tags||[]).map(t=>'#'+t).join(' ');
+  document.getElementById('editShrineSuccess').style.display='none';document.getElementById('editShrineError').style.display='none';
+  document.getElementById('editShrineModal').style.display='flex';
+}
+function closeEditShrine(){document.getElementById('editShrineModal').style.display='none';_editShrineOriginalIndex=-1;}
+function adminSaveEditShrine(){
+  if(!isAdminSession())return;const idx=_editShrineOriginalIndex;if(idx<0||idx>=shrinesData.length)return;
+  const shrine=shrinesData[idx],id=shrine.id;
+  const title=document.getElementById('editShrineTitle').value.trim(),body=document.getElementById('editShrineBody').value.trim();
+  if(!title||!body){document.getElementById('editShrineError').textContent='// TITLE AND BODY ARE REQUIRED.';document.getElementById('editShrineError').style.display='block';return;}
+  const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),body,tags:parseTags(document.getElementById('editShrineTags').value)};
+  if(db&&id){db.ref('content/shrines/'+id).update(updated).then(()=>{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editShrineError').textContent='// ERROR.';document.getElementById('editShrineError').style.display='block';});}
+  else{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}
+}
+
+/* ═══════════════════════════════════════════════════════
+   EDIT LETTER
+═══════════════════════════════════════════════════════ */
+let _editLetterOriginalIndex=-1;
+function openEditLetter(idx){
+  if(!isAdminSession())return;const letter=lettersData[idx];if(!letter)return;
+  _editLetterOriginalIndex=idx;
+  document.getElementById('editLetterId').value=letter.id||'';
+  document.getElementById('editLetterTo').value=letter.to||'';
+  document.getElementById('editLetterSubject').value=letter.subject||'';
+  document.getElementById('editLetterBody').value=letter.body||'';
+  document.getElementById('editLetterTags').value=(letter.tags||[]).map(t=>'#'+t).join(' ');
+  document.getElementById('editLetterSuccess').style.display='none';document.getElementById('editLetterError').style.display='none';
+  document.getElementById('editLetterModal').style.display='flex';
+}
+function closeEditLetter(){document.getElementById('editLetterModal').style.display='none';_editLetterOriginalIndex=-1;}
+function adminSaveEditLetter(){
+  if(!isAdminSession())return;const idx=_editLetterOriginalIndex;if(idx<0||idx>=lettersData.length)return;
+  const letter=lettersData[idx],id=letter.id;
+  const subject=document.getElementById('editLetterSubject').value.trim(),body=document.getElementById('editLetterBody').value.trim();
+  if(!subject||!body){document.getElementById('editLetterError').textContent='// SUBJECT AND BODY ARE REQUIRED.';document.getElementById('editLetterError').style.display='block';return;}
+  const updated={to:document.getElementById('editLetterTo').value.trim(),subject,body,tags:parseTags(document.getElementById('editLetterTags').value)};
+  if(db&&id){db.ref('content/letters/'+id).update(updated).then(()=>{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editLetterError').textContent='// ERROR.';document.getElementById('editLetterError').style.display='block';});}
+  else{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}
+}
+
+/* ═══════════════════════════════════════════════════════
+   STICKERS (about floating)
+═══════════════════════════════════════════════════════ */
+function initStickers(){const s=document.getElementById('about');document.querySelectorAll('.sticker').forEach(st=>makeDraggable(st,st,s));}
+
+/* ═══════════════════════════════════════════════════════
+   ROUTER
+═══════════════════════════════════════════════════════ */
+let _pendingLogKey=null,_pendingShrineKey=null,_pendingLetterKey=null;
+
+function handleRouting(){
+  const hash=window.location.hash.replace(/^#/,'').replace(/\/$/,'');
+
+  if(hash.startsWith('log/')){const key=hash.slice(4);_activateSection('log-reader');const idx=logsData.findIndex(l=>l.id===key);if(idx!==-1)readLog(idx);else _pendingLogKey=key;return;}
+  if(hash.startsWith('shrine/')){const key=hash.slice(7);_activateSection('shrine-reader');const idx=shrinesData.findIndex(s=>s.id===key);if(idx!==-1)readShrine(idx);else _pendingShrineKey=key;return;}
+  if(hash.startsWith('letter/')){const key=hash.slice(7);_activateSection('letter-reader');const idx=lettersData.findIndex(l=>l.id===key);if(idx!==-1)readLetter(idx);else _pendingLetterKey=key;return;}
+
+  const hashMap={'':'home','home':'home','art':'art','writing':'writing','shrines':'shrines','letters':'letters','board':'board','about':'about'};
+  const sectionId=hashMap[hash];
+  _activateSection(sectionId||'home');
+}
+
+window.addEventListener('popstate',handleRouting);
+window.addEventListener('hashchange',handleRouting);
+
+/* ═══════════════════════════════════════════════════════
+   INIT
+═══════════════════════════════════════════════════════ */
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeLightbox();closeAdminLogin();closeAdminPanel();closeEditLog();closeEditShrine();closeEditLetter();}
+  if(lbPiece){if(e.key==='ArrowRight')lbNav(1);if(e.key==='ArrowLeft')lbNav(-1);}
 });
 
-window.addEventListener('load', () => { initFirebase(); initStickers(); initBoardResize(); updateLiveStatus(); setInterval(updateLiveStatus,1000); });
-/**
- * Miffy animated cursor — cross-browser JS implementation
- * Sprite sheet approach: cycles through PNG frames on a canvas,
- * applies it as a CSS cursor data URL on each tick.
- *
- * Uses the extracted sprite sheets (128×32 for 4-frame cursors,
- * 768×32 for the 24-frame busy spinner).
- *
- * Drop the PNG files into your cursors/ folder:
- *   cursors/normal_sprite.png   (4 frames, 32×32 each)
- *   cursors/busy_sprite.png     (24 frames, 32×32 each)
- *   cursors/pointer.png         (static, 32×32)
- *   cursors/text.png            (static, 32×32)
- */
-(function () {
-  const CURSORS = {
-    // [src, frameCount, frameW, frameH, hotspotX, hotspotY, frameMs]
-    normal:  ['cursors/normal_sprite.png',  4, 32, 32,  0,  0, 167],
-    busy:    ['cursors/busy_sprite.png',   24, 32, 32, 15, 14,  83],
-    pointer: ['cursors/pointer.png',        1, 32, 32, 10,  0,   0],
-    text:    ['cursors/text.png',           1, 32, 32,  5,  8,   0],
+document.addEventListener('DOMContentLoaded',()=>{
+  handleRouting();
+  renderArtGrid();renderLogList();initCategoryTabs();
+  newQuote(); // boot the quote box
+
+  const input=document.getElementById('commentInput');
+  input.addEventListener('keydown',e=>{if(e.key==='Enter')submitComment();});
+  input.addEventListener('input',function(){const n=this.value.length,c=document.getElementById('charCounter');c.textContent=`${n} / 500`;c.classList.toggle('warn',n>=450);});
+  document.getElementById('adminPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')verifyAdminPass();});
+  if(isAdminSession())setAdminMode(true);
+  initImageDrag();initWheelZoom();
+});
+
+window.addEventListener('load',()=>{initFirebase();initStickers();initBoardResize();updateLiveStatus();setInterval(updateLiveStatus,1000);});
+
+/* ═══════════════════════════════════════════════════════
+   MIFFY CURSOR ANIMATOR
+═══════════════════════════════════════════════════════ */
+(function(){
+  const CURSORS={
+    normal:['cursors/normal_sprite.png',4,32,32,0,0,167],
+    busy:['cursors/busy_sprite.png',24,32,32,15,14,83],
+    pointer:['cursors/pointer.png',1,32,32,10,0,0],
+    text:['cursors/text.png',1,32,32,5,8,0],
   };
-
-  const canvas = document.createElement('canvas');
-  canvas.width = canvas.height = 32;
-  const ctx = canvas.getContext('2d');
-
-  const images = {};
-  let loaded = 0;
-  const total = Object.keys(CURSORS).length;
-
-  function getDataURL(key, frame) {
-    const [, , fw, fh] = CURSORS[key];
-    ctx.clearRect(0, 0, 32, 32);
-    ctx.drawImage(images[key], frame * fw, 0, fw, fh, 0, 0, 32, 32);
-    return canvas.toDataURL('image/png');
-  }
-
-  function applyCursor(key, frame) {
-    const [,, fw, fh, hx, hy] = CURSORS[key];
-    const url = getDataURL(key, frame);
-    const cssValue = `url('${url}') ${hx} ${hy}, auto`;
-
-    if (key === 'pointer') {
-      document.documentElement.style.setProperty('--mc-pointer', `url('${url}') ${hx} ${hy}, pointer`);
-    } else if (key === 'text') {
-      document.documentElement.style.setProperty('--mc-text', `url('${url}') ${hx} ${hy}, text`);
-    } else if (key === 'normal') {
-      document.documentElement.style.setProperty('--mc-default', cssValue);
-    } else if (key === 'busy') {
-      document.documentElement.style.setProperty('--mc-busy', `url('${url}') ${hx} ${hy}, wait`);
-    }
-  }
-
-  function startAnimations() {
-    // Inject CSS vars once images are ready
-    const style = document.createElement('style');
-    style.textContent = `
-      *, *::before, *::after { cursor: var(--mc-default, auto) !important; }
-      a, button, [role=button], input[type=submit],
-      input[type=button], label[for], .clickable, [onclick] {
-        cursor: var(--mc-pointer, pointer) !important;
-      }
-      input[type=text], input[type=email], input[type=password],
-      input[type=search], textarea, [contenteditable] {
-        cursor: var(--mc-text, text) !important;
-      }
-      [aria-busy=true], .loading, .busy {
-        cursor: var(--mc-busy, wait) !important;
-      }
-    `;
+  const canvas=document.createElement('canvas');canvas.width=canvas.height=32;
+  const ctx=canvas.getContext('2d');
+  const images={};let loaded=0;const total=Object.keys(CURSORS).length;
+  function getDataURL(key,frame){const[,,fw,fh]=CURSORS[key];ctx.clearRect(0,0,32,32);ctx.drawImage(images[key],frame*fw,0,fw,fh,0,0,32,32);return canvas.toDataURL('image/png');}
+  function applyCursor(key,frame){const[,,fw,fh,hx,hy]=CURSORS[key];const url=getDataURL(key,frame);const cssValue=`url('${url}') ${hx} ${hy}, auto`;if(key==='pointer')document.documentElement.style.setProperty('--mc-pointer',`url('${url}') ${hx} ${hy}, pointer`);else if(key==='text')document.documentElement.style.setProperty('--mc-text',`url('${url}') ${hx} ${hy}, text`);else if(key==='normal')document.documentElement.style.setProperty('--mc-default',cssValue);else if(key==='busy')document.documentElement.style.setProperty('--mc-busy',`url('${url}') ${hx} ${hy}, wait`);}
+  function startAnimations(){
+    const style=document.createElement('style');
+    style.textContent=`*,*::before,*::after{cursor:var(--mc-default,auto)!important;}a,button,[role=button],input[type=submit],input[type=button],label[for],.clickable,[onclick]{cursor:var(--mc-pointer,pointer)!important;}input[type=text],input[type=email],input[type=password],input[type=search],textarea,[contenteditable]{cursor:var(--mc-text,text)!important;}[aria-busy=true],.loading,.busy{cursor:var(--mc-busy,wait)!important;}`;
     document.head.appendChild(style);
-
-    // Animate each animated cursor independently
-    ['normal', 'busy'].forEach(key => {
-      const [, frames,,,,, ms] = CURSORS[key];
-      let frame = 0;
-      applyCursor(key, frame);
-      setInterval(() => {
-        frame = (frame + 1) % frames;
-        applyCursor(key, frame);
-      }, ms);
-    });
-
-    // Static cursors — set once
-    applyCursor('pointer', 0);
-    applyCursor('text', 0);
+    ['normal','busy'].forEach(key=>{const[,frames,,,,, ms]=CURSORS[key];let frame=0;applyCursor(key,frame);setInterval(()=>{frame=(frame+1)%frames;applyCursor(key,frame);},ms);});
+    applyCursor('pointer',0);applyCursor('text',0);
   }
-
-  // Preload images
-  Object.entries(CURSORS).forEach(([key, cfg]) => {
-    const img = new Image();
-    img.onload = () => { images[key] = img; if (++loaded === total) startAnimations(); };
-    img.src = cfg[0];
-  });
+  Object.entries(CURSORS).forEach(([key,cfg])=>{const img=new Image();img.onload=()=>{images[key]=img;if(++loaded===total)startAnimations();};img.src=cfg[0];});
 })();
 </script>
-<!-- Firebase SDK loaded once above — do NOT add duplicate script tags here -->
 </body>
 </html>
