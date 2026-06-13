@@ -235,80 +235,76 @@
 
     <!-- ══════════════════ ABOUT ══════════════════ -->
     <section id="about">
+      <div class="about-layout">
 
-      <!-- Main profile card -->
-      <div class="about-card">
-        <div class="about-header">
-          <span>USER_PROFILE.EXE</span><span>_ X</span>
-        </div>
-        <div class="about-body">
-          <div class="profile-header">
-            <img src="assets/pfp.jpg" class="profile-img" alt="Avatar" />
-            <div class="profile-meta">
-              <h3>Sage</h3>
-              <p>Art Student // 24 // DFW</p>
+        <!-- LEFT — Main profile card -->
+        <div class="about-card">
+          <div class="about-header">
+            <span>USER_PROFILE.EXE</span><span>_ X</span>
+          </div>
+          <div class="about-body">
+            <div class="profile-header">
+              <img src="assets/pfp.jpg" class="profile-img" alt="Avatar" />
+              <div class="profile-meta">
+                <h3>Sage</h3>
+                <p>Art Student // 24 // DFW</p>
+              </div>
+            </div>
+            <p class="about-bio">Hi, I'm Sage. I'm an art student currently studying Graphic Design.
+              This is my small, digital space for feelings that are hard to name, a place for a version of myself that feels safe within the margins of pixel and code. No algorithm, numbers, comments or pressure for exposure. Just me (and you, visitor) and my thoughts - random, sometimes poetic, mostly ridiculous.</p>
+            <p class="about-bio">I like to experiment with multimedia textures, human warmth and the lack of it, and my perception of the world through my hands. Occasionally, I like to code (guess who made this place?) and create other weird spaces as I learn more about coding.</p>
+            <p class="about-bio">My existence is powered by a love for silly little things, midnight drafts, half-baked ideas left out to breathe, healing the inner child, and a <del>petty</del> need to exist beyond what is expected of me.
+              Beyond the lines of code and pencil strokes, I love playing Monster Hunter, collecting trinkets, and dreaming about tiramisu and Oscar Isaac (are they mutually exclusive? maybe.)</p>
+            <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet. ✿</p>
+            <p class="about-bio">SYS_MESSAGE: The links don't work, for now. :)</p>
+            <div class="tag-list">
+              <span class="tag">#HEART_ERR_404</span>
+              <span class="tag">#ANOMALY</span>
+              <span class="tag">#GHOST_IN_THE_PIXEL</span>
+            </div>
+            <div class="about-links">
+              <a href="#">INSTAGRAM</a>
+              <a href="#">EMAIL</a>
             </div>
           </div>
-          <p class="about-bio">Hi, I'm Sage. I'm an art student currently studying Graphic Design.
-            This is my small, digital space for feelings that are hard to name, a place for a version of myself that feels safe within the margins of pixel and code. No algorithm, numbers, comments or pressure for exposure. Just me (and you, visitor) and my thoughts - random, sometimes poetic, mostly ridiculous.</p>
-          <p class="about-bio">I like to experiment with multimedia textures, human warmth and the lack of it, and my perception of the world through my hands. Occasionally, I like to code (guess who made this place?) and create other weird spaces as I learn more about coding.</p>
-          <p class="about-bio">My existence is powered by a love for silly little things, midnight drafts, half-baked ideas left out to breathe, healing the inner child, and a <del>petty</del> need to exist beyond what is expected of me.
-            Beyond the lines of code and pencil strokes, I love playing Monster Hunter, collecting trinkets, and dreaming about tiramisu and Oscar Isaac (are they mutually exclusive? maybe.)</p>
-          <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet. ✿</p>
-          <p class="about-bio">SYS_MESSAGE: The links don't work, for now. :)</p>
-          <div class="tag-list">
-            <span class="tag">#HEART_ERR_404</span>
-            <span class="tag">#ANOMALY</span>
-            <span class="tag">#GHOST_IN_THE_PIXEL</span>
-          </div>
-          <div class="about-links">
-            <a href="#">INSTAGRAM</a>
-            <a href="#">EMAIL</a>
-          </div>
         </div>
-      </div>
 
-      <!-- Extra personality widgets — drop your sticker imgs inside the .about-widget-body divs -->
-      <div class="about-extras-grid">
-        <div class="about-widget">
-          <div class="about-widget-header">FEELING //</div>
-          <div class="about-widget-body" id="widget-feeling">
-            <!-- drop sticker <img> tags here -->
-            <span class="widget-hint">// stickers loading...</span>
-          </div>
-        </div>
-        <div class="about-widget">
-          <div class="about-widget-header">LIKES //</div>
-          <div class="about-widget-body" id="widget-likes">
-            <span class="widget-hint">// stickers loading...</span>
-          </div>
-        </div>
-        <div class="about-widget">
-          <div class="about-widget-header">HOBBIES //</div>
-          <div class="about-widget-body" id="widget-hobbies">
-            <span class="widget-hint">// stickers loading...</span>
-          </div>
-        </div>
-        <div class="about-widget">
-          <div class="about-widget-header">MUSIC //</div>
-          <div class="about-widget-body" id="widget-music">
-            <span class="widget-hint">// stickers loading...</span>
-          </div>
-        </div>
-      </div>
+        <!-- RIGHT — Personality widgets (dynamic bento) -->
+        <div class="about-widgets-panel">
 
-      <!-- Floating decorative stickers around the about card -->
-      <div class="sticker" style="top:6%; left:74%; transform:rotate(-14deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:24%; left:82%; transform:rotate(9deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:48%; left:76%; transform:rotate(-6deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="sticker" />
-      </div>
-      <div class="sticker" style="top:72%; left:82%; transform:rotate(-10deg)">
-        <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="sticker" />
+          <div class="about-widget aw-feeling">
+            <div class="about-widget-header">FEELING //</div>
+            <div class="about-widget-body" id="widget-feeling">
+              <span class="widget-hint">// stickers loading...</span>
+            </div>
+          </div>
+
+          <!-- LIKES — tall card with the about stickers -->
+          <div class="about-widget aw-likes">
+            <div class="about-widget-header">LIKES //</div>
+            <div class="about-widget-body" id="widget-likes">
+              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="oscar isaac" />
+              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png" alt="kuchi" />
+              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/meow-Photoroom%20(1).png" alt="meow" />
+              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="tiramisu" />
+            </div>
+          </div>
+
+          <div class="about-widget aw-hobbies">
+            <div class="about-widget-header">HOBBIES //</div>
+            <div class="about-widget-body" id="widget-hobbies">
+              <span class="widget-hint">// stickers loading...</span>
+            </div>
+          </div>
+
+          <div class="about-widget aw-music">
+            <div class="about-widget-header">MUSIC //</div>
+            <div class="about-widget-body" id="widget-music">
+              <span class="widget-hint">// stickers loading...</span>
+            </div>
+          </div>
+
+        </div>
       </div>
     </section>
 
@@ -460,20 +456,20 @@
 
       <!-- SHRINE FORM -->
       <div id="adminShrinesForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Shrines are image galleries — no text body needed.
+        </p>
         <label class="admin-label">Shrine Title</label>
         <input type="text" id="shrineTitle" class="admin-input" placeholder="e.g. Monster Hunter" />
 
         <label class="admin-label">Tagline / Short Description</label>
         <input type="text" id="shrineTagline" class="admin-input" placeholder="a small love letter to..." />
 
-        <label class="admin-label">Cover Image URL</label>
+        <label class="admin-label">Cover / Header Image URL</label>
         <input type="text" id="shrineCover" class="admin-input" placeholder="https://..." />
 
-        <label class="admin-label">Body — HTML is fine</label>
-        <textarea id="shrineBody" class="admin-input admin-body-field" placeholder="Write your shrine content..."></textarea>
-
-        <label class="admin-label">Tags — space or comma separated</label>
-        <input type="text" id="shrineTags" class="admin-input" placeholder="#gaming #love" />
+        <label class="admin-label">Gallery Images — one URL per line</label>
+        <textarea id="shrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png&#10;https://image3.png"></textarea>
 
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddShrine()">OPEN SHRINE →</button>
         <p id="shrineSuccess" class="admin-success">// SHRINE OPENED.</p>
@@ -489,9 +485,6 @@
 
         <label class="admin-label">Body — HTML is fine</label>
         <textarea id="letterBody" class="admin-input admin-body-field" style="min-height:240px" placeholder="Dear ...&#10;&#10;...&#10;&#10;— Sage"></textarea>
-
-        <label class="admin-label">Tags — space or comma separated</label>
-        <input type="text" id="letterTags" class="admin-input" placeholder="#personal #unsent" />
 
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLetter()">SEAL LETTER →</button>
         <p id="letterSuccess" class="admin-success">// SEALED.</p>
@@ -542,12 +535,10 @@
       <input type="text" id="editShrineTitle" class="admin-input" />
       <label class="admin-label">Tagline</label>
       <input type="text" id="editShrineTagline" class="admin-input" />
-      <label class="admin-label">Cover Image URL</label>
+      <label class="admin-label">Cover / Header Image URL</label>
       <input type="text" id="editShrineCover" class="admin-input" />
-      <label class="admin-label">Body — HTML is fine</label>
-      <textarea id="editShrineBody" class="admin-input admin-body-field"></textarea>
-      <label class="admin-label">Tags</label>
-      <input type="text" id="editShrineTags" class="admin-input" />
+      <label class="admin-label">Gallery Images — one URL per line</label>
+      <textarea id="editShrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png"></textarea>
       <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
         <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditShrine()">SAVE CHANGES →</button>
         <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteShrineFromEdit()">DELETE SHRINE</button>
@@ -573,8 +564,6 @@
       <input type="text" id="editLetterSubject" class="admin-input" />
       <label class="admin-label">Body</label>
       <textarea id="editLetterBody" class="admin-input admin-body-field" style="min-height:220px"></textarea>
-      <label class="admin-label">Tags</label>
-      <input type="text" id="editLetterTags" class="admin-input" />
       <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
         <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditLetter()">SAVE CHANGES →</button>
         <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteLetterFromEdit()">DELETE LETTER</button>
@@ -900,7 +889,7 @@ function onFirebaseReady() {
   // Load shrines
   db.ref('content/shrines').orderByChild('timestamp').once('value',snap=>{
     shrinesData=[];
-    snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];shrinesData.push({id:child.key,...d});});
+    snap.forEach(child=>{const d=child.val();d.images=normalizeImages(d.images||[]);shrinesData.push({id:child.key,...d});});
     renderShrineGrid();
     renderHomeUpdates();
     if(_pendingShrineKey){const idx=shrinesData.findIndex(s=>s.id===_pendingShrineKey);_pendingShrineKey=null;if(idx!==-1)readShrine(idx);}
@@ -1027,7 +1016,7 @@ function readLog(i){
 function renderShrineGrid(){
   const grid=document.getElementById('shrineGrid');if(!grid)return;
   grid.innerHTML='';
-  if(!shrinesData.length){grid.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No shrines yet. Open one from admin.</p>';return;}
+  if(!shrinesData.length){grid.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No shrines yet.</p>';return;}
   shrinesData.forEach((shrine,idx)=>{
     const el=document.createElement('div');el.className='shrine-card';el.onclick=()=>readShrine(idx);
     const imgHtml=shrine.coverImage
@@ -1046,7 +1035,15 @@ function readShrine(i){
 
   const container=document.getElementById('shrine-content');
   const imgHtml=shrine.coverImage?`<img class="shrine-hero-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`:'';
-  container.innerHTML=`${imgHtml}<div class="shrine-content"><p class="post-label" style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--accent);">SHRINE // ${shrine.tagline||''}</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.75rem;">${shrine.title}</h1><div class="log-body-text" style="white-space:normal;">${shrine.body||''}</div>${renderTagsHTML(shrine.tags)}</div>`;
+  // Gallery (new format) or fallback to body HTML (legacy)
+  const imgs=normalizeImages(shrine.images||[]);
+  let galleryHtml='';
+  if(imgs.length){
+    galleryHtml=`<div class="shrine-gallery">${imgs.map(u=>`<img class="shrine-gallery-img" src="${normalizeImageUrl(u)}" alt="" loading="lazy" />`).join('')}</div>`;
+  }else if(shrine.body){
+    galleryHtml=`<div class="log-body-text" style="white-space:normal;">${shrine.body}</div>`;
+  }
+  container.innerHTML=`${imgHtml}<div class="shrine-content"><p class="post-label" style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--accent);">SHRINE // ${shrine.tagline||''}</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.75rem;">${shrine.title}</h1>${galleryHtml}</div>`;
 
   const h='#shrine/'+shrine.id;
   if(window.location.hash!==h)window.history.pushState({page:'shrine-reader',shrineId:shrine.id},'',h);
@@ -1241,15 +1238,15 @@ function adminAddLog(){
 /* ── ADD SHRINE ── */
 function adminAddShrine(){
   if(!isAdminSession())return;
-  const title=document.getElementById('shrineTitle').value.trim(),body=document.getElementById('shrineBody').value.trim();
-  if(!title||!body)return;
+  const title=document.getElementById('shrineTitle').value.trim();
+  if(!title)return;
   const tagline=document.getElementById('shrineTagline').value.trim();
   const coverImage=document.getElementById('shrineCover').value.trim();
-  const tags=parseTags(document.getElementById('shrineTags').value);
-  const shrine={title,tagline,coverImage,body,tags};
+  const images=document.getElementById('shrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
+  const shrine={title,tagline,coverImage,images};
   if(db){db.ref('content/shrines').push({...shrine,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{shrine.id=ref.key;shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Shrine push failed:',e));}
   else{shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}
-  ['shrineTitle','shrineTagline','shrineCover','shrineBody','shrineTags'].forEach(id=>document.getElementById(id).value='');
+  ['shrineTitle','shrineTagline','shrineCover','shrineImages'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
@@ -1258,11 +1255,10 @@ function adminAddLetter(){
   if(!isAdminSession())return;
   const to=document.getElementById('letterTo').value.trim(),subject=document.getElementById('letterSubject').value.trim(),body=document.getElementById('letterBody').value.trim();
   if(!subject||!body)return;
-  const tags=parseTags(document.getElementById('letterTags').value);
-  const letter={to,subject,body,tags};
+  const letter={to,subject,body};
   if(db){db.ref('content/letters').push({...letter,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{letter.id=ref.key;lettersData.push(letter);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Letter push failed:',e));}
   else{lettersData.push(letter);renderLetterList();renderHomeUpdates();}
-  ['letterTo','letterSubject','letterBody','letterTags'].forEach(id=>document.getElementById(id).value='');
+  ['letterTo','letterSubject','letterBody'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('letterSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
@@ -1371,8 +1367,7 @@ function openEditShrine(idx){
   document.getElementById('editShrineTitle').value=shrine.title||'';
   document.getElementById('editShrineTagline').value=shrine.tagline||'';
   document.getElementById('editShrineCover').value=shrine.coverImage||'';
-  document.getElementById('editShrineBody').value=shrine.body||'';
-  document.getElementById('editShrineTags').value=(shrine.tags||[]).map(t=>'#'+t).join(' ');
+  document.getElementById('editShrineImages').value=normalizeImages(shrine.images||[]).join('\n');
   document.getElementById('editShrineSuccess').style.display='none';document.getElementById('editShrineError').style.display='none';
   document.getElementById('editShrineModal').style.display='flex';
 }
@@ -1380,9 +1375,10 @@ function closeEditShrine(){document.getElementById('editShrineModal').style.disp
 function adminSaveEditShrine(){
   if(!isAdminSession())return;const idx=_editShrineOriginalIndex;if(idx<0||idx>=shrinesData.length)return;
   const shrine=shrinesData[idx],id=shrine.id;
-  const title=document.getElementById('editShrineTitle').value.trim(),body=document.getElementById('editShrineBody').value.trim();
-  if(!title||!body){document.getElementById('editShrineError').textContent='// TITLE AND BODY ARE REQUIRED.';document.getElementById('editShrineError').style.display='block';return;}
-  const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),body,tags:parseTags(document.getElementById('editShrineTags').value)};
+  const title=document.getElementById('editShrineTitle').value.trim();
+  if(!title){document.getElementById('editShrineError').textContent='// TITLE IS REQUIRED.';document.getElementById('editShrineError').style.display='block';return;}
+  const images=document.getElementById('editShrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
+  const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),images};
   if(db&&id){db.ref('content/shrines/'+id).update(updated).then(()=>{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editShrineError').textContent='// ERROR.';document.getElementById('editShrineError').style.display='block';});}
   else{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}
 }
@@ -1398,7 +1394,6 @@ function openEditLetter(idx){
   document.getElementById('editLetterTo').value=letter.to||'';
   document.getElementById('editLetterSubject').value=letter.subject||'';
   document.getElementById('editLetterBody').value=letter.body||'';
-  document.getElementById('editLetterTags').value=(letter.tags||[]).map(t=>'#'+t).join(' ');
   document.getElementById('editLetterSuccess').style.display='none';document.getElementById('editLetterError').style.display='none';
   document.getElementById('editLetterModal').style.display='flex';
 }
@@ -1408,7 +1403,7 @@ function adminSaveEditLetter(){
   const letter=lettersData[idx],id=letter.id;
   const subject=document.getElementById('editLetterSubject').value.trim(),body=document.getElementById('editLetterBody').value.trim();
   if(!subject||!body){document.getElementById('editLetterError').textContent='// SUBJECT AND BODY ARE REQUIRED.';document.getElementById('editLetterError').style.display='block';return;}
-  const updated={to:document.getElementById('editLetterTo').value.trim(),subject,body,tags:parseTags(document.getElementById('editLetterTags').value)};
+  const updated={to:document.getElementById('editLetterTo').value.trim(),subject,body};
   if(db&&id){db.ref('content/letters/'+id).update(updated).then(()=>{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editLetterError').textContent='// ERROR.';document.getElementById('editLetterError').style.display='block';});}
   else{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}
 }
