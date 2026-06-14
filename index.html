@@ -38,24 +38,42 @@
   <div class="nav-left">
     <span class="logo" onclick="showPage('home')"><span class="logo-slash">[</span>SEI <span class="logo-slash">✿</span> STUDIO<span class="logo-slash">]</span></span>
   </div>
-  <div class="nav-center">
-    <div class="marquee-container">
-      <div class="marquee-content">✿ SAGE_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+  <div class="nav-center" id="navCenter">
+    <div class="desktop-icons-bar" id="desktopIconsBar">
+      <div class="desk-icon active" onclick="showPage('home')" id="desk-link-home">
+        <div class="desk-icon-wrap"><img src="icons/home.png" class="desk-icon-img" alt="HOME" /></div>
+        <span class="desk-icon-label">HOME</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('art')" id="desk-link-art">
+        <div class="desk-icon-wrap"><img src="icons/visuals.png" class="desk-icon-img" alt="VISUALS" /></div>
+        <span class="desk-icon-label">VISUALS</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('writing')" id="desk-link-writing">
+        <div class="desk-icon-wrap"><img src="icons/logs.png" class="desk-icon-img" alt="LOGS" /></div>
+        <span class="desk-icon-label">LOGS</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('shrines')" id="desk-link-shrines">
+        <div class="desk-icon-wrap"><img src="icons/shrines.png" class="desk-icon-img" alt="SHRINES" /></div>
+        <span class="desk-icon-label">SHRINES</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('letters')" id="desk-link-letters">
+        <div class="desk-icon-wrap"><img src="icons/letters.png" class="desk-icon-img" alt="LETTERS" /></div>
+        <span class="desk-icon-label">LETTERS</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('board')" id="desk-link-board">
+        <div class="desk-icon-wrap"><img src="icons/bulletin.png" class="desk-icon-img" alt="BULLETIN" /></div>
+        <span class="desk-icon-label">BULLETIN</span>
+      </div>
+      <div class="desk-icon" onclick="showPage('about')" id="desk-link-about">
+        <div class="desk-icon-wrap"><img src="icons/profile.png" class="desk-icon-img" alt="PROFILE" /></div>
+        <span class="desk-icon-label">PROFILE</span>
+      </div>
     </div>
   </div>
   <div class="nav-right">
-    <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">DIR [≡]</button>
-    <div class="nav-links" id="navLinks">
-      <span class="nav-item active" onclick="showPage('home')" id="link-home"><span>00</span>HOME</span>
-      <span class="nav-item" onclick="showPage('art')" id="link-art"><span>01</span>VISUALS</span>
-      <span class="nav-item" onclick="showPage('writing')" id="link-writing"><span>02</span>LOGS</span>
-      <span class="nav-item" onclick="showPage('shrines')" id="link-shrines"><span>03</span>SHRINES</span>
-      <span class="nav-item" onclick="showPage('letters')" id="link-letters"><span>04</span>LETTERS</span>
-      <span class="nav-item" onclick="showPage('board')" id="link-board"><span>05</span>BULLETIN</span>
-      <span class="nav-item" onclick="showPage('about')" id="link-about"><span>06</span>PROFILE</span>
-      <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
-      <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</span>
-    </div>
+    <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
+    <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
+    <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</span>
   </div>
 </header>
 
@@ -130,7 +148,23 @@
           </div>
         </div>
 
+        <!-- MARQUEE — centered below hero -->
+        <div class="home-card marquee-card">
+          <div class="home-card-body">
+            <div class="marquee-container">
+              <div class="marquee-content">✿ SAGE_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <!-- RECYCLING BIN — bottom-right of home, above footer -->
+      <div id="recyclingBinBtn" class="recycling-bin-btn" onclick="showPage('trash')" title="🗑 secret trash">
+        <img src="icons/recycling-bin.png" alt="🗑️" />
+        <span>Recycling Bin</span>
+      </div>
+
     </section>
 
     <!-- ══════════════════ ART ══════════════════ -->
@@ -275,7 +309,7 @@
         <div class="about-widgets-panel">
 
           <div class="about-widget aw-feeling">
-            <div class="about-widget-header">FEELING //</div>
+            <div class="about-widget-header">GAMES //</div>
             <div class="about-widget-body" id="widget-feeling">
               <span class="widget-hint">// stickers loading...</span>
             </div>
@@ -308,6 +342,17 @@
 
         </div>
       </div>
+    </section>
+
+
+    <!-- ══════════════════ TRASH ══════════════════ -->
+    <section id="trash">
+      <div class="section-header">
+        <h1>THE <span>TRASH</span></h1>
+        <p>// discarded snippets, failed projects, intrusive thoughts, abandoned doodles.</p>
+        <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
+      </div>
+      <div id="trashContent"></div>
     </section>
 
   </main>
@@ -378,7 +423,7 @@
         <button class="admin-tab"        id="tab-logs"    onclick="switchAdminTab('logs')">ADD LOG</button>
         <button class="admin-tab"        id="tab-shrines" onclick="switchAdminTab('shrines')">ADD SHRINE</button>
         <button class="admin-tab"        id="tab-letters" onclick="switchAdminTab('letters')">ADD LETTER</button>
-        <button class="admin-tab"        id="tab-decor"   onclick="switchAdminTab('decor')">HOME DECOR</button>
+        <button class="admin-tab"        id="tab-trash"   onclick="switchAdminTab('trash')">ADD TRASH</button>
       </div>
 
       <!-- ART FORM -->
@@ -428,32 +473,24 @@
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
 
-      <!-- HOME DECOR FORM -->
-      <div id="adminDecorForm" class="admin-form" style="display:none">
+      <!-- TRASH FORM -->
+      <div id="adminTrashForm" class="admin-form" style="display:none">
         <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
-          // PNG images that peek out from behind home page cards.<br />
-          // Leave blank to hide. Same display size as profile stickers (~110px).
+          // Discarded snippets, abandoned doodles, one-line intrusive thoughts, failed project notes.<br />
+          // New entries auto-group into their matching date bucket.
         </p>
-        <div class="home-decor-grid">
-          <div>
-            <label class="admin-label">Behind HELLO.TXT (bottom-right)</label>
-            <input type="text" id="decorHello" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398507/color-changed-image_odb3wd.png" />
-          </div>
-          <div>
-            <label class="admin-label">Behind STATUS.EXE (top-right)</label>
-            <input type="text" id="decorStatus" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398502/color-changed-image_1_lxbz4q.png" />
-          </div>
-          <div>
-            <label class="admin-label">Behind WORD_OF_THE_DAY (top-left)</label>
-            <input type="text" id="decorQuote" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398492/persimmon-Photoroom_nvsax5.png" />
-          </div>
-          <div>
-            <label class="admin-label">Hero card — bottom center</label>
-            <input type="text" id="decorHero" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781460546/tiger-Photoroom_vket0l.png" />
-          </div>
-        </div>
-        <button class="board-submit" style="cursor:pointer;margin-top:10px;" onclick="adminSaveDecor()">SAVE DECOR →</button>
-        <p id="decorSuccess" class="admin-success">// SAVED.</p>
+        <label class="admin-label">Type</label>
+        <select id="trashType" class="admin-input" style="cursor:pointer;">
+          <option value="thought">💭 Intrusive Thought</option>
+          <option value="doodle">🖊️ Doodle / Image URL</option>
+          <option value="note">📝 Failed Project Note</option>
+        </select>
+        <label class="admin-label">Content &mdash; text, or image URL if doodle</label>
+        <textarea id="trashItemContent" class="admin-input" placeholder="one-liner thought, or https://image-url.png"></textarea>
+        <label class="admin-label">Date (auto-fills today, adjust if needed)</label>
+        <input type="text" id="trashDate" class="admin-input" placeholder="2026.06.14" />
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddTrash()">DISCARD →</button>
+        <p id="trashSuccess" class="admin-success">// DISCARDED.</p>
       </div>
 
       <!-- SHRINE FORM -->
@@ -472,6 +509,9 @@
 
         <label class="admin-label">Gallery Images — one URL per line</label>
         <textarea id="shrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png&#10;https://image3.png"></textarea>
+
+        <label class="admin-label">Image Captions — one per line, matching image order (leave blank for no tooltip)</label>
+        <textarea id="shrineCaptions" class="admin-input" placeholder="Caption for image 1&#10;Caption for image 2&#10;(leave blank to skip)"></textarea>
 
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddShrine()">OPEN SHRINE →</button>
         <p id="shrineSuccess" class="admin-success">// SHRINE OPENED.</p>
@@ -541,6 +581,8 @@
       <input type="text" id="editShrineCover" class="admin-input" />
       <label class="admin-label">Gallery Images — one URL per line</label>
       <textarea id="editShrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png"></textarea>
+      <label class="admin-label">Image Captions — one per line (matches image order)</label>
+      <textarea id="editShrineCaptions" class="admin-input" placeholder="Caption for image 1&#10;Caption for image 2"></textarea>
       <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
         <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditShrine()">SAVE CHANGES →</button>
         <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteShrineFromEdit()">DELETE SHRINE</button>
@@ -817,6 +859,7 @@ function setAdminMode(active){
   if(logsData.length) renderLogList();
   if(shrinesData.length) renderShrineGrid();
   if(lettersData.length) renderLetterList();
+  if(trashData.length) renderTrashPage();
   const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
   const sb=document.getElementById('shrineReaderEditBtn');if(sb)sb.style.display=active?'inline-block':'none';
   const lb=document.getElementById('letterReaderEditBtn');if(lb)lb.style.display=active?'inline-block':'none';
@@ -869,9 +912,6 @@ function onFirebaseReady() {
     renderMessage(msg.id,{text:msg.text,name:genAnonName(),time:sysTime,date:sysDate,xPct:2+Math.random()*70,yPct:4+Math.random()*62,timestamp:Date.now()});
   });
 
-  // Load home decor stickers
-  loadDecorStickers();
-
   // Load art
   db.ref('content/art').orderByChild('timestamp').once('value',snap=>{
     artData=[];
@@ -905,6 +945,13 @@ function onFirebaseReady() {
     renderHomeUpdates();
     if(_pendingLetterKey){const idx=lettersData.findIndex(l=>l.id===_pendingLetterKey);_pendingLetterKey=null;if(idx!==-1)readLetter(idx);}
   }).catch(e=>console.error('Letters load failed:',e));
+
+  // Load trash
+  db.ref('content/trash').orderByChild('timestamp').once('value',snap=>{
+    trashData=[];
+    snap.forEach(child=>{const d=child.val();trashData.push({id:child.key,...d});});
+    renderTrashPage();
+  }).catch(e=>console.error('Trash load failed:',e));
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -927,11 +974,15 @@ try{if(localStorage.getItem('darkMode')==='1'){document.body.classList.add('dark
 function _activateSection(id){
   document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
   const sec=document.getElementById(id);if(sec)sec.classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  // Update desktop icon active state
+  document.querySelectorAll('.desk-icon').forEach(n=>n.classList.remove('active'));
   const navMap={'log-reader':'writing','shrine-reader':'shrines','letter-reader':'letters'};
-  const linkId='link-'+(navMap[id]||id);
-  const link=document.getElementById(linkId);if(link)link.classList.add('active');
-  document.getElementById('navLinks').classList.remove('show');
+  const pageId=navMap[id]||id;
+  const deskLink=document.getElementById('desk-link-'+pageId);
+  if(deskLink)deskLink.classList.add('active');
+  // Close mobile icon panel
+  const bar=document.getElementById('desktopIconsBar');
+  if(bar)bar.classList.remove('show');
   window.scrollTo(0,0);
 }
 
@@ -948,7 +999,7 @@ function showPage(id){
   },1200);
 }
 
-function toggleMenu(){document.getElementById('navLinks').classList.toggle('show');}
+function toggleMenu(){document.getElementById('desktopIconsBar').classList.toggle('show');}
 
 /* ═══════════════════════════════════════════════════════
    RENDER — ART
@@ -1040,8 +1091,9 @@ function readShrine(i){
   // Gallery (new format) or fallback to body HTML (legacy)
   const imgs=normalizeImages(shrine.images||[]);
   let galleryHtml='';
+  const captions=normalizeImages(shrine.captions||[]);
   if(imgs.length){
-    galleryHtml=`<div class="shrine-gallery">${imgs.map(u=>`<img class="shrine-gallery-img" src="${normalizeImageUrl(u)}" alt="" loading="lazy" />`).join('')}</div>`;
+    galleryHtml=`<div class="shrine-gallery">${imgs.map((u,i)=>{const cap=captions[i]||'';return`<div class="shrine-gallery-item"${cap?` data-caption="${escHtml(cap)}"`:''}>` +`<img class="shrine-gallery-img" src="${normalizeImageUrl(u)}" alt="" loading="lazy" /></div>`;}).join('')}</div>`;
   }else if(shrine.body){
     galleryHtml=`<div class="log-body-text" style="white-space:normal;">${shrine.body}</div>`;
   }
@@ -1201,10 +1253,15 @@ function switchAdminTab(tab){
   document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';
   document.getElementById('adminShrinesForm').style.display=tab==='shrines'?'flex':'none';
   document.getElementById('adminLettersForm').style.display=tab==='letters'?'flex':'none';
-  document.getElementById('adminDecorForm').style.display=tab==='decor'?'flex':'none';
-  ['art','logs','shrines','letters','decor'].forEach(t=>{
+  document.getElementById('adminTrashForm').style.display=tab==='trash'?'flex':'none';
+  ['art','logs','shrines','letters','trash'].forEach(t=>{
     document.getElementById('tab-'+t).classList.toggle('active',t===tab);
   });
+  // Auto-fill date for trash tab
+  if(tab==='trash'){
+    const dateEl=document.getElementById('trashDate');
+    if(dateEl&&!dateEl.value){const now=new Date();dateEl.value=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;}
+  }
 }
 
 /* ── ADD ART ── */
@@ -1245,10 +1302,11 @@ function adminAddShrine(){
   const tagline=document.getElementById('shrineTagline').value.trim();
   const coverImage=document.getElementById('shrineCover').value.trim();
   const images=document.getElementById('shrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
-  const shrine={title,tagline,coverImage,images};
+  const captions=document.getElementById('shrineCaptions').value.split('\n').map(c=>c.trim());
+  const shrine={title,tagline,coverImage,images,captions};
   if(db){db.ref('content/shrines').push({...shrine,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{shrine.id=ref.key;shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Shrine push failed:',e));}
   else{shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}
-  ['shrineTitle','shrineTagline','shrineCover','shrineImages'].forEach(id=>document.getElementById(id).value='');
+  ['shrineTitle','shrineTagline','shrineCover','shrineImages','shrineCaptions'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
@@ -1278,53 +1336,47 @@ function adminDeleteLetter(idx){if(!isAdminSession())return;const l=lettersData[
 function adminDeleteLetterFromEdit(){if(!isAdminSession())return;const idx=_editLetterOriginalIndex;if(idx<0)return;closeEditLetter();adminDeleteLetter(idx);}
 
 /* ═══════════════════════════════════════════════════════
-   HOME DECOR (peek stickers)
+   TRASH / RECYCLING BIN
 ═══════════════════════════════════════════════════════ */
-function applyDecorStickers(data){
-  if(!data)return;
-  const map={hello:'peekHello',status:'peekStatus',quote:'peekQuote',hero:'peekHero'};
-  Object.entries(map).forEach(([key,id])=>{
-    const el=document.getElementById(id);
-    if(!el)return;
-    const url=(data[key]||'').trim();
-    el.src=url;
-    el.style.display=url?'block':'none';
-  });
+let trashData=[];
+
+function renderTrashPage(){
+  const el=document.getElementById('trashContent');if(!el)return;
+  if(!trashData.length){el.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// nothing here yet. the bin is clean.</p>';return;}
+  const groups={};
+  trashData.forEach(item=>{const d=item.date||'UNKNOWN';if(!groups[d])groups[d]=[];groups[d].push(item);});
+  const sortedDates=Object.keys(groups).sort((a,b)=>b.localeCompare(a));
+  el.innerHTML=sortedDates.map(date=>{
+    const items=groups[date];
+    return`<div class="trash-date-group"><div class="trash-date-header">[ ${date} ]</div><div class="trash-items-grid">${items.map(item=>{
+      const typeLabel={thought:'💭 THOUGHT',doodle:'🖊️ DOODLE',note:'📝 NOTE'};
+      const label=typeLabel[item.type]||'SCRAP';
+      const delBtn=isAdminSession()?`<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`:'';
+      if(item.type==='doodle'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="doodle" />${delBtn}</div>`;}
+      return`<div class="trash-item"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
+    }).join('')}</div></div>`;
+  }).join('');
 }
 
-function loadDecorStickers(){
-  if(!db){return;}
-  db.ref('content/homeDecor').once('value',snap=>{
-    applyDecorStickers(snap.val());
-    // Pre-fill admin inputs
-    const d=snap.val()||{};
-    const f=document.getElementById('decorHello');if(f)f.value=d.hello||'';
-    const s=document.getElementById('decorStatus');if(s)s.value=d.status||'';
-    const q=document.getElementById('decorQuote');if(q)q.value=d.quote||'';
-    const h=document.getElementById('decorHero');if(h)h.value=d.hero||'';
-  }).catch(e=>console.error('Decor load failed:',e));
-}
-
-function adminSaveDecor(){
+function adminAddTrash(){
   if(!isAdminSession())return;
-  const data={
-    hello:document.getElementById('decorHello').value.trim(),
-    status:document.getElementById('decorStatus').value.trim(),
-    quote:document.getElementById('decorQuote').value.trim(),
-    hero:document.getElementById('decorHero').value.trim(),
-  };
-  if(db){
-    db.ref('content/homeDecor').set(data)
-      .then(()=>{
-        applyDecorStickers(data);
-        const s=document.getElementById('decorSuccess');
-        s.style.display='block';
-        setTimeout(()=>s.style.display='none',3000);
-      })
-      .catch(e=>console.error('Decor save failed:',e));
-  }else{
-    applyDecorStickers(data);
-  }
+  const type=document.getElementById('trashType').value;
+  const content=document.getElementById('trashItemContent').value.trim();
+  const date=document.getElementById('trashDate').value.trim();
+  if(!content||!date)return;
+  const entry={type,content,date};
+  if(db){db.ref('content/trash').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;trashData.push(entry);renderTrashPage();const s=document.getElementById('trashSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Trash push failed:',e));}
+  else{trashData.push(entry);renderTrashPage();}
+  document.getElementById('trashItemContent').value='';
+}
+
+function adminDeleteTrash(id){
+  if(!isAdminSession())return;
+  const idx=trashData.findIndex(t=>t.id===id);
+  if(idx<0)return;
+  if(!confirm('Delete this trash entry?'))return;
+  if(db&&id){db.ref('content/trash/'+id).remove().then(()=>{trashData.splice(idx,1);renderTrashPage();}).catch(e=>console.error('Trash delete failed:',e));}
+  else{trashData.splice(idx,1);renderTrashPage();}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1370,6 +1422,7 @@ function openEditShrine(idx){
   document.getElementById('editShrineTagline').value=shrine.tagline||'';
   document.getElementById('editShrineCover').value=shrine.coverImage||'';
   document.getElementById('editShrineImages').value=normalizeImages(shrine.images||[]).join('\n');
+  document.getElementById('editShrineCaptions').value=normalizeImages(shrine.captions||[]).join('\n');
   document.getElementById('editShrineSuccess').style.display='none';document.getElementById('editShrineError').style.display='none';
   document.getElementById('editShrineModal').style.display='flex';
 }
@@ -1380,7 +1433,8 @@ function adminSaveEditShrine(){
   const title=document.getElementById('editShrineTitle').value.trim();
   if(!title){document.getElementById('editShrineError').textContent='// TITLE IS REQUIRED.';document.getElementById('editShrineError').style.display='block';return;}
   const images=document.getElementById('editShrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
-  const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),images};
+  const captions=document.getElementById('editShrineCaptions').value.split('\n').map(c=>c.trim());
+  const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),images,captions};
   if(db&&id){db.ref('content/shrines/'+id).update(updated).then(()=>{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editShrineError').textContent='// ERROR.';document.getElementById('editShrineError').style.display='block';});}
   else{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}
 }
@@ -1427,7 +1481,7 @@ function handleRouting(){
   if(hash.startsWith('shrine/')){const key=hash.slice(7);_activateSection('shrine-reader');const idx=shrinesData.findIndex(s=>s.id===key);if(idx!==-1)readShrine(idx);else _pendingShrineKey=key;return;}
   if(hash.startsWith('letter/')){const key=hash.slice(7);_activateSection('letter-reader');const idx=lettersData.findIndex(l=>l.id===key);if(idx!==-1)readLetter(idx);else _pendingLetterKey=key;return;}
 
-  const hashMap={'':'home','home':'home','art':'art','writing':'writing','shrines':'shrines','letters':'letters','board':'board','about':'about'};
+  const hashMap={'':'home','home':'home','art':'art','writing':'writing','shrines':'shrines','letters':'letters','board':'board','about':'about','trash':'trash'};
   const sectionId=hashMap[hash];
   _activateSection(sectionId||'home');
 }
@@ -1447,6 +1501,27 @@ document.addEventListener('DOMContentLoaded',()=>{
   handleRouting();
   renderArtGrid();renderLogList();initCategoryTabs();
   newQuote(); // boot the quote box
+
+  // Shrine caption tooltip — follows mouse on gallery items with data-caption
+  (function(){
+    const tt=document.createElement('div');
+    tt.className='shrine-img-tooltip';
+    document.body.appendChild(tt);
+    document.addEventListener('mouseover',e=>{
+      const item=e.target.closest('[data-caption]');
+      if(item){tt.textContent=item.dataset.caption;tt.style.display='block';}
+    });
+    document.addEventListener('mouseout',e=>{
+      const item=e.target.closest('[data-caption]');
+      if(item)tt.style.display='none';
+    });
+    document.addEventListener('mousemove',e=>{
+      if(tt.style.display==='block'){
+        tt.style.left=(e.clientX+14)+'px';
+        tt.style.top=(e.clientY-40)+'px';
+      }
+    });
+  })();
 
   const input=document.getElementById('commentInput');
   input.addEventListener('keydown',e=>{if(e.key==='Enter')submitComment();});
