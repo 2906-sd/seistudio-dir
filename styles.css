@@ -211,69 +211,14 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   padding-top: 0.5rem;
 }
 
-/* wrapper that holds both the bg sticker layer and the grid */
-.home-scene {
-  position: relative;
-}
-
-/* ── BACKGROUND PEEK STICKERS ── */
-.home-bg-layer {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  overflow: visible;
-}
-
-.home-peek-sticker {
-  position: absolute;
-  width: 110px;
-  height: auto;
-  pointer-events: none;
-  user-select: none;
-  -webkit-user-drag: none;
-  filter: drop-shadow(3px 4px 6px rgba(0,0,0,0.22));
-  /* hidden by default until src is set */
-}
-.home-peek-sticker[src=""] { display: none; }
-
-/* Individual peek positions — tweak transforms to taste */
-/* Peeks from behind the Hello card (bottom-right corner) */
-#peekHello {
-  top: 36%;
-  left: 21%;
-  transform: rotate(-13deg) translate(-55%, 40%);
-  z-index: 1;
-}
-/* Peeks from behind the Status card (top-right corner) */
-#peekStatus {
-  bottom: 10%;
-  left: 20%;
-  transform: rotate(9deg) translate(-50%, 10%);
-  z-index: 1;
-}
-/* Peeks from behind the Quote card (top-left corner) */
-#peekQuote {
-  top: 48%;
-  right: 20%;
-  transform: rotate(-8deg) translate(55%, -20%);
-  z-index: 1;
-}
-/* Peeks at the bottom of the hero card */
-#peekHero {
-  bottom: -2%;
-  left: 50%;
-  transform: translateX(-50%) rotate(6deg) translateY(25%);
-  z-index: 1;
-}
-
 .home-grid {
   display: grid;
   grid-template-columns: minmax(220px, 280px) 1fr minmax(220px, 280px);
-  grid-template-rows: minmax(190px, auto) minmax(190px, auto);
+  grid-template-rows: minmax(190px, auto) minmax(190px, auto) auto;
   grid-template-areas:
     "hello hero updates"
-    "status hero quote";
+    "status hero quote"
+    ". marquee .";
   gap: 1.25rem;
   align-items: stretch;
   width: 100%;
@@ -480,11 +425,11 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
     grid-template-areas:
       "hero    hero"
       "hello   updates"
-      "status  quote";
+      "status  quote"
+      "marquee marquee";
   }
   .hero-card { min-height: 260px; padding: 2rem 1.5rem 2.5rem; }
   .hero-card .hero-text { font-size: clamp(1.4rem, 4vw, 2rem); }
-  .home-bg-layer { display: none; }
 }
 @media (max-width: 580px) {
   .home-grid {
@@ -494,7 +439,8 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
       "hello"
       "updates"
       "status"
-      "quote";
+      "quote"
+      "marquee";
   }
 }
 
@@ -1216,27 +1162,29 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 @media (max-width: 850px) {
   .page-wrapper { padding: 1.5rem 1rem 3rem; }
   .top-nav { padding: 0.6rem 1rem; gap: 0.6rem; }
-  .nav-center { display: none; }
-  .menu-trigger { display: inline-block; }
-  .nav-links {
+  /* Desktop icons collapse into hamburger dropdown on mobile */
+  .nav-center {
+    flex: 0 0 0;
+    min-width: 0;
+    overflow: visible;
+  }
+  .desktop-icons-bar {
     display: none;
     position: absolute;
-    top: calc(100% + 8px);
+    top: 100%;
+    left: 0;
     right: 0;
-    flex-direction: column;
-    align-items: stretch;
-    min-width: 200px;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem;
     background: var(--bg2);
-    border: 1.5px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    padding: 0.4rem;
-    gap: 0.15rem;
+    border-bottom: 1.5px solid var(--border);
+    padding: 0.75rem 1rem;
     z-index: 1200;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   }
-  .nav-links.show { display: flex; }
-  .nav-item { justify-content: space-between; font-size: 0.78rem; padding: 0.6rem 0.7rem; }
-  .dark-toggle, .nav-admin-trigger { width: 100%; text-align: center; }
+  .desktop-icons-bar.show { display: flex; }
+  .menu-trigger { display: inline-block; }
   main { width: 100%; }
   .art-feed { grid-template-columns: 1fr; }
   .log-container { padding: 1.75rem 1.25rem; }
@@ -1255,6 +1203,212 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 
 @media (max-width: 480px) {
   .shrines-grid { grid-template-columns: 1fr; }
+}
+
+/* ── DESKTOP ICONS NAV ── */
+.desktop-icons-bar {
+  display: flex;
+  gap: 0.1rem;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2px 0;
+  flex-wrap: nowrap;
+}
+
+.desk-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 5px;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  transition: background 0.1s, border-color 0.1s;
+  min-width: 44px;
+  max-width: 60px;
+  user-select: none;
+}
+.desk-icon:hover {
+  background: rgba(64,95,250,0.1);
+  border-color: rgba(64,95,250,0.35);
+}
+.desk-icon.active {
+  background: rgba(64,95,250,0.15);
+  border-color: var(--accent);
+}
+.desk-icon.active .desk-icon-label { color: var(--accent); }
+
+.desk-icon-wrap {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  background: var(--bg3);
+  border: 1px solid var(--border-lt);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.desk-icon-img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+.desk-icon-label {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  text-align: center;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+/* ── MARQUEE CARD (centered below hero) ── */
+.marquee-card {
+  grid-area: marquee;
+  overflow: hidden !important;
+  min-height: auto !important;
+}
+.marquee-card .home-card-body { padding: 0 !important; }
+.marquee-card .marquee-container {
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  margin: 0;
+}
+
+/* ── RECYCLING BIN ── */
+.recycling-bin-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px 8px;
+  width: fit-content;
+  margin-left: auto;
+  margin-top: 0.75rem;
+  opacity: 0.45;
+  transition: opacity 0.2s, background 0.15s;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+.recycling-bin-btn:hover {
+  opacity: 1;
+  background: var(--bg3);
+  border-color: var(--border-lt);
+}
+.recycling-bin-btn img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.recycling-bin-btn span {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  text-align: center;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── TRASH PAGE ── */
+.trash-date-group { margin-bottom: 2.5rem; }
+.trash-date-header {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  padding: 0.5rem 0;
+  border-bottom: 1.5px solid var(--border);
+  margin-bottom: 1rem;
+}
+.trash-items-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: flex-start;
+}
+.trash-item {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  padding: 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  border-radius: var(--radius);
+  max-width: 280px;
+  min-width: 160px;
+  position: relative;
+  flex: 0 1 auto;
+}
+.trash-item-doodle { max-width: 240px; }
+.trash-item-type {
+  font-size: 8px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+.trash-item-content {
+  color: var(--text);
+  line-height: 1.6;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+.trash-doodle-img {
+  width: 100%;
+  height: auto;
+  max-height: 200px;
+  object-fit: contain;
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius-sm);
+  display: block;
+  margin-top: 4px;
+}
+
+/* ── SHRINE IMAGE CAPTION TOOLTIP ── */
+.shrine-gallery-item {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+}
+.shrine-gallery-item .shrine-gallery-img {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 1;
+}
+.shrine-img-tooltip {
+  position: fixed;
+  display: none;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  pointer-events: none;
+  z-index: 1500;
+  max-width: 220px;
+  line-height: 1.5;
+  border-radius: var(--radius-sm);
+  color: var(--text);
 }
 
 /* ── CURSORS ─────────────────────────────────────────── */
