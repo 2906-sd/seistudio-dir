@@ -59,7 +59,7 @@ body.dark { background-image: none; }
 .page-wrapper {
   display: block;
   width: 100%;
-  max-width: 1350px;
+  max-width: 1160px;
   margin: 0 auto;
   padding: 2rem 1.5rem 4rem;
   min-height: 60vh;
@@ -175,32 +175,6 @@ body.dark { background-image: none; }
 }
 .nav-admin-trigger:hover { color: var(--accent); }
 
-.trash-bin {
-  position: absolute; /* Or fixed, depending on if you want it to scroll with the page */
-  bottom: 80px; /* Adjust this to sit exactly on your footer line */
-  left: 20px;
-  background: none;
-  border: none;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
-  opacity: 0.7;
-  transition: opacity 0.2s;
-}
-
-.trash-bin:hover {
-  opacity: 1;
-}
-
-.trash-bin img {
-  width: 40px;
-  height: 40px;
-  image-rendering: pixelated;
-}
-
 /* ── STATUS FOOTER ───────────────────────────────────── */
 .status-footer {
   margin-top: auto;
@@ -237,6 +211,61 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   padding-top: 0.5rem;
 }
 
+/* wrapper that holds both the bg sticker layer and the grid */
+.home-scene {
+  position: relative;
+}
+
+/* ── BACKGROUND PEEK STICKERS ── */
+.home-bg-layer {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.home-peek-sticker {
+  position: absolute;
+  width: 110px;
+  height: auto;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  filter: drop-shadow(3px 4px 6px rgba(0,0,0,0.22));
+  /* hidden by default until src is set */
+}
+.home-peek-sticker[src=""] { display: none; }
+
+/* Individual peek positions — tweak transforms to taste */
+/* Peeks from behind the Hello card (bottom-right corner) */
+#peekHello {
+  top: 36%;
+  left: 21%;
+  transform: rotate(-13deg) translate(-55%, 40%);
+  z-index: 1;
+}
+/* Peeks from behind the Status card (top-right corner) */
+#peekStatus {
+  bottom: 10%;
+  left: 20%;
+  transform: rotate(9deg) translate(-50%, 10%);
+  z-index: 1;
+}
+/* Peeks from behind the Quote card (top-left corner) */
+#peekQuote {
+  top: 48%;
+  right: 20%;
+  transform: rotate(-8deg) translate(55%, -20%);
+  z-index: 1;
+}
+/* Peeks at the bottom of the hero card */
+#peekHero {
+  bottom: -2%;
+  left: 50%;
+  transform: translateX(-50%) rotate(6deg) translateY(25%);
+  z-index: 1;
+}
 
 .home-grid {
   display: grid;
@@ -259,7 +288,6 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   box-shadow: var(--shadow);
   border-radius: var(--radius);
   overflow: visible; /* allow sticker overflow */
-  position: relative;
   display: flex;
   flex-direction: column;
   /* clip the card face but not children outside bounds */
@@ -764,23 +792,6 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 .shrine-content .log-body-text { white-space: normal; }
 
-.shrine-tooltip {
-  position: absolute;
-  background: var(--bg2);
-  color: var(--text);
-  border: 1.5px solid var(--border);
-  padding: 6px 12px;
-  font-family: var(--font-mono);
-  font-size: 0.8rem;
-  box-shadow: 3px 3px 0px var(--border);
-  border-radius: var(--radius-sm);
-  pointer-events: none; /* Crucial: stops the tooltip from blocking the mouse */
-  opacity: 0;
-  z-index: 9999;
-  transition: opacity 0.2s ease;
-  white-space: nowrap;
-}
-
 /* ═══════════════════════════════════════════════════════
    LETTERS
 ═══════════════════════════════════════════════════════ */
@@ -980,8 +991,7 @@ input.board-input, textarea.board-input {
 
 .about-card {
   background: var(--bg2); border: 1.5px solid var(--border);
-  flex: 1 1 42%;
-  max-width: none;
+  flex: 0 0 310px; max-width: 310px;
   box-shadow: var(--shadow-lg);
   position: relative; z-index: 2; border-radius: var(--radius); overflow: hidden;
 }
@@ -1006,7 +1016,7 @@ body.dark .tag { color: #FFFFFF; }
 
 /* ── ABOUT WIDGETS PANEL — dynamic bento right side ── */
 .about-widgets-panel {
-  flex: 1 1 58%;
+  flex: 1;
   min-width: 0;
   display: grid;
   grid-template-columns: 1.15fr 1fr 1.35fr;
