@@ -312,12 +312,7 @@
 
   </main>
 </div>
-<!-- TRASHBIN BUTTON — secret page -->
-<div id="mouse-tooltip" class="shrine-tooltip"></div>
-<button class="trash-bin" onclick="showSection('trash')">
-  <img src="assets/icons/recycle-full.png" alt="Trash">
-  <span class="trash-label">Recycle Bin</span>
-</button>
+
 <!-- STATUS FOOTER — simplified, time lives in STATUS card now -->
 <footer class="status-footer" id="statusPill">
   <span class="status-dot">❀</span>
@@ -383,6 +378,7 @@
         <button class="admin-tab"        id="tab-logs"    onclick="switchAdminTab('logs')">ADD LOG</button>
         <button class="admin-tab"        id="tab-shrines" onclick="switchAdminTab('shrines')">ADD SHRINE</button>
         <button class="admin-tab"        id="tab-letters" onclick="switchAdminTab('letters')">ADD LETTER</button>
+        <button class="admin-tab"        id="tab-decor"   onclick="switchAdminTab('decor')">HOME DECOR</button>
       </div>
 
       <!-- ART FORM -->
@@ -432,7 +428,33 @@
         <p id="logSuccess" class="admin-success">// POSTED SUCCESSFULLY.</p>
       </div>
 
-      
+      <!-- HOME DECOR FORM -->
+      <div id="adminDecorForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // PNG images that peek out from behind home page cards.<br />
+          // Leave blank to hide. Same display size as profile stickers (~110px).
+        </p>
+        <div class="home-decor-grid">
+          <div>
+            <label class="admin-label">Behind HELLO.TXT (bottom-right)</label>
+            <input type="text" id="decorHello" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398507/color-changed-image_odb3wd.png" />
+          </div>
+          <div>
+            <label class="admin-label">Behind STATUS.EXE (top-right)</label>
+            <input type="text" id="decorStatus" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398502/color-changed-image_1_lxbz4q.png" />
+          </div>
+          <div>
+            <label class="admin-label">Behind WORD_OF_THE_DAY (top-left)</label>
+            <input type="text" id="decorQuote" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781398492/persimmon-Photoroom_nvsax5.png" />
+          </div>
+          <div>
+            <label class="admin-label">Hero card — bottom center</label>
+            <input type="text" id="decorHero" class="admin-input" placeholder="https://res.cloudinary.com/djohhxipz/image/upload/v1781460546/tiger-Photoroom_vket0l.png" />
+          </div>
+        </div>
+        <button class="board-submit" style="cursor:pointer;margin-top:10px;" onclick="adminSaveDecor()">SAVE DECOR →</button>
+        <p id="decorSuccess" class="admin-success">// SAVED.</p>
+      </div>
 
       <!-- SHRINE FORM -->
       <div id="adminShrinesForm" class="admin-form" style="display:none">
@@ -847,6 +869,8 @@ function onFirebaseReady() {
     renderMessage(msg.id,{text:msg.text,name:genAnonName(),time:sysTime,date:sysDate,xPct:2+Math.random()*70,yPct:4+Math.random()*62,timestamp:Date.now()});
   });
 
+  // Load home decor stickers
+  loadDecorStickers();
 
   // Load art
   db.ref('content/art').orderByChild('timestamp').once('value',snap=>{
@@ -1253,7 +1277,55 @@ function adminDeleteShrineFromEdit(){if(!isAdminSession())return;const idx=_edit
 function adminDeleteLetter(idx){if(!isAdminSession())return;const l=lettersData[idx];if(!confirm(`Delete letter "${l.subject}"?`))return;if(db&&l.id){db.ref('content/letters/'+l.id).remove().then(()=>{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Delete letter failed:',e));}else{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}}
 function adminDeleteLetterFromEdit(){if(!isAdminSession())return;const idx=_editLetterOriginalIndex;if(idx<0)return;closeEditLetter();adminDeleteLetter(idx);}
 
+/* ═══════════════════════════════════════════════════════
+   HOME DECOR (peek stickers)
+═══════════════════════════════════════════════════════ */
+function applyDecorStickers(data){
+  if(!data)return;
+  const map={hello:'peekHello',status:'peekStatus',quote:'peekQuote',hero:'peekHero'};
+  Object.entries(map).forEach(([key,id])=>{
+    const el=document.getElementById(id);
+    if(!el)return;
+    const url=(data[key]||'').trim();
+    el.src=url;
+    el.style.display=url?'block':'none';
+  });
+}
 
+function loadDecorStickers(){
+  if(!db){return;}
+  db.ref('content/homeDecor').once('value',snap=>{
+    applyDecorStickers(snap.val());
+    // Pre-fill admin inputs
+    const d=snap.val()||{};
+    const f=document.getElementById('decorHello');if(f)f.value=d.hello||'';
+    const s=document.getElementById('decorStatus');if(s)s.value=d.status||'';
+    const q=document.getElementById('decorQuote');if(q)q.value=d.quote||'';
+    const h=document.getElementById('decorHero');if(h)h.value=d.hero||'';
+  }).catch(e=>console.error('Decor load failed:',e));
+}
+
+function adminSaveDecor(){
+  if(!isAdminSession())return;
+  const data={
+    hello:document.getElementById('decorHello').value.trim(),
+    status:document.getElementById('decorStatus').value.trim(),
+    quote:document.getElementById('decorQuote').value.trim(),
+    hero:document.getElementById('decorHero').value.trim(),
+  };
+  if(db){
+    db.ref('content/homeDecor').set(data)
+      .then(()=>{
+        applyDecorStickers(data);
+        const s=document.getElementById('decorSuccess');
+        s.style.display='block';
+        setTimeout(()=>s.style.display='none',3000);
+      })
+      .catch(e=>console.error('Decor save failed:',e));
+  }else{
+    applyDecorStickers(data);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════
    EDIT LOG
@@ -1410,54 +1482,6 @@ window.addEventListener('load',()=>{initFirebase();initStickers();initBoardResiz
   }
   Object.entries(CURSORS).forEach(([key,cfg])=>{const img=new Image();img.onload=()=>{images[key]=img;if(++loaded===total)startAnimations();};img.src=cfg[0];});
 })();
-
-
-
-
-import { ref, push } from "firebase/database";
-
-async function submitToTrash(content, type) {
-  // 1. Get today's date in YYYY-MM-DD format (e.g., "2026-06-14")
-  const today = new Date().toISOString().split('T')[0];
-  
-  // 2. Point to the specific date folder in your database
-  const trashRef = ref(db, `trash/${today}`);
-  
-  // 3. Push the new item into that date's array/collection
-  await push(trashRef, {
-    content: content, // Text, image URL, or code snippet
-    type: type,       // 'doodle', 'thought', 'project'
-    timestamp: Date.now()
-  });
-}
-
-
-const tooltip = document.getElementById('mouse-tooltip');
-
-// Function to initialize tooltips on your shrine images
-function initShrineTooltips() {
-  const images = document.querySelectorAll('.shrine-image[data-caption]');
-
-  images.forEach(img => {
-    img.addEventListener('mousemove', (e) => {
-      const captionText = img.getAttribute('data-caption');
-      if (captionText) {
-        tooltip.textContent = captionText;
-        tooltip.style.opacity = '1';
-        // Offset by 15px so it doesn't cover the cursor
-        tooltip.style.left = (e.pageX + 15) + 'px'; 
-        tooltip.style.top = (e.pageY + 15) + 'px';
-      }
-    });
-
-    img.addEventListener('mouseleave', () => {
-      tooltip.style.opacity = '0';
-    });
-  });
-}
-
-
-
 </script>
 </body>
 </html>
