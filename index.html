@@ -1183,7 +1183,8 @@ function normalizeImageUrl(url){
 ═══════════════════════════════════════════════════════ */
 async function initFirebase() {
   try {
-    firebase.initializeApp(firebaseConfig);
+    // Guard against double-init (hot reload, duplicate load events, etc.)
+    if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
     db = firebase.database();
     msgRef = db.ref('board/messages');
     msgRef.orderByChild('timestamp').on('child_added', snap => renderMessage(snap.key, snap.val()));
@@ -1561,7 +1562,7 @@ function renderMessage(id,msg){
   popup.style.left=Math.max(10,(msg.xPct/100)*bw)+'px';popup.style.top=Math.max(10,(msg.yPct/100)*bh)+'px';
   const hdr=document.createElement('div');hdr.className='comment-header';
   const displayDate=msg.date||(msg.timestamp?(()=>{const d=new Date(msg.timestamp);return`${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;})():'');
-  hdr.innerHTML=`<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
+  hdr.innerHTML=`<span>${escHtml(msg.name||nameFromKey(id))}</span><span>${displayDate?escHtml(displayDate)+' · ':''}${escHtml(msg.time)}</span>`;
   const bdy=document.createElement('div');bdy.className='comment-body';bdy.textContent=msg.text;
   popup.append(hdr,bdy);canvas.appendChild(popup);makeDraggable(popup,hdr,canvas);
 }
@@ -1657,10 +1658,9 @@ function adminAddArt(){
   const title=document.getElementById('artTitle').value.trim(),category=document.getElementById('artCategory').value,imgRaw=document.getElementById('artImages').value.trim(),desc=document.getElementById('artDesc').value.trim(),meta=document.getElementById('artMeta').value.trim();
   if(!title||!imgRaw)return;const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean);if(!images.length)return;
   const piece={title,category,images,desc,meta};
-  adminWrite('push','content/art',piece).then(r=>{piece.id=r.id;piece.timestamp=Date.now();artData.push(piece);renderArtGrid();})
+  adminWrite('push','content/art',piece).then(r=>{piece.id=r.id;piece.timestamp=Date.now();artData.push(piece);renderArtGrid();const s=document.getElementById('artSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);})
     .catch(e=>{console.error('Art push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value='');document.getElementById('artCategory').value='painting';
-  const s=document.getElementById('artSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
 /* ── ADD LOG ── */
@@ -1675,10 +1675,9 @@ function adminAddLog(){
   const autoMeta=`LOG_${logNumber} // ${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`;
   const meta=document.getElementById('logMeta').value.trim()||autoMeta;
   const log={title,meta,body,tags,stickers};
-  adminWrite('push','content/logs',log).then(r=>{log.id=r.id;log.timestamp=Date.now();logsData.push(log);renderLogList();renderHomeUpdates();})
+  adminWrite('push','content/logs',log).then(r=>{log.id=r.id;log.timestamp=Date.now();logsData.push(log);renderLogList();renderHomeUpdates();const s=document.getElementById('logSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);})
     .catch(e=>{console.error('Log push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['logTitle','logBody','logTags','logStickers','logMeta'].forEach(id=>document.getElementById(id).value='');
-  const s=document.getElementById('logSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
 /* ── ADD SHRINE ── */
@@ -1691,10 +1690,9 @@ function adminAddShrine(){
   const images=document.getElementById('shrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
   const captions=document.getElementById('shrineCaptions').value.split('\n').map(c=>c.trim());
   const shrine={title,tagline,coverImage,images,captions};
-  adminWrite('push','content/shrines',shrine).then(r=>{shrine.id=r.id;shrine.timestamp=Date.now();shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();})
+  adminWrite('push','content/shrines',shrine).then(r=>{shrine.id=r.id;shrine.timestamp=Date.now();shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);})
     .catch(e=>{console.error('Shrine push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['shrineTitle','shrineTagline','shrineCover','shrineImages','shrineCaptions'].forEach(id=>document.getElementById(id).value='');
-  const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
 /* ── ADD LETTER ── */
@@ -1703,10 +1701,9 @@ function adminAddLetter(){
   const to=document.getElementById('letterTo').value.trim(),subject=document.getElementById('letterSubject').value.trim(),body=document.getElementById('letterBody').value.trim();
   if(!subject||!body)return;
   const letter={to,subject,body};
-  adminWrite('push','content/letters',letter).then(r=>{letter.id=r.id;letter.timestamp=Date.now();lettersData.push(letter);renderLetterList();renderHomeUpdates();})
+  adminWrite('push','content/letters',letter).then(r=>{letter.id=r.id;letter.timestamp=Date.now();lettersData.push(letter);renderLetterList();renderHomeUpdates();const s=document.getElementById('letterSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);})
     .catch(e=>{console.error('Letter push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['letterTo','letterSubject','letterBody'].forEach(id=>document.getElementById(id).value='');
-  const s=document.getElementById('letterSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
 /* ── DELETE ART / LOG ── */
@@ -1716,7 +1713,13 @@ function adminDeleteArt(idx){if(!isAdminSession())return;const piece=artData[idx
 function adminDeleteLog(idx){if(!isAdminSession())return;const log=logsData[idx];if(!confirm(`Delete "${log.title}"?`))return;
   if(log.id){adminWrite('remove','content/logs',{id:log.id}).then(()=>{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}).catch(e=>{console.error('Delete log failed:',e);alert('// DELETE FAILED');});}
   else{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}}
-function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0)return;closeLightbox();adminDeleteArt(lbArtIndex);}
+function adminDeleteCurrentArt(){
+  if(!isAdminSession()||lbArtIndex<0)return;
+  // Capture before closeLightbox() resets lbArtIndex to -1
+  const idxToDelete = lbArtIndex;
+  closeLightbox();
+  adminDeleteArt(idxToDelete);
+}
 
 /* ── DELETE SHRINE ── */
 function adminDeleteShrine(idx){if(!isAdminSession())return;const s=shrinesData[idx];if(!confirm(`Delete shrine "${s.title}"?`))return;
