@@ -49,11 +49,12 @@ module.exports = async function handler(req, res) {
     return res.status(500).json({ ok: false, reason: 'Server misconfiguration' });
   }
 
-  // Constant-time comparison to prevent timing attacks
-  const isValid = crypto.timingSafeEqual(
-    Buffer.from(password),
-    Buffer.from(secret)
-  );
+  // Constant-time comparison to prevent timing attacks.
+  // timingSafeEqual() requires equal-length buffers — hash both sides to a
+  // fixed 32-byte SHA-256 digest first.  This also eliminates any length-based
+  // timing oracle that a direct buffer comparison would expose.
+  const normalize = (s) => crypto.createHash('sha256').update(s).digest();
+  const isValid = crypto.timingSafeEqual(normalize(password), normalize(secret));
 
   if (!isValid) {
     // Add small delay to prevent brute force
