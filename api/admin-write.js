@@ -1,5 +1,8 @@
 const crypto = require('crypto');
 const admin = require('firebase-admin');
+console.log('admin type:', typeof admin, 'isNull:', admin === null);
+console.log('admin keys:', admin && Object.keys(admin));
+console.log('admin.apps:', admin && admin.apps, 'getApps?:', typeof admin?.getApps);
 
 // 1 & 2: Parse config safely and use direct import
 const serviceAccountRaw = process.env.FIREBASE_SERVICE_ACCOUNT;
