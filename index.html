@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>SEI ✿ STUDIO</title>
+  <title>Sei ✿ut Loud</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23405FFA%22>✿</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,7 +36,7 @@
 <!-- TOP NAV -->
 <header id="navbar" class="top-nav">
   <div class="nav-left">
-    <span class="logo" onclick="showPage('home')"><span class="logo-slash">[</span>SEI <span class="logo-slash">✿</span> STUDIO<span class="logo-slash">]</span></span>
+    <span class="logo" onclick="showPage('home')"><span class="logo-slash">[</span>Sei <span class="logo-slash">✿</span>ut Loud<span class="logo-slash">]</span></span>
   </div>
   <div class="nav-center" id="navCenter">
     <div class="desktop-icons-bar" id="desktopIconsBar">
@@ -97,7 +97,7 @@
 
         <!-- HERO -->
         <div class="home-card hero-card">
-          <span class="site-title">// SEISTUDIO. //</span>
+          <span class="site-title">// SEI✿UTLOUD. //</span>
           <h1 class="hero-text">
             A collection of <br />colors from the <i>heart,</i> silly things,<br />and
             <i>unsent</i> drafts. Made unapologetically by Sage.
@@ -114,7 +114,10 @@
 
         <!-- STATUS -->
         <div class="home-card status-card">
-          <div class="home-card-header">STATUS.EXE</div>
+          <div class="home-card-header">
+            <span>STATUS.EXE</span>
+            <span class="status-last-updated">LAST UPDATED // <span id="statusLastUpdated">--.--.--</span></span>
+          </div>
           <div class="home-card-body">
             <div class="status-row">
               <span class="status-row-label">MOOD //</span>
@@ -152,17 +155,34 @@
         <div class="home-card marquee-card">
           <div class="home-card-body">
             <div class="marquee-container">
-              <div class="marquee-content">✿ SAGE_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+              <div class="marquee-content">✿ SEI_OUT_LOUD ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
             </div>
+          </div>
+        </div>
+
+        <!-- BADGES STRIP — internet stamps, full-width -->
+        <div class="home-card badges-card">
+          <div class="home-card-header">
+            <span>BADGES.GIF // INTERNET_STAMPS</span>
+            <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
+          </div>
+          <div class="home-card-body badges-strip" id="badgesStripHome">
+            <p class="home-updates-empty">// no badges yet</p>
           </div>
         </div>
 
       </div>
 
-      <!-- RECYCLING BIN — bottom-right of home, above footer -->
-      <div id="recyclingBinBtn" class="recycling-bin-btn" onclick="showPage('trash')" title="🗑 secret trash">
-        <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Interface-Essential-Bin--Streamline-Pixel_hhxutm.svg" alt="🗑️" />
-        <span>Recycling Bin</span>
+      <!-- HOME BOTTOM ROW — info (left) + recycling bin (right) -->
+      <div class="home-bottom-row">
+        <div id="infoBtn" class="info-btn" onclick="showPage('info')" title="ⓘ site info / resources">
+          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Interface-Essential-Information-Circle--Streamline-Pixel_info.svg" onerror="this.onerror=null;this.outerHTML='<span class=&quot;info-btn-emoji&quot;>ⓘ</span>'" alt="ⓘ" />
+          <span>Info / Resources</span>
+        </div>
+        <div id="recyclingBinBtn" class="recycling-bin-btn" onclick="showPage('trash')" title="🗑 secret trash">
+          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Interface-Essential-Bin--Streamline-Pixel_hhxutm.svg" alt="🗑️" />
+          <span>Recycling Bin</span>
+        </div>
       </div>
 
     </section>
@@ -215,6 +235,13 @@
       <div class="section-header">
         <h1>SHRINE<span>S</span></h1>
         <p>// digital cabinets for the lost collections, hyper-fixations, and quiet devotions.</p>
+        <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 11px;">
+          <label for="shrineSortOrder" style="color: var(--text-sub); text-transform: uppercase;">Order // </label>
+          <select id="shrineSortOrder" onchange="renderShrineGrid()" style="border: 1.5px solid var(--border); background: var(--bg2); color: var(--text); padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; border-radius: var(--radius); cursor: pointer; outline: none;">
+            <option value="latest">LATEST → OLDEST</option>
+            <option value="oldest">OLDEST → LATEST</option>
+          </select>
+        </div>
       </div>
       <div class="shrines-grid" id="shrineGrid"></div>
     </section>
@@ -235,6 +262,13 @@
       <div class="section-header">
         <h1>LETTER<span>S</span></h1>
         <p>// paper airplanes that never left the bedroom window.</p>
+        <div style="margin-top: 1.5rem; font-family: var(--font-mono); font-size: 11px;">
+          <label for="letterSortOrder" style="color: var(--text-sub); text-transform: uppercase;">Order // </label>
+          <select id="letterSortOrder" onchange="renderLetterList()" style="border: 1.5px solid var(--border); background: var(--bg2); color: var(--text); padding: 4px 8px; font-family: var(--font-mono); font-size: 11px; border-radius: var(--radius); cursor: pointer; outline: none;">
+            <option value="latest">LATEST → OLDEST</option>
+            <option value="oldest">OLDEST → LATEST</option>
+          </select>
+        </div>
       </div>
       <div id="letterList"></div>
     </section>
@@ -258,6 +292,9 @@
       <div id="board-section">
         <div class="board-canvas" id="boardCanvas"></div>
         <div class="board-controls">
+          <div class="board-input-row board-name-row">
+            <input class="board-input board-name-input" type="text" id="commentName" placeholder="// Name (optional — leave blank to stay anonymous)" maxlength="40" />
+          </div>
           <div class="board-input-row">
             <input class="board-input" type="text" id="commentInput" placeholder="Say something..." maxlength="500" />
             <button class="board-submit" onclick="submitComment()">POST</button>
@@ -340,6 +377,16 @@
             </div>
           </div>
 
+          <!-- BADGES STRIP — internet stamps, full-width across widgets panel -->
+          <div class="about-widget about-badges-wrap">
+            <div class="about-widget-header">
+              <span>BADGES.GIF // INTERNET_STAMPS</span>
+            </div>
+            <div class="about-widget-body badges-strip" id="badgesStripAbout">
+              <span class="widget-hint">// no badges yet</span>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -353,6 +400,74 @@
         <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
       </div>
       <div id="trashContent"></div>
+    </section>
+
+    <!-- ══════════════════ INFO / RESOURCES ══════════════════ -->
+    <section id="info">
+      <div class="section-header">
+        <h1>INFO<span> / RESOURCES</span></h1>
+        <p>// the credits, the colors, the code — everything that holds this place together.</p>
+        <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
+      </div>
+
+      <div class="info-grid">
+
+        <!-- ICON CREDITS -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>ICON_CREDITS.TXT</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('iconCredits')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-iconCredits">
+            <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- FONTS -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>FONTS.CSS</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('fonts')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-fonts">
+            <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- COLOR SCHEME -->
+        <div class="info-card info-card-wide">
+          <div class="info-card-header">
+            <span>PALETTE.HEX</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('colors')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-colors">
+            <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- CODE RESOURCES -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>CODE_RESOURCES.MD</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('code')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-code">
+            <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- OTHER RESOURCES -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>OTHER_RESOURCES.LOG</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('other')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-other">
+            <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+      </div>
     </section>
 
   </main>
@@ -414,7 +529,7 @@
 <div id="adminPanelModal" class="modal-overlay" style="display:none">
   <div class="admin-box">
     <div class="admin-toolbar">
-      <span>ADMIN_PANEL.EXE // SAGE_STUDIO</span>
+      <span>ADMIN_PANEL.EXE // SEI_OUT_LOUD</span>
       <button onclick="closeAdminPanel()">× LOCK</button>
     </div>
     <div class="admin-body">
@@ -424,6 +539,8 @@
         <button class="admin-tab"        id="tab-shrines" onclick="switchAdminTab('shrines')">ADD SHRINE</button>
         <button class="admin-tab"        id="tab-letters" onclick="switchAdminTab('letters')">ADD LETTER</button>
         <button class="admin-tab"        id="tab-trash"   onclick="switchAdminTab('trash')">ADD TRASH</button>
+        <button class="admin-tab"        id="tab-badges"  onclick="switchAdminTab('badges')">ADD BADGE</button>
+        <button class="admin-tab"        id="tab-info"    onclick="switchAdminTab('info')">ADD INFO</button>
       </div>
 
       <!-- ART FORM -->
@@ -458,7 +575,7 @@
         <input type="text" id="logTitle" class="admin-input" placeholder="Entry title..." />
 
         <label class="admin-label">Meta Label (shown on the list card)</label>
-        <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+        <input type="text" id="logMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26.26" />
 
         <label class="admin-label">Body — basic HTML is fine</label>
         <textarea id="logBody" class="admin-input admin-body-field" placeholder="Write your heart out..."></textarea>
@@ -488,7 +605,7 @@
         <label class="admin-label">Content &mdash; text, or image URL if doodle</label>
         <textarea id="trashItemContent" class="admin-input" placeholder="one-liner thought, or https://image-url.png"></textarea>
         <label class="admin-label">Date (auto-fills today, adjust if needed)</label>
-        <input type="text" id="trashDate" class="admin-input" placeholder="2026.06.14" />
+        <input type="text" id="trashDate" class="admin-input" placeholder="06.14.26" />
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddTrash()">DISCARD →</button>
         <p id="trashSuccess" class="admin-success">// DISCARDED.</p>
       </div>
@@ -531,6 +648,54 @@
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLetter()">SEAL LETTER →</button>
         <p id="letterSuccess" class="admin-success">// SEALED.</p>
       </div>
+
+      <!-- BADGE FORM -->
+      <div id="adminBadgesForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Internet stamps / badges — 100×40 px. Shown on Home and About.
+        </p>
+        <label class="admin-label">Badge Image URL (100×40 px recommended)</label>
+        <input type="text" id="badgeImage" class="admin-input" placeholder="https://.../badge.gif" />
+
+        <label class="admin-label">Link URL (optional — where the badge points)</label>
+        <input type="text" id="badgeLink" class="admin-input" placeholder="https://..." />
+
+        <label class="admin-label">Alt text / Title (optional)</label>
+        <input type="text" id="badgeAlt" class="admin-input" placeholder="My friend's site" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddBadge()">PIN BADGE →</button>
+        <p id="badgeSuccess" class="admin-success">// PINNED.</p>
+      </div>
+
+      <!-- INFO FORM -->
+      <div id="adminInfoForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Add entries to the Info / Resources page.
+        </p>
+        <label class="admin-label">Category</label>
+        <select id="infoCategory" class="admin-input" style="cursor:pointer;" onchange="toggleInfoFields()">
+          <option value="iconCredits">Icon Source Credit</option>
+          <option value="fonts">Font</option>
+          <option value="colors">Color (with hex)</option>
+          <option value="code">Code Resource</option>
+          <option value="other">Other Resource</option>
+        </select>
+
+        <label class="admin-label">Label / Name</label>
+        <input type="text" id="infoLabel" class="admin-input" placeholder="e.g. Streamline Pixel Icons / Space Mono / Accent Blue" />
+
+        <label class="admin-label" id="infoValueLabel">Value / Description</label>
+        <input type="text" id="infoValue" class="admin-input" placeholder="short description" />
+
+        <label class="admin-label" id="infoHexLabel" style="display:none">Hex Code (only for colors, e.g. #405FFA)</label>
+        <input type="text" id="infoHex" class="admin-input" placeholder="#405FFA" style="display:none" />
+
+        <label class="admin-label">Link URL (optional)</label>
+        <input type="text" id="infoLink" class="admin-input" placeholder="https://..." />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddInfo()">ADD ENTRY →</button>
+        <p id="infoSuccess" class="admin-success">// ADDED.</p>
+      </div>
     </div>
   </div>
 </div>
@@ -547,7 +712,7 @@
       <label class="admin-label">Title</label>
       <input type="text" id="editLogTitle" class="admin-input" placeholder="Entry title..." />
       <label class="admin-label">Meta Label</label>
-      <input type="text" id="editLogMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26" />
+      <input type="text" id="editLogMeta" class="admin-input" placeholder="LOG_03.TXT // 03.26.26" />
       <label class="admin-label">Body — basic HTML is fine</label>
       <textarea id="editLogBody" class="admin-input admin-body-field" placeholder="Write your heart out..."></textarea>
       <label class="admin-label">Sticker PNG URLs — one per line</label>
@@ -860,6 +1025,8 @@ function setAdminMode(active){
   if(shrinesData.length) renderShrineGrid();
   if(lettersData.length) renderLetterList();
   if(trashData.length) renderTrashPage();
+  renderBadgesStrips();
+  renderInfoPage();
   const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
   const sb=document.getElementById('shrineReaderEditBtn');if(sb)sb.style.display=active?'inline-block':'none';
   const lb=document.getElementById('letterReaderEditBtn');if(lb)lb.style.display=active?'inline-block':'none';
@@ -907,7 +1074,7 @@ function onFirebaseReady() {
   ];
   const sysNow=new Date();
   const sysTime=sysNow.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true});
-  const sysDate=sysNow.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
+  const sysDate=`${String(sysNow.getMonth()+1).padStart(2,'0')}.${String(sysNow.getDate()).padStart(2,'0')}.${String(sysNow.getFullYear()).slice(-2)}`;
   permanentSystemMessages.forEach(msg=>{
     renderMessage(msg.id,{text:msg.text,name:genAnonName(),time:sysTime,date:sysDate,xPct:2+Math.random()*70,yPct:4+Math.random()*62,timestamp:Date.now()});
   });
@@ -925,6 +1092,7 @@ function onFirebaseReady() {
     snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];d.stickers=Array.isArray(d.stickers)?d.stickers:[];logsData.push({id:child.key,...d});});
     renderLogList();
     renderHomeUpdates();
+    updateLastUpdatedDisplay();
     if(_pendingLogKey){const idx=logsData.findIndex(l=>l.id===_pendingLogKey);_pendingLogKey=null;if(idx!==-1)readLog(idx);}
   }).catch(e=>console.error('Logs load failed:',e));
 
@@ -934,6 +1102,7 @@ function onFirebaseReady() {
     snap.forEach(child=>{const d=child.val();d.images=normalizeImages(d.images||[]);shrinesData.push({id:child.key,...d});});
     renderShrineGrid();
     renderHomeUpdates();
+    updateLastUpdatedDisplay();
     if(_pendingShrineKey){const idx=shrinesData.findIndex(s=>s.id===_pendingShrineKey);_pendingShrineKey=null;if(idx!==-1)readShrine(idx);}
   }).catch(e=>console.error('Shrines load failed:',e));
 
@@ -943,6 +1112,7 @@ function onFirebaseReady() {
     snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];lettersData.push({id:child.key,...d});});
     renderLetterList();
     renderHomeUpdates();
+    updateLastUpdatedDisplay();
     if(_pendingLetterKey){const idx=lettersData.findIndex(l=>l.id===_pendingLetterKey);_pendingLetterKey=null;if(idx!==-1)readLetter(idx);}
   }).catch(e=>console.error('Letters load failed:',e));
 
@@ -951,7 +1121,24 @@ function onFirebaseReady() {
     trashData=[];
     snap.forEach(child=>{const d=child.val();trashData.push({id:child.key,...d});});
     renderTrashPage();
+    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Trash load failed:',e));
+
+  // Load badges
+  db.ref('content/badges').orderByChild('timestamp').once('value',snap=>{
+    badgesData=[];
+    snap.forEach(child=>{const d=child.val();badgesData.push({id:child.key,...d});});
+    renderBadgesStrips();
+    updateLastUpdatedDisplay();
+  }).catch(e=>console.error('Badges load failed:',e));
+
+  // Load info / resources
+  db.ref('content/info').orderByChild('timestamp').once('value',snap=>{
+    infoData=[];
+    snap.forEach(child=>{const d=child.val();infoData.push({id:child.key,...d});});
+    renderInfoPage();
+    updateLastUpdatedDisplay();
+  }).catch(e=>console.error('Info load failed:',e));
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1070,7 +1257,11 @@ function renderShrineGrid(){
   const grid=document.getElementById('shrineGrid');if(!grid)return;
   grid.innerHTML='';
   if(!shrinesData.length){grid.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No shrines yet.</p>';return;}
-  shrinesData.forEach((shrine,idx)=>{
+  let display=[...shrinesData];
+  const sortOrder=document.getElementById('shrineSortOrder')?.value||'latest';
+  if(sortOrder==='latest')display.reverse();
+  display.forEach(shrine=>{
+    const idx=shrinesData.findIndex(s=>s.id===shrine.id);
     const el=document.createElement('div');el.className='shrine-card';el.onclick=()=>readShrine(idx);
     const imgHtml=shrine.coverImage
       ?`<img class="shrine-card-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
@@ -1113,11 +1304,13 @@ function renderLetterList(){
   const list=document.getElementById('letterList');if(!list)return;
   list.innerHTML='';
   if(!lettersData.length){list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No letters yet.</p>';return;}
-  const display=[...lettersData].reverse();
+  let display=[...lettersData];
+  const sortOrder=document.getElementById('letterSortOrder')?.value||'latest';
+  if(sortOrder==='latest')display.reverse();
   display.forEach(letter=>{
     const originalIndex=lettersData.findIndex(l=>l.id===letter.id);
     const now=letter.timestamp?new Date(letter.timestamp):null;
-    const dateStr=now?now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'):'';
+    const dateStr=now?`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`:'';
     const el=document.createElement('div');el.className='letter-card';el.onclick=()=>readLetter(originalIndex);
     el.innerHTML=`<div class="letter-stamp">UNSENT<br/>${dateStr}</div><div class="letter-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-subject">${escHtml(letter.subject||'(untitled)')}</div>${renderTagsHTML(letter.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
     list.appendChild(el);
@@ -1164,7 +1357,7 @@ function closeLightbox(){document.getElementById('lightbox').classList.remove('s
 ═══════════════════════════════════════════════════════ */
 function updateLiveStatus(){
   const now=new Date();
-  const date=now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.');
+  const date=`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`;
   const time=now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',second:'2-digit',hour12:true});
   const ht=document.getElementById('homeTime');
   if(ht)ht.textContent=`${date}  ${time}`;
@@ -1209,7 +1402,7 @@ function renderMessage(id,msg){
   const popup=document.createElement('div');popup.className='comment-popup';
   popup.style.left=Math.max(10,(msg.xPct/100)*bw)+'px';popup.style.top=Math.max(10,(msg.yPct/100)*bh)+'px';
   const hdr=document.createElement('div');hdr.className='comment-header';
-  const displayDate=msg.date||(msg.timestamp?new Date(msg.timestamp).toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'):'');
+  const displayDate=msg.date||(msg.timestamp?(()=>{const d=new Date(msg.timestamp);return`${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;})():'');
   hdr.innerHTML=`<span>${msg.name||nameFromKey(id)}</span><span>${displayDate?displayDate+' · ':''}${msg.time}</span>`;
   const bdy=document.createElement('div');bdy.className='comment-body';bdy.textContent=msg.text;
   popup.append(hdr,bdy);canvas.appendChild(popup);makeDraggable(popup,hdr,canvas);
@@ -1217,16 +1410,19 @@ function renderMessage(id,msg){
 
 function submitComment(){
   const input=document.getElementById('commentInput');
+  const nameInput=document.getElementById('commentName');
   const text=input.value.trim();if(!text)return;
   if(!msgRef){console.warn('Board unavailable.');return;}
   if(!canPost()){const w=document.getElementById('spamWarning');w.textContent=`// Please wait ${getTimeUntilCanPost()}s before posting again...`;w.style.display='block';setTimeout(()=>{w.style.display='none';},3000);return;}
+  const customName=(nameInput&&nameInput.value)?nameInput.value.trim().slice(0,40):'';
+  const finalName=customName||genAnonName();
   const xPct=Math.max(2,Math.random()*72),yPct=Math.max(2,Math.random()*68),now=new Date();
-  const payload={text,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:now.toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit',year:'2-digit'}).replace(/\//g,'.'),xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
+  const payload={text,name:finalName,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`,xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP};
   msgRef.push(payload).then(()=>{
     updateLastPostTime();
     msgRef.orderByChild('timestamp').once('value',snap=>{if(snap.numChildren()>MAX_MSGS)msgRef.orderByChild('timestamp').limitToFirst(1).once('value',old=>{old.forEach(c=>c.ref.remove());});});
   }).catch(e=>console.error('Post failed:',e));
-  input.value='';const c=document.getElementById('charCounter');c.textContent='0 / 500';c.classList.remove('warn');
+  input.value='';if(nameInput)nameInput.value='';const c=document.getElementById('charCounter');c.textContent='0 / 500';c.classList.remove('warn');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1254,13 +1450,15 @@ function switchAdminTab(tab){
   document.getElementById('adminShrinesForm').style.display=tab==='shrines'?'flex':'none';
   document.getElementById('adminLettersForm').style.display=tab==='letters'?'flex':'none';
   document.getElementById('adminTrashForm').style.display=tab==='trash'?'flex':'none';
-  ['art','logs','shrines','letters','trash'].forEach(t=>{
-    document.getElementById('tab-'+t).classList.toggle('active',t===tab);
+  document.getElementById('adminBadgesForm').style.display=tab==='badges'?'flex':'none';
+  document.getElementById('adminInfoForm').style.display=tab==='info'?'flex':'none';
+  ['art','logs','shrines','letters','trash','badges','info'].forEach(t=>{
+    const btn=document.getElementById('tab-'+t);if(btn)btn.classList.toggle('active',t===tab);
   });
   // Auto-fill date for trash tab
   if(tab==='trash'){
     const dateEl=document.getElementById('trashDate');
-    if(dateEl&&!dateEl.value){const now=new Date();dateEl.value=`${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;}
+    if(dateEl&&!dateEl.value){const now=new Date();dateEl.value=`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`;}
   }
 }
 
@@ -1285,7 +1483,7 @@ function adminAddLog(){
   const stickers=document.getElementById('logStickers').value.split('\n').map(s=>s.trim()).filter(Boolean);
   const logNumber=String(logsData.length+1).padStart(2,'0');
   const now=new Date();
-  const autoMeta=`LOG_${logNumber} // ${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}`;
+  const autoMeta=`LOG_${logNumber} // ${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`;
   const meta=document.getElementById('logMeta').value.trim()||autoMeta;
   const log={title,meta,body,tags,stickers};
   if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();renderHomeUpdates();}).catch(e=>console.error('Log push failed:',e));}
@@ -1377,6 +1575,164 @@ function adminDeleteTrash(id){
   if(!confirm('Delete this trash entry?'))return;
   if(db&&id){db.ref('content/trash/'+id).remove().then(()=>{trashData.splice(idx,1);renderTrashPage();}).catch(e=>console.error('Trash delete failed:',e));}
   else{trashData.splice(idx,1);renderTrashPage();}
+}
+
+/* ═══════════════════════════════════════════════════════
+   BADGES (internet stamps)
+═══════════════════════════════════════════════════════ */
+let badgesData=[];
+
+function renderBadgesStrips(){
+  ['badgesStripHome','badgesStripAbout'].forEach(id=>{
+    const el=document.getElementById(id);if(!el)return;
+    if(!badgesData.length){el.innerHTML='<span class="home-updates-empty widget-hint">// no badges yet — admin can add them.</span>';return;}
+    el.innerHTML=badgesData.map(b=>{
+      const img=`<img class="badge-stamp" src="${escHtml(b.image)}" alt="${escHtml(b.alt||'badge')}" title="${escHtml(b.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`;
+      const delBtn=isAdminSession()?`<button class="admin-delete-btn badge-del" onclick="event.stopPropagation();event.preventDefault();adminDeleteBadge('${b.id}')">×</button>`:'';
+      const inner=b.link?`<a href="${escHtml(b.link)}" target="_blank" rel="noopener" class="badge-link">${img}</a>`:img;
+      return`<div class="badge-cell">${inner}${delBtn}</div>`;
+    }).join('');
+  });
+  const bAdmin=document.getElementById('badgesAdminBtn');
+  if(bAdmin)bAdmin.style.display=isAdminSession()?'inline-block':'none';
+}
+
+function adminAddBadge(){
+  if(!isAdminSession())return;
+  const image=document.getElementById('badgeImage').value.trim();
+  const link=document.getElementById('badgeLink').value.trim();
+  const alt=document.getElementById('badgeAlt').value.trim();
+  if(!image)return;
+  const entry={image,link,alt};
+  if(db){db.ref('content/badges').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;badgesData.push(entry);renderBadgesStrips();const s=document.getElementById('badgeSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Badge push failed:',e));}
+  else{entry.id='local_'+Date.now();badgesData.push(entry);renderBadgesStrips();}
+  ['badgeImage','badgeLink','badgeAlt'].forEach(id=>document.getElementById(id).value='');
+}
+
+function adminDeleteBadge(id){
+  if(!isAdminSession())return;
+  if(!confirm('Delete this badge?'))return;
+  const idx=badgesData.findIndex(b=>b.id===id);if(idx<0)return;
+  if(db&&id&&!id.startsWith('local_')){db.ref('content/badges/'+id).remove().then(()=>{badgesData.splice(idx,1);renderBadgesStrips();}).catch(e=>console.error('Badge delete failed:',e));}
+  else{badgesData.splice(idx,1);renderBadgesStrips();}
+}
+
+/* ═══════════════════════════════════════════════════════
+   INFO / RESOURCES
+═══════════════════════════════════════════════════════ */
+let infoData=[]; // {id, category, label, value, hex, link}
+
+function toggleInfoFields(){
+  const cat=document.getElementById('infoCategory').value;
+  const isColor=cat==='colors';
+  document.getElementById('infoHexLabel').style.display=isColor?'block':'none';
+  document.getElementById('infoHex').style.display=isColor?'block':'none';
+}
+
+function renderInfoPage(){
+  const cats=['iconCredits','fonts','colors','code','other'];
+  // Default starter entries shown when admin hasn't added any yet (per category)
+  const defaults={
+    iconCredits:[
+      {label:'Streamline Pixel Icons',value:'Nav icons (home, mail, bin, etc.)',link:'https://www.streamlinehq.com/icons/streamline-pixel'},
+      {label:'Cloudinary',value:'Icon CDN hosting',link:'https://cloudinary.com'},
+    ],
+    fonts:[
+      {label:'Space Grotesk',value:'Primary display font',link:'https://fonts.google.com/specimen/Space+Grotesk'},
+      {label:'Newsreader',value:'Serif accents (italics in hero)',link:'https://fonts.google.com/specimen/Newsreader'},
+      {label:'Space Mono',value:'Mono / terminal text',link:'https://fonts.google.com/specimen/Space+Mono'},
+    ],
+    colors:[
+      {label:'Accent',hex:'#405FFA',value:'Primary blue'},
+      {label:'Background',hex:'#F4F4F4',value:'Light mode base'},
+      {label:'Card BG',hex:'#FFFFFF',value:'Light mode cards'},
+      {label:'Border',hex:'#100C08',value:'Hard outline'},
+      {label:'Text Muted',hex:'#999999',value:'Secondary text'},
+      {label:'Dark BG',hex:'#0A0A0A',value:'Dark mode base'},
+      {label:'Dark Card',hex:'#121212',value:'Dark mode cards'},
+    ],
+    code:[
+      {label:'Firebase Realtime DB',value:'Bulletin board + content storage',link:'https://firebase.google.com/docs/database'},
+      {label:'Vercel',value:'Hosting + serverless admin-auth',link:'https://vercel.com'},
+      {label:'GitHub',value:'Source control',link:'https://github.com'},
+    ],
+    other:[
+      {label:'Miffy Cursors',value:'Pixel cursor sprites',link:'#'},
+      {label:'Dictionary of Obscure Sorrows',value:'Word of the Day source',link:'https://www.thedictionaryofobscuresorrows.com'},
+    ],
+  };
+
+  cats.forEach(cat=>{
+    const el=document.getElementById('info-'+cat);if(!el)return;
+    let items=infoData.filter(i=>i.category===cat);
+    let usingDefaults=false;
+    if(!items.length){items=(defaults[cat]||[]).map((d,i)=>({...d,id:'def_'+cat+'_'+i,category:cat,_default:true}));usingDefaults=true;}
+    if(!items.length){el.innerHTML='<p class="info-empty">// nothing here yet.</p>';return;}
+    el.innerHTML=(usingDefaults?'<p class="info-empty" style="margin-bottom:6px;">// default entries — admins can add or replace.</p>':'')+items.map(item=>{
+      const delBtn=(isAdminSession()&&!item._default)?`<button class="admin-delete-btn info-del" onclick="adminDeleteInfo('${item.id}')">×</button>`:'';
+      if(cat==='colors'){
+        const hex=item.hex||'#000000';
+        return`<div class="info-row info-color-row">
+          <span class="info-color-swatch" style="background:${escHtml(hex)}"></span>
+          <span class="info-row-label">${escHtml(item.label||'')}</span>
+          <span class="info-row-hex">${escHtml(hex)}</span>
+          ${item.value?`<span class="info-row-value">${escHtml(item.value)}</span>`:''}
+          ${delBtn}
+        </div>`;
+      }
+      const linkHtml=item.link?`<a href="${escHtml(item.link)}" target="_blank" rel="noopener" class="info-row-link">${escHtml(item.link)}</a>`:'';
+      return`<div class="info-row">
+        <span class="info-row-label">${escHtml(item.label||'')}</span>
+        ${item.value?`<span class="info-row-value">${escHtml(item.value)}</span>`:''}
+        ${linkHtml}
+        ${delBtn}
+      </div>`;
+    }).join('');
+  });
+  // Toggle admin + add buttons
+  document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b=>b.style.display=isAdminSession()?'inline-block':'none');
+}
+
+function openAddInfoItem(category){
+  if(!isAdminSession()){showAdminLogin();return;}
+  openModal('adminPanelModal');
+  setTimeout(()=>{switchAdminTab('info');document.getElementById('infoCategory').value=category;toggleInfoFields();},80);
+}
+
+function adminAddInfo(){
+  if(!isAdminSession())return;
+  const category=document.getElementById('infoCategory').value;
+  const label=document.getElementById('infoLabel').value.trim();
+  const value=document.getElementById('infoValue').value.trim();
+  const hex=document.getElementById('infoHex').value.trim();
+  const link=document.getElementById('infoLink').value.trim();
+  if(!label)return;
+  const entry={category,label,value,hex,link};
+  if(db){db.ref('content/info').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;infoData.push(entry);renderInfoPage();const s=document.getElementById('infoSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Info push failed:',e));}
+  else{entry.id='local_'+Date.now();infoData.push(entry);renderInfoPage();}
+  ['infoLabel','infoValue','infoHex','infoLink'].forEach(id=>document.getElementById(id).value='');
+}
+
+function adminDeleteInfo(id){
+  if(!isAdminSession())return;
+  if(!confirm('Delete this entry?'))return;
+  const idx=infoData.findIndex(i=>i.id===id);if(idx<0)return;
+  if(db&&id&&!id.startsWith('local_')){db.ref('content/info/'+id).remove().then(()=>{infoData.splice(idx,1);renderInfoPage();}).catch(e=>console.error('Info delete failed:',e));}
+  else{infoData.splice(idx,1);renderInfoPage();}
+}
+
+/* ═══════════════════════════════════════════════════════
+   LAST UPDATED (status card)
+═══════════════════════════════════════════════════════ */
+function updateLastUpdatedDisplay(){
+  const el=document.getElementById('statusLastUpdated');if(!el)return;
+  let maxTs=0;
+  [logsData,shrinesData,lettersData,trashData,badgesData,infoData].forEach(arr=>{
+    (arr||[]).forEach(item=>{if(item&&item.timestamp&&item.timestamp>maxTs)maxTs=item.timestamp;});
+  });
+  if(!maxTs){el.textContent='--.--.--';return;}
+  const d=new Date(maxTs);
+  el.textContent=`${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1481,7 +1837,7 @@ function handleRouting(){
   if(hash.startsWith('shrine/')){const key=hash.slice(7);_activateSection('shrine-reader');const idx=shrinesData.findIndex(s=>s.id===key);if(idx!==-1)readShrine(idx);else _pendingShrineKey=key;return;}
   if(hash.startsWith('letter/')){const key=hash.slice(7);_activateSection('letter-reader');const idx=lettersData.findIndex(l=>l.id===key);if(idx!==-1)readLetter(idx);else _pendingLetterKey=key;return;}
 
-  const hashMap={'':'home','home':'home','art':'art','writing':'writing','shrines':'shrines','letters':'letters','board':'board','about':'about','trash':'trash'};
+  const hashMap={'':'home','home':'home','art':'art','writing':'writing','shrines':'shrines','letters':'letters','board':'board','about':'about','trash':'trash','info':'info'};
   const sectionId=hashMap[hash];
   _activateSection(sectionId||'home');
 }
@@ -1500,6 +1856,7 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('DOMContentLoaded',()=>{
   handleRouting();
   renderArtGrid();renderLogList();initCategoryTabs();
+  renderInfoPage();renderBadgesStrips();updateLastUpdatedDisplay();
   newQuote(); // boot the quote box
 
   // Shrine caption tooltip — follows mouse on gallery items with data-caption
