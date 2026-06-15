@@ -1,9 +1,6 @@
 // Triggering a clean rebuild.
 const crypto = require('crypto');
 const admin = require('firebase-admin');
-console.log("admin type:", typeof admin);
-console.log("admin keys:", Object.keys(admin));
-console.log("admin.apps exists:", !!admin.apps);
 
 // 1 & 2: Parse config safely and use direct import
 const serviceAccountRaw = process.env.FIREBASE_SERVICE_ACCOUNT;
@@ -43,8 +40,15 @@ module.exports = async function handler(req, res) {
 
     const ref = db.ref(path);
     if (op === 'push') { const newRef = await ref.push(data); return res.status(200).json({ ok: true, id: newRef.key }); }
-    if (op === 'update') { await ref.child(id).update(data); return res.status(200).json({ ok: true }); }
-    if (op === 'remove') { await ref.child(id).remove(); return res.status(200).json({ ok: true }); }
+    // Validate `id` is present before calling ref.child() — undefined id would write to a path named "undefined"
+    if (op === 'update') {
+      if (!id) return res.status(400).json({ ok: false, reason: 'Missing id for update' });
+      await ref.child(id).update(data); return res.status(200).json({ ok: true });
+    }
+    if (op === 'remove') {
+      if (!id) return res.status(400).json({ ok: false, reason: 'Missing id for remove' });
+      await ref.child(id).remove(); return res.status(200).json({ ok: true });
+    }
 
     return res.status(400).json({ ok: false, reason: 'Unknown operation' });
   } catch (error) {
