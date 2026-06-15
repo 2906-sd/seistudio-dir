@@ -1440,3 +1440,287 @@ input[type="url"], textarea, [contenteditable] {
 [title], abbr, .help {
   cursor: url('cursors/Miffy-Help.ani') 0 0, help;
 }
+
+/* ══════════════════════════════════════════════════════════
+   NEW — LAST UPDATED, HOME BOTTOM ROW, INFO BTN,
+         BADGES STRIP, INFO / RESOURCES PAGE,
+         BOARD NAME INPUT
+   ══════════════════════════════════════════════════════════ */
+
+/* ── STATUS.EXE last-updated indicator ── */
+.status-last-updated {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.status-last-updated #statusLastUpdated {
+  color: var(--accent);
+  font-weight: bold;
+  margin-left: 4px;
+}
+
+/* ── HOME BOTTOM ROW (info-left, trash-right) ── */
+.home-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 0.75rem;
+  position: relative;
+  z-index: 2;
+  gap: 1rem;
+}
+.home-bottom-row .recycling-bin-btn { margin: 0; }
+
+/* ── INFO BUTTON (mirror of recycling-bin-btn, left side) ── */
+.info-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 6px 8px;
+  width: fit-content;
+  opacity: 0.45;
+  transition: opacity 0.2s, background 0.15s;
+  user-select: none;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+}
+.info-btn:hover {
+  opacity: 1;
+  background: var(--bg3);
+  border-color: var(--border-lt);
+}
+.info-btn img {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+.info-btn-emoji {
+  font-size: 28px;
+  line-height: 36px;
+  color: var(--accent);
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  text-align: center;
+}
+.info-btn span {
+  font-family: var(--font-mono);
+  font-size: 7px;
+  text-align: center;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── BADGES CARDS — full-width on home + about ── */
+.home-grid .badges-card {
+  grid-column: 1 / -1;
+  grid-row: auto;
+}
+.badges-strip {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 0.9rem 1rem;
+  min-height: 56px;
+}
+.badge-cell {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg3);
+  border: 1px solid var(--border-lt);
+  border-radius: 2px;
+  padding: 2px;
+  transition: transform 0.15s, border-color 0.15s;
+}
+.badge-cell:hover {
+  transform: translate(-1px, -1px);
+  border-color: var(--accent);
+}
+.badge-link { display: inline-flex; line-height: 0; }
+.badge-stamp {
+  width: 100px;
+  height: 40px;
+  object-fit: cover;
+  display: block;
+  image-rendering: pixelated;
+  pointer-events: auto;
+  -webkit-user-drag: none;
+}
+.badge-del {
+  position: absolute !important;
+  top: -8px !important;
+  right: -8px !important;
+  width: 18px;
+  height: 18px;
+  padding: 0 !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+  display: none !important;
+  border-radius: 50% !important;
+}
+body.admin-mode .badge-del { display: inline-block !important; }
+
+/* about-page badges row — placed as a full-width grid row beneath the bento */
+.about-widgets-panel .about-badges-wrap {
+  grid-column: 1 / -1;
+  grid-row: 3;
+  width: 100%;
+  margin-top: 0.25rem;
+  min-height: 0;
+}
+.about-widgets-panel .about-badges-wrap .badges-strip {
+  min-height: 56px;
+  padding: 0.85rem 1rem;
+}
+@media (max-width: 900px) {
+  .about-widgets-panel .about-badges-wrap {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+}
+
+/* ── BOARD NAME INPUT ── */
+.board-name-row { margin-bottom: 6px; }
+.board-name-input {
+  width: 100%;
+  font-size: 0.78rem;
+}
+
+/* ══════════════════════════════════════════════════════════
+   INFO / RESOURCES PAGE
+   ══════════════════════════════════════════════════════════ */
+#info { padding-bottom: 4rem; }
+
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  width: 100%;
+}
+.info-card {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow);
+  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+.info-card-wide { grid-column: 1 / -1; }
+
+.info-card-header {
+  background: var(--bg3);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0.55rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  color: var(--text-sub);
+  letter-spacing: 0.08em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+.info-card-header .admin-edit-btn {
+  position: static !important;
+  font-size: 9px !important;
+  padding: 2px 8px !important;
+}
+
+.info-card-body {
+  padding: 1rem 1.1rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.info-empty {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  font-style: italic;
+  margin: 0;
+}
+
+.info-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid var(--border-lt);
+  position: relative;
+}
+.info-row:last-child { border-bottom: none; }
+.info-row-label {
+  font-weight: bold;
+  color: var(--text);
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+}
+.info-row-value {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+}
+.info-row-link {
+  color: var(--accent);
+  text-decoration: underline;
+  font-size: 0.7rem;
+  word-break: break-all;
+}
+.info-row-link:hover { opacity: 0.7; }
+.info-del {
+  position: static !important;
+  display: none !important;
+  margin-left: auto !important;
+  font-size: 11px !important;
+  padding: 0 6px !important;
+  border-radius: 50% !important;
+}
+body.admin-mode .info-del { display: inline-block !important; }
+
+/* Color swatches */
+.info-color-row {
+  gap: 12px;
+}
+.info-color-swatch {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 1.5px solid var(--border);
+  border-radius: 3px;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0 var(--border);
+}
+.info-row-hex {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  color: var(--accent);
+  background: var(--bg3);
+  padding: 2px 6px;
+  border: 1px solid var(--border-lt);
+  border-radius: 2px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 700px) {
+  .info-grid { grid-template-columns: 1fr; }
+  .info-card-wide { grid-column: 1; }
+  .home-bottom-row { flex-direction: row; }
+}
