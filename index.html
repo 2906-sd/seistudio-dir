@@ -412,33 +412,30 @@
 
       <div class="info-grid">
 
-        <!-- ICON CREDITS -->
+        <!-- ICON CREDITS (final defaults, no admin add) -->
         <div class="info-card">
           <div class="info-card-header">
             <span>ICON_CREDITS.TXT</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('iconCredits')" style="display:none">+ ADD</button>
           </div>
           <div class="info-card-body" id="info-iconCredits">
             <p class="info-empty">// loading...</p>
           </div>
         </div>
 
-        <!-- FONTS -->
+        <!-- FONTS (final defaults, no admin add) -->
         <div class="info-card">
           <div class="info-card-header">
             <span>FONTS.CSS</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('fonts')" style="display:none">+ ADD</button>
           </div>
           <div class="info-card-body" id="info-fonts">
             <p class="info-empty">// loading...</p>
           </div>
         </div>
 
-        <!-- COLOR SCHEME -->
+        <!-- COLOR SCHEME (final defaults, no admin add) -->
         <div class="info-card info-card-wide">
           <div class="info-card-header">
             <span>PALETTE.HEX</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('colors')" style="display:none">+ ADD</button>
           </div>
           <div class="info-card-body" id="info-colors">
             <p class="info-empty">// loading...</p>
@@ -464,6 +461,39 @@
           </div>
           <div class="info-card-body" id="info-other">
             <p class="info-empty">// loading...</p>
+          </div>
+        </div>
+
+        <!-- ART -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>ART.MD</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('art')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-art">
+            <p class="info-empty">// nothing here yet.</p>
+          </div>
+        </div>
+
+        <!-- DESIGN -->
+        <div class="info-card">
+          <div class="info-card-header">
+            <span>DESIGN.MD</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('design')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-design">
+            <p class="info-empty">// nothing here yet.</p>
+          </div>
+        </div>
+
+        <!-- OTHER COOL THINGS -->
+        <div class="info-card info-card-wide">
+          <div class="info-card-header">
+            <span>OTHER_COOL_THINGS.TXT</span>
+            <button class="admin-edit-btn" onclick="openAddInfoItem('otherCool')" style="display:none">+ ADD</button>
+          </div>
+          <div class="info-card-body" id="info-otherCool">
+            <p class="info-empty">// nothing here yet.</p>
           </div>
         </div>
 
@@ -530,7 +560,7 @@
   <div class="admin-box">
     <div class="admin-toolbar">
       <span>ADMIN_PANEL.EXE // SEI_OUT_LOUD</span>
-      <button onclick="closeAdminPanel()">× LOCK</button>
+      <button onclick="closeAdminPanel()">× LOG OUT</button>
     </div>
     <div class="admin-body">
       <div class="admin-tabs">
@@ -598,11 +628,12 @@
         </p>
         <label class="admin-label">Type</label>
         <select id="trashType" class="admin-input" style="cursor:pointer;">
-          <option value="thought">💭 Intrusive Thought</option>
-          <option value="doodle">🖊️ Doodle / Image URL</option>
-          <option value="note">📝 Failed Project Note</option>
+          <option value="stupid">💭 Stupid Thoughts</option>
+          <option value="doodle">🖊️ Doodles (image URL)</option>
+          <option value="pic">🖼️ Pic (image URL)</option>
+          <option value="uhhhhh">🌀 Uhhhhh</option>
         </select>
-        <label class="admin-label">Content &mdash; text, or image URL if doodle</label>
+        <label class="admin-label">Content &mdash; text, or image URL if doodle / pic</label>
         <textarea id="trashItemContent" class="admin-input" placeholder="one-liner thought, or https://image-url.png"></textarea>
         <label class="admin-label">Date (auto-fills today, adjust if needed)</label>
         <input type="text" id="trashDate" class="admin-input" placeholder="06.14.26" />
@@ -652,8 +683,15 @@
       <!-- BADGE FORM -->
       <div id="adminBadgesForm" class="admin-form" style="display:none">
         <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
-          // Internet stamps / badges — 100×40 px. Shown on Home and About.
+          // Internet stamps / badges — 100×40 px. Home and About are separate entries.
         </p>
+        <label class="admin-label">Display On</label>
+        <select id="badgeLocation" class="admin-input" style="cursor:pointer;">
+          <option value="home">Home page only</option>
+          <option value="about">About page only</option>
+          <option value="both">Both pages</option>
+        </select>
+
         <label class="admin-label">Badge Image URL (100×40 px recommended)</label>
         <input type="text" id="badgeImage" class="admin-input" placeholder="https://.../badge.gif" />
 
@@ -674,20 +712,20 @@
         </p>
         <label class="admin-label">Category</label>
         <select id="infoCategory" class="admin-input" style="cursor:pointer;" onchange="toggleInfoFields()">
-          <option value="iconCredits">Icon Source Credit</option>
-          <option value="fonts">Font</option>
-          <option value="colors">Color (with hex)</option>
+          <option value="art">Art</option>
+          <option value="design">Design</option>
+          <option value="otherCool">Other Cool Things</option>
           <option value="code">Code Resource</option>
           <option value="other">Other Resource</option>
         </select>
 
         <label class="admin-label">Label / Name</label>
-        <input type="text" id="infoLabel" class="admin-input" placeholder="e.g. Streamline Pixel Icons / Space Mono / Accent Blue" />
+        <input type="text" id="infoLabel" class="admin-input" placeholder="e.g. Procreate / Figma / Cool blog I love" />
 
         <label class="admin-label" id="infoValueLabel">Value / Description</label>
         <input type="text" id="infoValue" class="admin-input" placeholder="short description" />
 
-        <label class="admin-label" id="infoHexLabel" style="display:none">Hex Code (only for colors, e.g. #405FFA)</label>
+        <label class="admin-label" id="infoHexLabel" style="display:none">Hex Code</label>
         <input type="text" id="infoHex" class="admin-input" placeholder="#405FFA" style="display:none" />
 
         <label class="admin-label">Link URL (optional)</label>
@@ -1030,6 +1068,9 @@ function setAdminMode(active){
   const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
   const sb=document.getElementById('shrineReaderEditBtn');if(sb)sb.style.display=active?'inline-block':'none';
   const lb=document.getElementById('letterReaderEditBtn');if(lb)lb.style.display=active?'inline-block':'none';
+  const bb=document.getElementById('badgesAdminBtn');if(bb)bb.style.display=active?'inline-block':'none';
+  // Info-page + ADD buttons toggle (CSS-driven via body.admin-mode for most, but inline-style overrides need explicit reset)
+  document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1442,7 +1483,12 @@ async function verifyAdminPass(){
     else{err.textContent='// ACCESS DENIED.';err.style.display='block';}
   }catch(e){err.textContent='// CONNECTION ERROR.';err.style.display='block';console.error('Auth failed:',e);}
 }
-function closeAdminPanel(){closeModal('adminPanelModal');}
+function closeAdminPanel(){
+  // Closing the admin panel = LOG OUT. Clears session, hides editing UI everywhere.
+  try{sessionStorage.removeItem(ADMIN_TOKEN_KEY);}catch(_){}
+  setAdminMode(false);
+  closeModal('adminPanelModal');
+}
 
 function switchAdminTab(tab){
   document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';
@@ -1547,10 +1593,10 @@ function renderTrashPage(){
   el.innerHTML=sortedDates.map(date=>{
     const items=groups[date];
     return`<div class="trash-date-group"><div class="trash-date-header">[ ${date} ]</div><div class="trash-items-grid">${items.map(item=>{
-      const typeLabel={thought:'💭 THOUGHT',doodle:'🖊️ DOODLE',note:'📝 NOTE'};
+      const typeLabel={stupid:'💭 STUPID THOUGHT',doodle:'🖊️ DOODLE',pic:'🖼️ PIC',uhhhhh:'🌀 UHHHHH',thought:'💭 STUPID THOUGHT',note:'🌀 UHHHHH'};
       const label=typeLabel[item.type]||'SCRAP';
       const delBtn=isAdminSession()?`<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`:'';
-      if(item.type==='doodle'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="doodle" />${delBtn}</div>`;}
+      if(item.type==='doodle'||item.type==='pic'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" />${delBtn}</div>`;}
       return`<div class="trash-item"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
     }).join('')}</div></div>`;
   }).join('');
@@ -1583,9 +1629,14 @@ function adminDeleteTrash(id){
 let badgesData=[];
 
 function renderBadgesStrips(){
-  const valid=(badgesData||[]).filter(b=>b&&b.image);
-  ['badgesStripHome','badgesStripAbout'].forEach(id=>{
-    const el=document.getElementById(id);if(!el)return;
+  const all=(badgesData||[]).filter(b=>b&&b.image);
+  const targets=[
+    {id:'badgesStripHome',  match:b=>(b.location||'both')==='home'  ||(b.location||'both')==='both'},
+    {id:'badgesStripAbout', match:b=>(b.location||'both')==='about' ||(b.location||'both')==='both'},
+  ];
+  targets.forEach(t=>{
+    const el=document.getElementById(t.id);if(!el)return;
+    const valid=all.filter(t.match);
     if(!valid.length){el.innerHTML='<span class="home-updates-empty widget-hint">// no badges yet — admin can add them.</span>';return;}
     el.innerHTML=valid.map(b=>{
       const img=`<img class="badge-stamp" src="${escHtml(b.image)}" alt="${escHtml(b.alt||'badge')}" title="${escHtml(b.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`;
@@ -1603,8 +1654,9 @@ function adminAddBadge(){
   const image=document.getElementById('badgeImage').value.trim();
   const link=document.getElementById('badgeLink').value.trim();
   const alt=document.getElementById('badgeAlt').value.trim();
+  const location=document.getElementById('badgeLocation').value||'both';
   if(!image)return;
-  const entry={image,link,alt};
+  const entry={image,link,alt,location};
   if(db){db.ref('content/badges').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;badgesData.push(entry);renderBadgesStrips();const s=document.getElementById('badgeSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Badge push failed:',e));}
   else{entry.id='local_'+Date.now();badgesData.push(entry);renderBadgesStrips();}
   ['badgeImage','badgeLink','badgeAlt'].forEach(id=>document.getElementById(id).value='');
@@ -1624,15 +1676,15 @@ function adminDeleteBadge(id){
 let infoData=[]; // {id, category, label, value, hex, link}
 
 function toggleInfoFields(){
-  const cat=document.getElementById('infoCategory').value;
-  const isColor=cat==='colors';
-  document.getElementById('infoHexLabel').style.display=isColor?'block':'none';
-  document.getElementById('infoHex').style.display=isColor?'block':'none';
+  // Hex field no longer needed — colors category was removed from admin add.
+  document.getElementById('infoHexLabel').style.display='none';
+  document.getElementById('infoHex').style.display='none';
 }
 
 function renderInfoPage(){
-  const cats=['iconCredits','fonts','colors','code','other'];
-  // Default starter entries shown when admin hasn't added any yet (per category)
+  const cats=['iconCredits','fonts','colors','code','other','art','design','otherCool'];
+  // Defaults are PERMANENT — they always show. Admin-added items append below.
+  // iconCredits/fonts/colors are "final" (admin cannot add to these).
   const defaults={
     iconCredits:[
       {label:'Streamline Pixel Icons',value:'Nav icons (home, mail, bin, etc.)',link:'https://www.streamlinehq.com/icons/streamline-pixel'},
@@ -1645,6 +1697,7 @@ function renderInfoPage(){
     ],
     colors:[
       {label:'Accent',hex:'#405FFA',value:'Primary blue'},
+      {label:'Hashtag',hex:'#FA4055',value:'Tag / hashtag pill'},
       {label:'Background',hex:'#F4F4F4',value:'Light mode base'},
       {label:'Card BG',hex:'#FFFFFF',value:'Light mode cards'},
       {label:'Border',hex:'#100C08',value:'Hard outline'},
@@ -1661,13 +1714,17 @@ function renderInfoPage(){
       {label:'Miffy Cursors',value:'Pixel cursor sprites',link:'#'},
       {label:'Dictionary of Obscure Sorrows',value:'Word of the Day source',link:'https://www.thedictionaryofobscuresorrows.com'},
     ],
+    art:[],
+    design:[],
+    otherCool:[],
   };
 
   cats.forEach(cat=>{
     const el=document.getElementById('info-'+cat);if(!el)return;
-    let items=infoData.filter(i=>i.category===cat);
-    let usingDefaults=false;
-    if(!items.length){items=(defaults[cat]||[]).map((d,i)=>({...d,id:'def_'+cat+'_'+i,category:cat,_default:true}));usingDefaults=true;}
+    // Always show defaults first, then admin entries appended.
+    const defaultItems=(defaults[cat]||[]).map((d,i)=>({...d,id:'def_'+cat+'_'+i,category:cat,_default:true}));
+    const adminItems=infoData.filter(i=>i.category===cat);
+    const items=[...defaultItems,...adminItems];
     if(!items.length){el.innerHTML='<p class="info-empty">// nothing here yet.</p>';return;}
     el.innerHTML=items.map(item=>{
       const delBtn=(isAdminSession()&&!item._default)?`<button class="admin-delete-btn info-del" onclick="adminDeleteInfo('${item.id}')">×</button>`:'';
