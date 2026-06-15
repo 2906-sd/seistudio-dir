@@ -1583,10 +1583,11 @@ function adminDeleteTrash(id){
 let badgesData=[];
 
 function renderBadgesStrips(){
+  const valid=(badgesData||[]).filter(b=>b&&b.image);
   ['badgesStripHome','badgesStripAbout'].forEach(id=>{
     const el=document.getElementById(id);if(!el)return;
-    if(!badgesData.length){el.innerHTML='<span class="home-updates-empty widget-hint">// no badges yet — admin can add them.</span>';return;}
-    el.innerHTML=badgesData.map(b=>{
+    if(!valid.length){el.innerHTML='<span class="home-updates-empty widget-hint">// no badges yet — admin can add them.</span>';return;}
+    el.innerHTML=valid.map(b=>{
       const img=`<img class="badge-stamp" src="${escHtml(b.image)}" alt="${escHtml(b.alt||'badge')}" title="${escHtml(b.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`;
       const delBtn=isAdminSession()?`<button class="admin-delete-btn badge-del" onclick="event.stopPropagation();event.preventDefault();adminDeleteBadge('${b.id}')">×</button>`:'';
       const inner=b.link?`<a href="${escHtml(b.link)}" target="_blank" rel="noopener" class="badge-link">${img}</a>`:img;
@@ -1668,7 +1669,7 @@ function renderInfoPage(){
     let usingDefaults=false;
     if(!items.length){items=(defaults[cat]||[]).map((d,i)=>({...d,id:'def_'+cat+'_'+i,category:cat,_default:true}));usingDefaults=true;}
     if(!items.length){el.innerHTML='<p class="info-empty">// nothing here yet.</p>';return;}
-    el.innerHTML=(usingDefaults?'<p class="info-empty" style="margin-bottom:6px;">// default entries — admins can add or replace.</p>':'')+items.map(item=>{
+    el.innerHTML=items.map(item=>{
       const delBtn=(isAdminSession()&&!item._default)?`<button class="admin-delete-btn info-del" onclick="adminDeleteInfo('${item.id}')">×</button>`:'';
       if(cat==='colors'){
         const hex=item.hex||'#000000';
