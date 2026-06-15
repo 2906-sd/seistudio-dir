@@ -1,0 +1,30 @@
+{
+  "rules": {
+
+    "//": "── Public message board: open writes, schema-validated ──",
+    "board": {
+      "messages": {
+        ".read": true,
+        "$msg": {
+          ".write": "newData.child('text').isString() && newData.child('text').val().length <= 500 && newData.child('text').val().length > 0 && newData.child('timestamp').val() <= now && (!data.exists() || newData.child('text').val() === data.child('text').val())",
+          ".validate": "newData.hasChildren(['text','timestamp']) && newData.child('name').isString() && newData.child('name').val().length <= 40"
+        }
+      }
+    },
+
+    "//content": "── Site content: anyone can READ; only the Vercel admin-write API (using the Firebase Admin SDK) can WRITE. The Admin SDK bypasses these rules, so we deny client writes entirely. ──",
+    "content": {
+      ".read": true,
+      ".write": false,
+
+      "art":     { ".indexOn": ["timestamp"] },
+      "logs":    { ".indexOn": ["timestamp"] },
+      "shrines": { ".indexOn": ["timestamp"] },
+      "letters": { ".indexOn": ["timestamp"] },
+      "trash":   { ".indexOn": ["timestamp"] },
+      "badges":  { ".indexOn": ["timestamp"] },
+      "info":    { ".indexOn": ["timestamp"] },
+      "bag":     { ".indexOn": ["timestamp"] }
+    }
+  }
+}
