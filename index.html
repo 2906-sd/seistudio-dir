@@ -88,7 +88,7 @@
         <div class="home-card hello-card">
           <div class="home-card-header">HELLO.TXT</div>
           <div class="home-card-body">
-            <p>thanks for booting up this corner of my mind. left some windows open for you—feel free to click around, look at the art, or leave a note in the bulletin.
+            <p>thanks for booting up this corner of my mind. left some windows open for you — feel free to click around, look at the art, or leave a note in the bulletin.
 
 </p>
             <p style="margin-top:0.8rem;color:var(--text-muted);">don't mind the dust, <br />the system is always a work in progress. ✿ </p>
@@ -100,7 +100,7 @@
           <span class="site-title">// SEI ✿UT LOUD. //</span>
           <h1 class="hero-text">
             A collection of <br />colors from the <i>heart,</i> silly things,<br />and
-            <i>unsent</i> drafts. Made unapologetically by Sei.
+            <i>unsent</i> drafts. Made unapologetically by Sage.
           </h1>
         </div>
 
@@ -319,18 +319,18 @@
             <div class="profile-header">
               <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png" class="profile-img" alt="Avatar" />
               <div class="profile-meta">
-                <h3>Sei</h3>
+                <h3>Sage</h3>
                 <p>Art Student // 24 // DFW // 🇵🇭|🇯🇵</p>
               </div>
             </div>
-            <p class="about-bio">Hi, I'm Sage! On here, I go by Sei (セイ). I'm an art student currently studying Graphic Design.
+            <p class="about-bio">Hi, I'm Sage. On here, I go by Sei (セイ). I'm an art student currently studying Graphic Design.
               This is my small, digital space for feelings that are hard to name, a place for a version of myself that feels safe within the margins of pixel and code.
               No algorithm, numbers, comments or pressure for exposure. Just me (and you, visitor) and my thoughts - random, sometimes poetic, mostly ridiculous.
               I'm simulating a version of the internet where I didn't have strict parents and wasn't afraid to express myself on here.</p>
             <p class="about-bio">I like to experiment with multimedia textures, human warmth and the lack of it, and my perception of the world through my hands.
               Occasionally, I like to code (guess who made this place?) and create other weird spaces as I learn more about coding.</p>
             <p class="about-bio">
-              I'm not the best at making online connections (what having strict parents + limited screen time does to a mf...) but let's be friends anyway. :) </p>
+              I'm not the best at making online connections (what having strict parents + limited screen time + introvertness does to a mf...) but let's be friends anyway. :) </p>
             <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet. ✿</p>
             <div class="tag-list">
               <span class="tag">#HEART_ERR_404</span>
@@ -338,7 +338,7 @@
               <span class="tag">#GHOST_IN_THE_PIXEL</span>
             </div>
             <div class="about-links">
-              <a href="mailto:sei.outloud@gmail.com">EMAIL</a>
+              <a href="/cdn-cgi/l/email-protection#e390868acd8c96978f8c9687a3848e828a8fcd808c8e">EMAIL</a>
               <a href="https://discord.com/users/1380280160972177460">DISCORD</a>
             </div>
           </div>
@@ -346,6 +346,19 @@
 
         <!-- RIGHT — Personality widgets (dynamic bento) -->
         <div class="about-widgets-panel">
+
+          <!-- WHAT'S IN MY BAG — full-width banner, above Games + Likes -->
+          <div class="about-widget aw-bag">
+            <div class="about-widget-header">
+              <span>WHAT'S IN MY BAG //</span>
+              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('bag'),100);" style="display:none">+ ADD ITEM</button>
+            </div>
+            <div class="about-widget-body" id="widget-bag" style="display:block">
+              <div class="bag-grid" id="bagGrid">
+                <span class="widget-hint">// loading...</span>
+              </div>
+            </div>
+          </div>
 
           <div class="about-widget aw-feeling">
             <div class="about-widget-header">GAMES //</div>
@@ -572,6 +585,7 @@
         <button class="admin-tab"        id="tab-letters" onclick="switchAdminTab('letters')">ADD LETTER</button>
         <button class="admin-tab"        id="tab-trash"   onclick="switchAdminTab('trash')">ADD TRASH</button>
         <button class="admin-tab"        id="tab-badges"  onclick="switchAdminTab('badges')">ADD BADGE</button>
+        <button class="admin-tab"        id="tab-bag"     onclick="switchAdminTab('bag')">ADD BAG ITEM</button>
         <button class="admin-tab"        id="tab-info"    onclick="switchAdminTab('info')">ADD INFO</button>
       </div>
 
@@ -707,6 +721,27 @@
         <p id="badgeSuccess" class="admin-success">// PINNED.</p>
       </div>
 
+      <!-- BAG FORM -->
+      <div id="adminBagForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Things that live in your bag. Either upload an image URL, or use a single emoji as the icon.
+        </p>
+        <label class="admin-label">Item name</label>
+        <input type="text" id="bagLabel" class="admin-input" placeholder="e.g. iPod nano / Lip balm / Sketchbook" />
+
+        <label class="admin-label">Image URL (optional — leave blank to use emoji)</label>
+        <input type="text" id="bagImage" class="admin-input" placeholder="https://.../item.png" />
+
+        <label class="admin-label">Emoji (used if no image)</label>
+        <input type="text" id="bagEmoji" class="admin-input" placeholder="🎧" maxlength="4" />
+
+        <label class="admin-label">Short note (optional)</label>
+        <input type="text" id="bagNote" class="admin-input" placeholder="lifeline / for the commute" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddBag()">PIN TO BAG →</button>
+        <p id="bagSuccess" class="admin-success">// PINNED.</p>
+      </div>
+
       <!-- INFO FORM -->
       <div id="adminInfoForm" class="admin-form" style="display:none">
         <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
@@ -824,10 +859,28 @@
 </div>
 
 <!-- FIREBASE SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
+/* ═══════════════════════════════════════════════════════
+   API BASE — points at the Vercel deployment.
+   Static mirrors (e.g. Neocities) MUST use the absolute
+   URL; same-origin Vercel can use the relative path.
+═══════════════════════════════════════════════════════ */
+const VERCEL_API_BASE = 'https://YOUR-VERCEL-APP.vercel.app'; // ← edit once after first Vercel deploy
+function apiUrl(path) {
+  // If we're already on the Vercel origin, use a relative URL (no CORS).
+  // Otherwise (Neocities, local file, etc.) hit the absolute Vercel URL.
+  try {
+    const host = location.hostname || '';
+    const onVercel = host.endsWith('.vercel.app') || host === new URL(VERCEL_API_BASE).hostname;
+    return onVercel ? path : (VERCEL_API_BASE.replace(/\/$/, '') + path);
+  } catch (_) {
+    return VERCEL_API_BASE.replace(/\/$/, '') + path;
+  }
+}
+
 /* ═══════════════════════════════════════════════════════
    FIREBASE CONFIG
 ═══════════════════════════════════════════════════════ */
@@ -910,6 +963,9 @@ function newQuote() {
 
 /* ═══════════════════════════════════════════════════════
    DATA STORES
+   (trashData / badgesData / infoData / bagData are declared
+    further down alongside their renderers; renderHomeUpdates
+    only runs after script parse completes, so TDZ is safe.)
 ═══════════════════════════════════════════════════════ */
 let artData     = [];
 let logsData    = [];
@@ -917,33 +973,57 @@ let shrinesData = [];
 let lettersData = [];
 
 /* ═══════════════════════════════════════════════════════
-   HOME UPDATES BOX
+   HOME UPDATES BOX — aggregates ALL content types
+   (logs, shrines, letters, art, trash, badges, info, bag)
+   and shows the 8 most recent by timestamp.
 ═══════════════════════════════════════════════════════ */
 function renderHomeUpdates() {
   const el = document.getElementById('homeUpdates');
   if (!el) return;
 
+  // Collect every content item with a timestamp so we can sort universally.
   const items = [];
-  [...logsData].reverse().slice(0, 4).forEach(l => {
-    items.push({ type: 'LOG', title: l.title, meta: l.meta || '', section: 'log', id: l.id });
+  (logsData||[]).forEach(l => items.push({
+    type:'LOG', title:l.title, meta:l.meta||'', section:'log', id:l.id, ts:l.timestamp||0
+  }));
+  (shrinesData||[]).forEach(s => items.push({
+    type:'SHRINE', title:s.title, meta:s.tagline||'', section:'shrine', id:s.id, ts:s.timestamp||0
+  }));
+  (lettersData||[]).forEach(l => items.push({
+    type:'LETTER', title:l.subject, meta:l.to?'to: '+l.to:'', section:'letter', id:l.id, ts:l.timestamp||0
+  }));
+  (artData||[]).forEach(a => items.push({
+    type:'ART', title:a.title, meta:a.category||a.meta||'', section:'art', id:a.id, ts:a.timestamp||0
+  }));
+  (trashData||[]).forEach(t => {
+    const labelMap={stupid:'stupid thought',doodle:'doodle',pic:'pic',uhhhhh:'uhhhhh',thought:'stupid thought',note:'uhhhhh'};
+    const title=(t.content||'').slice(0,40)+((t.content||'').length>40?'…':'');
+    items.push({ type:'TRASH', title, meta:labelMap[t.type]||'scrap', section:'trash', id:t.id, ts:t.timestamp||0 });
   });
-  [...shrinesData].reverse().slice(0, 3).forEach(s => {
-    items.push({ type: 'SHRINE', title: s.title, meta: s.tagline || '', section: 'shrine', id: s.id });
-  });
-  [...lettersData].reverse().slice(0, 3).forEach(l => {
-    items.push({ type: 'LETTER', title: l.subject, meta: l.to || '', section: 'letter', id: l.id });
-  });
+  (badgesData||[]).forEach(b => items.push({
+    type:'BADGE', title:b.alt||'(new badge)', meta:b.location||'both', section:'home', id:b.id, ts:b.timestamp||0
+  }));
+  (infoData||[]).forEach(i => items.push({
+    type:'INFO', title:i.label||'(entry)', meta:i.category||'', section:'info', id:i.id, ts:i.timestamp||0
+  }));
+  (bagData||[]).forEach(b => items.push({
+    type:'BAG', title:b.label||'(item)', meta:b.note||'', section:'about', id:b.id, ts:b.timestamp||0
+  }));
 
-  if (!items.length) {
+  // Newest first; cap the list to keep the card from sprawling.
+  items.sort((a,b) => (b.ts||0) - (a.ts||0));
+  const top = items.slice(0, 8);
+
+  if (!top.length) {
     el.innerHTML = '<p class="home-updates-empty">// no updates yet</p>';
     return;
   }
 
-  el.innerHTML = items.slice(0, 6).map(item =>
+  el.innerHTML = top.map(item =>
     `<div class="home-update-item" onclick="openUpdateItem('${item.section}','${item.id}')">
       <span class="home-update-type">${item.type}</span>
-      <span class="home-update-title">${escHtml(item.title)}</span>
-      <span class="home-update-meta">${escHtml(item.meta)}</span>
+      <span class="home-update-title">${escHtml(item.title||'(untitled)')}</span>
+      <span class="home-update-meta">${escHtml(item.meta||'')}</span>
     </div>`
   ).join('');
 }
@@ -958,7 +1038,11 @@ function openUpdateItem(section, id) {
   } else if (section === 'letter') {
     const idx = lettersData.findIndex(l => l.id === id);
     if (idx !== -1) readLetter(idx);
-  }
+  } else if (section === 'art')   { showPage('art'); }
+  else if (section === 'trash')   { showPage('trash'); }
+  else if (section === 'info')    { showPage('info'); }
+  else if (section === 'about')   { showPage('about'); }
+  else if (section === 'home')    { showPage('home'); } // badges live on home
 }
 
 function escHtml(str) {
@@ -1065,6 +1149,7 @@ function setAdminMode(active){
   if(shrinesData.length) renderShrineGrid();
   if(lettersData.length) renderLetterList();
   if(trashData.length) renderTrashPage();
+  if(typeof renderBag === 'function') renderBag();
   renderBadgesStrips();
   renderInfoPage();
   const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
@@ -1073,6 +1158,8 @@ function setAdminMode(active){
   const bb=document.getElementById('badgesAdminBtn');if(bb)bb.style.display=active?'inline-block':'none';
   // Info-page + ADD buttons toggle (CSS-driven via body.admin-mode for most, but inline-style overrides need explicit reset)
   document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
+  // About-page bag +ADD button + any other inline-style admin-edit-btns
+  document.querySelectorAll('.aw-bag .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1180,8 +1267,18 @@ function onFirebaseReady() {
     infoData=[];
     snap.forEach(child=>{const d=child.val();infoData.push({id:child.key,...d});});
     renderInfoPage();
+    renderHomeUpdates();
     updateLastUpdatedDisplay();
   }).catch(e=>console.error('Info load failed:',e));
+
+  // Load bag (What's in My Bag)
+  db.ref('content/bag').orderByChild('timestamp').once('value',snap=>{
+    bagData=[];
+    snap.forEach(child=>{const d=child.val();bagData.push({id:child.key,...d});});
+    renderBag();
+    renderHomeUpdates();
+    updateLastUpdatedDisplay();
+  }).catch(e=>console.error('Bag load failed:',e));
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1380,7 +1477,25 @@ function editCurrentLetter(){const idx=window._currentLetterIndex;if(idx===undef
    LIGHTBOX
 ═══════════════════════════════════════════════════════ */
 let lbPiece=null,lbIdx=0,lbArtIndex=-1;
-function openLightbox(i){lbPiece=artData[i];lbIdx=0;lbArtIndex=i;resetZoom();renderLightbox();document.getElementById('lightbox').classList.add('show');}
+function openLightbox(i){
+  lbPiece=artData[i];lbIdx=0;lbArtIndex=i;resetZoom();renderLightbox();
+  const delBtn=document.getElementById('lb-delete-btn');
+  if(delBtn) delBtn.style.display = isAdminSession() ? 'block' : 'none';
+  document.getElementById('lightbox').classList.add('show');
+}
+
+/* ── Generic single-image lightbox (used by trash, etc.) ── */
+function openImageLightbox(encodedUrl, title, dateLabel){
+  const url = decodeURIComponent(encodedUrl);
+  lbPiece = { title: title || 'IMAGE', desc: '', meta: dateLabel || '', images: [url] };
+  lbIdx = 0;
+  lbArtIndex = -1; // hide the "DELETE THIS PIECE" button (art-only)
+  resetZoom();
+  renderLightbox();
+  const delBtn = document.getElementById('lb-delete-btn');
+  if(delBtn) delBtn.style.display = 'none';
+  document.getElementById('lightbox').classList.add('show');
+}
 function renderLightbox(){
   const multi=lbPiece.images.length>1;
   document.getElementById('lb-image').src=normalizeImageUrl(lbPiece.images[lbIdx]);
@@ -1479,9 +1594,13 @@ async function verifyAdminPass(){
   const pw=document.getElementById('adminPassInput').value,err=document.getElementById('adminPassError');
   err.style.display='none';if(!pw)return;
   try{
-    const res=await fetch('/api/admin-auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
+    const res=await fetch(apiUrl('/api/admin-auth'),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pw})});
     const data=await res.json();
-    if(data.ok){sessionStorage.setItem(ADMIN_TOKEN_KEY,JSON.stringify({token:'admin_'+Date.now(),ts:Date.now()}));closeAdminLogin();setAdminMode(true);openModal('adminPanelModal');}
+    if(data.ok){
+      // Persist the REAL server-issued token + timestamp so /api/admin-write can validate later.
+      sessionStorage.setItem(ADMIN_TOKEN_KEY,JSON.stringify({token:data.token,ts:data.ts}));
+      closeAdminLogin();setAdminMode(true);openModal('adminPanelModal');
+    }
     else{err.textContent='// ACCESS DENIED.';err.style.display='block';}
   }catch(e){err.textContent='// CONNECTION ERROR.';err.style.display='block';console.error('Auth failed:',e);}
 }
@@ -1492,6 +1611,27 @@ function closeAdminPanel(){
   closeModal('adminPanelModal');
 }
 
+/* ── adminWrite() — single chokepoint for every CMS mutation ──
+   Sends the request to /api/admin-write on Vercel which uses the
+   Firebase Admin SDK to bypass the locked-down public rules.
+   Returns { ok:true, id? } on success, throws on failure. */
+async function adminWrite(op, path, payload){
+  let session = null;
+  try { session = JSON.parse(sessionStorage.getItem(ADMIN_TOKEN_KEY)||'null'); } catch(_) {}
+  if(!session || !session.token){ throw new Error('Not logged in'); }
+  const body = { token: session.token, ts: session.ts, op, path };
+  if(op === 'push')   body.data = payload;
+  if(op === 'update'){ body.id = payload.id; body.data = payload.data; }
+  if(op === 'remove')  body.id = payload.id;
+  const res = await fetch(apiUrl('/api/admin-write'), {
+    method:'POST', headers:{'Content-Type':'application/json'},
+    body: JSON.stringify(body)
+  });
+  const out = await res.json().catch(()=>({ok:false,reason:'Bad response'}));
+  if(!out.ok) throw new Error(out.reason || 'Write failed');
+  return out;
+}
+
 function switchAdminTab(tab){
   document.getElementById('adminArtForm').style.display=tab==='art'?'flex':'none';
   document.getElementById('adminLogsForm').style.display=tab==='logs'?'flex':'none';
@@ -1499,8 +1639,9 @@ function switchAdminTab(tab){
   document.getElementById('adminLettersForm').style.display=tab==='letters'?'flex':'none';
   document.getElementById('adminTrashForm').style.display=tab==='trash'?'flex':'none';
   document.getElementById('adminBadgesForm').style.display=tab==='badges'?'flex':'none';
+  document.getElementById('adminBagForm').style.display=tab==='bag'?'flex':'none';
   document.getElementById('adminInfoForm').style.display=tab==='info'?'flex':'none';
-  ['art','logs','shrines','letters','trash','badges','info'].forEach(t=>{
+  ['art','logs','shrines','letters','trash','badges','bag','info'].forEach(t=>{
     const btn=document.getElementById('tab-'+t);if(btn)btn.classList.toggle('active',t===tab);
   });
   // Auto-fill date for trash tab
@@ -1516,8 +1657,8 @@ function adminAddArt(){
   const title=document.getElementById('artTitle').value.trim(),category=document.getElementById('artCategory').value,imgRaw=document.getElementById('artImages').value.trim(),desc=document.getElementById('artDesc').value.trim(),meta=document.getElementById('artMeta').value.trim();
   if(!title||!imgRaw)return;const images=imgRaw.split('\n').map(u=>u.trim()).filter(Boolean);if(!images.length)return;
   const piece={title,category,images,desc,meta};
-  if(db){db.ref('content/art').push({...piece,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{piece.id=ref.key;artData.push(piece);renderArtGrid();}).catch(e=>console.error('Art push failed:',e));}
-  else{artData.push(piece);renderArtGrid();}
+  adminWrite('push','content/art',piece).then(r=>{piece.id=r.id;piece.timestamp=Date.now();artData.push(piece);renderArtGrid();})
+    .catch(e=>{console.error('Art push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['artTitle','artImages','artDesc','artMeta'].forEach(id=>document.getElementById(id).value='');document.getElementById('artCategory').value='painting';
   const s=document.getElementById('artSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
@@ -1534,8 +1675,8 @@ function adminAddLog(){
   const autoMeta=`LOG_${logNumber} // ${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`;
   const meta=document.getElementById('logMeta').value.trim()||autoMeta;
   const log={title,meta,body,tags,stickers};
-  if(db){db.ref('content/logs').push({...log,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{log.id=ref.key;logsData.push(log);renderLogList();renderHomeUpdates();}).catch(e=>console.error('Log push failed:',e));}
-  else{logsData.push(log);renderLogList();renderHomeUpdates();}
+  adminWrite('push','content/logs',log).then(r=>{log.id=r.id;log.timestamp=Date.now();logsData.push(log);renderLogList();renderHomeUpdates();})
+    .catch(e=>{console.error('Log push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['logTitle','logBody','logTags','logStickers','logMeta'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('logSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
@@ -1550,8 +1691,8 @@ function adminAddShrine(){
   const images=document.getElementById('shrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
   const captions=document.getElementById('shrineCaptions').value.split('\n').map(c=>c.trim());
   const shrine={title,tagline,coverImage,images,captions};
-  if(db){db.ref('content/shrines').push({...shrine,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{shrine.id=ref.key;shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Shrine push failed:',e));}
-  else{shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();}
+  adminWrite('push','content/shrines',shrine).then(r=>{shrine.id=r.id;shrine.timestamp=Date.now();shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();})
+    .catch(e=>{console.error('Shrine push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['shrineTitle','shrineTagline','shrineCover','shrineImages','shrineCaptions'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
@@ -1562,23 +1703,31 @@ function adminAddLetter(){
   const to=document.getElementById('letterTo').value.trim(),subject=document.getElementById('letterSubject').value.trim(),body=document.getElementById('letterBody').value.trim();
   if(!subject||!body)return;
   const letter={to,subject,body};
-  if(db){db.ref('content/letters').push({...letter,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{letter.id=ref.key;lettersData.push(letter);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Letter push failed:',e));}
-  else{lettersData.push(letter);renderLetterList();renderHomeUpdates();}
+  adminWrite('push','content/letters',letter).then(r=>{letter.id=r.id;letter.timestamp=Date.now();lettersData.push(letter);renderLetterList();renderHomeUpdates();})
+    .catch(e=>{console.error('Letter push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['letterTo','letterSubject','letterBody'].forEach(id=>document.getElementById(id).value='');
   const s=document.getElementById('letterSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);
 }
 
 /* ── DELETE ART / LOG ── */
-function adminDeleteArt(idx){if(!isAdminSession())return;const piece=artData[idx];if(!confirm(`Delete "${piece.title}"?`))return;if(db&&piece.id){db.ref('content/art/'+piece.id).remove().then(()=>{artData.splice(idx,1);renderArtGrid();}).catch(e=>console.error('Delete art failed:',e));}else{artData.splice(idx,1);renderArtGrid();}}
-function adminDeleteLog(idx){if(!isAdminSession())return;const log=logsData[idx];if(!confirm(`Delete "${log.title}"?`))return;if(db&&log.id){db.ref('content/logs/'+log.id).remove().then(()=>{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}).catch(e=>console.error('Delete log failed:',e));}else{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}}
+function adminDeleteArt(idx){if(!isAdminSession())return;const piece=artData[idx];if(!confirm(`Delete "${piece.title}"?`))return;
+  if(piece.id){adminWrite('remove','content/art',{id:piece.id}).then(()=>{artData.splice(idx,1);renderArtGrid();renderHomeUpdates();}).catch(e=>{console.error('Delete art failed:',e);alert('// DELETE FAILED');});}
+  else{artData.splice(idx,1);renderArtGrid();renderHomeUpdates();}}
+function adminDeleteLog(idx){if(!isAdminSession())return;const log=logsData[idx];if(!confirm(`Delete "${log.title}"?`))return;
+  if(log.id){adminWrite('remove','content/logs',{id:log.id}).then(()=>{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}).catch(e=>{console.error('Delete log failed:',e);alert('// DELETE FAILED');});}
+  else{logsData.splice(idx,1);renderLogList();renderHomeUpdates();}}
 function adminDeleteCurrentArt(){if(!isAdminSession()||lbArtIndex<0)return;closeLightbox();adminDeleteArt(lbArtIndex);}
 
 /* ── DELETE SHRINE ── */
-function adminDeleteShrine(idx){if(!isAdminSession())return;const s=shrinesData[idx];if(!confirm(`Delete shrine "${s.title}"?`))return;if(db&&s.id){db.ref('content/shrines/'+s.id).remove().then(()=>{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}).catch(e=>console.error('Delete shrine failed:',e));}else{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}}
+function adminDeleteShrine(idx){if(!isAdminSession())return;const s=shrinesData[idx];if(!confirm(`Delete shrine "${s.title}"?`))return;
+  if(s.id){adminWrite('remove','content/shrines',{id:s.id}).then(()=>{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}).catch(e=>{console.error('Delete shrine failed:',e);alert('// DELETE FAILED');});}
+  else{shrinesData.splice(idx,1);renderShrineGrid();renderHomeUpdates();}}
 function adminDeleteShrineFromEdit(){if(!isAdminSession())return;const idx=_editShrineOriginalIndex;if(idx<0)return;closeEditShrine();adminDeleteShrine(idx);}
 
 /* ── DELETE LETTER ── */
-function adminDeleteLetter(idx){if(!isAdminSession())return;const l=lettersData[idx];if(!confirm(`Delete letter "${l.subject}"?`))return;if(db&&l.id){db.ref('content/letters/'+l.id).remove().then(()=>{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}).catch(e=>console.error('Delete letter failed:',e));}else{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}}
+function adminDeleteLetter(idx){if(!isAdminSession())return;const l=lettersData[idx];if(!confirm(`Delete letter "${l.subject}"?`))return;
+  if(l.id){adminWrite('remove','content/letters',{id:l.id}).then(()=>{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}).catch(e=>{console.error('Delete letter failed:',e);alert('// DELETE FAILED');});}
+  else{lettersData.splice(idx,1);renderLetterList();renderHomeUpdates();}}
 function adminDeleteLetterFromEdit(){if(!isAdminSession())return;const idx=_editLetterOriginalIndex;if(idx<0)return;closeEditLetter();adminDeleteLetter(idx);}
 
 /* ═══════════════════════════════════════════════════════
@@ -1598,7 +1747,7 @@ function renderTrashPage(){
       const typeLabel={stupid:'💭 STUPID THOUGHT',doodle:'🖊️ DOODLE',pic:'🖼️ PIC',uhhhhh:'🌀 UHHHHH',thought:'💭 STUPID THOUGHT',note:'🌀 UHHHHH'};
       const label=typeLabel[item.type]||'SCRAP';
       const delBtn=isAdminSession()?`<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`:'';
-      if(item.type==='doodle'||item.type==='pic'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" />${delBtn}</div>`;}
+      if(item.type==='doodle'||item.type==='pic'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openImageLightbox('${encodeURIComponent(item.content)}','${escHtml(label)}','${escHtml(date)}')" />${delBtn}</div>`;}
       return`<div class="trash-item"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
     }).join('')}</div></div>`;
   }).join('');
@@ -1611,8 +1760,8 @@ function adminAddTrash(){
   const date=document.getElementById('trashDate').value.trim();
   if(!content||!date)return;
   const entry={type,content,date};
-  if(db){db.ref('content/trash').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;trashData.push(entry);renderTrashPage();const s=document.getElementById('trashSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Trash push failed:',e));}
-  else{trashData.push(entry);renderTrashPage();}
+  adminWrite('push','content/trash',entry).then(r=>{entry.id=r.id;entry.timestamp=Date.now();trashData.push(entry);renderTrashPage();renderHomeUpdates();const s=document.getElementById('trashSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);})
+    .catch(e=>{console.error('Trash push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   document.getElementById('trashItemContent').value='';
 }
 
@@ -1621,8 +1770,8 @@ function adminDeleteTrash(id){
   const idx=trashData.findIndex(t=>t.id===id);
   if(idx<0)return;
   if(!confirm('Delete this trash entry?'))return;
-  if(db&&id){db.ref('content/trash/'+id).remove().then(()=>{trashData.splice(idx,1);renderTrashPage();}).catch(e=>console.error('Trash delete failed:',e));}
-  else{trashData.splice(idx,1);renderTrashPage();}
+  if(id){adminWrite('remove','content/trash',{id}).then(()=>{trashData.splice(idx,1);renderTrashPage();renderHomeUpdates();}).catch(e=>{console.error('Trash delete failed:',e);alert('// DELETE FAILED');});}
+  else{trashData.splice(idx,1);renderTrashPage();renderHomeUpdates();}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1659,8 +1808,8 @@ function adminAddBadge(){
   const location=document.getElementById('badgeLocation').value||'both';
   if(!image)return;
   const entry={image,link,alt,location};
-  if(db){db.ref('content/badges').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;badgesData.push(entry);renderBadgesStrips();const s=document.getElementById('badgeSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Badge push failed:',e));}
-  else{entry.id='local_'+Date.now();badgesData.push(entry);renderBadgesStrips();}
+  adminWrite('push','content/badges',entry).then(r=>{entry.id=r.id;entry.timestamp=Date.now();badgesData.push(entry);renderBadgesStrips();renderHomeUpdates();const s=document.getElementById('badgeSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);})
+    .catch(e=>{console.error('Badge push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['badgeImage','badgeLink','badgeAlt'].forEach(id=>document.getElementById(id).value='');
 }
 
@@ -1668,8 +1817,8 @@ function adminDeleteBadge(id){
   if(!isAdminSession())return;
   if(!confirm('Delete this badge?'))return;
   const idx=badgesData.findIndex(b=>b.id===id);if(idx<0)return;
-  if(db&&id&&!id.startsWith('local_')){db.ref('content/badges/'+id).remove().then(()=>{badgesData.splice(idx,1);renderBadgesStrips();}).catch(e=>console.error('Badge delete failed:',e));}
-  else{badgesData.splice(idx,1);renderBadgesStrips();}
+  if(id&&!String(id).startsWith('local_')){adminWrite('remove','content/badges',{id}).then(()=>{badgesData.splice(idx,1);renderBadgesStrips();renderHomeUpdates();}).catch(e=>{console.error('Badge delete failed:',e);alert('// DELETE FAILED');});}
+  else{badgesData.splice(idx,1);renderBadgesStrips();renderHomeUpdates();}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1768,8 +1917,8 @@ function adminAddInfo(){
   const link=document.getElementById('infoLink').value.trim();
   if(!label)return;
   const entry={category,label,value,hex,link};
-  if(db){db.ref('content/info').push({...entry,timestamp:firebase.database.ServerValue.TIMESTAMP}).then(ref=>{entry.id=ref.key;infoData.push(entry);renderInfoPage();const s=document.getElementById('infoSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);}).catch(e=>console.error('Info push failed:',e));}
-  else{entry.id='local_'+Date.now();infoData.push(entry);renderInfoPage();}
+  adminWrite('push','content/info',entry).then(r=>{entry.id=r.id;entry.timestamp=Date.now();infoData.push(entry);renderInfoPage();renderHomeUpdates();const s=document.getElementById('infoSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);})
+    .catch(e=>{console.error('Info push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
   ['infoLabel','infoValue','infoHex','infoLink'].forEach(id=>document.getElementById(id).value='');
 }
 
@@ -1777,8 +1926,51 @@ function adminDeleteInfo(id){
   if(!isAdminSession())return;
   if(!confirm('Delete this entry?'))return;
   const idx=infoData.findIndex(i=>i.id===id);if(idx<0)return;
-  if(db&&id&&!id.startsWith('local_')){db.ref('content/info/'+id).remove().then(()=>{infoData.splice(idx,1);renderInfoPage();}).catch(e=>console.error('Info delete failed:',e));}
-  else{infoData.splice(idx,1);renderInfoPage();}
+  if(id&&!String(id).startsWith('local_')){adminWrite('remove','content/info',{id}).then(()=>{infoData.splice(idx,1);renderInfoPage();renderHomeUpdates();}).catch(e=>{console.error('Info delete failed:',e);alert('// DELETE FAILED');});}
+  else{infoData.splice(idx,1);renderInfoPage();renderHomeUpdates();}
+}
+
+/* ═══════════════════════════════════════════════════════
+   BAG (What's in My Bag — about-page widget)
+═══════════════════════════════════════════════════════ */
+let bagData = [];
+
+function renderBag(){
+  const el = document.getElementById('bagGrid');
+  if(!el) return;
+  if(!bagData.length){
+    el.innerHTML = '<span class="widget-hint">// nothing in the bag yet.</span>';
+    return;
+  }
+  el.innerHTML = bagData.map(item => {
+    const visual = item.image
+      ? `<img src="${escHtml(item.image)}" alt="${escHtml(item.label||'')}" loading="lazy" onerror="this.style.display='none'" />`
+      : `<div class="bag-item-emoji">${escHtml(item.emoji || '📦')}</div>`;
+    const note = item.note ? `<div class="bag-item-note">${escHtml(item.note)}</div>` : '';
+    const delBtn = isAdminSession() ? `<button class="admin-delete-btn" onclick="adminDeleteBag('${item.id}')">×</button>` : '';
+    return `<div class="bag-item">${visual}<div class="bag-item-label">${escHtml(item.label||'')}</div>${note}${delBtn}</div>`;
+  }).join('');
+}
+
+function adminAddBag(){
+  if(!isAdminSession())return;
+  const label = document.getElementById('bagLabel').value.trim();
+  const image = document.getElementById('bagImage').value.trim();
+  const emoji = document.getElementById('bagEmoji').value.trim();
+  const note  = document.getElementById('bagNote').value.trim();
+  if(!label) return;
+  const entry = { label, image, emoji, note };
+  adminWrite('push','content/bag',entry).then(r=>{entry.id=r.id;entry.timestamp=Date.now();bagData.push(entry);renderBag();renderHomeUpdates();const s=document.getElementById('bagSuccess');s.style.display='block';setTimeout(()=>s.style.display='none',3000);})
+    .catch(e=>{console.error('Bag push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
+  ['bagLabel','bagImage','bagEmoji','bagNote'].forEach(id=>document.getElementById(id).value='');
+}
+
+function adminDeleteBag(id){
+  if(!isAdminSession())return;
+  if(!confirm('Remove this item from the bag?'))return;
+  const idx=bagData.findIndex(b=>b.id===id);if(idx<0)return;
+  if(id){adminWrite('remove','content/bag',{id}).then(()=>{bagData.splice(idx,1);renderBag();renderHomeUpdates();}).catch(e=>{console.error('Bag delete failed:',e);alert('// DELETE FAILED');});}
+  else{bagData.splice(idx,1);renderBag();renderHomeUpdates();}
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1787,7 +1979,7 @@ function adminDeleteInfo(id){
 function updateLastUpdatedDisplay(){
   const el=document.getElementById('statusLastUpdated');if(!el)return;
   let maxTs=0;
-  [logsData,shrinesData,lettersData,trashData,badgesData,infoData].forEach(arr=>{
+  [artData,logsData,shrinesData,lettersData,trashData,badgesData,infoData,bagData].forEach(arr=>{
     (arr||[]).forEach(item=>{if(item&&item.timestamp&&item.timestamp>maxTs)maxTs=item.timestamp;});
   });
   if(!maxTs){el.textContent='--.--.--';return;}
@@ -1821,8 +2013,16 @@ function adminSaveEditLog(){
   const stickers=document.getElementById('editLogStickers').value.split('\n').map(s=>s.trim()).filter(Boolean);
   if(!title||!body){document.getElementById('editLogError').textContent='// TITLE AND BODY ARE REQUIRED.';document.getElementById('editLogError').style.display='block';return;}
   const updated={title,meta,body,tags,stickers};
-  if(db&&id){db.ref('content/logs/'+id).update(updated).then(()=>{Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();document.getElementById('editLogSuccess').style.display='block';document.getElementById('editLogError').style.display='none';setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);}).catch(e=>{console.error('Edit log failed:',e);document.getElementById('editLogError').textContent='// ERROR SAVING.';document.getElementById('editLogError').style.display='block';});}
-  else{Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();document.getElementById('editLogSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);}
+  if(id){
+    adminWrite('update','content/logs',{id,data:updated}).then(()=>{
+      Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();
+      document.getElementById('editLogSuccess').style.display='block';document.getElementById('editLogError').style.display='none';
+      setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);
+    }).catch(e=>{console.error('Edit log failed:',e);document.getElementById('editLogError').textContent='// ERROR SAVING: '+e.message;document.getElementById('editLogError').style.display='block';});
+  }else{
+    Object.assign(logsData[idx],updated);renderLogList();renderHomeUpdates();
+    document.getElementById('editLogSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLogSuccess').style.display='none';},3000);
+  }
 }
 function adminDeleteLogFromEdit(){if(!isAdminSession())return;const idx=_editLogOriginalIndex;if(idx<0)return;closeEditLog();adminDeleteLog(idx);}
 
@@ -1851,8 +2051,15 @@ function adminSaveEditShrine(){
   const images=document.getElementById('editShrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
   const captions=document.getElementById('editShrineCaptions').value.split('\n').map(c=>c.trim());
   const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),images,captions};
-  if(db&&id){db.ref('content/shrines/'+id).update(updated).then(()=>{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editShrineError').textContent='// ERROR.';document.getElementById('editShrineError').style.display='block';});}
-  else{Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);}
+  if(id){
+    adminWrite('update','content/shrines',{id,data:updated}).then(()=>{
+      Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();
+      document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);
+    }).catch(e=>{document.getElementById('editShrineError').textContent='// ERROR: '+e.message;document.getElementById('editShrineError').style.display='block';});
+  }else{
+    Object.assign(shrinesData[idx],updated);renderShrineGrid();renderHomeUpdates();
+    document.getElementById('editShrineSuccess').style.display='block';setTimeout(()=>{document.getElementById('editShrineSuccess').style.display='none';},3000);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1876,8 +2083,15 @@ function adminSaveEditLetter(){
   const subject=document.getElementById('editLetterSubject').value.trim(),body=document.getElementById('editLetterBody').value.trim();
   if(!subject||!body){document.getElementById('editLetterError').textContent='// SUBJECT AND BODY ARE REQUIRED.';document.getElementById('editLetterError').style.display='block';return;}
   const updated={to:document.getElementById('editLetterTo').value.trim(),subject,body};
-  if(db&&id){db.ref('content/letters/'+id).update(updated).then(()=>{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}).catch(()=>{document.getElementById('editLetterError').textContent='// ERROR.';document.getElementById('editLetterError').style.display='block';});}
-  else{Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);}
+  if(id){
+    adminWrite('update','content/letters',{id,data:updated}).then(()=>{
+      Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();
+      document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);
+    }).catch(e=>{document.getElementById('editLetterError').textContent='// ERROR: '+e.message;document.getElementById('editLetterError').style.display='block';});
+  }else{
+    Object.assign(lettersData[idx],updated);renderLetterList();renderHomeUpdates();
+    document.getElementById('editLetterSuccess').style.display='block';setTimeout(()=>{document.getElementById('editLetterSuccess').style.display='none';},3000);
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
