@@ -955,8 +955,8 @@ input.board-input, textarea.board-input {
   margin-bottom: 1.25rem;
 }
 .tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
-.tag { background: var(--bg4); color: var(--text); padding: 2px 8px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; }
-body.dark .tag { color: #FFFFFF; }
+.tag { background: #FA4055; color: #FFFFFF; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
+body.dark .tag { background: #FA4055; color: #FFFFFF; }
 .about-links { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
 .about-links a { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
@@ -965,16 +965,17 @@ body.dark .tag { color: #FFFFFF; }
   flex: 1;
   min-width: 0;
   display: grid;
-  grid-template-columns: 1.15fr 1fr 1.35fr;
-  grid-template-rows: auto auto;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  grid-template-rows: auto auto auto;
   gap: 1rem;
   align-items: stretch;
+  grid-auto-flow: row dense;
 }
 
 /* FEELING: wide, top-left block */
 .aw-feeling { grid-column: 1 / 3; grid-row: 1; }
-/* LIKES: tall right column — spans both rows (holds stickers) */
-.aw-likes   { grid-column: 3 / 4; grid-row: 1 / 3; min-height: 300px; }
+/* LIKES: tall right column — spans first two rows (holds stickers) */
+.aw-likes   { grid-column: 3 / 4; grid-row: 1 / 3; }
 /* HOBBIES: narrow bottom-left */
 .aw-hobbies { grid-column: 1 / 2; grid-row: 2; }
 /* MUSIC: medium bottom-middle */
@@ -988,7 +989,7 @@ body.dark .tag { color: #FFFFFF; }
   overflow: visible; /* allow stickers to overflow edges */
   display: flex;
   flex-direction: column;
-  min-height: 160px; /* expandable — grows with content */
+  /* expand to fit content — no fixed min height squashing stickers */
 }
 
 .about-widget-header {
@@ -1007,13 +1008,14 @@ body.dark .tag { color: #FFFFFF; }
 
 .about-widget-body {
   padding: 1rem 1.1rem;
-  flex: 1;
+  flex: 1 1 auto;
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
   align-items: flex-start;
   align-content: flex-start;
-  min-height: 120px; /* ensures empty containers still look intentional */
+  min-height: 90px; /* small floor for empty cards, but grows with content */
+  height: auto;
 }
 
 /* stickers inside widgets — non-draggable, static */
@@ -1047,12 +1049,12 @@ body.dark .tag { color: #FFFFFF; }
     grid-template-rows: auto;
   }
   .aw-feeling { grid-column: 1 / 3; grid-row: auto; }
-  .aw-likes   { grid-column: 2 / 3; grid-row: auto; min-height: 220px; }
+  .aw-likes   { grid-column: 1 / 3; grid-row: auto; }
   .aw-hobbies { grid-column: 1 / 2; grid-row: auto; }
-  .aw-music   { grid-column: 1 / 3; grid-row: auto; }
+  .aw-music   { grid-column: 2 / 3; grid-row: auto; }
 }
 @media (max-width: 480px) {
-  .about-widgets-panel { grid-template-columns: 1fr; }
+  .about-widgets-panel { grid-template-columns: 1fr; gap: 0.75rem; }
   .aw-feeling, .aw-likes, .aw-hobbies, .aw-music { grid-column: 1; grid-row: auto; }
 }
 
@@ -1246,10 +1248,10 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  background: var(--bg3);
-  border: 1px solid var(--border-lt);
+  background: transparent;
+  border: none;
   border-radius: 3px;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .desk-icon-img {
@@ -1298,16 +1300,17 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   width: fit-content;
   margin-left: auto;
   margin-top: 0.75rem;
-  opacity: 0.45;
-  transition: opacity 0.2s, background 0.15s;
+  opacity: 1;
+  transition: transform 0.15s;
   user-select: none;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
+  background: transparent;
 }
 .recycling-bin-btn:hover {
-  opacity: 1;
-  background: var(--bg3);
-  border-color: var(--border-lt);
+  transform: translateY(-2px);
+  background: transparent;
+  border-color: transparent;
 }
 .recycling-bin-btn img {
   width: 36px;
@@ -1316,12 +1319,13 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   image-rendering: pixelated;
   pointer-events: none;
   -webkit-user-drag: none;
+  background: transparent;
 }
 .recycling-bin-btn span {
   font-family: var(--font-mono);
   font-size: 7px;
   text-align: center;
-  color: var(--text-muted);
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -1483,16 +1487,17 @@ input[type="url"], textarea, [contenteditable] {
   cursor: pointer;
   padding: 6px 8px;
   width: fit-content;
-  opacity: 0.45;
-  transition: opacity 0.2s, background 0.15s;
+  opacity: 1;
+  transition: transform 0.15s;
   user-select: none;
   border: 1px solid transparent;
   border-radius: var(--radius-sm);
+  background: transparent;
 }
 .info-btn:hover {
-  opacity: 1;
-  background: var(--bg3);
-  border-color: var(--border-lt);
+  transform: translateY(-2px);
+  background: transparent;
+  border-color: transparent;
 }
 .info-btn img {
   width: 36px;
@@ -1501,6 +1506,7 @@ input[type="url"], textarea, [contenteditable] {
   image-rendering: pixelated;
   pointer-events: none;
   -webkit-user-drag: none;
+  background: transparent;
 }
 .info-btn-emoji {
   font-size: 28px;
@@ -1515,7 +1521,7 @@ input[type="url"], textarea, [contenteditable] {
   font-family: var(--font-mono);
   font-size: 7px;
   text-align: center;
-  color: var(--text-muted);
+  color: var(--text);
   text-transform: uppercase;
   letter-spacing: 0.04em;
 }
@@ -1538,15 +1544,14 @@ input[type="url"], textarea, [contenteditable] {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: var(--bg3);
-  border: 1px solid var(--border-lt);
+  background: transparent;
+  border: none;
   border-radius: 2px;
-  padding: 2px;
-  transition: transform 0.15s, border-color 0.15s;
+  padding: 0;
+  transition: transform 0.15s;
 }
 .badge-cell:hover {
   transform: translate(-1px, -1px);
-  border-color: var(--accent);
 }
 .badge-link { display: inline-flex; line-height: 0; }
 .badge-stamp {
@@ -1575,7 +1580,7 @@ body.admin-mode .badge-del { display: inline-block !important; }
 /* about-page badges row — placed as a full-width grid row beneath the bento */
 .about-widgets-panel .about-badges-wrap {
   grid-column: 1 / -1;
-  grid-row: 3;
+  grid-row: auto;
   width: 100%;
   margin-top: 0.25rem;
   min-height: 0;
