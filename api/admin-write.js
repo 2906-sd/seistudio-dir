@@ -1,12 +1,14 @@
 const crypto = require('crypto');
 const admin = require('firebase-admin');
 
-// Initialize Firebase Admin using your Vercel Master Credentials
-if (!admin.apps.length) {
+// Ensure firebase-admin is correctly referenced
+const firebaseAdmin = admin.default || admin;
+
+if (!firebaseAdmin.apps.length) {
   try {
     const serviceAccount = JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT);
-    admin.initializeApp({
-      credential: admin.credential.cert(serviceAccount),
+    firebaseAdmin.initializeApp({
+      credential: firebaseAdmin.credential.cert(serviceAccount),
       databaseURL: process.env.FIREBASE_DATABASE_URL
     });
   } catch (e) {
@@ -14,10 +16,9 @@ if (!admin.apps.length) {
   }
 }
 
-const db = admin.database();
+const db = firebaseAdmin.database();
 
 module.exports = async function handler(req, res) {
-  // CORS headers - mirroring your admin-auth layout
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -31,7 +32,6 @@ module.exports = async function handler(req, res) {
   }
 
   try {
-    // Parse incoming packet from frontend
     let body = req.body;
     if (typeof body === 'string') {
       body = JSON.parse(body);
@@ -39,7 +39,6 @@ module.exports = async function handler(req, res) {
 
     const { token, ts, op, path, data, id } = body;
 
-    // Security Check: Re-verify the session token using your master password
     const secret = process.env.ADMIN_PASSWORD;
     const expectedToken = crypto
       .createHmac('sha256', secret)
@@ -50,7 +49,6 @@ module.exports = async function handler(req, res) {
       return res.status(401).json({ ok: false, reason: 'Invalid credentials' });
     }
 
-    // Direct Database Execution (Bypasses rules)
     const ref = db.ref(path);
 
     if (op === 'push') {
