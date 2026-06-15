@@ -1,7 +1,5 @@
 {
   "rules": {
-
-    "//": "── Public message board: open writes, schema-validated ──",
     "board": {
       "messages": {
         ".read": true,
@@ -11,29 +9,17 @@
         }
       }
     },
-
-    "//content": "── Site content: anyone can READ; only the Vercel admin-write API (using the Firebase Admin SDK) can WRITE. The Admin SDK bypasses these rules, so we deny client writes entirely. ──",
     "content": {
       ".read": true,
       ".write": false,
-
-      "art":     { ".indexOn": ["timestamp"] },
-      "logs":    { ".indexOn": ["timestamp"] },
-      "shrines": { ".indexOn": ["timestamp"] },
-      "letters": { ".indexOn": ["timestamp"] },
-      "trash":   { ".indexOn": ["timestamp"] },
-      "badges":  { ".indexOn": ["timestamp"] },
-      "info":    { ".indexOn": ["timestamp"] },
-      "bag":     { ".indexOn": ["timestamp"] }
+      "art":      { ".indexOn": ["timestamp"] },
+      "logs":     { ".indexOn": ["timestamp"] },
+      "shrines":  { ".indexOn": ["timestamp"] },
+      "letters":  { ".indexOn": ["timestamp"] },
+      "trash":    { ".indexOn": ["timestamp"] },
+      "badges":   { ".indexOn": ["timestamp"] },
+      "info":     { ".indexOn": ["timestamp"] },
+      "bag":      { ".indexOn": ["timestamp"] }
     }
-  }
-}
-
-
-{
-  "name": "seioutloud",
-  "version": "1.0.0",
-  "dependencies": {
-    "firebase-admin": "^12.0.0"
   }
 }
