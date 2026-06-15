@@ -1,3 +1,4 @@
+// Triggering a clean rebuild.
 const crypto = require('crypto');
 const admin = require('firebase-admin');
 console.log('admin type:', typeof admin, 'isNull:', admin === null);
