@@ -767,8 +767,197 @@ body.admin-mode .admin-log-actions { display: flex; }
 .shrine-content .log-body-text { white-space: normal; }
 
 /* ═══════════════════════════════════════════════════════
-   LETTERS
+   LETTERS — envelope grid (5 per row, envelope-back look)
 ═══════════════════════════════════════════════════════ */
+.letter-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 1.25rem;
+  margin-top: 0.5rem;
+}
+@media (max-width: 1100px) { .letter-grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 900px)  { .letter-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .letter-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 380px)  { .letter-grid { grid-template-columns: 1fr; } }
+
+.letter-envelope {
+  position: relative;
+  aspect-ratio: 16 / 11;             /* envelope proportions */
+  background: var(--bg2);
+  background-image: repeating-linear-gradient(
+    45deg,
+    transparent 0,
+    transparent 14px,
+    color-mix(in srgb, var(--accent) 14%, transparent) 14px,
+    color-mix(in srgb, var(--accent) 14%, transparent) 18px,
+    transparent 18px,
+    transparent 32px,
+    color-mix(in srgb, var(--text) 8%, transparent) 32px,
+    color-mix(in srgb, var(--text) 8%, transparent) 36px
+  );
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow);
+  cursor: pointer;
+  overflow: hidden;
+  padding: 0;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.letter-envelope:hover {
+  transform: translate(-2px, -3px);
+  box-shadow: 4px 5px 0 var(--border);
+}
+
+/* Diagonal flap on the bottom-left of the envelope back. */
+.letter-envelope .env-flap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(135deg, transparent 49%, color-mix(in srgb, var(--bg2) 88%, var(--border) 12%) 50%, transparent 51%) no-repeat;
+  background-size: 100% 100%;
+}
+.letter-envelope::before {
+  /* The triangular envelope flap meeting in the centre — purely decorative. */
+  content: '';
+  position: absolute;
+  left: 50%; top: 0;
+  width: 78%;
+  height: 55%;
+  transform: translateX(-50%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--bg2) 92%, var(--border) 8%) 0%, transparent 100%);
+  border-bottom: 1.25px dashed color-mix(in srgb, var(--border) 35%, transparent);
+  clip-path: polygon(0 0, 100% 0, 50% 100%);
+  pointer-events: none;
+}
+
+/* Stamp — moved into the upper-right corner and made larger / more prominent. */
+.letter-envelope .env-stamp {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 56px;
+  height: 64px;
+  background: var(--bg);
+  border: 1.5px solid var(--border);
+  padding: 4px;
+  z-index: 3;
+  /* Perforated edge using a dotted outline + slight rotation for charm. */
+  outline: 2px dotted color-mix(in srgb, var(--border) 60%, transparent);
+  outline-offset: 2px;
+  transform: rotate(-6deg);
+  box-shadow: 1px 1px 0 var(--border);
+}
+.letter-envelope .env-stamp-inner {
+  width: 100%; height: 100%;
+  background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 22%, var(--bg2)) 0%, var(--bg2) 100%);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
+  padding: 3px 2px;
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--border));
+}
+.letter-envelope .env-stamp-flower {
+  font-size: 16px;
+  color: var(--accent);
+  line-height: 1;
+}
+.letter-envelope .env-stamp-cost {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 8px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.letter-envelope .env-stamp-postage {
+  font-family: var(--font-mono);
+  font-size: 6.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Circular postmark, also upper-right but behind the stamp. */
+.letter-envelope .env-postmark {
+  position: absolute;
+  top: 14px;
+  right: 70px;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  color: color-mix(in srgb, var(--text-muted) 80%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 50%, transparent);
+  border-radius: 50%;
+  width: 42px;
+  height: 42px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  letter-spacing: 0.04em;
+  background: color-mix(in srgb, var(--bg2) 70%, transparent);
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Address block at the lower-middle of the envelope back. */
+.letter-envelope .env-address {
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: 16%;
+  text-align: left;
+  z-index: 2;
+  background: color-mix(in srgb, var(--bg2) 78%, transparent);
+  padding: 6px 8px;
+  border-radius: var(--radius-sm);
+}
+.letter-envelope .env-to-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  margin-bottom: 2px;
+}
+.letter-envelope .env-to-name {
+  font-family: var(--font-tech);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.letter-envelope .env-subject {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.letter-envelope:hover .env-to-name { color: var(--accent); }
+.letter-envelope .admin-log-actions {
+  position: absolute;
+  bottom: 4px; left: 4px;
+  display: none;
+  gap: 4px;
+  z-index: 4;
+}
+body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
+.letter-envelope .admin-log-actions .admin-edit-btn,
+.letter-envelope .admin-log-actions .admin-delete-btn {
+  position: static;
+  font-size: 8px;
+  padding: 2px 5px;
+}
+
+/* ── LETTERS — legacy card kept below in case other places still use it ── */
+
 .letter-card {
   padding: 1.5rem 1.75rem;
   border: 1.5px solid var(--border);
@@ -1003,7 +1192,7 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 /* BAG: full-width banner, sits ABOVE Games + Likes */
 .aw-bag     { grid-column: 1 / -1; grid-row: 1; }
 /* FEELING (GAMES): wide block, row 2 left */
-.aw-feeling { grid-column: 1 / 3; grid-row: 2; }
+.aw-games { grid-column: 1 / 3; grid-row: 2; }
 /* LIKES: tall right column — spans rows 2-3 (holds stickers) */
 .aw-likes   { grid-column: 3 / 4; grid-row: 2 / 4; }
 /* HOBBIES: narrow bottom-left */
@@ -1034,6 +1223,10 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   font-weight: bold;
   flex-shrink: 0;
   border-radius: var(--radius) var(--radius) 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
 }
 
 .about-widget-body {
@@ -1060,6 +1253,36 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.15));
 }
 
+/* Wrap each admin-added sticker so a delete X can sit on top of it. */
+.sticker-wrap {
+  position: relative;
+  display: inline-flex;
+}
+.about-sticker-img {
+  max-width: 90px;
+  max-height: 90px;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+  -webkit-user-drag: none;
+  user-select: none;
+  filter: drop-shadow(2px 3px 4px rgba(0,0,0,0.15));
+}
+.sticker-del {
+  position: absolute !important;
+  top: -6px !important;
+  right: -6px !important;
+  width: 18px;
+  height: 18px;
+  padding: 0 !important;
+  font-size: 11px !important;
+  line-height: 16px !important;
+  display: none !important;
+  border-radius: 50% !important;
+  z-index: 2;
+}
+body.admin-mode .sticker-del { display: inline-block !important; }
+
 .widget-hint {
   font-family: var(--font-mono);
   font-size: 8.5px;
@@ -1079,14 +1302,14 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
     grid-template-rows: auto;
   }
   .aw-bag     { grid-column: 1 / 3; grid-row: auto; }
-  .aw-feeling { grid-column: 1 / 3; grid-row: auto; }
+  .aw-games   { grid-column: 1 / 3; grid-row: auto; }
   .aw-likes   { grid-column: 1 / 3; grid-row: auto; }
   .aw-hobbies { grid-column: 1 / 2; grid-row: auto; }
   .aw-music   { grid-column: 2 / 3; grid-row: auto; }
 }
 @media (max-width: 480px) {
   .about-widgets-panel { grid-template-columns: 1fr; gap: 0.75rem; }
-  .aw-bag, .aw-feeling, .aw-likes, .aw-hobbies, .aw-music { grid-column: 1; grid-row: auto; }
+  .aw-bag, .aw-games, .aw-likes, .aw-hobbies, .aw-music { grid-column: 1; grid-row: auto; }
 }
 
 /* ── "What's in My Bag" widget ── visual style for bag items ── */
@@ -1167,8 +1390,69 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 .lb-nav-btn:disabled { opacity: 0.3; pointer-events: none; }
 #lb-prev { left: 0; } #lb-next { right: 0; }
 .lb-image-counter { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-align: center; flex-shrink: 0; display: none; }
+/* ── ADMIN — paired image+caption rows for shrine form ── */
+.shrine-pair-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+.shrine-pair-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr auto;
+  gap: 6px;
+  align-items: center;
+}
+.shrine-pair-row .admin-input {
+  margin: 0;
+  font-size: 0.78rem;
+}
+.shrine-pair-del {
+  background: transparent;
+  border: 1.5px solid var(--border-lt);
+  color: var(--text-muted);
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.shrine-pair-del:hover {
+  background: var(--accent);
+  color: var(--text-inv);
+  border-color: var(--accent);
+}
+@media (max-width: 560px) {
+  .shrine-pair-row { grid-template-columns: 1fr auto; }
+  .shrine-pair-row .shrine-pair-caption { grid-column: 1 / -1; }
+}
+
 .lb-desc { font-size: 1rem; color: var(--text); line-height: 1.6; }
 .lb-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
+
+/* ── Simple lightbox (shrines + trash): caption on top, no info side ── */
+.lb-caption-top {
+  display: none;
+  padding: 0.65rem 1rem;
+  background: var(--bg2);
+  border-bottom: 1.5px solid var(--border-lt);
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text);
+  text-align: center;
+  letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.lightbox.lb-simple .lb-info-side { display: none !important; }
+.lightbox.lb-simple .lb-image-side { flex: 1; border-right: none; }
+.lightbox.lb-simple .lb-image-counter { display: none; }
+.lightbox.lb-simple .lb-caption-top:empty { display: none; }
+
 .zoom-controls { position: absolute; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 15; }
 .zoom-btn { background: var(--bg2); border: 1.5px solid var(--border); color: var(--text); font-family: var(--font-mono); font-size: 16px; width: 36px; height: 36px; cursor: pointer; box-shadow: 2px 2px 0 rgba(0,0,0,0.1); transition: background 0.15s, color 0.15s; border-radius: var(--radius-sm); }
 .zoom-btn:hover { background: var(--bg4); }
@@ -1655,9 +1939,11 @@ input[type="url"], textarea, [contenteditable] {
 .badge-link { display: inline-flex; line-height: 0; }
 .badge-stamp {
   /* Use max-width/height instead of fixed dims so non-100x40 stamps don't get cropped.
-     contain (vs cover) guarantees the whole stamp is visible. */
-  max-width: 100px;
-  max-height: 40px;
+     contain (vs cover) guarantees the whole stamp is visible.
+     !important is needed so the about-widget-body img rule doesn't override
+     these dimensions and balloon the home/about stamps to inconsistent sizes. */
+  max-width: 100px !important;
+  max-height: 40px !important;
   width: auto;
   height: auto;
   object-fit: contain;
@@ -1665,6 +1951,7 @@ input[type="url"], textarea, [contenteditable] {
   image-rendering: pixelated;
   pointer-events: auto;
   -webkit-user-drag: none;
+  filter: none !important; /* about-widget-body img adds a drop-shadow; not wanted on stamps */
 }
 .badge-del {
   position: absolute !important;
