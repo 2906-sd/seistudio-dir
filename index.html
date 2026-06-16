@@ -284,7 +284,7 @@
           </select>
         </div>
       </div>
-      <div id="letterList"></div>
+      <div class="letter-grid" id="letterList"></div>
     </section>
 
     <!-- Letter reader -->
@@ -374,9 +374,12 @@
             </div>
           </div>
 
-          <div class="about-widget aw-feeling">
-            <div class="about-widget-header">GAMES //</div>
-            <div class="about-widget-body" id="widget-feeling">
+          <div class="about-widget aw-games">
+            <div class="about-widget-header">
+              <span>GAMES //</span>
+              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
+            </div>
+            <div class="about-widget-body" id="widget-games" data-sticker-cat="games">
               <span class="widget-hint">// stickers loading...</span>
             </div>
           </div>
@@ -393,15 +396,21 @@
           </div>
 
           <div class="about-widget aw-hobbies">
-            <div class="about-widget-header">HOBBIES //</div>
-            <div class="about-widget-body" id="widget-hobbies">
+            <div class="about-widget-header">
+              <span>HOBBIES //</span>
+              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
+            </div>
+            <div class="about-widget-body" id="widget-hobbies" data-sticker-cat="hobbies">
               <span class="widget-hint">// stickers loading...</span>
             </div>
           </div>
 
           <div class="about-widget aw-music">
-            <div class="about-widget-header">MUSIC //</div>
-            <div class="about-widget-body" id="widget-music">
+            <div class="about-widget-header">
+              <span>MUSIC //</span>
+              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
+            </div>
+            <div class="about-widget-body" id="widget-music" data-sticker-cat="music">
               <span class="widget-hint">// stickers loading...</span>
             </div>
           </div>
@@ -545,6 +554,8 @@
       <span class="lb-toolbar-title" id="lb-title">FILE</span>
       <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
     </div>
+    <!-- Caption shown at top for simple (shrine/trash) mode -->
+    <div class="lb-caption-top" id="lb-caption-top"></div>
     <div class="lb-body">
       <div class="lb-image-side">
         <div class="lb-image-wrap" id="lbImageWrap">
@@ -603,6 +614,7 @@
         <button class="admin-tab"        id="tab-trash"   onclick="switchAdminTab('trash')">ADD TRASH</button>
         <button class="admin-tab"        id="tab-badges"  onclick="switchAdminTab('badges')">ADD BADGE</button>
         <button class="admin-tab"        id="tab-bag"     onclick="switchAdminTab('bag')">ADD BAG ITEM</button>
+        <button class="admin-tab"        id="tab-stickers" onclick="switchAdminTab('stickers')">ADD STICKER</button>
         <button class="admin-tab"        id="tab-info"    onclick="switchAdminTab('info')">ADD INFO</button>
       </div>
 
@@ -677,7 +689,8 @@
       <!-- SHRINE FORM -->
       <div id="adminShrinesForm" class="admin-form" style="display:none">
         <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
-          // Shrines are image galleries — no text body needed.
+          // Shrines are image galleries — no text body needed.<br />
+          // Each gallery image gets its own caption right next to it. Leave caption blank for no tooltip.
         </p>
         <label class="admin-label">Shrine Title</label>
         <input type="text" id="shrineTitle" class="admin-input" placeholder="e.g. Monster Hunter" />
@@ -688,13 +701,11 @@
         <label class="admin-label">Cover / Header Image URL</label>
         <input type="text" id="shrineCover" class="admin-input" placeholder="https://..." />
 
-        <label class="admin-label">Gallery Images — one URL per line</label>
-        <textarea id="shrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png&#10;https://image3.png"></textarea>
+        <label class="admin-label">Gallery Images + Captions</label>
+        <div id="shrinePairRows" class="shrine-pair-rows"></div>
+        <button type="button" class="admin-edit-btn" style="display:inline-block;margin-top:6px;cursor:pointer;" onclick="addShrinePairRow('shrinePairRows')">+ ADD IMAGE</button>
 
-        <label class="admin-label">Image Captions — one per line, matching image order (leave blank for no tooltip)</label>
-        <textarea id="shrineCaptions" class="admin-input" placeholder="Caption for image 1&#10;Caption for image 2&#10;(leave blank to skip)"></textarea>
-
-        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddShrine()">OPEN SHRINE →</button>
+        <button class="board-submit" style="cursor:pointer;margin-top:14px" onclick="adminAddShrine()">OPEN SHRINE →</button>
         <p id="shrineSuccess" class="admin-success">// SHRINE OPENED.</p>
       </div>
 
@@ -757,6 +768,29 @@
 
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddBag()">PIN TO BAG →</button>
         <p id="bagSuccess" class="admin-success">// PINNED.</p>
+      </div>
+
+      <!-- STICKER FORM -->
+      <div id="adminStickersForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Stickers shown in the GAMES / HOBBIES / MUSIC widgets on the About page.<br />
+          // Transparent PNGs work best.
+        </p>
+        <label class="admin-label">Widget</label>
+        <select id="stickerCategory" class="admin-input" style="cursor:pointer;">
+          <option value="games">Games</option>
+          <option value="hobbies">Hobbies</option>
+          <option value="music">Music</option>
+        </select>
+
+        <label class="admin-label">Sticker Image URL</label>
+        <input type="text" id="stickerImage" class="admin-input" placeholder="https://.../sticker.png" />
+
+        <label class="admin-label">Alt text / Title (optional)</label>
+        <input type="text" id="stickerAlt" class="admin-input" placeholder="e.g. Monster Hunter" />
+
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddSticker()">ADD STICKER →</button>
+        <p id="stickerSuccess" class="admin-success">// PINNED.</p>
       </div>
 
       <!-- INFO FORM -->
@@ -836,11 +870,10 @@
       <input type="text" id="editShrineTagline" class="admin-input" />
       <label class="admin-label">Cover / Header Image URL</label>
       <input type="text" id="editShrineCover" class="admin-input" />
-      <label class="admin-label">Gallery Images — one URL per line</label>
-      <textarea id="editShrineImages" class="admin-input admin-body-field" placeholder="https://image1.png&#10;https://image2.png"></textarea>
-      <label class="admin-label">Image Captions — one per line (matches image order)</label>
-      <textarea id="editShrineCaptions" class="admin-input" placeholder="Caption for image 1&#10;Caption for image 2"></textarea>
-      <div style="display:flex;gap:10px;margin-top:6px;flex-wrap:wrap;">
+      <label class="admin-label">Gallery Images + Captions</label>
+      <div id="editShrinePairRows" class="shrine-pair-rows"></div>
+      <button type="button" class="admin-edit-btn" style="display:inline-block;margin-top:6px;cursor:pointer;" onclick="addShrinePairRow('editShrinePairRows')">+ ADD IMAGE</button>
+      <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
         <button class="board-submit" style="cursor:pointer" onclick="adminSaveEditShrine()">SAVE CHANGES →</button>
         <button class="admin-delete-btn" style="position:static;cursor:pointer" onclick="adminDeleteShrineFromEdit()">DELETE SHRINE</button>
       </div>
@@ -1021,7 +1054,13 @@ function renderHomeUpdates() {
   }));
   (trashData||[]).forEach(t => {
     const labelMap={stupid:'stupid thought',doodle:'doodle',pic:'pic',uhhhhh:'uhhhhh',thought:'stupid thought',note:'uhhhhh'};
-    const title=(t.content||'').slice(0,40)+((t.content||'').length>40?'…':'');
+    const isImage = t.type==='doodle' || t.type==='pic';
+    // For image trash entries the "content" is a URL — show a friendly title
+    // instead of a truncated URL string in the updates feed.
+    const rawContent = String(t.content||'');
+    const title = isImage
+      ? (t.type==='doodle' ? 'new doodle' : 'new pic')
+      : (rawContent.slice(0,40)+(rawContent.length>40?'…':''));
     items.push({ type:'TRASH', title, meta:labelMap[t.type]||'scrap', section:'trash', id:t.id, ts:t.timestamp||0 });
   });
 
@@ -1046,13 +1085,13 @@ function renderHomeUpdates() {
 function openUpdateItem(section, id) {
   if (section === 'log') {
     const idx = logsData.findIndex(l => l.id === id);
-    if (idx !== -1) readLog(idx);
+    if (idx !== -1) readLog(idx); else showPage('writing');
   } else if (section === 'shrine') {
     const idx = shrinesData.findIndex(s => s.id === id);
-    if (idx !== -1) readShrine(idx);
+    if (idx !== -1) readShrine(idx); else showPage('shrines');
   } else if (section === 'letter') {
     const idx = lettersData.findIndex(l => l.id === id);
-    if (idx !== -1) readLetter(idx);
+    if (idx !== -1) readLetter(idx); else showPage('letters');
   } else if (section === 'art')   { showPage('art'); }
   else if (section === 'trash')   { showPage('trash'); }
   else if (section === 'info')    { showPage('info'); }
@@ -1165,6 +1204,7 @@ function setAdminMode(active){
   if(lettersData.length) renderLetterList();
   if(trashData.length) renderTrashPage();
   if(typeof renderBag === 'function') renderBag();
+  if(typeof renderStickers === 'function') renderStickers();
   renderBadgesStrips();
   renderInfoPage();
   const eb=document.getElementById('logReaderEditBtn');if(eb)eb.style.display=active?'inline-block':'none';
@@ -1173,8 +1213,8 @@ function setAdminMode(active){
   const bb=document.getElementById('badgesAdminBtn');if(bb)bb.style.display=active?'inline-block':'none';
   // Info-page + ADD buttons toggle (CSS-driven via body.admin-mode for most, but inline-style overrides need explicit reset)
   document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
-  // About-page bag +ADD button + any other inline-style admin-edit-btns
-  document.querySelectorAll('.aw-bag .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
+  // About-page bag + sticker +ADD buttons + any other inline-style admin-edit-btns
+  document.querySelectorAll('.aw-bag .admin-edit-btn, .aw-games .admin-edit-btn, .aw-hobbies .admin-edit-btn, .aw-music .admin-edit-btn').forEach(b=>b.style.display=active?'inline-block':'none');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1306,6 +1346,14 @@ function onFirebaseReady() {
     renderHomeUpdates();
     updateLastUpdatedDisplay();
   }).catch(e=>console.error('Bag load failed:',e));
+
+  // Load stickers (games / hobbies / music widgets on About)
+  db.ref('content/stickers').orderByChild('timestamp').once('value',snap=>{
+    stickersData=[];
+    snap.forEach(child=>{const d=child.val();stickersData.push({id:child.key,...d});});
+    renderStickers();
+    updateLastUpdatedDisplay();
+  }).catch(e=>console.error('Stickers load failed:',e));
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1454,17 +1502,30 @@ function readShrine(i){
     galleryHtml=`<div class="shrine-gallery">${imgs.map((u,i)=>{
       const cap=captions[i]||'';
       const fullUrl=normalizeImageUrl(u);
-      // Make every thumbnail clickable → reuse the existing single-image
-      // lightbox (which already handles zoom / pan / dark backdrop).
-      const onclick=`openImageLightbox('${encodeURIComponent(fullUrl)}','${escHtml(shrine.title||'SHRINE')}','${escHtml(cap)}')`;
-      return`<div class="shrine-gallery-item"${cap?` data-caption="${escHtml(cap)}"`:''} onclick="${onclick}">`
-            +`<img class="shrine-gallery-img" src="${fullUrl}" alt="${escHtml(cap)}" loading="lazy" />`
+      // Use data attributes + a delegated click handler (set up below) rather
+      // than an inline onclick. This avoids string-escaping bugs with quotes
+      // / apostrophes in captions that previously caused every-other-image
+      // clicks to silently fail.
+      return`<div class="shrine-gallery-item"${cap?` data-caption="${escHtml(cap)}"`:''} data-shrine-img="${escHtml(fullUrl)}" data-shrine-title="${escHtml(shrine.title||'SHRINE')}">`
+            +`<img class="shrine-gallery-img" src="${fullUrl}" alt="${escHtml(cap)}" loading="lazy" draggable="false" />`
             +`</div>`;
     }).join('')}</div>`;
   }else if(shrine.body){
     galleryHtml=`<div class="log-body-text" style="white-space:normal;">${shrine.body}</div>`;
   }
   container.innerHTML=`${imgHtml}<div class="shrine-content"><p class="post-label" style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--accent);">SHRINE // ${shrine.tagline||''}</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.75rem;">${shrine.title}</h1>${galleryHtml}</div>`;
+
+  // Wire up click handlers for the gallery items (delegation-free, simpler).
+  container.querySelectorAll('.shrine-gallery-item[data-shrine-img]').forEach(item=>{
+    item.addEventListener('click', ev=>{
+      ev.preventDefault();
+      ev.stopPropagation();
+      const url   = item.getAttribute('data-shrine-img')   || '';
+      const title = item.getAttribute('data-shrine-title') || 'SHRINE';
+      const cap   = item.getAttribute('data-caption')      || '';
+      openImageLightbox(encodeURIComponent(url), title, cap);
+    });
+  });
 
   const h='#shrine/'+shrine.id;
   if(window.location.hash!==h)window.history.pushState({page:'shrine-reader',shrineId:shrine.id},'',h);
@@ -1479,16 +1540,36 @@ function editCurrentShrine(){const idx=window._currentShrineIndex;if(idx===undef
 function renderLetterList(){
   const list=document.getElementById('letterList');if(!list)return;
   list.innerHTML='';
-  if(!lettersData.length){list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No letters yet.</p>';return;}
+  if(!lettersData.length){list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1;">// No letters yet.</p>';return;}
   let display=[...lettersData];
   const sortOrder=document.getElementById('letterSortOrder')?.value||'latest';
-  if(sortOrder==='latest')display.reverse();
+  // Sort by timestamp explicitly so the visual order matches the dropdown,
+  // regardless of how the underlying lettersData array was loaded.
+  display.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
+  if(sortOrder==='latest') display.reverse();
   display.forEach(letter=>{
     const originalIndex=lettersData.findIndex(l=>l.id===letter.id);
     const now=letter.timestamp?new Date(letter.timestamp):null;
     const dateStr=now?`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`:'';
-    const el=document.createElement('div');el.className='letter-card';el.onclick=()=>readLetter(originalIndex);
-    el.innerHTML=`<div class="letter-stamp">UNSENT<br/>${dateStr}</div><div class="letter-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-subject">${escHtml(letter.subject||'(untitled)')}</div>${renderTagsHTML(letter.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
+    const el=document.createElement('div');
+    el.className='letter-envelope';
+    el.onclick=()=>readLetter(originalIndex);
+    el.innerHTML=
+      `<div class="env-stamp">`
+       +`<div class="env-stamp-inner">`
+         +`<div class="env-stamp-flower">✿</div>`
+         +`<div class="env-stamp-cost">SEI</div>`
+         +`<div class="env-stamp-postage">UNSENT</div>`
+       +`</div>`
+     +`</div>`
+     +`<div class="env-postmark">${dateStr||'••.••.••'}</div>`
+     +`<div class="env-address">`
+       +`<div class="env-to-label">TO:</div>`
+       +`<div class="env-to-name">${escHtml(letter.to||'???')}</div>`
+       +`<div class="env-subject">RE: ${escHtml(letter.subject||'(untitled)')}</div>`
+     +`</div>`
+     +`<div class="env-flap"></div>`
+     +`<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
     list.appendChild(el);
   });
 }
@@ -1514,37 +1595,76 @@ function editCurrentLetter(){const idx=window._currentLetterIndex;if(idx===undef
 ═══════════════════════════════════════════════════════ */
 let lbPiece=null,lbIdx=0,lbArtIndex=-1;
 function openLightbox(i){
-  lbPiece=artData[i];lbIdx=0;lbArtIndex=i;resetZoom();renderLightbox();
+  lbPiece=Object.assign({}, artData[i], { simple:false });
+  lbIdx=0;lbArtIndex=i;resetZoom();renderLightbox();
   const delBtn=document.getElementById('lb-delete-btn');
   if(delBtn) delBtn.style.display = isAdminSession() ? 'block' : 'none';
   document.getElementById('lightbox').classList.add('show');
 }
 
-/* ── Generic single-image lightbox (used by trash, etc.) ── */
-function openImageLightbox(encodedUrl, title, dateLabel){
+/* ── Simplified single-image lightbox (shrines + trash) ──
+   Shows ONLY the image with the caption above it. No "DATE",
+   no info side panel, no delete button. */
+function openImageLightbox(encodedUrl, title, caption){
   const url = decodeURIComponent(encodedUrl);
-  lbPiece = { title: title || 'IMAGE', desc: '', meta: dateLabel || '', images: [url] };
+  lbPiece = {
+    title: title || 'IMAGE',
+    caption: caption || '',
+    images: [url],
+    simple: true
+  };
   lbIdx = 0;
-  lbArtIndex = -1; // hide the "DELETE THIS PIECE" button (art-only)
+  lbArtIndex = -1;
   resetZoom();
   renderLightbox();
-  const delBtn = document.getElementById('lb-delete-btn');
-  if(delBtn) delBtn.style.display = 'none';
   document.getElementById('lightbox').classList.add('show');
 }
 function renderLightbox(){
+  if(!lbPiece) return;
   const multi=lbPiece.images.length>1;
+  const lb=document.getElementById('lightbox');
+  const isSimple = !!lbPiece.simple;
+
+  // Toggle simple-mode class on the root lightbox so CSS can hide
+  // the right-hand info panel + show the caption strip on top.
+  lb.classList.toggle('lb-simple', isSimple);
+
   document.getElementById('lb-image').src=normalizeImageUrl(lbPiece.images[lbIdx]);
-  document.getElementById('lb-title').textContent=lbPiece.title;
-  document.getElementById('lb-desc').textContent=lbPiece.desc;
-  document.getElementById('lb-meta').textContent='DATE: '+lbPiece.meta;
+  document.getElementById('lb-title').textContent=lbPiece.title || '';
+
+  // Top caption — only used in simple mode.
+  const capTop=document.getElementById('lb-caption-top');
+  if(capTop){
+    if(isSimple && lbPiece.caption){ capTop.textContent=lbPiece.caption; capTop.style.display='block'; }
+    else { capTop.textContent=''; capTop.style.display='none'; }
+  }
+
+  // Right-side info panel — only used by the art lightbox.
+  const descEl=document.getElementById('lb-desc');
+  const metaEl=document.getElementById('lb-meta');
+  const delBtn=document.getElementById('lb-delete-btn');
+  if(isSimple){
+    if(descEl){ descEl.textContent=''; }
+    if(metaEl){ metaEl.textContent=''; }
+    if(delBtn){ delBtn.style.display='none'; }
+  } else {
+    if(descEl){ descEl.textContent=lbPiece.desc || ''; }
+    if(metaEl){ metaEl.textContent=lbPiece.meta ? lbPiece.meta : ''; }
+    if(delBtn){ delBtn.style.display = isAdminSession() ? 'block' : 'none'; }
+  }
+
   const prev=document.getElementById('lb-prev'),next=document.getElementById('lb-next'),ctr=document.getElementById('lb-counter');
   prev.style.display=next.style.display=ctr.style.display=multi?'block':'none';
   if(multi)ctr.textContent=`${lbIdx+1} / ${lbPiece.images.length}`;
   prev.disabled=lbIdx===0;next.disabled=lbIdx===lbPiece.images.length-1;
 }
-function lbNav(dir){lbIdx=Math.max(0,Math.min(lbPiece.images.length-1,lbIdx+dir));resetZoom();renderLightbox();}
-function closeLightbox(){document.getElementById('lightbox').classList.remove('show');lbPiece=null;lbIdx=0;lbArtIndex=-1;resetZoom();}
+function lbNav(dir){if(!lbPiece)return;lbIdx=Math.max(0,Math.min(lbPiece.images.length-1,lbIdx+dir));resetZoom();renderLightbox();}
+function closeLightbox(){
+  const lb=document.getElementById('lightbox');
+  lb.classList.remove('show');
+  lb.classList.remove('lb-simple');
+  lbPiece=null;lbIdx=0;lbArtIndex=-1;resetZoom();
+}
 
 /* ═══════════════════════════════════════════════════════
    STATUS PILL + LIVE TIME
@@ -1710,10 +1830,14 @@ function switchAdminTab(tab){
   document.getElementById('adminTrashForm').style.display=tab==='trash'?'flex':'none';
   document.getElementById('adminBadgesForm').style.display=tab==='badges'?'flex':'none';
   document.getElementById('adminBagForm').style.display=tab==='bag'?'flex':'none';
+  document.getElementById('adminStickersForm').style.display=tab==='stickers'?'flex':'none';
   document.getElementById('adminInfoForm').style.display=tab==='info'?'flex':'none';
-  ['art','logs','shrines','letters','trash','badges','bag','info'].forEach(t=>{
+  ['art','logs','shrines','letters','trash','badges','bag','stickers','info'].forEach(t=>{
     const btn=document.getElementById('tab-'+t);if(btn)btn.classList.toggle('active',t===tab);
   });
+  // Reset the shrine paired-input UI whenever the shrine tab is opened from a
+  // clean slate. (Existing values are preserved if the form is being re-shown.)
+  if(tab==='shrines'){ if(typeof initShrinePairRowsIfEmpty==='function') initShrinePairRowsIfEmpty(); }
   // Auto-fill date for trash tab
   if(tab==='trash'){
     const dateEl=document.getElementById('trashDate');
@@ -1749,6 +1873,46 @@ function adminAddLog(){
   ['logTitle','logBody','logTags','logStickers','logMeta'].forEach(id=>document.getElementById(id).value='');
 }
 
+/* ── SHRINE PAIRED IMAGE+CAPTION ROW HELPERS ──
+   Replaces the older "two parallel textareas" UI so it's obvious which
+   caption belongs to which image URL. */
+function addShrinePairRow(containerId, url, caption){
+  const c=document.getElementById(containerId); if(!c) return;
+  const row=document.createElement('div');
+  row.className='shrine-pair-row';
+  row.innerHTML=
+    `<input type="text" class="admin-input shrine-pair-url" placeholder="https://image-url.png" value="${escHtml(url||'')}" />`
+   +`<input type="text" class="admin-input shrine-pair-caption" placeholder="caption (optional)" value="${escHtml(caption||'')}" />`
+   +`<button type="button" class="shrine-pair-del" onclick="this.parentNode.remove()" title="Remove row">×</button>`;
+  c.appendChild(row);
+}
+function initShrinePairRowsIfEmpty(){
+  const c=document.getElementById('shrinePairRows'); if(!c) return;
+  if(c.children.length===0){
+    addShrinePairRow('shrinePairRows');
+    addShrinePairRow('shrinePairRows');
+  }
+}
+function readShrinePairRows(containerId){
+  const c=document.getElementById(containerId); if(!c) return {images:[],captions:[]};
+  const images=[], captions=[];
+  c.querySelectorAll('.shrine-pair-row').forEach(row=>{
+    const u=row.querySelector('.shrine-pair-url').value.trim();
+    const cap=row.querySelector('.shrine-pair-caption').value.trim();
+    if(u){ images.push(u); captions.push(cap); }
+  });
+  return {images,captions};
+}
+function fillShrinePairRows(containerId, images, captions){
+  const c=document.getElementById(containerId); if(!c) return;
+  c.innerHTML='';
+  const imgs=images||[], caps=captions||[];
+  const n=Math.max(imgs.length, 1);
+  for(let i=0;i<n;i++){
+    addShrinePairRow(containerId, imgs[i]||'', caps[i]||'');
+  }
+}
+
 /* ── ADD SHRINE ── */
 function adminAddShrine(){
   if(!isAdminSession())return;
@@ -1756,12 +1920,13 @@ function adminAddShrine(){
   if(!title)return;
   const tagline=document.getElementById('shrineTagline').value.trim();
   const coverImage=document.getElementById('shrineCover').value.trim();
-  const images=document.getElementById('shrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
-  const captions=document.getElementById('shrineCaptions').value.split('\n').map(c=>c.trim());
+  const {images, captions} = readShrinePairRows('shrinePairRows');
   const shrine={title,tagline,coverImage,images,captions};
   adminWrite('push','content/shrines',shrine).then(r=>{shrine.id=r.id;shrine.timestamp=Date.now();shrinesData.push(shrine);renderShrineGrid();renderHomeUpdates();const s=document.getElementById('shrineSuccess');s.style.display='block';setTimeout(()=>{s.style.display='none';},3000);})
     .catch(e=>{console.error('Shrine push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
-  ['shrineTitle','shrineTagline','shrineCover','shrineImages','shrineCaptions'].forEach(id=>document.getElementById(id).value='');
+  ['shrineTitle','shrineTagline','shrineCover'].forEach(id=>document.getElementById(id).value='');
+  fillShrinePairRows('shrinePairRows', [], []); // reset to a fresh pair of empty rows
+  initShrinePairRowsIfEmpty();
 }
 
 /* ── ADD LETTER ── */
@@ -1819,7 +1984,7 @@ function renderTrashPage(){
       const typeLabel={stupid:'💭 STUPID THOUGHT',doodle:'🖊️ DOODLE',pic:'🖼️ PIC',uhhhhh:'🌀 UHHHHH',thought:'💭 STUPID THOUGHT',note:'🌀 UHHHHH'};
       const label=typeLabel[item.type]||'SCRAP';
       const delBtn=isAdminSession()?`<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`:'';
-      if(item.type==='doodle'||item.type==='pic'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openImageLightbox('${encodeURIComponent(item.content)}','${escHtml(label)}','${escHtml(date)}')" />${delBtn}</div>`;}
+      if(item.type==='doodle'||item.type==='pic'){return`<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openImageLightbox('${encodeURIComponent(item.content)}','${escHtml(label)}','')" />${delBtn}</div>`;}
       return`<div class="trash-item"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
     }).join('')}</div></div>`;
   }).join('');
@@ -2078,12 +2243,68 @@ function adminDeleteBag(id){
 }
 
 /* ═══════════════════════════════════════════════════════
+   STICKERS — About-page Games / Hobbies / Music widgets
+═══════════════════════════════════════════════════════ */
+let stickersData = [];
+const STICKER_CATS = ['games','hobbies','music'];
+
+function renderStickers(){
+  STICKER_CATS.forEach(cat=>{
+    const el=document.querySelector(`[data-sticker-cat="${cat}"]`);
+    if(!el) return;
+    const items=(stickersData||[]).filter(s=>s.category===cat && s.image);
+    if(!items.length){
+      el.innerHTML = '<span class="widget-hint">// no stickers yet.</span>';
+      return;
+    }
+    el.innerHTML = items.map(s=>{
+      const del = isAdminSession()
+        ? `<button class="admin-delete-btn sticker-del" onclick="event.stopPropagation();adminDeleteSticker('${s.id}')" title="Remove sticker">×</button>`
+        : '';
+      return `<div class="sticker-wrap">`
+           + `<img class="about-sticker-img" src="${escHtml(s.image)}" alt="${escHtml(s.alt||cat)}" title="${escHtml(s.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`
+           + `${del}</div>`;
+    }).join('');
+  });
+}
+
+function adminAddSticker(){
+  if(!isAdminSession())return;
+  const category = (document.getElementById('stickerCategory').value || 'games').toLowerCase();
+  const image    = document.getElementById('stickerImage').value.trim();
+  const alt      = document.getElementById('stickerAlt').value.trim();
+  if(!image) return;
+  if(!STICKER_CATS.includes(category)) return;
+  const entry = { category, image, alt };
+  adminWrite('push','content/stickers',entry).then(r=>{
+    entry.id=r.id; entry.timestamp=Date.now(); stickersData.push(entry);
+    renderStickers();
+    const s=document.getElementById('stickerSuccess');
+    s.style.display='block'; setTimeout(()=>s.style.display='none',3000);
+  }).catch(e=>{console.error('Sticker push failed:',e);alert('// COULD NOT SAVE: '+e.message);});
+  ['stickerImage','stickerAlt'].forEach(id=>document.getElementById(id).value='');
+}
+
+function adminDeleteSticker(id){
+  if(!isAdminSession())return;
+  if(!confirm('Remove this sticker?'))return;
+  const idx=stickersData.findIndex(s=>s.id===id); if(idx<0)return;
+  if(id&&!String(id).startsWith('local_')){
+    adminWrite('remove','content/stickers',{id}).then(()=>{
+      stickersData.splice(idx,1); renderStickers();
+    }).catch(e=>{console.error('Sticker delete failed:',e);alert('// DELETE FAILED');});
+  } else {
+    stickersData.splice(idx,1); renderStickers();
+  }
+}
+
+/* ═══════════════════════════════════════════════════════
    LAST UPDATED (status card)
 ═══════════════════════════════════════════════════════ */
 function updateLastUpdatedDisplay(){
   const el=document.getElementById('statusLastUpdated');if(!el)return;
   let maxTs=0;
-  [artData,logsData,shrinesData,lettersData,trashData,badgesData,infoData,bagData].forEach(arr=>{
+  [artData,logsData,shrinesData,lettersData,trashData,badgesData,infoData,bagData,stickersData].forEach(arr=>{
     (arr||[]).forEach(item=>{if(item&&item.timestamp&&item.timestamp>maxTs)maxTs=item.timestamp;});
   });
   if(!maxTs){el.textContent='--.--.--';return;}
@@ -2141,8 +2362,7 @@ function openEditShrine(idx){
   document.getElementById('editShrineTitle').value=shrine.title||'';
   document.getElementById('editShrineTagline').value=shrine.tagline||'';
   document.getElementById('editShrineCover').value=shrine.coverImage||'';
-  document.getElementById('editShrineImages').value=normalizeImages(shrine.images||[]).join('\n');
-  document.getElementById('editShrineCaptions').value=normalizeImages(shrine.captions||[]).join('\n');
+  fillShrinePairRows('editShrinePairRows', normalizeImages(shrine.images||[]), normalizeImages(shrine.captions||[]));
   document.getElementById('editShrineSuccess').style.display='none';document.getElementById('editShrineError').style.display='none';
   document.getElementById('editShrineModal').style.display='flex';
 }
@@ -2152,8 +2372,7 @@ function adminSaveEditShrine(){
   const shrine=shrinesData[idx],id=shrine.id;
   const title=document.getElementById('editShrineTitle').value.trim();
   if(!title){document.getElementById('editShrineError').textContent='// TITLE IS REQUIRED.';document.getElementById('editShrineError').style.display='block';return;}
-  const images=document.getElementById('editShrineImages').value.split('\n').map(u=>u.trim()).filter(Boolean);
-  const captions=document.getElementById('editShrineCaptions').value.split('\n').map(c=>c.trim());
+  const {images, captions} = readShrinePairRows('editShrinePairRows');
   const updated={title,tagline:document.getElementById('editShrineTagline').value.trim(),coverImage:document.getElementById('editShrineCover').value.trim(),images,captions};
   if(id){
     adminWrite('update','content/shrines',{id,data:updated}).then(()=>{
@@ -2264,6 +2483,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('adminPassInput').addEventListener('keydown',e=>{if(e.key==='Enter')verifyAdminPass();});
   if(isAdminSession())setAdminMode(true);
   initImageDrag();initWheelZoom();
+  if(typeof initShrinePairRowsIfEmpty==='function') initShrinePairRowsIfEmpty();
 });
 
 window.addEventListener('load',()=>{initFirebase();initStickers();initBoardResize();updateLiveStatus();setInterval(updateLiveStatus,1000);});
