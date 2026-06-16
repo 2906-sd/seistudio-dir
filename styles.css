@@ -1904,8 +1904,7 @@ body.admin-mode .info-del { display: inline-block !important; }
 }
 
 
-
-/* ── Hero illustration (replaces the .hero-text headline) ── */
+/* ── Hero illustration (swaps per theme) ── */
 .hero-card .hero-image {
   display: block;
   width: 100%;
@@ -1918,9 +1917,10 @@ body.admin-mode .info-del { display: inline-block !important; }
   pointer-events: none;
 }
 
-body.dark .hero-card .hero-image {
-filter: brightness(1.15) contrast(1.05);
-}
+/* Show the right one for the current mode, hide the other. */
+.hero-card .hero-image-dark  { display: none; }
+body.dark .hero-card .hero-image-light { display: none; }
+body.dark .hero-card .hero-image-dark  { display: block; }
 
 @media (max-width: 700px) {
   .hero-card .hero-image { max-width: 260px; }
