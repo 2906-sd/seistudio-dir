@@ -1902,3 +1902,26 @@ body.admin-mode .info-del { display: inline-block !important; }
   .info-card-wide { grid-column: 1; }
   .home-bottom-row { flex-direction: row; }
 }
+
+
+
+/* ── Hero illustration (replaces the .hero-text headline) ── */
+.hero-card .hero-image {
+  display: block;
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+  margin: 0.75rem auto 0;
+  image-rendering: -webkit-optimize-contrast;
+  user-select: none;
+  -webkit-user-drag: none;
+  pointer-events: none;
+}
+
+body.dark .hero-card .hero-image {
+filter: brightness(1.15) contrast(1.05);
+}
+
+@media (max-width: 700px) {
+  .hero-card .hero-image { max-width: 260px; }
+}
