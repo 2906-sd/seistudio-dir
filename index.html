@@ -46,11 +46,11 @@
       </div>
       <!-- TODO: replace href with your actual Neocities URL (e.g. https://seistudio.neocities.org) -->
       <a class="desk-icon desk-icon-external"
-         href="https://neocities.org/site/seistudio"
+         href="seioutloud.neocities.org"
          target="_blank" rel="noopener"
          id="desk-link-neocities"
          title="Mirror on Neocities">
-        <div class="desk-icon-wrap"><img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Programing-Apps-Websites-Browser--Streamline-Pixel_neocities.svg" class="desk-icon-img" alt="NEOCITIES" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22 shape-rendering=%22crispEdges%22 fill=%22%23100C08%22&gt;&lt;path d=%22M1 2h14v2H1zM1 4h2v10H1zM13 4h2v10h-2zM3 5h10v1H3zM3 14h10v1H3zM4 7h2v2H4zM7 7h2v2H7zM10 7h2v2h-2zM4 10h2v2H4zM7 10h2v2H7zM10 10h2v2h-2z%22/&gt;&lt;/svg&gt;'" /></div>
+        <div class="desk-icon-wrap"><img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Pet-Animals-Cat--Streamline-Pixel_nixwg4.png" class="desk-icon-img" alt="NEOCITIES" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22 shape-rendering=%22crispEdges%22 fill=%22%23100C08%22&gt;&lt;path d=%22M1 2h14v2H1zM1 4h2v10H1zM13 4h2v10h-2zM3 5h10v1H3zM3 14h10v1H3zM4 7h2v2H4zM7 7h2v2H7zM10 7h2v2h-2zM4 10h2v2H4zM7 10h2v2H7zM10 10h2v2h-2z%22/&gt;&lt;/svg&gt;'" /></div>
         <span class="desk-icon-label">NEOCITIES</span>
       </a>
       <div class="desk-icon" onclick="showPage('art')" id="desk-link-art">
@@ -172,7 +172,7 @@
         <!-- BADGES STRIP — internet stamps, full-width -->
         <div class="home-card badges-card">
           <div class="home-card-header">
-            <span>BADGES.GIF // INTERNET_STAMPS</span>
+            <span> ✿ // </span>
             <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
           </div>
           <div class="home-card-body badges-strip" id="badgesStripHome">
@@ -185,7 +185,7 @@
       <!-- HOME BOTTOM ROW — info (left) + recycling bin (right) -->
       <div class="home-bottom-row">
         <div id="infoBtn" class="info-btn" onclick="showPage('info')" title="ⓘ site info / resources">
-          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Interface-Essential-Information-Circle--Streamline-Pixel_info.svg" onerror="this.onerror=null;this.outerHTML='<span class=&quot;info-btn-emoji&quot;>ⓘ</span>'" alt="ⓘ" />
+          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Interface-Essential-Question-Help-Circle-1--Streamline-Pixel_oityrk.png" onerror="this.onerror=null;this.outerHTML='<span class=&quot;info-btn-emoji&quot;>ⓘ</span>'" alt="ⓘ" />
           <span>Info / Resources</span>
         </div>
         <div id="recyclingBinBtn" class="recycling-bin-btn" onclick="showPage('trash')" title="🗑 secret trash">
@@ -404,7 +404,7 @@
           <!-- BADGES STRIP — internet stamps, full-width across widgets panel -->
           <div class="about-widget about-badges-wrap">
             <div class="about-widget-header">
-              <span>BADGES.GIF // INTERNET_STAMPS</span>
+              <span>✿ // </span>
             </div>
             <div class="about-widget-body badges-strip" id="badgesStripAbout">
               <span class="widget-hint">// no badges yet</span>
@@ -420,7 +420,7 @@
     <section id="trash">
       <div class="section-header">
         <h1>THE <span>TRASH</span></h1>
-        <p>// discarded snippets, failed projects, intrusive thoughts, abandoned doodles.</p>
+        <p>// the junk drawer of the mind; unrefined, unlinked, unbothered.</p>
         <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
       </div>
       <div id="trashContent"></div>
@@ -429,8 +429,8 @@
     <!-- ══════════════════ INFO / RESOURCES ══════════════════ -->
     <section id="info">
       <div class="section-header">
-        <h1>INFO<span> / RESOURCES</span></h1>
-        <p>// the credits, the colors, the code — everything that holds this place together.</p>
+        <h1>INFO + RESOURCE<span>S</span></h1>
+        <p>// the anatomy of this place and resources that might help you build your digital and visual identity :)</p>
         <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
       </div>
 
@@ -1921,8 +1921,9 @@ function renderInfoPage(){
       {label:'Space Mono',value:'Mono / terminal text',link:'https://fonts.google.com/specimen/Space+Mono'},
     ],
     colors:[
-      {label:'Accent',hex:'#405FFA',value:'Primary blue'},
-      {label:'Hashtag',hex:'#FA4055',value:'Tag / hashtag pill'},
+      {label:'Accent 1',hex:'#405FFA',value:'Primary blue'},
+      {label:'Accent 2',hex:'#FA4055',value:'Secondary pink'},
+         {label:'Accent 3',hex: '#FF8363',value:'Tertiary Orange'},
       {label:'Background',hex:'#F4F4F4',value:'Light mode base'},
       {label:'Card BG',hex:'#FFFFFF',value:'Light mode cards'},
       {label:'Border',hex:'#100C08',value:'Hard outline'},

@@ -632,8 +632,8 @@ body.admin-mode .admin-log-actions { display: flex; }
   padding-right: 0.75rem;
   scrollbar-gutter: stable;
   /* Subtle fade on the bottom edge hints there's more to read. */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 24px), transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 24px), transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #FA4055 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0, #FA4055 calc(100% - 24px), transparent 100%);
 }
 .log-body-text::-webkit-scrollbar { width: 8px; }
 .log-body-text::-webkit-scrollbar-track { background: var(--bg3); border-radius: 4px; }
