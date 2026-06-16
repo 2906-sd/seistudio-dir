@@ -624,7 +624,21 @@ body.admin-mode .admin-log-actions { display: flex; }
   line-height: 1.7;
   white-space: pre-wrap;
   color: var(--text);
+  /* Long entries scroll inside the log card instead of stretching the page.
+     Title + tags + stickers stay anchored; only the prose scrolls. */
+  max-height: 68vh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.75rem;
+  scrollbar-gutter: stable;
+  /* Subtle fade on the bottom edge hints there's more to read. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 24px), transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0, #000 calc(100% - 24px), transparent 100%);
 }
+.log-body-text::-webkit-scrollbar { width: 8px; }
+.log-body-text::-webkit-scrollbar-track { background: var(--bg3); border-radius: 4px; }
+.log-body-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.log-body-text::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 .log-sticker {
   position: absolute;
@@ -717,6 +731,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   gap: 0.75rem;
   margin-top: 0.5rem;
 }
+.shrine-gallery-item { cursor: zoom-in; }
 .shrine-gallery-img {
   width: 100%;
   aspect-ratio: 1;
@@ -1304,6 +1319,18 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   border-color: var(--accent);
 }
 .desk-icon.active .desk-icon-label { color: var(--accent); }
+
+/* External-link variant (e.g. Neocities). Uses <a> so it opens in a new tab. */
+a.desk-icon, a.desk-icon-external {
+  text-decoration: none;
+  color: inherit;
+}
+.desk-icon-external .desk-icon-label::after {
+  /* tiny arrow chip so external links read as "off-site" */
+  content: ' ↗';
+  color: var(--accent);
+  font-weight: bold;
+}
 
 .desk-icon-wrap {
   width: 32px;
