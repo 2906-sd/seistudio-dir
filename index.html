@@ -1026,27 +1026,21 @@ function newQuote() {
   field.id = 'petal-field';
   document.body.appendChild(field);
 
-  const LIGHT_COLORS = ['#ffb7c5', '#ffd9e3', '#ffffff', '#f7c5d0'];
+  // pick whatever hex codes you want here — totally independent of your site's
+  // existing --root / body.dark variables
+const LIGHT_COLORS = ['#FA4055', '#FF7385', '#FFB6C1', '#FFE4E1'];
+const DARK_COLORS  = ['#FA4055', '#FF8293', '#405FFA', '#8A9DF8'];
+
   const MAX_PETALS = 45;
   const SPAWN_INTERVAL = 350;
 
   let activeCount = 0;
 
-  // pulls straight from :root/body.dark variables so this never
-  // goes stale if you change your palette later
-  function getDarkPalette() {
-    const styles = getComputedStyle(document.body);
-    const accent  = styles.getPropertyValue('--accent').trim();
-    const textSub = styles.getPropertyValue('--text-sub').trim();
-    const text    = styles.getPropertyValue('--text').trim();
-    return [accent || '#405FFA', textSub || '#cccccc', text || '#fbfbfb'];
-  }
-
   function spawnPetal() {
     if (activeCount >= MAX_PETALS) return;
 
     const isDark = document.body.classList.contains('dark');
-    const palette = isDark ? getDarkPalette() : LIGHT_COLORS;
+    const palette = isDark ? DARK_COLORS : LIGHT_COLORS;
 
     const outer = document.createElement('span');
     outer.className = 'petal-fall';
