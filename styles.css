@@ -1355,7 +1355,7 @@ body.admin-mode .sticker-del { display: inline-block !important; }
 .bag-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 2.5rem 1.5rem;
+  gap: 2.5rem 1rem; /* Tightened horizontal gap from 1.5rem to 1rem */
   padding: 30px 20px;
 }
 
@@ -1378,8 +1378,8 @@ body.admin-mode .sticker-del { display: inline-block !important; }
 }
 
 .bag-item img {
-  max-width: 120px; 
-  max-height: 120px;
+  max-width: 160px; /* Increased from 120px */
+  max-height: 160px; /* Increased from 120px */
   width: auto;
   height: auto;
   object-fit: contain;
@@ -1393,7 +1393,7 @@ body.admin-mode .sticker-del { display: inline-block !important; }
 }
 
 .bag-item-emoji { 
-  font-size: 72px;
+  font-size: 96px; /* Increased from 72px */
   line-height: 1; 
   filter: drop-shadow(3px 5px 6px rgba(0,0,0,0.15));
   transition: transform 0.2s ease;
