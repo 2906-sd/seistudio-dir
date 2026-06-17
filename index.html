@@ -945,6 +945,42 @@ const DISPLAY_MSGS = 150;
 const renderedIds = new Set();
 
 /* ═══════════════════════════════════════════════════════
+  PETALS
+═══════════════════════════════════════════════════════ */
+function createPetal() {
+  // Only spawn petals if the user is on the home page
+  // (Adjust 'home' to match your routing variable if needed)
+  if (typeof currentPage !== 'undefined' && currentPage !== 'home') return;
+
+  const petal = document.createElement('div');
+  petal.className = 'petal';
+  petal.innerText = '✿';
+
+  // Randomize horizontal placement across the screen width
+  petal.style.left = Math.random() * 100 + 'vw';
+
+  // Randomize the size slightly for depth
+  petal.style.fontSize = Math.random() * 8 + 10 + 'px';
+
+  // Randomize falling speed (between 6 and 11 seconds)
+  const fallDuration = Math.random() * 5 + 6;
+  petal.style.animationDuration = `${fallDuration}s, ${Math.random() * 2 + 2}s`;
+
+  // Randomize opacity so some look further away
+  petal.style.opacity = Math.random() * 0.6 + 0.4;
+
+  document.body.appendChild(petal);
+
+  // Remove the petal from the DOM once its falling animation ends
+  setTimeout(() => {
+    petal.remove();
+  }, fallDuration * 1000);
+}
+
+// Spawn a new petal every 600ms (increase number for fewer petals, decrease for more)
+setInterval(createPetal, 600);
+  
+/* ═══════════════════════════════════════════════════════
    DICTIONARY OF OBSCURE SORROWS — embedded JSON
 ═══════════════════════════════════════════════════════ */
 const DOS_WORDS = [
@@ -1378,6 +1414,7 @@ function _activateSection(id){
 }
 
 function showPage(id){
+  window.currentPage = pageId;
   showLoader();
   setTimeout(()=>{
     _activateSection(id);
