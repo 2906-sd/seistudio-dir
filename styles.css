@@ -1178,26 +1178,32 @@ input.board-input, textarea.board-input {
 /* ═══════════════════════════════════════════════════════
    ABOUT — PROFILE + EXTRAS GRID
 ═══════════════════════════════════════════════════════ */
-/* ═══════════════════════════════════════════════════════
-   ABOUT — PROFILE + EXTRAS GRID
-═══════════════════════════════════════════════════════ */
 #about.active { display: block; }
 
-/* ── ABOUT LAYOUT — profile left, widgets right ── */
+/* ── ABOUT LAYOUT — Centered Bento Grid ── */
 .about-layout {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  /* 3 Columns: Flexible outer columns, fixed 310px center for the profile card */
+  grid-template-columns: minmax(180px, 1fr) 310px minmax(180px, 1fr);
   gap: 1.5rem;
-  align-items: flex-start;
+  align-items: stretch;
   max-width: 100%;
+}
+
+.about-widgets-panel {
+  /* MAGIC TRICK: This allows the child widgets to participate directly in the .about-layout grid! */
+  display: contents; 
 }
 
 .about-card {
   background: var(--bg2); border: 1.5px solid var(--border);
-  flex: 0 0 310px; max-width: 310px;
+  width: 100%; max-width: 310px; margin: 0 auto;
   box-shadow: var(--shadow-lg);
   position: relative; z-index: 2; border-radius: var(--radius); overflow: hidden;
+  grid-column: 2;
+  grid-row: 2 / 4; /* Spans across the middle rows, perfectly centering it */
 }
+
 .about-header { background: var(--bg3); border-bottom: 1.5px solid var(--border);
                padding: 0.5rem 1rem; font-family: var(--font-mono);
                font-size: 10px; color: var(--text);
@@ -1220,38 +1226,53 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 .about-links { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
 .about-links a { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
-/* ── ABOUT WIDGETS PANEL — dynamic bento right side ── */
-.about-widgets-panel {
-  flex: 1;
-  min-width: 0;
-  display: grid;
-  /* Use minmax to prevent columns from collapsing or squeezing on laptop screens */
-  grid-template-columns: minmax(130px, 1fr) minmax(130px, 1fr) minmax(160px, 1.25fr);
-  grid-template-rows: auto auto auto auto;
-  gap: 1.25rem;
-  align-items: stretch;
-  grid-auto-flow: row dense;
+/* ── BENTO WIDGET PLACEMENT ── */
+
+/* BAG: full-width banner, sits across the very top */
+.aw-bag { 
+  grid-column: 1 / 4; 
+  grid-row: 1; 
 }
 
-/* BAG: full-width banner, sits ABOVE Games + Likes */
-.aw-bag     { grid-column: 1 / -1; grid-row: 1; }
-/* FEELING (GAMES): wide block, row 2 left */
-.aw-games   { grid-column: 1 / 3; grid-row: 2; }
-/* LIKES: tall right column — spans rows 2-3 (holds stickers) */
-.aw-likes   { grid-column: 3 / 4; grid-row: 2 / 4; }
-/* HOBBIES: narrow bottom-left */
-.aw-hobbies { grid-column: 1 / 2; grid-row: 3; }
-/* MUSIC: medium bottom-middle */
-.aw-music   { grid-column: 2 / 3; grid-row: 3; }
+/* FEELING (GAMES): Left side, upper */
+.aw-games { 
+  grid-column: 1; 
+  grid-row: 2; 
+}
+
+/* HOBBIES: Left side, lower */
+.aw-hobbies { 
+  grid-column: 1; 
+  grid-row: 3; 
+}
+
+/* LIKES: Right side, upper */
+.aw-likes { 
+  grid-column: 3; 
+  grid-row: 2; 
+}
+
+/* MUSIC: Right side, lower */
+.aw-music { 
+  grid-column: 3; 
+  grid-row: 3; 
+}
+
+/* BADGES STRIP: full-width banner, sits across the bottom */
+.about-badges-wrap { 
+  grid-column: 1 / 4; 
+  grid-row: 4; 
+}
 
 .about-widget {
   background: var(--bg2);
   border: 1.5px solid var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
-  overflow: visible; /* allow stickers to overflow edges */
+  overflow: visible; 
   display: flex;
   flex-direction: column;
+  height: 100%; /* Ensures widgets stretch vertically to match the profile card */
 }
 
 .about-widget-header {
@@ -1272,7 +1293,6 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   gap: 8px;
 }
 
-/* Restored: flex-wrap layout for organic, clustered, sticker-sheet placement */
 .about-widget-body {
   padding: 1.25rem;
   flex: 1 1 auto;
@@ -1281,11 +1301,11 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   gap: 1rem;
   align-items: flex-start;
   align-content: flex-start;
-  min-height: 110px; /* roomy floor that grows cleanly with content */
+  min-height: 110px; 
   height: auto;
 }
 
-/* Restored: cozy 85px max sticker sizes with gorgeous drop shadows */
+/* Cozy 85px max sticker sizes with drop shadows */
 .about-widget-body img,
 .about-sticker-img {
   max-width: 85px;
@@ -1306,7 +1326,6 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.22));
 }
 
-/* Wrap each admin-added sticker so a delete X can sit on top of it. */
 .sticker-wrap {
   position: relative;
   display: inline-flex;
@@ -1417,29 +1436,25 @@ body.admin-mode .sticker-del { display: inline-block !important; }
 }
 
 /* ── RESPONSIVE MEDIA QUERIES ── */
-/* Trigger earlier (at 1140px) to prevent the profile card and 3-column bento from getting squished */
+
+/* TABLET VIEW: Collapses into 2 columns, Profile Card moves to the top */
 @media (max-width: 1140px) {
   .about-layout { 
-    flex-direction: column; 
-    align-items: center;
-  }
-  .about-card { 
-    flex: none; 
-    max-width: 100%; 
-    width: 100%; 
-  }
-  .about-widgets-panel {
-    width: 100%;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.25rem;
   }
-  .aw-bag     { grid-column: 1 / 3; }
-  .aw-games   { grid-column: 1 / 3; }
-  .aw-likes   { grid-column: 1 / 3; grid-row: auto; }
-  .aw-hobbies { grid-column: 1 / 2; }
-  .aw-music   { grid-column: 2 / 3; }
+  .about-card { 
+    grid-column: 1 / 3; 
+    grid-row: 1; /* Pushes profile to the top center */
+    max-width: 100%; 
+  }
+  .aw-bag     { grid-column: 1 / 3; grid-row: 2; }
+  .aw-games   { grid-column: 1;     grid-row: 3; }
+  .aw-likes   { grid-column: 2;     grid-row: 3 / 5; } /* Spans the right side */
+  .aw-hobbies { grid-column: 1;     grid-row: 4; }
+  .aw-music   { grid-column: 1 / 3; grid-row: 5; }
+  .about-badges-wrap { grid-column: 1 / 3; grid-row: 6; }
   
-  /* Let likes lay out horizontally on tablet screen stack */
   #widget-likes {
     flex-direction: row;
     flex-wrap: wrap;
@@ -1448,13 +1463,13 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   }
 }
 
-@media (max-width: 480px) {
-  .about-widgets-panel { 
+/* MOBILE VIEW: Stacks cleanly into 1 column */
+@media (max-width: 768px) {
+  .about-layout { 
     grid-template-columns: 1fr; 
-    gap: 0.75rem; 
   }
-  .aw-bag, .aw-games, .aw-likes, .aw-hobbies, .aw-music { 
-    grid-column: 1; 
+  .about-card, .aw-bag, .aw-games, .aw-likes, .aw-hobbies, .aw-music, .about-badges-wrap { 
+    grid-column: 1 / -1; 
     grid-row: auto; 
   }
 }
