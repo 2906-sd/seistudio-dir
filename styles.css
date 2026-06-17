@@ -1193,7 +1193,6 @@ input.board-input, textarea.board-input {
   display: contents; 
 }
 
-/* ROW 1: Profile Card */
 .about-card {
   background: var(--bg2); border: 1.5px solid var(--border);
   width: 100%; max-width: 800px; margin: 0 auto;
@@ -1227,24 +1226,31 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 
 /* ── BENTO WIDGET PLACEMENT ── */
 
-/* ROW 2: BAG */
+/* BAG: full-width banner, below profile */
 .aw-bag { 
   grid-column: 1 / 4; 
   grid-row: 2;
 }
 
-/* ROW 3: THREE COLUMNS: Likes, Hobbies, Games */
-.aw-likes   { grid-column: 1; grid-row: 3; }
-.aw-hobbies { grid-column: 2; grid-row: 3; }
-.aw-games   { grid-column: 3; grid-row: 3; }
-
-/* ROW 4: MUSIC (Fallback positioning just in case it is still active) */
-.aw-music { 
-  grid-column: 1 / 4; 
-  grid-row: 4; 
+/* ASYMMETRICAL BENTO: 
+   Games gets a large 2x2 box for many stickers. 
+   Likes and Hobbies are stacked on the right. */
+.aw-games { 
+  grid-column: 1 / 3; 
+  grid-row: 3 / 5;
 }
 
-/* ROW 5: BADGES STRIP */
+.aw-likes { 
+  grid-column: 3; 
+  grid-row: 3;
+}
+
+.aw-hobbies { 
+  grid-column: 3; 
+  grid-row: 4;
+}
+
+/* BADGES STRIP: full-width banner, at the bottom */
 .about-badges-wrap { 
   grid-column: 1 / 4; 
   grid-row: 5;
@@ -1424,23 +1430,21 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   .about-layout { 
     grid-template-columns: repeat(2, 1fr);
   }
-  .about-card { grid-column: 1 / 3; grid-row: 1; }
-  .aw-bag     { grid-column: 1 / 3; grid-row: 2; }
-  .aw-likes   { grid-column: 1;     grid-row: 3; }
-  .aw-hobbies { grid-column: 2;     grid-row: 3; }
-  .aw-games   { grid-column: 1 / 3; grid-row: 4; }
-  .aw-music   { grid-column: 1 / 3; grid-row: 5; }
-  .about-badges-wrap { grid-column: 1 / 3; grid-row: 6; }
+  .about-card, .aw-bag, .aw-games, .about-badges-wrap { 
+    grid-column: 1 / 3; 
+    grid-row: auto;
+  }
+  /* On tablets, Likes and Hobbies sit nicely side by side */
+  .aw-likes { grid-column: 1; grid-row: auto; }
+  .aw-hobbies { grid-column: 2; grid-row: auto; }
 }
 
 @media (max-width: 768px) {
   .about-layout { 
     grid-template-columns: 1fr; 
   }
-  /* On mobile, un-fix the rows so they stack beautifully one after another naturally */
-  .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .aw-music, .about-badges-wrap { 
+  .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .about-badges-wrap { 
     grid-column: 1 / -1; 
-    grid-row: auto;
   }
 }
 
