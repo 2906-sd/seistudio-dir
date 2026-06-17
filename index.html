@@ -46,7 +46,7 @@
       </div>
       <!-- TODO: replace href with your actual Neocities URL (e.g. https://seistudio.neocities.org) -->
       <a class="desk-icon desk-icon-external"
-         href="https://seioutloud.neocities.org"
+         href="seioutloud.neocities.org"
          target="_blank" rel="noopener"
          id="desk-link-neocities"
          title="Mirror on Neocities">
@@ -442,7 +442,7 @@
     </section>
 
     <!-- ══════════════════ INFO / RESOURCES ══════════════════ -->
-<section id="info">
+    <section id="info">
       <div class="section-header">
         <h1>INFO + RESOURCE<span>S</span></h1>
         <p>// the anatomy of this place and resources that might help you build your digital and visual identity :)</p>
@@ -450,7 +450,7 @@
       </div>
 
       <div class="info-grid">
-
+<!-- HOW IT WORKS -->
         <div class="info-card info-card-wide">
           <div class="info-card-header">
             <span>HOW_IT_WORKS.MD</span>
@@ -469,6 +469,7 @@
           </div>
         </div>
 
+        <!-- CODE RESOURCES -->
         <div class="info-card">
           <div class="info-card-header">
             <span>CODE_RESOURCES.MD</span>
@@ -479,6 +480,7 @@
           </div>
         </div>
 
+        <!-- OTHER RESOURCES -->
         <div class="info-card">
           <div class="info-card-header">
             <span>OTHER_RESOURCES.LOG</span>
@@ -489,6 +491,7 @@
           </div>
         </div>
 
+        <!-- ART -->
         <div class="info-card">
           <div class="info-card-header">
             <span>ART.MD</span>
@@ -499,6 +502,7 @@
           </div>
         </div>
 
+        <!-- DESIGN -->
         <div class="info-card">
           <div class="info-card-header">
             <span>DESIGN.MD</span>
@@ -509,6 +513,7 @@
           </div>
         </div>
 
+        <!-- OTHER COOL THINGS -->
         <div class="info-card info-card-wide">
           <div class="info-card-header">
             <span>OTHER_COOL_THINGS.TXT</span>
@@ -939,33 +944,6 @@ const MAX_MSGS     = 300;
 const DISPLAY_MSGS = 150;
 const renderedIds = new Set();
 
-/* ═══════════════════════════════════════════════════════
-  PETALS
-═══════════════════════════════════════════════════════ */
-function createPetal() {
-  const current = window.currentPage || 'home';
-  if (current !== 'home') return;
-
-  const petal = document.createElement('div');
-  petal.className = 'petal';
-  petal.innerText = '✿';
-
-  petal.style.left = Math.random() * 100 + 'vw';
-  petal.style.fontSize = Math.random() * 8 + 12 + 'px';
-  
-  const fallDuration = Math.random() * 5 + 7; 
-  const swayDuration = Math.random() * 2 + 3; 
-  petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
-  petal.style.opacity = Math.random() * 0.5 + 0.4;
-
-  document.body.appendChild(petal);
-
-  setTimeout(() => {
-    petal.remove();
-  }, fallDuration * 1000);
-}
-setInterval(createPetal, 500);
-  
 /* ═══════════════════════════════════════════════════════
    DICTIONARY OF OBSCURE SORROWS — embedded JSON
 ═══════════════════════════════════════════════════════ */
@@ -1400,7 +1378,6 @@ function _activateSection(id){
 }
 
 function showPage(id){
-  window.currentPage = id; // Fixed: changed pageId to id
   showLoader();
   setTimeout(()=>{
     _activateSection(id);
@@ -2089,9 +2066,10 @@ function toggleInfoFields(){
 }
 
 function renderInfoPage(){
-  // Removed 'iconCredits', 'fonts', and 'colors'
+  // 1. Removed 'iconCredits', 'fonts', and 'colors' from the categories array
   const cats=['code','other','art','design','otherCool'];
   
+  // 2. Removed the defaults for the deleted cards
   const defaults={
     code:[
       {label:'Firebase Realtime DB',value:'Bulletin board + content storage',link:'https://firebase.google.com/docs/database'},
@@ -2109,11 +2087,13 @@ function renderInfoPage(){
 
   cats.forEach(cat=>{
     const el=document.getElementById('info-'+cat);if(!el)return;
+    // Always show defaults first, then admin entries appended.
     const defaultItems=(defaults[cat]||[]).map((d,i)=>({...d,id:'def_'+cat+'_'+i,category:cat,_default:true}));
     const adminItems=infoData.filter(i=>i.category===cat);
     const items=[...defaultItems,...adminItems];
     if(!items.length){el.innerHTML='<p class="info-empty">// nothing here yet.</p>';return;}
 
+    // Pagination — slice items into pages of INFO_PAGE_SIZE.
     const totalPages = Math.max(1, Math.ceil(items.length / INFO_PAGE_SIZE));
     let page = infoCardPage[cat] || 0;
     if(page >= totalPages) page = totalPages - 1;
@@ -2122,9 +2102,12 @@ function renderInfoPage(){
     const pageStart = page * INFO_PAGE_SIZE;
     const pageItems = items.slice(pageStart, pageStart + INFO_PAGE_SIZE);
 
-    const rowsHtml = pageItems.map(item=>{
+const rowsHtml = pageItems.map(item=>{
       const delBtn=(isAdminSession()&&!item._default)?`<button class="admin-delete-btn info-del" onclick="adminDeleteInfo('${item.id}')">×</button>`:'';
+      
+      // Cleaned: Removed the color-specific logic since that category is removed
       const linkHtml=item.link?`<a href="${escHtml(item.link)}" target="_blank" rel="noopener" class="info-row-link">${escHtml(item.link)}</a>`:'';
+      
       return`<div class="info-row">
         <span class="info-row-label">${escHtml(item.label||'')}</span>
         ${item.value?`<span class="info-row-value">${escHtml(item.value)}</span>`:''}
@@ -2133,6 +2116,7 @@ function renderInfoPage(){
       </div>`;
     }).join('');
 
+    // Pager only renders if there's more than one page.
     let pagerHtml = '';
     if(totalPages > 1){
       const prevDisabled = page === 0 ? 'disabled' : '';
@@ -2143,9 +2127,9 @@ function renderInfoPage(){
         <button class="info-pager-btn" ${nextDisabled} onclick="infoSetPage('${cat}', ${page + 1})" aria-label="Next page">▶</button>
       </div>`;
     }
+
     el.innerHTML = rowsHtml + pagerHtml;
   });
-}
   // Toggle admin + add buttons
   document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b=>b.style.display=isAdminSession()?'inline-block':'none');
 }
