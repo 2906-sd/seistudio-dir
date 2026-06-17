@@ -1016,7 +1016,62 @@ function newQuote() {
   }
   next();
 }
+/* ═══════════════════════════════════════════════════════
+  PETALS FUNCTION
+═══════════════════════════════════════════════════════ */
+(function () {
+  // respect accessibility settings — no petals for users who've asked for reduced motion
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
+  const field = document.createElement('div');
+  field.id = 'petal-field';
+  document.body.appendChild(field);
+
+  const COLORS = ['#ffb7c5', '#ffd9e3', '#ffffff', '#f7c5d0']; // tweak to taste
+  const MAX_PETALS = 45;        // hard cap so it never tanks performance
+  const SPAWN_INTERVAL = 350;   // ms between new petals — lower = denser
+
+  let activeCount = 0;
+
+  function spawnPetal() {
+    if (activeCount >= MAX_PETALS) return;
+
+    const outer = document.createElement('span');
+    outer.className = 'petal-fall';
+
+    const inner = document.createElement('span');
+    inner.textContent = '✿';
+
+    const size = Math.random() * 14 + 12;        // 12–26px
+    const fallDuration = Math.random() * 6 + 7;   // 7–13s to cross screen
+    const swayDuration = Math.random() * 3 + 2;   // 2–5s wobble loop
+    const startX = Math.random() * 100;           // vw
+    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const opacity = (Math.random() * 0.4 + 0.5).toFixed(2);
+
+    outer.style.left = startX + 'vw';
+    outer.style.fontSize = size + 'px';
+    outer.style.color = color;
+    outer.style.setProperty('--petal-opacity', opacity);
+    outer.style.animationDuration = fallDuration + 's';
+
+    inner.style.animationDuration = swayDuration + 's';
+
+    outer.appendChild(inner);
+    field.appendChild(outer);
+    activeCount++;
+
+    outer.addEventListener('animationend', (e) => {
+      if (e.target === outer) {
+        outer.remove();
+        activeCount--;
+      }
+    });
+  }
+
+  setInterval(spawnPetal, SPAWN_INTERVAL);
+})();
+  
 /* ═══════════════════════════════════════════════════════
    DATA STORES
    (trashData / badgesData / infoData / bagData are declared
