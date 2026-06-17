@@ -1457,6 +1457,9 @@ function _activateSection(id){
   const bar=document.getElementById('desktopIconsBar');
   if(bar)bar.classList.remove('show');
   window.scrollTo(0,0);
+  if(id === 'asks-page') {
+        renderAnsweredAsks();
+    }
 }
 
 function showPage(id){
