@@ -948,37 +948,33 @@ const renderedIds = new Set();
   PETALS
 ═══════════════════════════════════════════════════════ */
 function createPetal() {
-  // Only spawn petals if the user is on the home page
-  // (Adjust 'home' to match your routing variable if needed)
-  if (typeof currentPage !== 'undefined' && currentPage !== 'home') return;
+  // If currentPage isn't set yet, assume home on fresh load
+  const current = window.currentPage || 'home';
+  if (current !== 'home') return;
 
   const petal = document.createElement('div');
   petal.className = 'petal';
   petal.innerText = '✿';
 
-  // Randomize horizontal placement across the screen width
+  // Randomize start position, size, drift speed, and visibility
   petal.style.left = Math.random() * 100 + 'vw';
-
-  // Randomize the size slightly for depth
-  petal.style.fontSize = Math.random() * 8 + 10 + 'px';
-
-  // Randomize falling speed (between 6 and 11 seconds)
-  const fallDuration = Math.random() * 5 + 6;
-  petal.style.animationDuration = `${fallDuration}s, ${Math.random() * 2 + 2}s`;
-
-  // Randomize opacity so some look further away
-  petal.style.opacity = Math.random() * 0.6 + 0.4;
+  petal.style.fontSize = Math.random() * 8 + 12 + 'px';
+  
+  const fallDuration = Math.random() * 5 + 7; // Slow cascade speed (7-12s)
+  const swayDuration = Math.random() * 2 + 3; // Gentle sway rate
+  petal.style.animationDuration = `${fallDuration}s, ${swayDuration}s`;
+  petal.style.opacity = Math.random() * 0.5 + 0.4;
 
   document.body.appendChild(petal);
 
-  // Remove the petal from the DOM once its falling animation ends
+  // Clean up element when animation finishes
   setTimeout(() => {
     petal.remove();
   }, fallDuration * 1000);
 }
 
-// Spawn a new petal every 600ms (increase number for fewer petals, decrease for more)
-setInterval(createPetal, 600);
+// Spawn a new petal every 500ms
+setInterval(createPetal, 500);
   
 /* ═══════════════════════════════════════════════════════
    DICTIONARY OF OBSCURE SORROWS — embedded JSON
@@ -1414,7 +1410,7 @@ function _activateSection(id){
 }
 
 function showPage(id){
-  window.currentPage = pageId;
+  window.currentPage = pageid;
   showLoader();
   setTimeout(()=>{
     _activateSection(id);
