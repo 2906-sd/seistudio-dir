@@ -71,7 +71,7 @@ body.dark { background-image: none; }
   position: fixed;
   top: -30px;
   color: var(--accent);
-  font-family: var(--font-tech); /* Uses Comfortaa */
+  font-family: var(--font-tech); /* Comfortaa */
   pointer-events: none;
   z-index: 9999;
   user-select: none;
@@ -79,21 +79,13 @@ body.dark { background-image: none; }
 }
 
 @keyframes petalFall {
-  0% {
-    top: -30px;
-  }
-  100% {
-    top: 100vh;
-  }
+  0% { top: -30px; }
+  100% { top: 100vh; }
 }
 
 @keyframes petalSway {
-  0% {
-    transform: translateX(0px) rotate(0deg);
-  }
-  100% {
-    transform: translateX(40px) rotate(120deg);
-  }
+  0% { transform: translateX(0px) rotate(0deg); }
+  100% { transform: translateX(40px) rotate(120deg); }
 }
 /* ── TOP NAV ─────────────────────────────────────────── */
 .top-nav {
