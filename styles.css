@@ -58,6 +58,51 @@ a:hover {
   opacity: 1;    /* Overrides the opacity transition if you want full color intensity */
 }
 
+/* ══════════════════════════════════════════════════════
+PETAL FALLING
+══════════════════════════════════════════════════════ */
+#petal-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* never blocks clicks/links underneath */
+  overflow: hidden;
+  z-index: 60; /* raise/lower this if it ends up over/under modals & menus */
+}
+
+.petal-fall {
+  position: absolute;
+  top: 0;
+  will-change: transform, opacity;
+  animation-name: petal-fall;
+  animation-timing-function: linear;
+  animation-fill-mode: forwards;
+}
+
+.petal-fall span {
+  display: inline-block;
+  animation-name: petal-sway;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+@keyframes petal-fall {
+  from { transform: translateY(-10vh); opacity: 0; }
+  5%   { opacity: var(--petal-opacity, 0.85); }
+  95%  { opacity: var(--petal-opacity, 0.85); }
+  to   { transform: translateY(110vh); opacity: 0; }
+}
+
+@keyframes petal-sway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25%      { transform: translateX(15px) rotate(90deg); }
+  50%      { transform: translateX(-12px) rotate(180deg); }
+  75%      { transform: translateX(18px) rotate(270deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #petal-field { display: none; }
+}
+
 /* ── BASE ────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
