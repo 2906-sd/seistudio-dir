@@ -1020,21 +1020,33 @@ function newQuote() {
   PETALS FUNCTION
 ═══════════════════════════════════════════════════════ */
 (function () {
-  // respect accessibility settings — no petals for users who've asked for reduced motion
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const field = document.createElement('div');
   field.id = 'petal-field';
   document.body.appendChild(field);
 
-  const COLORS = ['#ffb7c5', '#ffd9e3', '#ffffff', '#f7c5d0']; // tweak to taste
-  const MAX_PETALS = 45;        // hard cap so it never tanks performance
-  const SPAWN_INTERVAL = 350;   // ms between new petals — lower = denser
+  const LIGHT_COLORS = ['#ffb7c5', '#ffd9e3', '#ffffff', '#f7c5d0'];
+  const MAX_PETALS = 45;
+  const SPAWN_INTERVAL = 350;
 
   let activeCount = 0;
 
+  // pulls straight from :root/body.dark variables so this never
+  // goes stale if you change your palette later
+  function getDarkPalette() {
+    const styles = getComputedStyle(document.body);
+    const accent  = styles.getPropertyValue('--accent').trim();
+    const textSub = styles.getPropertyValue('--text-sub').trim();
+    const text    = styles.getPropertyValue('--text').trim();
+    return [accent || '#405FFA', textSub || '#cccccc', text || '#fbfbfb'];
+  }
+
   function spawnPetal() {
     if (activeCount >= MAX_PETALS) return;
+
+    const isDark = document.body.classList.contains('dark');
+    const palette = isDark ? getDarkPalette() : LIGHT_COLORS;
 
     const outer = document.createElement('span');
     outer.className = 'petal-fall';
@@ -1042,11 +1054,11 @@ function newQuote() {
     const inner = document.createElement('span');
     inner.textContent = '✿';
 
-    const size = Math.random() * 14 + 12;        // 12–26px
-    const fallDuration = Math.random() * 6 + 7;   // 7–13s to cross screen
-    const swayDuration = Math.random() * 3 + 2;   // 2–5s wobble loop
-    const startX = Math.random() * 100;           // vw
-    const color = COLORS[Math.floor(Math.random() * COLORS.length)];
+    const size = Math.random() * 14 + 12;
+    const fallDuration = Math.random() * 6 + 7;
+    const swayDuration = Math.random() * 3 + 2;
+    const startX = Math.random() * 100;
+    const color = palette[Math.floor(Math.random() * palette.length)];
     const opacity = (Math.random() * 0.4 + 0.5).toFixed(2);
 
     outer.style.left = startX + 'vw';
