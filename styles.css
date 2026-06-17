@@ -65,7 +65,36 @@ body.dark { background-image: none; }
   min-height: 60vh;
   overflow-x: hidden;
 }
+/* ── Falling Petals Effect ────────────────────────────── */
+.petal {
+  position: fixed;
+  top: -20px;
+  color: var(--accent); /* Uses your site's accent color */
+  font-family: var(--font-tech); /* Uses Comfortaa for a rounded look */
+  font-size: 14px;
+  pointer-events: none; /* Prevents petals from blocking clicks on your site */
+  z-index: 9999; /* Keeps them on top of the background */
+  user-select: none;
+  animation: fall linear forwards, sway ease-in-out infinite alternate;
+}
 
+@keyframes fall {
+  0% {
+    top: -20px;
+  }
+  100% {
+    top: 100vh;
+  }
+}
+
+@keyframes sway {
+  0% {
+    transform: translateX(0px) rotate(0deg);
+  }
+  100% {
+    transform: translateX(30px) rotate(180deg);
+  }
+}
 /* ── TOP NAV ─────────────────────────────────────────── */
 .top-nav {
   position: sticky;
