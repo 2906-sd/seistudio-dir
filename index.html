@@ -450,34 +450,20 @@
       </div>
 
       <div class="info-grid">
-
-        <!-- ICON CREDITS (final defaults, no admin add) -->
-        <div class="info-card">
+<div class="info-card info-card-wide">
           <div class="info-card-header">
-            <span>ICON_CREDITS.TXT</span>
+            <span>HOW_IT_WORKS.MD</span>
           </div>
-          <div class="info-card-body" id="info-iconCredits">
-            <p class="info-empty">// loading...</p>
-          </div>
-        </div>
-
-        <!-- FONTS (final defaults, no admin add) -->
-        <div class="info-card">
-          <div class="info-card-header">
-            <span>FONTS.CSS</span>
-          </div>
-          <div class="info-card-body" id="info-fonts">
-            <p class="info-empty">// loading...</p>
-          </div>
-        </div>
-
-        <!-- COLOR SCHEME (final defaults, no admin add) -->
-        <div class="info-card info-card-wide">
-          <div class="info-card-header">
-            <span>PALETTE.HEX</span>
-          </div>
-          <div class="info-card-body" id="info-colors">
-            <p class="info-empty">// loading...</p>
+          <div class="info-card-body" style="text-transform: none; line-height: 1.6;">
+            <p><strong>Site Architecture</strong></p>
+            <p style="color: var(--text-sub);">
+              This site is hosted on <strong>Vercel</strong>. Content is managed using <strong>Firebase</strong>, and the code is hosted on <strong>GitHub</strong>. Whenever I post an update on the Vercel site, a GitHub YML workflow automatically pushes those changes to <strong>Neocities</strong>.
+            </p>
+            <p style="margin-top: 0.5rem;"><strong>Resources:</strong></p>
+            <ul style="color: var(--text-sub); padding-left: 1.5rem; margin: 0;">
+              <li>Icons: <a href="https://www.streamlinehq.com/icons/streamline-pixel" target="_blank">Streamline Pixel</a> (hosted on Cloudinary)</li>
+              <li>Fonts: <a href="https://fonts.google.com/specimen/Space+Grotesk" target="_blank">Space Grotesk</a>, <a href="https://fonts.google.com/specimen/Newsreader" target="_blank">Newsreader</a>, and <a href="https://fonts.google.com/specimen/Space+Mono" target="_blank">Space Mono</a></li>
+            </ul>
           </div>
         </div>
 
@@ -2078,30 +2064,11 @@ function toggleInfoFields(){
 }
 
 function renderInfoPage(){
-  const cats=['iconCredits','fonts','colors','code','other','art','design','otherCool'];
-  // Defaults are PERMANENT — they always show. Admin-added items append below.
-  // iconCredits/fonts/colors are "final" (admin cannot add to these).
+  // 1. Removed 'iconCredits', 'fonts', and 'colors' from the categories array
+  const cats=['code','other','art','design','otherCool'];
+  
+  // 2. Removed the defaults for the deleted cards
   const defaults={
-    iconCredits:[
-      {label:'Streamline Pixel Icons',value:'Nav icons (home, mail, bin, etc.)',link:'https://www.streamlinehq.com/icons/streamline-pixel'},
-      {label:'Cloudinary',value:'Icon CDN hosting',link:'https://cloudinary.com'},
-    ],
-    fonts:[
-      {label:'Space Grotesk',value:'Primary display font',link:'https://fonts.google.com/specimen/Space+Grotesk'},
-      {label:'Newsreader',value:'Serif accents (italics in hero)',link:'https://fonts.google.com/specimen/Newsreader'},
-      {label:'Space Mono',value:'Mono / terminal text',link:'https://fonts.google.com/specimen/Space+Mono'},
-    ],
-    colors:[
-      {label:'Accent 1',hex:'#405FFA',value:'Primary blue'},
-      {label:'Accent 2',hex:'#FA4055',value:'Secondary pink'},
-         {label:'Accent 3',hex: '#FF8363',value:'Tertiary Orange'},
-      {label:'Background',hex:'#F4F4F4',value:'Light mode base'},
-      {label:'Card BG',hex:'#FFFFFF',value:'Light mode cards'},
-      {label:'Border',hex:'#100C08',value:'Hard outline'},
-      {label:'Text Muted',hex:'#999999',value:'Secondary text'},
-      {label:'Dark BG',hex:'#0A0A0A',value:'Dark mode base'},
-      {label:'Dark Card',hex:'#121212',value:'Dark mode cards'},
-    ],
     code:[
       {label:'Firebase Realtime DB',value:'Bulletin board + content storage',link:'https://firebase.google.com/docs/database'},
       {label:'Vercel',value:'Hosting + serverless admin-auth',link:'https://vercel.com'},
@@ -2133,19 +2100,12 @@ function renderInfoPage(){
     const pageStart = page * INFO_PAGE_SIZE;
     const pageItems = items.slice(pageStart, pageStart + INFO_PAGE_SIZE);
 
-    const rowsHtml = pageItems.map(item=>{
+const rowsHtml = pageItems.map(item=>{
       const delBtn=(isAdminSession()&&!item._default)?`<button class="admin-delete-btn info-del" onclick="adminDeleteInfo('${item.id}')">×</button>`:'';
-      if(cat==='colors'){
-        const hex=item.hex||'#000000';
-        return`<div class="info-row info-color-row">
-          <span class="info-color-swatch" style="background:${escHtml(hex)}"></span>
-          <span class="info-row-label">${escHtml(item.label||'')}</span>
-          <span class="info-row-hex">${escHtml(hex)}</span>
-          ${item.value?`<span class="info-row-value">${escHtml(item.value)}</span>`:''}
-          ${delBtn}
-        </div>`;
-      }
+      
+      // Cleaned: Removed the color-specific logic since that category is removed
       const linkHtml=item.link?`<a href="${escHtml(item.link)}" target="_blank" rel="noopener" class="info-row-link">${escHtml(item.link)}</a>`:'';
+      
       return`<div class="info-row">
         <span class="info-row-label">${escHtml(item.label||'')}</span>
         ${item.value?`<span class="info-row-value">${escHtml(item.value)}</span>`:''}
