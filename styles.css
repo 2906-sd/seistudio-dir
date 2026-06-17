@@ -66,33 +66,33 @@ body.dark { background-image: none; }
   overflow-x: hidden;
 }
 /* ── Falling Petals Effect ────────────────────────────── */
+/* ── Falling Petals Effect ────────────────────────────── */
 .petal {
   position: fixed;
-  top: -20px;
-  color: var(--accent); /* Uses your site's accent color */
-  font-family: var(--font-tech); /* Uses Comfortaa for a rounded look */
-  font-size: 14px;
-  pointer-events: none; /* Prevents petals from blocking clicks on your site */
-  z-index: 9999; /* Keeps them on top of the background */
+  top: -30px;
+  color: var(--accent);
+  font-family: var(--font-tech); /* Uses Comfortaa */
+  pointer-events: none;
+  z-index: 9999;
   user-select: none;
-  animation: fall linear forwards, sway ease-in-out infinite alternate;
+  animation: petalFall linear forwards, petalSway ease-in-out infinite alternate;
 }
 
-@keyframes fall {
+@keyframes petalFall {
   0% {
-    top: -20px;
+    top: -30px;
   }
   100% {
     top: 100vh;
   }
 }
 
-@keyframes sway {
+@keyframes petalSway {
   0% {
     transform: translateX(0px) rotate(0deg);
   }
   100% {
-    transform: translateX(30px) rotate(180deg);
+    transform: translateX(40px) rotate(120deg);
   }
 }
 /* ── TOP NAV ─────────────────────────────────────────── */
