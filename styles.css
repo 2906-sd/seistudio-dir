@@ -13,8 +13,8 @@
   --accent:      #405FFA;
   --border:      #100C08;
   --border-lt:   #eeeeee;
-  --font-main:   'Newsreader', serif;
-  --font-tech:   'Space Grotesk', sans-serif;
+--font-main:   'Newsreader', serif;
+  --font-tech:   'Comfortaa', sans-serif; /* Updated to Comfortaa */
   --font-mono:   'Space Mono', monospace;
   --shadow:      4px 4px 0px var(--border);
   --shadow-lg:   8px 8px 0px var(--border);
