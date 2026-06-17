@@ -451,16 +451,26 @@
 
       <div class="info-grid">
 <!-- HOW IT WORKS -->
-        <div class="info-card info-card-wide">
+ <div class="info-card info-card-wide">
           <div class="info-card-header">
             <span>HOW_IT_WORKS.MD</span>
           </div>
           <div class="info-card-body" style="text-transform: none; line-height: 1.6;">
-            <p><strong>Site Architecture</strong></p>
+            <p><strong>How does this site function?</strong></p>
             <p style="color: var(--text-sub);">
-              This site is hosted on <strong>Vercel</strong>. Content is managed using <strong>Firebase</strong>, and the code is hosted on <strong>GitHub</strong>. Whenever I post an update, a GitHub YML workflow automatically pushes those changes to <strong>Neocities</strong>.
+              The main version of this site runs on <strong>Vercel</strong> and features a built-in administrative panel.
+              This panel allows me to instantly publish and manage content without manually editing any HTML or CSS files. (I haaaaate scrolling through lines of code, lol.)
             </p>
-            <p style="margin-top: 0.5rem;"><strong>Resources:</strong></p>
+            <p style="color: var(--text-sub);">
+              All underlying text and content data (all my art, logs, letters, shrines, and even the bulletin board messages) are kept secure via <strong>Firebase</strong>,
+              while the codebase is managed through <strong>GitHub</strong>. Whenever I push an update or add a post on the Vercel side,
+              an automated GitHub YML workflow triggers to compile those changes and push a static mirror over to <strong>Neocities!</strong>.
+            </p>
+            <p style="color: var(--text-sub); font-style: italic; border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.75rem 0;">
+              <strong>Note on Neocities Login:</strong> If you are viewing this on Neocities and tried logging into the admin portal, it will not work. :p
+              Because Neocities only hosts a static copy of the site, the secure serverless authentication routines only execute on the primary Vercel deployment.
+            </p>
+            <p style="margin-top: 0.75rem; margin-bottom: 0.25rem;"><strong>Resources:</strong></p>
             <ul style="color: var(--text-sub); padding-left: 1.5rem; margin: 0;">
               <li>Icons: <a href="https://www.streamlinehq.com/icons/streamline-pixel" target="_blank">Streamline Pixel</a></li>
               <li>Hosting & Optimization: <a href="https://cloudinary.com" target="_blank">Cloudinary</a> (used for icon and image hosting)</li>
