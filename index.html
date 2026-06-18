@@ -1367,14 +1367,22 @@ function onFirebaseReady() {
   }).catch(e=>console.error('Shrines load failed:',e));
 
   // Load letters
-  db.ref('content/letters').orderByChild('timestamp').once('value',snap=>{
-    lettersData=[];
-    snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];lettersData.push({id:child.key,...d});});
-    renderLetterList();
-    renderHomeUpdates();
-    updateLastUpdatedDisplay();
-    if(_pendingLetterKey){const idx=lettersData.findIndex(l=>l.id===_pendingLetterKey);_pendingLetterKey=null;if(idx!==-1)readLetter(idx);}
-  }).catch(e=>console.error('Letters load failed:',e));
+db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
+  lettersData = [];
+  snap.forEach(child => {
+    const d = child.val();
+    d.tags = Array.isArray(d.tags) ? d.tags : [];
+    lettersData.push({ id: child.key, ...d });
+  });
+  renderLetterList();
+  renderHomeUpdates();
+  updateLastUpdatedDisplay();
+  if (_pendingLetterKey) {
+    const idx = lettersData.findIndex(l => l.id === _pendingLetterKey);
+    _pendingLetterKey = null;
+    if (idx !== -1) readLetter(idx);
+  }
+}).catch(e => console.error('Letters load failed:', e));
 
   // Load trash
   db.ref('content/trash').orderByChild('timestamp').once('value',snap=>{
@@ -1646,6 +1654,26 @@ function editCurrentShrine(){const idx=window._currentShrineIndex;if(idx===undef
 /* ═══════════════════════════════════════════════════════
    RENDER — LETTERS
 ═══════════════════════════════════════════════════════ */
+  
+function readLetter(i) {
+  const letter = lettersData[i]; if (!letter) return;
+  window._currentLetterIndex = i;
+  const editBtn = document.getElementById('letterReaderEditBtn');
+  if (editBtn) editBtn.style.display = isAdminSession() ? 'inline-block' : 'none';
+
+  const content = document.getElementById('letter-content');
+  content.innerHTML = `<div class="letter-paper-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-paper-re">${escHtml(letter.subject||'(untitled)')}</div><div class="letter-body-text">${letter.body||''}</div>${renderTagsHTML(letter.tags)}<div class="letter-unsent-stamp"><span class="letter-unsent-badge">UNSENT</span>// this letter was never delivered.</div>`;
+
+  const h = '#letter/' + letter.id;
+  if (window.location.hash !== h) window.history.pushState({ page: 'letter-reader', letterId: letter.id }, '', h);
+  _activateSection('letter-reader');
+}
+
+function editCurrentLetter() {
+  const idx = window._currentLetterIndex;
+  if (idx === undefined || idx < 0) return;
+  openEditLetter(idx);
+}
 function renderLetterList(){
   const list=document.getElementById('letterList');if(!list)return;
   list.innerHTML='';
