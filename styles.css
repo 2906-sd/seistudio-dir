@@ -725,6 +725,57 @@ body.admin-mode .admin-log-actions { display: flex; }
   filter: drop-shadow(3px 4px 0 rgba(0,0,0,0.18));
 }
 
+/* ── LOG TAG SIDEBAR ─────────────────────────────────── */
+.logs-body {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+.logs-sidebar {
+  flex: 0 0 190px;
+  position: sticky;
+  top: 2rem;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+.tag-sidebar-title {
+  text-transform: uppercase;
+  color: var(--text-sub);
+  margin-bottom: 0.75rem;
+  letter-spacing: 0.05em;
+}
+.tag-sidebar-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  margin-bottom: 4px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg2);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: transform 0.15s, border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+.tag-sidebar-item:hover { transform: translateX(2px); border-color: var(--accent); }
+.tag-sidebar-item.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.tag-sidebar-count { font-size: 10px; opacity: 0.7; }
+
+.blog-list { flex: 1 1 auto; min-width: 0; }
+
+@media (max-width: 720px) {
+  .logs-body { flex-direction: column; }
+  .logs-sidebar {
+    position: static;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .tag-sidebar-item { margin-bottom: 0; }
+}
+
 /* ═══════════════════════════════════════════════════════
    SHRINES
 ═══════════════════════════════════════════════════════ */
