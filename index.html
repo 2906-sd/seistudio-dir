@@ -7,7 +7,7 @@
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22 fill=%22%23405FFA%22>✿</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
- <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,300..700;1,300..700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+ <link href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@300..700&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* ── CUSTOM LOADER ── */
@@ -85,6 +85,8 @@
     <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</span>
   </div>
 </header>
+
+<div class="page-wrapper">
   <main>
 
     <!-- ══════════════════ HOME ══════════════════ -->
@@ -1745,8 +1747,8 @@ function renderLightbox(){
     if(metaEl){ metaEl.textContent=''; }
     if(delBtn){ delBtn.style.display='none'; }
   } else {
-  if(descEl){ descEl.innerHTML = lbPiece.desc || ''; }
-    if(metaEl){ metaEl.textContent = lbPiece.meta ? lbPiece.meta : ''; }
+    if(descEl){ descEl.textContent=lbPiece.desc || ''; }
+    if(metaEl){ metaEl.textContent=lbPiece.meta ? lbPiece.meta : ''; }
     if(delBtn){ delBtn.style.display = isAdminSession() ? 'block' : 'none'; }
   }
 
