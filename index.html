@@ -1580,7 +1580,17 @@ function renderShrineGrid(){
     const imgHtml=shrine.coverImage
       ?`<img class="shrine-card-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
       :`<div class="shrine-card-img-placeholder">✿</div>`;
-    el.innerHTML=`${imgHtml}<div class="shrine-card-label"><div class="shrine-card-title">${shrine.title}</div><div class="shrine-card-desc">${shrine.tagline||''}</div><div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditShrine(${idx})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteShrine(${idx})">DELETE</button></div></div>`;
+    el.innerHTML=`
+  <div class="shrine-card-titlebar">✿ shrine</div>
+  ${imgHtml}
+  <div class="shrine-card-label">
+    <div class="shrine-card-title">${shrine.title}</div>
+    <div class="shrine-card-desc">${shrine.tagline||''}</div>
+    <div class="admin-log-actions">
+      <button class="admin-edit-btn" onclick="event.stopPropagation();openEditShrine(${idx})">EDIT</button>
+      <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteShrine(${idx})">DELETE</button>
+    </div>
+  </div>`;
     grid.appendChild(el);
   });
 }
