@@ -2394,3 +2394,135 @@ body.dark .hero-card .hero-image-dark  { display: block; }
 @media (max-width: 700px) {
   .hero-card .hero-image { max-width: 260px; }
 }
+
+
+/* ═══════════════════════════════════════════════════════
+   RETRO NEOCITIES LAYER
+   touches only radius, shadow, and surface texture —
+   zero changes to colors, fonts, or layout
+═══════════════════════════════════════════════════════ */
+
+/* 1. Kill soft corners — 2000s personal sites were boxy */
+:root {
+  --radius:    0px;
+  --radius-sm: 0px;
+  --shadow:    3px 3px 0px var(--border);
+  --shadow-lg: 5px 5px 0px var(--border);
+}
+
+/* 2. Bring texture back in dark mode too — 
+      your CSS currently turns it off for body.dark */
+body.dark {
+  background-image: url("https://www.transparenttextures.com/patterns/p6.png");
+  background-blend-mode: overlay;
+  background-color: var(--bg);
+}
+
+/* 3. Cards — hard bevel, the signature Neocities card feel.
+      inset top/left highlight + inset bottom/right shadow
+      mimics the raised-panel look of old site builders */
+.home-card,
+.blog-list-item,
+.log-container,
+.admin-form,
+.logs-sidebar,
+.tag-sidebar-item {
+  border-width: 2px;
+  box-shadow:
+    inset 1px 1px 0 rgba(255,255,255,0.12),
+    inset -1px -1px 0 rgba(0,0,0,0.2),
+    3px 3px 0 var(--border);
+}
+
+/* 4. Card headers — slight gradient like early CMS panels */
+.home-card-header {
+  background: linear-gradient(180deg, var(--bg4) 0%, var(--bg3) 100%);
+  border-bottom: 2px solid var(--border);
+  letter-spacing: 0.1em;
+}
+
+/* 5. Nav — chunkier, more "taskbar" energy */
+.top-nav {
+  border-bottom: 2px solid var(--border);
+  box-shadow: 0 2px 0 var(--border), 0 4px 0 rgba(0,0,0,0.08);
+}
+
+/* 6. Status footer — "system tray" bottom strip */
+.status-footer {
+  border-top: 2px solid var(--border);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* 7. Section title — hard text shadow, 
+      gives that pixel-font-on-a-textured-bg look */
+.section-header h1 {
+  text-shadow: 2px 2px 0 var(--border);
+}
+
+/* 8. Buttons — raised outset, press down on :active */
+.board-submit,
+.admin-edit-btn,
+.admin-delete-btn,
+.back-to-logs-btn,
+.quote-refresh,
+.dark-toggle {
+  box-shadow: 2px 2px 0 var(--border);
+  transition: box-shadow 0.1s, transform 0.1s;
+}
+.board-submit:active,
+.admin-edit-btn:active,
+.admin-delete-btn:active,
+.back-to-logs-btn:active,
+.quote-refresh:active,
+.dark-toggle:active {
+  box-shadow: none;
+  transform: translate(2px, 2px);
+}
+
+/* 9. Form fields — classic sunken input look */
+.admin-input,
+#logSortOrder {
+  box-shadow: inset 2px 2px 0 rgba(0,0,0,0.25);
+  border-radius: 0;
+}
+
+/* 10. Scrollbars — chunkier, more Windows 98 
+       (webkit only, Firefox ignores these) */
+::-webkit-scrollbar         { width: 14px; height: 14px; }
+::-webkit-scrollbar-track   { background: var(--bg3); border: 1px solid var(--border); }
+::-webkit-scrollbar-thumb   {
+  background: var(--bg4);
+  border: 2px solid var(--border);
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.15);
+}
+::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+::-webkit-scrollbar-corner  { background: var(--bg3); }
+
+/* 11. Text selection — your accent color, felt personal on old sites */
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* 12. Nav active item — harder edge, more "pressed tab" */
+.nav-item.active {
+  box-shadow: inset 1px 1px 0 rgba(255,255,255,0.2), 2px 2px 0 rgba(0,0,0,0.3);
+}
+
+/* 13. Horizontal rules — the classic Neocities divider,
+       double-line style that was everywhere in the 2000s */
+hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  margin: 1.5rem 0;
+}
+
+
+/* restore pointer cursor on clickable things 
+   since the custom cursor overrides everything */
+a, button, [onclick], label, select,
+.nav-item, .blog-list-item, .home-update-item,
+.tag-sidebar-item, .quote-refresh { 
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Ctext y='16' font-size='16'%3E✿%3C/text%3E%3C/svg%3E") 8 8, pointer;
+}
