@@ -14,7 +14,7 @@
   --border:      #100C08;
   --border-lt:   #eeeeee;
 --font-main:   'Newsreader', serif;
-  --font-tech:   'Comfortaa', sans-serif; /* Updated to Comfortaa */
+ --font-tech: 'Karla', sans-serif;
   --font-mono:   'Space Mono', monospace;
   --shadow:      4px 4px 0px var(--border);
   --shadow-lg:   8px 8px 0px var(--border);
