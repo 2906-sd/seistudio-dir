@@ -1649,55 +1649,59 @@ function editCurrentShrine(){const idx=window._currentShrineIndex;if(idx===undef
 function renderLetterList(){
   const list=document.getElementById('letterList');if(!list)return;
   list.innerHTML='';
-  if(!lettersData.length){list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1;">// No letters yet.</p>';return;}
+  if(!lettersData.length){
+    list.innerHTML='<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1;">// No letters yet.</p>';
+    return;
+  }
+
   let display=[...lettersData];
   const sortOrder=document.getElementById('letterSortOrder')?.value||'latest';
-  // Sort by timestamp explicitly so the visual order matches the dropdown,
-  // regardless of how the underlying lettersData array was loaded.
   display.sort((a,b)=>(a.timestamp||0)-(b.timestamp||0));
   if(sortOrder==='latest') display.reverse();
-  display.forEach(letter=>{
+
+  display.forEach((letter, displayIdx)=>{
     const originalIndex=lettersData.findIndex(l=>l.id===letter.id);
     const now=letter.timestamp?new Date(letter.timestamp):null;
-    const dateStr=now?`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`:'';
+    const dateStr=now
+      ?`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`
+      :'';
+
+    // Zero-padded letter number — #001, #002, etc.
+    // Uses position in the SORTED display array, not the raw data index.
+    const letterNum=`#${String(displayIdx+1).padStart(3,'0')}`;
+
     const el=document.createElement('div');
     el.className='letter-envelope';
     el.onclick=()=>readLetter(originalIndex);
+
     el.innerHTML=
-      `<div class="env-stamp">`
-       +`<div class="env-stamp-inner">`
-         +`<div class="env-stamp-flower">✿</div>`
-         +`<div class="env-stamp-cost">SEI</div>`
-         +`<div class="env-stamp-postage">UNSENT</div>`
-       +`</div>`
-     +`</div>`
-     +`<div class="env-postmark">${dateStr||'••.••.••'}</div>`
-     +`<div class="env-address">`
-       +`<div class="env-to-label">TO:</div>`
-       +`<div class="env-to-name">${escHtml(letter.to||'???')}</div>`
-       +`<div class="env-subject">RE: ${escHtml(letter.subject||'(untitled)')}</div>`
-     +`</div>`
-     +`<div class="env-flap"></div>`
-     +`<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
+      // X fold lines (back-of-envelope)
+      `<div class="env-flap"></div>`
+      // Wax seal at center — no recipient hint, pure mystery
+      +`<div class="env-seal">✿</div>`
+      // Stamp — top right
+      +`<div class="env-stamp">`
+        +`<div class="env-stamp-inner">`
+          +`<div class="env-stamp-flower">✿</div>`
+          +`<div class="env-stamp-cost">SEI</div>`
+          +`<div class="env-stamp-postage">UNSENT</div>`
+        +`</div>`
+      +`</div>`
+      // Postmark circle — shows date if available
+      +`<div class="env-postmark">${dateStr||'••.••.••'}</div>`
+      // Letter number — bottom left
+      +`<div class="env-letter-num">${letterNum}</div>`
+      // Hover hint — bottom right, opacity 0 until hover
+      +`<div class="env-open-hint">// open ↗</div>`
+      // Admin controls
+      +`<div class="admin-log-actions">`
+        +`<button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button>`
+        +`<button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button>`
+      +`</div>`;
+
     list.appendChild(el);
   });
 }
-
-function readLetter(i){
-  const letter=lettersData[i];if(!letter)return;
-  window._currentLetterIndex=i;
-  const editBtn=document.getElementById('letterReaderEditBtn');
-  if(editBtn)editBtn.style.display=isAdminSession()?'inline-block':'none';
-
-  const content=document.getElementById('letter-content');
-  content.innerHTML=`<div class="letter-paper-to">TO: ${escHtml(letter.to||'???')}</div><div class="letter-paper-re">${escHtml(letter.subject||'(untitled)')}</div><div class="letter-body-text">${letter.body||''}</div>${renderTagsHTML(letter.tags)}<div class="letter-unsent-stamp"><span class="letter-unsent-badge">UNSENT</span>// this letter was never delivered.</div>`;
-
-  const h='#letter/'+letter.id;
-  if(window.location.hash!==h)window.history.pushState({page:'letter-reader',letterId:letter.id},'',h);
-  _activateSection('letter-reader');
-}
-
-function editCurrentLetter(){const idx=window._currentLetterIndex;if(idx===undefined||idx<0)return;openEditLetter(idx);}
 
 /* ═══════════════════════════════════════════════════════
    LIGHTBOX
