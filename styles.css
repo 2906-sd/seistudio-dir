@@ -103,6 +103,41 @@ PETAL FALLING
   #petal-field { display: none; }
 }
 
+
+/* ── HOME PAGE MARGIN DECORATIONS ─────────────────────── */
+.home-decor {
+  display: none;       /* hidden by default; shown only when #home is active */
+  position: fixed;
+  inset: 0;
+  pointer-events: none; /* never blocks clicks on nav/content underneath */
+  z-index: 1;            /* sits above body bg, below nav (1000) and grid content (2) */
+}
+
+/* shows only while #home has the .active class your showPage() JS already toggles */
+body:has(#home.active) .home-decor {
+  display: block;
+}
+
+.decor-img {
+  position: absolute;
+user-select: none;
+}
+
+/* Rough starting coordinates based on your screenshot — adjust px values
+   in your browser dev tools until each one sits exactly where you circled it */
+.decor-1 { top: 90px;   left: 30px;   width: 70px;  }
+.decor-2 { top: 230px;  left: 20px;   width: 130px; }
+.decor-3 { top: 130px;  right: 50px;  width: 140px; }
+.decor-4 { top: 380px;  right: 25px;  width: 150px; }
+.decor-5 { top: 780px;  left: 50%;    width: 220px; transform: translateX(-50%); }
+
+/* Below this width, the margin gutters shrink/disappear and content goes
+   nearly full-bleed — decorations would start overlapping your cards instead
+   of sitting beside them, so they hide entirely. */
+@media (max-width: 1400px) {
+  .home-decor { display: none !important; }
+}
+
 /* ── BASE ────────────────────────────────────────────── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
