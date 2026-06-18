@@ -1019,67 +1019,85 @@ function newQuote() {
   }
   next();
 }
-/* ═══════════════════════════════════════════════════════
-  PETALS FUNCTION
+/* * ═══════════════════════════════════════════════════════
+   PETALS FUNCTION — hardened against DOM-timing failure
 ═══════════════════════════════════════════════════════ */
 (function () {
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  const field = document.createElement('div');
-  field.id = 'petal-field';
-  document.body.appendChild(field);
+  function initPetals() {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
-  // pick whatever hex codes you want here — totally independent of your site's
-  // existing --root / body.dark variables
-const LIGHT_COLORS = ['#FA4055', '#FF7385', '#FFB6C1', '#FFE4E1'];
-const DARK_COLORS  = ['#FA4055', '#FF8293', '#405FFA', '#8A9DF8'];
+    const field = document.createElement('div');
+    field.id = 'petal-field';
+    // Appending to documentElement (<html>) instead of <body> sidesteps
+    // the case where <body> has a transform/filter/will-change applied
+    // (common with page-transition libs) which would otherwise trap
+    // position:fixed children inside <body>'s bounding box.
+    document.documentElement.appendChild(field);
 
-  const MAX_PETALS = 45;
-  const SPAWN_INTERVAL = 350;
+    const LIGHT_COLORS = ['#FA4055', '#FF7385', '#FFB6C1', '#FFE4E1'];
+    const DARK_COLORS  = ['#FA4055', '#FF8293', '#405FFA', '#8A9DF8'];
 
-  let activeCount = 0;
+    const MAX_PETALS = 45;
+    const SPAWN_INTERVAL = 350;
 
-  function spawnPetal() {
-    if (activeCount >= MAX_PETALS) return;
+    let activeCount = 0;
 
-    const isDark = document.body.classList.contains('dark');
-    const palette = isDark ? DARK_COLORS : LIGHT_COLORS;
+    function spawnPetal() {
+      if (activeCount >= MAX_PETALS) return;
 
-    const outer = document.createElement('span');
-    outer.className = 'petal-fall';
+      const isDark = document.body.classList.contains('dark');
+      const palette = isDark ? DARK_COLORS : LIGHT_COLORS;
 
-    const inner = document.createElement('span');
-    inner.textContent = '✿';
+      const outer = document.createElement('span');
+      outer.className = 'petal-fall';
 
-    const size = Math.random() * 14 + 12;
-    const fallDuration = Math.random() * 6 + 7;
-    const swayDuration = Math.random() * 3 + 2;
-    const startX = Math.random() * 100;
-    const color = palette[Math.floor(Math.random() * palette.length)];
-    const opacity = (Math.random() * 0.4 + 0.5).toFixed(2);
+      const inner = document.createElement('span');
+      inner.textContent = '✿';
 
-    outer.style.left = startX + 'vw';
-    outer.style.fontSize = size + 'px';
-    outer.style.color = color;
-    outer.style.setProperty('--petal-opacity', opacity);
-    outer.style.animationDuration = fallDuration + 's';
+      const size = Math.random() * 14 + 12;
+      const fallDuration = Math.random() * 6 + 7;
+      const swayDuration = Math.random() * 3 + 2;
+      const startX = Math.random() * 100;
+      const color = palette[Math.floor(Math.random() * palette.length)];
+      const opacity = (Math.random() * 0.4 + 0.5).toFixed(2);
 
-    inner.style.animationDuration = swayDuration + 's';
+      outer.style.left = startX + 'vw';
+      outer.style.fontSize = size + 'px';
+      outer.style.color = color;
+      outer.style.setProperty('--petal-opacity', opacity);
+      outer.style.animationDuration = fallDuration + 's';
 
-    outer.appendChild(inner);
-    field.appendChild(outer);
-    activeCount++;
+      inner.style.animationDuration = swayDuration + 's';
 
-    outer.addEventListener('animationend', (e) => {
-      if (e.target === outer) {
-        outer.remove();
-        activeCount--;
-      }
-    });
+      outer.appendChild(inner);
+      field.appendChild(outer);
+      activeCount++;
+
+      outer.addEventListener('animationend', (e) => {
+        if (e.target === outer) {
+          outer.remove();
+          activeCount--;
+        }
+      });
+    }
+
+    setInterval(spawnPetal, SPAWN_INTERVAL);
   }
 
-  setInterval(spawnPetal, SPAWN_INTERVAL);
+  // Guard against document.body not existing yet — if this script is
+  // loaded in <head> without `defer`, document.body is still null when
+  // the IIFE runs, document.body.appendChild() throws, and the whole
+  // effect silently dies with zero console output unless devtools is
+  // already open and "pause on exceptions" is set.
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPetals);
+  } else {
+    initPetals();
+  }
+
 })();
+
   
 /* ═══════════════════════════════════════════════════════
    DATA STORES
