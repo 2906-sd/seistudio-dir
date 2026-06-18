@@ -776,74 +776,137 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   SHRINES
+   SHRINES — Y2K REDESIGN
 ═══════════════════════════════════════════════════════ */
+
+/* ── Grid: tight, dense, more columns ── */
 .shrines-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 0.5rem;
 }
 
+/* ── Card: OS window chrome aesthetic ── */
 .shrine-card {
   background: var(--bg2);
   border: 1.5px solid var(--border);
-  box-shadow: var(--shadow);
+  box-shadow: 3px 3px 0 var(--border);  /* hard pixel shadow */
   cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
+  transition: transform 0.15s, box-shadow 0.15s;
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 0;                      /* no rounded corners */
   display: flex;
   flex-direction: column;
 }
-.shrine-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
-.shrine-card:hover .shrine-card-title { color: var(--accent); }
+.shrine-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--border);
+}
 
+/* Title bar — mimics a retro window header */
+.shrine-card-titlebar {
+  background: var(--border);
+  color: var(--bg);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  padding: 3px 6px;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+/* Thumbnail */
 .shrine-card-img {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;               /* square thumbnails feel more retro */
   object-fit: cover;
   display: block;
   background: var(--bg3);
   flex-shrink: 0;
+  border-bottom: 1.5px solid var(--border);
+  filter: saturate(0.9);              /* slight desaturation = old web feel */
+  transition: filter 0.2s;
 }
+.shrine-card:hover .shrine-card-img { filter: saturate(1.1); }
+
 .shrine-card-img-placeholder {
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 1 / 1;
   background: var(--bg3);
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: var(--font-mono);
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: var(--text-muted);
   flex-shrink: 0;
+  border-bottom: 1.5px solid var(--border);
 }
 
+/* Label area */
 .shrine-card-label {
-  padding: 0.8rem 1rem;
-  border-top: 1.5px solid var(--border);
+  padding: 0.45rem 0.5rem;
+  border-top: none;                  /* titlebar handles top border */
 }
 .shrine-card-title {
-  font-family: var(--font-tech);
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
   text-transform: uppercase;
   font-weight: 700;
   color: var(--text);
   transition: color 0.15s;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.shrine-card:hover .shrine-card-title { color: var(--accent); }
+
 .shrine-card-desc {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 8px;
   color: var(--text-muted);
-  margin-top: 4px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-/* shrine image gallery */
+/* ── Shrine reader container ── */
+.shrine-container {
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  box-shadow: 5px 5px 0 var(--border);
+  max-width: 800px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+/* Hero image — taller, feels like an old fanlisting banner */
+.shrine-hero-img {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1.5px solid var(--border);
+  filter: saturate(0.85) contrast(1.05);
+}
+
+/* Shrine reader content area */
+.shrine-content {
+  padding: 1.5rem 1.75rem;
+}
+.shrine-content .log-body-text { white-space: normal; }
+
+/* ── Gallery: smaller, denser, harder borders ── */
 .shrine-gallery {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 0.75rem;
-  margin-top: 0.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+  gap: 0.35rem;
+  margin-top: 1rem;
 }
 .shrine-gallery-item { cursor: zoom-in; }
 .shrine-gallery-img {
@@ -852,33 +915,16 @@ body.admin-mode .admin-log-actions { display: flex; }
   object-fit: cover;
   border: 1.5px solid var(--border);
   display: block;
-  border-radius: var(--radius-sm);
-  transition: transform 0.2s, opacity 0.2s;
+  border-radius: 0;                  /* sharp corners throughout */
+  transition: transform 0.15s, filter 0.15s;
+  filter: saturate(0.88);
   cursor: pointer;
 }
-.shrine-gallery-img:hover { transform: scale(1.02); opacity: 0.9; }
-
-/* shrine reader */
-.shrine-container {
-  background: var(--bg2);
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow-lg);
-  max-width: 800px;
-  margin: 0 auto;
-  overflow: hidden;
-  border-radius: var(--radius);
+.shrine-gallery-img:hover {
+  transform: scale(1.04);
+  filter: saturate(1.1);
+  border-color: var(--accent);
 }
-.shrine-hero-img {
-  width: 100%;
-  max-height: 280px;
-  object-fit: cover;
-  display: block;
-  border-bottom: 1.5px solid var(--border);
-}
-.shrine-content {
-  padding: 2.5rem 3rem;
-}
-.shrine-content .log-body-text { white-space: normal; }
 
 /* ═══════════════════════════════════════════════════════
    LETTERS — envelope grid (5 per row, envelope-back look)
