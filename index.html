@@ -1484,7 +1484,8 @@ function renderArtGrid(){
 /* ═══════════════════════════════════════════════════════
    RENDER — LOGS
 ═══════════════════════════════════════════════════════ */
-function renderLogList(){
+let activeTagFilter = null;
+  function renderLogList(){
   renderTagSidebar();
   const list=document.getElementById('logList');list.innerHTML='';
   let displayLogs=[...logsData];
