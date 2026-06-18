@@ -545,21 +545,20 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 /* ── ART GRID ────────────────────────────────────────── */
 .art-feed {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* tight thumbnail columns */
+  gap: 0.5rem; /* tighter gap keeps the retro grid feel */
 }
-
 .art-post {
   position: relative;
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1.5px solid var(--border);
-  box-shadow: 3px 3px 0 var(--border);
+  box-shadow: 2px 2px 0 var(--border); /* scaled down shadow to match smaller cards */
   cursor: pointer;
   background: var(--bg3);
   transition: transform 0.2s, box-shadow 0.2s;
 }
-.art-post:hover { transform: translateY(-3px); box-shadow: 5px 6px 0 var(--border); }
+.art-post:hover { transform: translateY(-2px); box-shadow: 3px 4px 0 var(--border); }
 .art-post img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; }
 .art-post:hover img { transform: scale(1.04); }
 
@@ -1616,7 +1615,7 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   .shrine-pair-row .shrine-pair-caption { grid-column: 1 / -1; }
 }
 
-.lb-desc { font-size: 1rem; color: var(--text); line-height: 1.6; }
+.lb-desc { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text); line-height: 1.6; }
 .lb-meta { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); }
 
 /* ── Simple lightbox (shrines + trash): caption on top, no info side ── */
