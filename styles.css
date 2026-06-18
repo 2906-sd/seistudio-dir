@@ -927,204 +927,189 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 
 /* ═══════════════════════════════════════════════════════
-   LETTERS — envelope grid (5 per row, envelope-back look)
+   LETTERS — sealed back-of-envelope redesign
 ═══════════════════════════════════════════════════════ */
+
 .letter-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 1.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* flexible, dense */
+  gap: 0.75rem;
   margin-top: 0.5rem;
 }
-@media (max-width: 1100px) { .letter-grid { grid-template-columns: repeat(4, 1fr); } }
-@media (max-width: 900px)  { .letter-grid { grid-template-columns: repeat(3, 1fr); } }
-@media (max-width: 640px)  { .letter-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 380px)  { .letter-grid { grid-template-columns: 1fr; } }
 
+/* ── Envelope shell ── */
+.letter-envelope {
+  position: relative;
+  aspect-ratio: 16 / 11;
+  /* removed min-width — was fighting the grid */
+  background-color: var(--bg2);
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--border) 14%, transparent) 1px,
+    transparent 1px
+  );
+  background-size: 10px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: 0;                   /* sharp y2k corners */
+  box-shadow: 3px 3px 0 var(--border);
+  cursor: pointer;
+  overflow: hidden;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.letter-envelope:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 var(--border);
+}
 
-    .letter-envelope {
-      position: relative;
-      aspect-ratio: 16 / 11;             /* envelope proportions */
-      min-width: 280px;                  /* Added a minimum width so it doesn't get too cramped */
-      background-color: var(--bg2);
-      
-      /* IMPROVEMENT: Subtle dotted paper texture instead of heavy grid or stripes */
-      background-image: radial-gradient(color-mix(in srgb, var(--border) 15%, transparent) 1px, transparent 1px);
-      background-size: 10px 10px;
+/* ── Top triangular flap ── */
+.letter-envelope::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  height: 55%;
+  clip-path: polygon(0 0, 100% 0, 50% 95%);
+  background: color-mix(in srgb, var(--bg2) 92%, var(--border));
+  pointer-events: none;
+  z-index: 2;
+}
 
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-sm);
-      box-shadow: var(--shadow);
-      cursor: pointer;
-      overflow: hidden;
-      padding: 0;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
+/* ── X fold lines — back of sealed envelope ── */
+.env-flap {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    linear-gradient(
+      to bottom right,
+      transparent calc(50% - 0.6px),
+      color-mix(in srgb, var(--border) 45%, transparent) calc(50% - 0.6px),
+      color-mix(in srgb, var(--border) 45%, transparent) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    ),
+    linear-gradient(
+      to bottom left,
+      transparent calc(50% - 0.6px),
+      color-mix(in srgb, var(--border) 45%, transparent) calc(50% - 0.6px),
+      color-mix(in srgb, var(--border) 45%, transparent) calc(50% + 0.6px),
+      transparent calc(50% + 0.6px)
+    );
+}
 
-    .letter-envelope:hover {
-      transform: translate(-2px, -3px);
-      box-shadow: 6px 7px 0 var(--border);
-    }
+/* ── Wax seal — the visual anchor, center of the X ── */
+.env-seal {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  /* Double-ring gives it a real wax seal look */
+  box-shadow: 0 0 0 3px var(--bg2), 0 0 0 5px var(--border);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 13px;
+  color: var(--accent);
+  z-index: 5;
+  transition: transform 0.2s, color 0.15s;
+}
+.letter-envelope:hover .env-seal {
+  transform: translate(-50%, -50%) scale(1.1);
+}
 
-    /* Diagonal lines for envelope folds (Back of envelope feel) */
-    .letter-envelope .env-flap {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      /* Reverted to your original elegant envelope fold lines */
-      background: 
-        linear-gradient(135deg, transparent 49%, color-mix(in srgb, var(--bg2) 88%, var(--border) 12%) 50%, transparent 51%) no-repeat;
-      background-size: 100% 100%;
-    }
+/* ── Stamp — unchanged visually, z-index bumped ── */
+.letter-envelope .env-stamp {
+  position: absolute;
+  top: 8px; right: 10px;
+  width: 50px; height: 58px;
+  background: var(--bg2);
+  border: 2px dashed color-mix(in srgb, var(--border) 40%, transparent);
+  padding: 3px;
+  z-index: 6;
+  transform: rotate(-4deg);
+  box-shadow: 2px 2px 0 var(--border);
+  transition: transform 0.25s;
+}
+.letter-envelope:hover .env-stamp {
+  transform: rotate(-2deg) scale(1.03);
+}
+.letter-envelope .env-stamp-inner {
+  width: 100%; height: 100%;
+  background: color-mix(in srgb, var(--accent) 12%, var(--bg2));
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: space-between;
+  padding: 3px 2px;
+  border: 1px solid var(--border);
+}
+.letter-envelope .env-stamp-flower {
+  font-size: 14px;
+  color: var(--accent);
+  line-height: 1;
+  margin-top: 1px;
+}
+.letter-envelope .env-stamp-cost {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 8px;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+.letter-envelope .env-stamp-postage {
+  font-family: var(--font-mono);
+  font-size: 5.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1px;
+}
 
-    .letter-envelope::before {
-      /* The triangular envelope flap */
-      content: '';
-      position: absolute;
-      left: 50%; top: 0;
-      width: 78%;
-      height: 55%;
-      transform: translateX(-50%);
-      background: linear-gradient(180deg, color-mix(in srgb, var(--bg2) 92%, var(--border) 8%) 0%, transparent 100%);
-      border-bottom: 1.25px dashed color-mix(in srgb, var(--border) 35%, transparent);
-      clip-path: polygon(0 0, 100% 0, 50% 100%);
-      pointer-events: none;
-      z-index: 1;
-    }
+/* ── Postmark circle ── */
+.letter-envelope .env-postmark {
+  position: absolute;
+  top: 12px;
+  right: 64px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: color-mix(in srgb, var(--text-muted) 75%, transparent);
+  border: 1px solid color-mix(in srgb, var(--text-muted) 45%, transparent);
+  border-radius: 50%;
+  width: 38px; height: 38px;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  transform: rotate(-12deg);
+  letter-spacing: 0.03em;
+  background: color-mix(in srgb, var(--bg2) 65%, transparent);
+  z-index: 6;
+  pointer-events: none;
+  line-height: 1.2;
+}
 
-    /* IMPROVEMENT: Refined Stamp styling */
-    .letter-envelope .env-stamp {
-      position: absolute;
-      top: 10px;
-      right: 12px;
-      width: 56px;
-      height: 64px;
-      background: var(--bg2);
-      /* Dashed outer border cleanly mimics physical perforations */
-      border: 2px dashed color-mix(in srgb, var(--border) 35%, transparent);
-      padding: 4px;
-      z-index: 3;
-      transform: rotate(-4deg);
-      box-shadow: 2px 2px 0 var(--border);
-      transition: transform 0.3s ease;
-    }
-    
-    .letter-envelope:hover .env-stamp {
-      transform: rotate(-2deg) scale(1.02);
-    }
+/* ── Letter number — bottom left ── */
+.env-letter-num {
+  position: absolute;
+  bottom: 7px; left: 9px;
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  z-index: 6;
+}
 
-    .letter-envelope .env-stamp-inner {
-      width: 100%; height: 100%;
-      background: linear-gradient(160deg, color-mix(in srgb, var(--accent) 15%, var(--bg2)) 0%, var(--bg2) 100%);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: space-between;
-      padding: 3px 2px;
-      border: 1px solid var(--border); /* Solid inner frame */
-    }
+/* ── "CLICK TO OPEN" hint — fades in on hover ── */
+.env-open-hint {
+  position: absolute;
+  bottom: 7px; right: 9px;
+  font-family: var(--font-mono);
+  font-size: 7.5px;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0;
+  transition: opacity 0.2s;
+  z-index: 6;
+}
+.letter-envelope:hover .env-open-hint { opacity: 1; }
 
-    .letter-envelope .env-stamp-flower {
-      font-size: 16px;
-      color: var(--accent);
-      line-height: 1;
-      margin-top: 2px;
-    }
-    .letter-envelope .env-stamp-cost {
-      font-family: var(--font-mono);
-      font-weight: 700;
-      font-size: 9px;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-    }
-    .letter-envelope .env-stamp-postage {
-      font-family: var(--font-mono);
-      font-size: 6px;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 1px;
-    }
-
-    /* Circular postmark */
-    .letter-envelope .env-postmark {
-      position: absolute;
-      top: 14px;
-      right: 70px;
-      font-family: var(--font-mono);
-      font-size: 7.5px;
-      color: color-mix(in srgb, var(--text-muted) 80%, transparent);
-      border: 1px solid color-mix(in srgb, var(--text-muted) 50%, transparent);
-      border-radius: 50%;
-      width: 42px;
-      height: 42px;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      transform: rotate(-12deg);
-      letter-spacing: 0.04em;
-      background: color-mix(in srgb, var(--bg2) 70%, transparent);
-      z-index: 2;
-      pointer-events: none;
-    }
-
-    /* IMPROVEMENT: Reverted address block back to original transparent glassy look */
-    .letter-envelope .env-address {
-      position: absolute;
-      left: 12%;
-      right: 80px; /* Changed from 12% to an absolute value to always clear the stamp */
-      bottom: 16%;
-      text-align: left;
-      z-index: 2;
-      background: color-mix(in srgb, var(--bg2) 78%, transparent);
-      padding: 6px 8px;
-      border-radius: var(--radius-sm);
-    }
-
-    .letter-envelope .env-to-label {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--accent);
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      margin-bottom: 4px;
-    }
-
-    /* IMPROVEMENT: Fixed word cutoff */
-    .letter-envelope .env-to-name {
-      font-family: var(--font-tech);
-      font-size: 0.85rem;
-      text-transform: uppercase;
-      font-weight: 700;
-      color: var(--text);
-      line-height: 1.1;
-      /* Allow text to wrap, but clamp it to 2 lines with an ellipsis */
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      transition: color 0.2s;
-    }
-
-    /* IMPROVEMENT: Fixed word cutoff */
-    .letter-envelope .env-subject {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      color: var(--text-muted);
-      margin-top: 6px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      line-height: 1.3;
-      /* Clamp subject to 2 lines */
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .letter-envelope:hover .env-to-name { 
-      color: var(--accent); 
-    }
+/* ── Admin actions ── */
 body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
 .letter-envelope .admin-log-actions .admin-edit-btn,
 .letter-envelope .admin-log-actions .admin-delete-btn {
@@ -1132,7 +1117,6 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   font-size: 8px;
   padding: 2px 5px;
 }
-
 /* ── LETTERS — legacy card kept below in case other places still use it ── */
 
 .letter-card {
