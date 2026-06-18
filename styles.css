@@ -139,7 +139,10 @@ body.dark { background-image: none; }
   align-items: center;
   gap: 1rem;
   width: 100%;
-  padding: 0.65rem 1.5rem;
+  padding-top: 0.65rem;
+  padding-bottom: 0.65rem;
+  padding-left: max(1.5rem, calc((100vw - 1160px) / 2 + 1.5rem));
+  padding-right: max(1.5rem, calc((100vw - 1160px) / 2 + 1.5rem));
   background: var(--bg2);
   border-bottom: 1.5px solid var(--border);
   box-shadow: 0 3px 0 var(--border);
@@ -245,7 +248,10 @@ body.dark { background-image: none; }
   width: 100%;
   background: var(--bg2);
   border-top: 1.5px solid var(--border);
-  padding: 0.5rem 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: max(1.5rem, calc((100vw - 1160px) / 2 + 1.5rem));
+  padding-right: max(1.5rem, calc((100vw - 1160px) / 2 + 1.5rem));
   font-family: var(--font-mono);
   font-size: 10px;
   color: var(--text-sub);
@@ -2342,29 +2348,6 @@ body.admin-mode .info-del { display: inline-block !important; }
 /* Allow grouping multiple buttons in the admin toolbar */
 .admin-toolbar-actions { display: flex; gap: 6px; align-items: center; }
 
-/* Color swatches */
-.info-color-row {
-  gap: 12px;
-}
-.info-color-swatch {
-  display: inline-block;
-  width: 28px;
-  height: 28px;
-  border: 1.5px solid var(--border);
-  border-radius: 3px;
-  flex-shrink: 0;
-  box-shadow: 2px 2px 0 var(--border);
-}
-.info-row-hex {
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
-  color: var(--accent);
-  background: var(--bg3);
-  padding: 2px 6px;
-  border: 1px solid var(--border-lt);
-  border-radius: 2px;
-  text-transform: uppercase;
-}
 
 @media (max-width: 700px) {
   .info-grid { grid-template-columns: 1fr; }
