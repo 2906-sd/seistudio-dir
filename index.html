@@ -1747,7 +1747,7 @@ function renderLightbox(){
     if(metaEl){ metaEl.textContent=''; }
     if(delBtn){ delBtn.style.display='none'; }
   } else {
-    if(descEl){ descEl.textContent=lbPiece.desc || ''; }
+   if(descEl){ descEl.innerHTML=lbPiece.desc || ''; }
     if(metaEl){ metaEl.textContent=lbPiece.meta ? lbPiece.meta : ''; }
     if(delBtn){ delBtn.style.display = isAdminSession() ? 'block' : 'none'; }
   }
