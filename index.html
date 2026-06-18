@@ -230,7 +230,10 @@
           </select>
         </div>
       </div>
-      <div class="blog-list" id="logList"></div>
+     <div class="logs-body">
+  <aside class="logs-sidebar" id="logTagSidebar"></aside>
+  <div class="blog-list" id="logList"></div>
+</div>
     </section>
 
     <!-- Log reader -->
@@ -1482,16 +1485,51 @@ function renderArtGrid(){
    RENDER — LOGS
 ═══════════════════════════════════════════════════════ */
 function renderLogList(){
+  renderTagSidebar();
   const list=document.getElementById('logList');list.innerHTML='';
   let displayLogs=[...logsData];
+  if(activeTagFilter){
+    displayLogs=displayLogs.filter(log=>(log.tags||[]).some(t=>String(t).trim()===activeTagFilter));
+  }
   const sortOrder=document.getElementById('logSortOrder')?.value||'latest';
   if(sortOrder==='latest')displayLogs.reverse();
+  if(!displayLogs.length){
+    list.innerHTML=`<p class="post-label" style="opacity:0.6;">// no logs found for this tag.</p>`;
+    return;
+  }
   displayLogs.forEach(log=>{
     const originalIndex=logsData.findIndex(item=>item.id===log.id);
     const el=document.createElement('div');el.className='blog-list-item';el.onclick=()=>readLog(originalIndex);
     el.innerHTML=`<p class="post-label">${log.meta}</p><h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.4rem;">${log.title}</h2>${renderTagsHTML(log.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button></div>`;
     list.appendChild(el);
   });
+}
+
+function renderTagSidebar(){
+  const sidebar=document.getElementById('logTagSidebar');
+  if(!sidebar)return;
+  const counts={};
+  logsData.forEach(log=>{
+    (log.tags||[]).forEach(raw=>{
+      const tag=String(raw).trim();
+      if(!tag)return;
+      counts[tag]=(counts[tag]||0)+1;
+    });
+  });
+  const sortedTags=Object.keys(counts).sort((a,b)=>a.localeCompare(b));
+  let html=`<p class="tag-sidebar-title">// filter by tag</p>`;
+  html+=`<div class="tag-sidebar-item ${activeTagFilter===null?'active':''}" onclick="filterByTag(null)"><span>ALL LOGS</span><span class="tag-sidebar-count">${logsData.length}</span></div>`;
+  sortedTags.forEach(tag=>{
+    const isActive=activeTagFilter===tag;
+    const safeTag=tag.replace(/'/g,"\\'");
+    html+=`<div class="tag-sidebar-item ${isActive?'active':''}" onclick="filterByTag('${safeTag}')"><span>#${tag.replace(/^#/,'')}</span><span class="tag-sidebar-count">${counts[tag]}</span></div>`;
+  });
+  sidebar.innerHTML=html;
+}
+
+function filterByTag(tag){
+  activeTagFilter=(activeTagFilter===tag)?null:tag;
+  renderLogList();
 }
 
 function readLog(i){
