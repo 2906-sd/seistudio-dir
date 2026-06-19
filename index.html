@@ -1908,13 +1908,9 @@ function submitComment(){
   const customName=(nameInput&&nameInput.value)?nameInput.value.trim().slice(0,40):'';
   const finalName=customName||genAnonName();
   const xPct=Math.max(2,Math.random()*72),yPct=Math.max(2,Math.random()*68),now=new Date();
-  submitComment()
+  const payload={text,name:finalName,time:now.toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:true}),date:`${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`,xPct,yPct,timestamp:firebase.database.ServerValue.TIMESTAMP,country:visitorCountry||null};
   msgRef.push(payload).then(()=>{
     updateLastPostTime();
-    // Trim old messages so the board never exceeds MAX_MSGS. We only fetch
-    // KEYS (not full payloads) by ordering on the lightweight `timestamp`
-    // child, and prune in a single batched update — far cheaper than
-    // downloading every message on every post.
     msgRef.orderByChild('timestamp').limitToLast(MAX_MSGS+50).once('value',snap=>{
       const count = snap.numChildren();
       if(count <= MAX_MSGS) return;
@@ -1931,7 +1927,7 @@ function submitComment(){
 
   function initVisitorCounter(){
   const counterRef = db.ref('stats/visitorCount');
-  counterRef.transaction(curr => (curr||0)+1);
+  counterRef.transaction(curr => (curr||0)+1).catch(e=>console.warn('Visitor count write failed:',e));
   counterRef.on('value', snap => {
     const el = document.getElementById('visitorCountValue');
     if(el) el.textContent = (snap.val()||0).toLocaleString();
