@@ -1511,8 +1511,9 @@ function renderArtGrid(){
    RENDER — LOGS
 ═══════════════════════════════════════════════════════ */
 let activeTagFilter = null;
-  function renderLogList(){
-  renderTagSidebar();
+function renderLogList(){
+  try { renderTagSidebar(); } catch(e) { console.error('Tag sidebar failed:', e); }
+
   const list=document.getElementById('logList');list.innerHTML='';
   let displayLogs=[...logsData];
   if(activeTagFilter){
@@ -1527,7 +1528,19 @@ let activeTagFilter = null;
   displayLogs.forEach(log=>{
     const originalIndex=logsData.findIndex(item=>item.id===log.id);
     const el=document.createElement('div');el.className='blog-list-item';el.onclick=()=>readLog(originalIndex);
-    el.innerHTML=`<p class="post-label">${log.meta}</p><h2 style="font-family:var(--font-tech);text-transform:uppercase;font-size:1.4rem;">${log.title}</h2>${renderTagsHTML(log.tags)}<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button></div>`;
+    el.innerHTML=`
+      <div class="log-titlebar">
+        <span class="log-titlebar-close"></span>
+        <span class="log-titlebar-label">${log.meta}</span>
+      </div>
+      <div class="log-card-body">
+        <h2 class="log-card-title">${log.title}</h2>
+        ${renderTagsHTML(log.tags)}
+      </div>
+      <div class="admin-log-actions">
+        <button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button>
+        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
+      </div>`;
     list.appendChild(el);
   });
 }
