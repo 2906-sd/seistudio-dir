@@ -1308,34 +1308,68 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
 }
 
 /* ── BULLETIN BOARD ──────────────────────────────────── */
+.board-home-row {
+  display: flex;
+  gap: 1.25rem;
+  align-items: stretch;
+  width: 100%;
+  margin-top: 1.25rem;
+}
+.board-home-card { flex: 1 1 auto; min-width: 0; }
+
 #board-section {
-  width: 100%; min-height: 500px;
+  width: 100%;
+  height: 420px;          /* default fixed size — replaces the old drag-to-resize */
   position: relative;
-  background: var(--bg2);
-  border: 1.5px solid var(--border);
-  display: flex; flex-direction: column;
-  border-radius: var(--radius);
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
+@media (max-width: 800px) {
+  #board-section { height: 340px; }
+}
+
+.visitor-count-card {
+  flex: 0 0 170px;
+  display: flex;
+  flex-direction: column;
+}
+.visitor-count-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+}
+.visitor-count-number {
+  font-family: var(--font-tech);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.visitor-count-label {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+@media (max-width: 800px) {
+  .board-home-row { flex-direction: column; }
+  .visitor-count-card { flex: 0 0 auto; }
+}
+
+/* country code tag inside each message header */
+.comment-country { opacity: 0.8; margin-left: 3px; }
+
 .board-canvas {
   flex: 1; min-height: 300px;
   position: relative; overflow: auto;
   background-image: radial-gradient(var(--border-lt) 1px, transparent 1px);
   background-size: 20px 20px;
-}
-.board-resize-handle {
-  position: absolute; bottom: 0; right: 0;
-  width: 22px; height: 22px;
-  background: var(--accent);
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  cursor: se-resize; z-index: 600;
-  border-bottom-right-radius: var(--radius);
-}
-.board-controls {
-  flex-shrink: 0; background: var(--bg2);
-  padding: 0.8rem 1rem;
-  border-top: 1.5px solid var(--border);
-  z-index: 500; display: flex; flex-direction: column; gap: 6px; padding-right: 36px;
 }
 .board-input-row { display: flex; gap: 8px; align-items: center; }
 input.board-input, textarea.board-input {
@@ -1343,6 +1377,8 @@ input.board-input, textarea.board-input {
   padding: 8px; font-family: var(--font-mono); font-size: 12px;
   flex: 1; min-width: 0; outline: none; cursor: text; border-radius: var(--radius-sm);
 }
+
+
 .board-submit {
   background: var(--accent); color: var(--text-inv);
   border: 1.5px solid var(--border); padding: 8px 15px;
