@@ -1329,27 +1329,6 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   #board-section { height: 340px; }
 }
 
-.visitor-count-card {
-  flex: 0 0 170px;
-  display: flex;
-  flex-direction: column;
-}
-.visitor-count-body {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 4px;
-  text-align: center;
-}
-.visitor-count-number {
-  font-family: var(--font-tech);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--accent);
-  line-height: 1;
-}
 .visitor-count-label {
   font-family: var(--font-mono);
   font-size: 9px;
@@ -1359,33 +1338,128 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
 }
 @media (max-width: 800px) {
   .board-home-row { flex-direction: column; }
-  .visitor-count-card { flex: 0 0 auto; }
+  .board-sidebar {
+    flex: 0 0 auto;
+    width: 100%;
+    flex-direction: row;
+    gap: 0.75rem;
+  }
+ /* ── BULLETIN SIDEBAR — compact visitor count + image slot ── */
+.board-sidebar {
+  flex: 0 0 170px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 
-/* country code tag inside each message header */
-.comment-country { opacity: 0.8; margin-left: 3px; }
+.visitor-count-card { flex: 0 0 auto; }
+.visitor-count-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  text-align: center;
+  padding: 0.9rem 0.5rem;   /* tighter than the default home-card-body padding */
+}
+.visitor-count-number {
+  font-family: var(--font-tech);
+  font-size: 1.5rem;        /* scaled down to match the now-compact card */
+  font-weight: 700;
+  color: var(--accent);
+  line-height: 1;
+}
+.visitor-count-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
+/* fixed-shape, responsive-sized image slot — aspect-ratio holds the shape
+   constant while the actual pixel size scales with the sidebar's width */
+.board-image-card {
+  flex: 0 0 auto;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+}
+.board-image-card .board-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── BULLETIN — fixed scroll viewport + tall inner content layer ── */
 .board-canvas {
-  flex: 1; min-height: 300px;
-  position: relative; overflow: auto;
+  flex: 1;
+  min-height: 0;             /* lets this flex child shrink to fit #board-section's fixed height, which is what makes overflow:auto actually trigger */
+  position: relative;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.board-canvas-inner {
+  position: relative;
+  width: 100%;
+  min-height: 800px;         /* deliberately taller than the visible viewport — this is the scrollable "world" the notes live in */
   background-image: radial-gradient(var(--border-lt) 1px, transparent 1px);
   background-size: 20px 20px;
 }
-.board-input-row { display: flex; gap: 8px; align-items: center; }
-input.board-input, textarea.board-input {
-  border: 1px solid var(--border-lt); background: var(--bg); color: var(--text);
-  padding: 8px; font-family: var(--font-mono); font-size: 12px;
-  flex: 1; min-width: 0; outline: none; cursor: text; border-radius: var(--radius-sm);
+.board-canvas::-webkit-scrollbar { width: 8px; }
+.board-canvas::-webkit-scrollbar-track { background: var(--bg3); border-radius: 4px; }
+.board-canvas::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+.board-canvas::-webkit-scrollbar-thumb:hover { background: var(--accent); }
+
+/* ── BULLETIN — controls, roomier spacing ── */
+.board-controls {
+  flex-shrink: 0;
+  background: var(--bg2);
+  padding: 1rem 1.1rem;
+  border-top: 1.5px solid var(--border);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
-
-
-.board-submit {
-  background: var(--accent); color: var(--text-inv);
-  border: 1.5px solid var(--border); padding: 8px 15px;
-  font-family: var(--font-mono); font-size: 10px;
-  text-transform: uppercase; cursor: pointer; white-space: nowrap;
+.board-input-row { display: flex; gap: 10px; align-items: flex-end; }
+input.board-input, textarea.board-input {
+  border: 1px solid var(--border-lt);
+  background: var(--bg);
+  color: var(--text);
+  padding: 10px 12px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  line-height: 1.5;
+  flex: 1;
+  min-width: 0;
+  outline: none;
+  cursor: text;
   border-radius: var(--radius-sm);
 }
+textarea.board-message-input {
+  resize: vertical;          /* the drag handle visitors asked for, native to the browser */
+  min-height: 40px;
+  max-height: 160px;
+}
+.board-submit {
+  background: var(--accent);
+  color: var(--text-inv);
+  border: 1.5px solid var(--border);
+  padding: 10px 18px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  border-radius: var(--radius-sm);
+  flex-shrink: 0;
+}
+/* country code tag inside each message header */
+.comment-country { opacity: 0.8; margin-left: 3px; }
+
+
 .char-counter { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); text-align: right; transition: color 0.2s; }
 .char-counter.warn { color: var(--accent); }
 .spam-warning { font-family: var(--font-mono); font-size: 10px; color: var(--accent); margin-top: 4px; display: none; }
