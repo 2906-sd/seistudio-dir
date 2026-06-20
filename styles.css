@@ -1547,18 +1547,23 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 /* ASYMMETRICAL BENTO: 
    Games gets a large 2x2 box for many stickers. 
    Likes and Hobbies are stacked on the right. */
-.aw-games { 
-  grid-column: 1 / 3; 
-  grid-row: 3 / 5;
-}
-
-.aw-likes { 
-  grid-column: 3; 
+.aw-likes {
+  grid-column: 1 / 4;
   grid-row: 3;
 }
 
-.aw-hobbies { 
-  grid-column: 3; 
+.aw-games {
+  grid-column: 1;
+  grid-row: 4;
+}
+
+.aw-hobbies {
+  grid-column: 2;
+  grid-row: 4;
+}
+
+.aw-music {
+  grid-column: 3;
   grid-row: 4;
 }
 
@@ -1742,20 +1747,22 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   .about-layout { 
     grid-template-columns: repeat(2, 1fr);
   }
-  .about-card, .aw-bag, .aw-games, .about-badges-wrap { 
+  .about-card, .aw-bag, .aw-likes, .about-badges-wrap { 
     grid-column: 1 / 3; 
     grid-row: auto;
   }
-  /* On tablets, Likes and Hobbies sit nicely side by side */
-  .aw-likes { grid-column: 1; grid-row: auto; }
+  /* Games + Hobbies pair up; Music drops to its own full-width row
+     since 3 equal items don't divide evenly into 2 tablet columns */
+  .aw-games   { grid-column: 1; grid-row: auto; }
   .aw-hobbies { grid-column: 2; grid-row: auto; }
+  .aw-music   { grid-column: 1 / 3; grid-row: auto; }
 }
 
 @media (max-width: 768px) {
   .about-layout { 
     grid-template-columns: 1fr; 
   }
-  .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .about-badges-wrap { 
+  .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .aw-music, .about-badges-wrap { 
     grid-column: 1 / -1; 
   }
 }
