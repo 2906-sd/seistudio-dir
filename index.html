@@ -395,10 +395,11 @@
               <span>GAMES //</span>
               <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
             </div>
-            <div class="about-widget-body" id="widget-games" data-sticker-cat="games">
-              <span class="widget-hint">// stickers loading...</span>
-            </div>
-          </div>
+         <div class="about-widget-body games-marquee-viewport" id="widget-games" data-sticker-cat="games">
+  <div class="games-marquee-track" id="widget-games-track">
+    <span class="widget-hint">// stickers loading...</span>
+  </div>
+</div>
 
           <!-- LIKES — tall card with the about stickers -->
           <div class="about-widget aw-likes">
@@ -2440,11 +2441,36 @@ const STICKER_CATS = ['games','hobbies','music'];
 
 function renderStickers(){
   STICKER_CATS.forEach(cat=>{
+    const items=(stickersData||[]).filter(s=>s.category===cat && s.image);
+
+    if(cat==='games'){
+      const track=document.getElementById('widget-games-track');
+      if(!track) return;
+      if(!items.length){
+        track.innerHTML = '<span class="widget-hint">// stickers loading...</span>';
+        syncGamesHeightToHobbies();
+        return;
+      }
+      const buildSticker = (s, withDelete) => {
+        const del = (withDelete && isAdminSession())
+          ? `<button class="admin-delete-btn sticker-del" onclick="event.stopPropagation();adminDeleteSticker('${s.id}')" title="Remove sticker">×</button>`
+          : '';
+        return `<div class="sticker-wrap">`
+             + `<img class="about-sticker-img" src="${escHtml(s.image)}" alt="${escHtml(s.alt||cat)}" title="${escHtml(s.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`
+             + `${del}</div>`;
+      };
+      // duplicate the sequence so the loop has no visible seam —
+      // only the first copy gets a delete button; the second is a pure visual echo
+      track.innerHTML = items.map(s=>buildSticker(s,true)).join('') + items.map(s=>buildSticker(s,false)).join('');
+      syncGamesHeightToHobbies();
+      return;
+    }
+
     const el=document.querySelector(`[data-sticker-cat="${cat}"]`);
     if(!el) return;
-    const items=(stickersData||[]).filter(s=>s.category===cat && s.image);
     if(!items.length){
       el.innerHTML = '<span class="widget-hint">// no stickers yet.</span>';
+      if(cat==='hobbies') syncGamesHeightToHobbies();
       return;
     }
     el.innerHTML = items.map(s=>{
@@ -2455,8 +2481,17 @@ function renderStickers(){
            + `<img class="about-sticker-img" src="${escHtml(s.image)}" alt="${escHtml(s.alt||cat)}" title="${escHtml(s.alt||'')}" loading="lazy" onerror="this.style.opacity=0.3" />`
            + `${del}</div>`;
     }).join('');
+    if(cat==='hobbies') syncGamesHeightToHobbies();
   });
 }
+
+function syncGamesHeightToHobbies(){
+  const hobbies = document.querySelector('.aw-hobbies .about-widget-body');
+  const games   = document.getElementById('widget-games');
+  if(!hobbies || !games) return;
+  games.style.height = hobbies.offsetHeight + 'px';
+}
+window.addEventListener('resize', syncGamesHeightToHobbies);
 
 function adminAddSticker(){
   if(!isAdminSession())return;
