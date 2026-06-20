@@ -1547,30 +1547,33 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 /* ASYMMETRICAL BENTO: 
    Games gets a large 2x2 box for many stickers. 
    Likes and Hobbies are stacked on the right. */
+/* Likes — full-width row, the unique photo wall, isolated from everyone else */
 .aw-likes {
   grid-column: 1 / 4;
   grid-row: 3;
 }
 
+/* Games + Hobbies — paired, both now fixed-height cards (Games synced via JS) */
 .aw-games {
-  grid-column: 1;
+  grid-column: 1 / 3;
   grid-row: 4;
 }
 
 .aw-hobbies {
-  grid-column: 2;
+  grid-column: 3;
   grid-row: 4;
 }
 
+/* Music — own full-width row, room to grow as you add tracks */
 .aw-music {
-  grid-column: 3;
-  grid-row: 4;
+  grid-column: 1 / 4;
+  grid-row: 5;
 }
 
 /* BADGES STRIP: full-width banner, at the bottom */
 .about-badges-wrap { 
   grid-column: 1 / 4; 
-  grid-row: 5;
+  grid-row: 6;
 }
 
 .about-widget {
@@ -1765,6 +1768,41 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .aw-music, .about-badges-wrap { 
     grid-column: 1 / -1; 
   }
+}
+
+
+/* GAMES — horizontal marquee, height synced to Hobbies via JS */
+.games-marquee-viewport {
+  overflow: hidden;
+  position: relative;
+  align-items: center;
+}
+
+.games-marquee-track {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  width: max-content;
+  animation: games-marquee 24s linear infinite;
+}
+
+.games-marquee-viewport:hover .games-marquee-track {
+  animation-play-state: paused; /* lets visitors actually look at one mid-scroll */
+}
+
+@keyframes games-marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* slightly bigger than the shared 85px cap, per request — Games only */
+.aw-games .about-sticker-img {
+  max-width: 108px;
+  max-height: 108px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .games-marquee-track { animation: none; }
 }
 
 /* ── STICKERS (about page floating — kept for legacy/log use) ─────────────── */
