@@ -11,9 +11,12 @@
   --text-sub:    #555555;
   --text-inv:    #ffffff;
   --accent:      #405FFA;
+  --link:        #405FFA;
+  --link-visited: #FA7E40;
+  --link-hover:  #FA405F;
   --border:      #100C08;
   --border-lt:   #eeeeee;
---font-main:   'Newsreader', serif;
+  --font-main:   'Newsreader', serif;
   --font-tech:   'Karla', sans-serif;
   --font-mono:   'Space Mono', monospace;
   --shadow:      4px 4px 0px var(--border);
@@ -43,18 +46,18 @@ LINKS STYLING
 ══════════════════════════════════════════════════════ */
 /* Unvisited links (Default state) */
 a {
-  color: #405FFA; /* Your main link color */
+  color: var(--link);
   text-decoration: underline;
 }
 
 /* Visited links (After a user has clicked them) */
 a:visited {
-  color: #FA7E40; /* Change this to your preferred visited color (e.g., a purple) */
+  color: var(--link-visited);
 }
 
 /* Hover state (When a mouse is over the link) */
 a:hover {
-  color: #FA405F; /* Change this to your preferred hover color (e.g., your secondary pink) */
+  color: var(--link-hover);
   opacity: 1;    /* Overrides the opacity transition if you want full color intensity */
 }
 
@@ -1344,7 +1347,9 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
     flex-direction: row;
     gap: 0.75rem;
   }
- /* ── BULLETIN SIDEBAR — compact visitor count + image slot ── */
+}
+
+/* ── BULLETIN SIDEBAR — compact visitor count + image slot ── */
 .board-sidebar {
   flex: 0 0 170px;
   display: flex;
