@@ -773,9 +773,6 @@ body.admin-mode .admin-log-actions { display: flex; }
   overflow-x: hidden;
   padding-right: 0.75rem;
   scrollbar-gutter: stable;
-  /* Subtle fade on the bottom edge hints there's more to read. */
-  -webkit-mask-image: linear-gradient(to bottom, #000 0, #FA4055 calc(100% - 24px), transparent 100%);
-          mask-image: linear-gradient(to bottom, #000 0, #FA4055 calc(100% - 24px), transparent 100%);
 }
 .log-body-text::-webkit-scrollbar { width: 8px; }
 .log-body-text::-webkit-scrollbar-track { background: var(--bg3); border-radius: 4px; }
@@ -1902,8 +1899,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 
 /* ── LOG TAGS ─────────────────────────────────────────── */
 .log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
-.log-tag { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); cursor: default; transition: color 0.15s; letter-spacing: 0.02em; }
-.log-tag:hover { color: var(--accent); }
+.log-tag { font-family: var(--font-mono); font-size: 10px; cursor: default; letter-spacing: 0.02em; }
 .log-container .log-tags { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); }
 .log-container .log-tag  { font-size: 12px; }
 
