@@ -1776,7 +1776,9 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   overflow: hidden;
   position: relative;
   align-items: center;
+  align-content: center;
 }
+
 
 .games-marquee-track {
   display: flex;
@@ -1797,8 +1799,8 @@ body.admin-mode .sticker-del { display: inline-block !important; }
 
 /* slightly bigger than the shared 85px cap, per request — Games only */
 .aw-games .about-sticker-img {
-  max-width: 108px;
-  max-height: 108px;
+  max-width: 130px;
+  max-height: 130px;
 }
 
 @media (prefers-reduced-motion: reduce) {
