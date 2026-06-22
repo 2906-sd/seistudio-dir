@@ -87,6 +87,7 @@
 
     <!-- ══════════════════ HOME ══════════════════ -->
     <section id="home" class="active">
+      <div class="home-nav-slot" id="homeNavSlot"></div>
       <div class="home-grid">
 
         <!-- HELLO -->
@@ -1361,7 +1362,22 @@ function normalizeImageUrl(url){
   if(!u.startsWith('http'))return encodePath(u);
   return u;
 }
+  
+/* ═══════════════════════════════════════════════════════
+  hero + marquee card fix
+═══════════════════════════════════════════════════════ */
 
+(function(){
+  const hero = document.querySelector('.hero-card');
+  const marquee = document.querySelector('.marquee-card');
+  if(!hero || !marquee) return;
+  const wrapper = document.createElement('div');
+  wrapper.className = 'home-hero-block';
+  hero.parentNode.insertBefore(wrapper, hero);
+  wrapper.appendChild(hero);
+  wrapper.appendChild(marquee);
+})();
+  
 /* ═══════════════════════════════════════════════════════
    FIREBASE INIT
 ═══════════════════════════════════════════════════════ */
@@ -1544,6 +1560,34 @@ function showPage(id){
 }
 
 function toggleMenu(){document.getElementById('desktopIconsBar').classList.toggle('show');}
+
+
+
+  function _activateSection(id){
+  document.querySelectorAll('section').forEach(s=>s.classList.remove('active'));
+  const sec=document.getElementById(id);if(sec)sec.classList.add('active');
+  document.querySelectorAll('.desk-icon').forEach(n=>n.classList.remove('active'));
+  const navMap={'log-reader':'writing','shrine-reader':'shrines','letter-reader':'letters'};
+  const pageId=navMap[id]||id;
+  const deskLink=document.getElementById('desk-link-'+pageId);
+  if(deskLink)deskLink.classList.add('active');
+  const bar=document.getElementById('desktopIconsBar');
+  if(bar)bar.classList.remove('show');
+  relocateNavLinks(id==='home');
+  window.scrollTo(0,0);
+}
+
+function relocateNavLinks(toHome){
+  const bar = document.getElementById('desktopIconsBar');
+  const navCenter = document.getElementById('navCenter');
+  const homeSlot = document.getElementById('homeNavSlot');
+  if(!bar || !navCenter || !homeSlot) return;
+  if(toHome && bar.parentElement !== homeSlot){
+    homeSlot.appendChild(bar);
+  } else if(!toHome && bar.parentElement !== navCenter){
+    navCenter.appendChild(bar);
+  }
+}
 
 /* ═══════════════════════════════════════════════════════
    RENDER — ART
