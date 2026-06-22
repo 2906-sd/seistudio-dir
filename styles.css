@@ -280,12 +280,11 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 .home-grid {
   display: grid;
   grid-template-columns: minmax(220px, 280px) 1fr minmax(220px, 280px);
-  grid-template-rows: auto auto auto auto;
-  grid-template-areas:
-    "hello   hero imgright"
-    "imgleft hero updates"
-    "status  hero quote"
-    ".       marquee .";
+  grid-template-rows: auto auto auto;
+   grid-template-areas:
+    "hello   heroblock imgright"
+    "imgleft heroblock updates"
+    "status  heroblock quote";
   gap: 1.25rem;
   align-items: start;
   width: 100%;
@@ -346,8 +345,17 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 }
 
 /* ── HERO CARD ── */
+.home-hero-block {
+  grid-area: heroblock;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: center;
+  align-self: center;
+  gap: 1.25rem;
+}
+
 .hero-card {
-  grid-area: hero;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -358,7 +366,6 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   gap: 0;
   position: relative;
   overflow: visible;
-  align-self: center;
 }
 
 .hero-card .site-title {
@@ -518,13 +525,12 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
-      "hero     hero"
-      "hello    imgright"
-      "imgleft  updates"
-      "status   quote"
-      "marquee  marquee";
+      "heroblock heroblock"
+      "hello     imgright"
+      "imgleft   updates"
+      "status    quote";
   }
-  .hero-card { min-height: 200px; padding: 1.5rem 1.5rem 2rem; align-self: auto; }
+  .hero-card { min-height: 200px; padding: 1.5rem 1.5rem 2rem; }
   .hero-card .hero-text { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   .hello-card, .updates-card { align-self: start; }
   .updates-card { max-height: 260px; }
@@ -535,14 +541,13 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   .home-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
-      "hero"
+      "heroblock"
       "hello"
       "imgleft"
       "imgright"
       "updates"
       "status"
-      "quote"
-      "marquee";
+      "quote";
   }
 }
 
@@ -2121,10 +2126,11 @@ a.desk-icon, a.desk-icon-external {
 
 /* ── MARQUEE CARD (centered below hero) ── */
 .marquee-card {
-  grid-area: marquee;
   overflow: hidden !important;
   min-height: auto !important;
 }
+
+
 .marquee-card .home-card-body { padding: 0 !important; }
 .marquee-card .marquee-container {
   border: none;
