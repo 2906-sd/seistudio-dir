@@ -280,16 +280,32 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 .home-grid {
   display: grid;
   grid-template-columns: minmax(220px, 280px) 1fr minmax(220px, 280px);
-  grid-template-rows: auto auto auto;
+  grid-template-rows: auto auto auto auto;
   grid-template-areas:
-    "hello hero updates"
-    "status hero quote"
-    ". marquee .";
+    "hello   hero imgright"
+    "imgleft hero updates"
+    "status  hero quote"
+    ".       marquee .";
   gap: 1.25rem;
   align-items: start;
   width: 100%;
   position: relative;
   z-index: 2;
+}
+
+.home-image-left  { grid-area: imgleft; }
+.home-image-right { grid-area: imgright; }
+
+.home-image-card {
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: flex;
+}
+.home-image-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* ── HOME CARD BASE ── */
@@ -495,27 +511,33 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
     grid-template-columns: minmax(200px, 1fr) 1.4fr minmax(200px, 1fr);
   }
 }
+
 @media (max-width: 800px) {
   .home-grid {
     grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     grid-template-areas:
-      "hero    hero"
-      "hello   updates"
-      "status  quote"
-      "marquee marquee";
+      "hero     hero"
+      "hello    imgright"
+      "imgleft  updates"
+      "status   quote"
+      "marquee  marquee";
   }
   .hero-card { min-height: 200px; padding: 1.5rem 1.5rem 2rem; align-self: auto; }
   .hero-card .hero-text { font-size: clamp(1.2rem, 4vw, 1.8rem); }
   .hello-card, .updates-card { align-self: start; }
   .updates-card { max-height: 260px; }
 }
+
+
 @media (max-width: 580px) {
   .home-grid {
     grid-template-columns: 1fr;
     grid-template-areas:
       "hero"
       "hello"
+      "imgleft"
+      "imgright"
       "updates"
       "status"
       "quote"
