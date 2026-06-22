@@ -358,8 +358,9 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   gap: 0;
   position: relative;
   overflow: visible;
-  align-self: stretch;
+  align-self: center;
 }
+
 .hero-card .site-title {
   font-family: var(--font-tech);
   font-size: 1rem;
