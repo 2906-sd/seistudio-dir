@@ -607,12 +607,37 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   bottom: 0; left: 0; right: 0;
   background: rgba(255,255,255,0.88);
   border-top: 1px solid var(--border);
-  padding: 0.4rem 0.6rem;
-  font-size: 9px;
+  padding: 0.35rem 0.5rem;
+  font-size: 8px;                    /* slightly smaller for dense grid */
   align-items: center;
   color: #555;
+  gap: 0.4rem;
+  /* Prevent the label from ever growing taller than one line */
+  flex-wrap: nowrap;
+  overflow: hidden;
 }
 body.dark .art-post .post-label { background: rgba(20,20,20,0.88); color: #aaa; }
+
+/* Title span — left side, gets priority, truncates if needed */
+.art-post .post-label span:first-child {
+  flex: 1 1 0;                       /* grows to fill available space */
+  min-width: 0;                      /* critical: allows flex child to shrink below content width */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Meta span — right side, fixed width, always truncates */
+.art-post .post-label span:last-child {
+  flex: 0 0 auto;                    /* does not grow or shrink */
+  max-width: 45%;                    /* never eats more than half the label */
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: right;
+  color: var(--text-muted);
+  opacity: 0.75;                     /* de-emphasise meta vs title */
+}
 
 /* ── ADMIN DELETE/EDIT BUTTONS ───────────────────────── */
 .admin-delete-btn {
