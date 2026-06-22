@@ -831,26 +831,117 @@ body.admin-mode .admin-log-actions { display: flex; }
 .log-body-text::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 .log-body-text::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-.log-sticker {
-  position: absolute;
-  z-index: 4;
-  pointer-events: auto;
-  cursor: grab;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: none;
+/* ═══════════════════════════════════════════════════════
+   LOG PHOTOSTRIP — film strip aesthetic
+═══════════════════════════════════════════════════════ */
+
+/* Outer strip wrapper — dark film base */
+.log-photostrip {
+  position: relative;
+  background: #111;
+  border: 1.5px solid var(--border);
+  box-shadow: 3px 3px 0 var(--border);
+  margin: 1.5rem 0 1rem;
+  padding: 18px 0;          /* space for sprocket rows top + bottom */
+  overflow: hidden;
 }
-.log-sticker:active { cursor: grabbing; }
-.log-sticker img {
-  width: auto;
-  height: auto;
-  max-width: 86px;
-  max-height: 86px;
-  object-fit: contain;
+
+/* Sprocket holes — repeating dots along top and bottom */
+.log-photostrip::before,
+.log-photostrip::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0;
+  height: 14px;
+  background-image: repeating-linear-gradient(
+    to right,
+    transparent 0px,
+    transparent 6px,
+    #2a2a2a 6px,
+    #2a2a2a 18px,   /* hole width */
+    transparent 18px,
+    transparent 28px  /* gap between holes */
+  );
+  /* Punch holes out of the dark strip */
+  -webkit-mask-image: repeating-linear-gradient(
+    to right,
+    black 0 6px,
+    transparent 6px 18px,
+    black 18px 28px
+  );
+  mask-image: repeating-linear-gradient(
+    to right,
+    black 0 6px,
+    transparent 6px 18px,
+    black 18px 28px
+  );
+  background-color: #1a1a1a;
+  border-top: 1px solid #333;
+  border-bottom: 1px solid #333;
+}
+.log-photostrip::before { top: 0; }
+.log-photostrip::after  { bottom: 0; }
+
+/* Scrollable inner frame row */
+.log-photostrip-inner {
+  display: flex;
+  gap: 3px;
+  overflow-x: auto;
+  padding: 0 8px;
+  scrollbar-width: thin;
+  scrollbar-color: #333 #111;
+  /* Snap to each frame */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.log-photostrip-inner::-webkit-scrollbar { height: 4px; }
+.log-photostrip-inner::-webkit-scrollbar-track { background: #111; }
+.log-photostrip-inner::-webkit-scrollbar-thumb { background: #333; }
+
+/* Individual photo frame */
+.log-photostrip-frame {
+  flex: 0 0 auto;
+  width: 90px;
+  height: 90px;
+  scroll-snap-align: start;
+  cursor: zoom-in;
+  position: relative;
+  border: 1px solid #2a2a2a;
+  overflow: hidden;
+  transition: filter 0.15s, transform 0.15s;
+  filter: saturate(0.8) brightness(0.9);
+}
+.log-photostrip-frame:hover {
+  filter: saturate(1.1) brightness(1.05);
+  transform: scale(1.04);
+  z-index: 2;
+  border-color: var(--accent);
+}
+.log-photostrip-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
   pointer-events: none;
   -webkit-user-drag: none;
-  filter: drop-shadow(3px 4px 0 rgba(0,0,0,0.18));
 }
+
+/* Photo count label — bottom right of strip */
+.log-photostrip-count {
+  position: absolute;
+  bottom: 18px;   /* sits above the bottom sprocket row */
+  right: 10px;
+  font-family: var(--font-mono);
+  font-size: 7px;
+  color: #555;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  pointer-events: none;
+  line-height: 14px;
+}
+
+/* Remove old sticker styles — kept here as tombstone comment */
+/* .log-sticker { ... } — deleted, replaced by photostrip */
 
 /* ── LOG TAG SIDEBAR ─────────────────────────────────── */
 .logs-body {
