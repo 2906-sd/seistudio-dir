@@ -1366,7 +1366,6 @@ function normalizeImageUrl(url){
 /* ═══════════════════════════════════════════════════════
   hero + marquee card fix
 ═══════════════════════════════════════════════════════ */
-
 (function(){
   const hero = document.querySelector('.hero-card');
   const marquee = document.querySelector('.marquee-card');
@@ -1376,6 +1375,14 @@ function normalizeImageUrl(url){
   hero.parentNode.insertBefore(wrapper, hero);
   wrapper.appendChild(hero);
   wrapper.appendChild(marquee);
+
+  // Home is already .active in the raw HTML on first load, so
+  // _activateSection() never runs for it until someone navigates
+  // away and back. Without this, the nav bar would sit in its old
+  // spot until the first click on Home.
+  if(document.getElementById('home')?.classList.contains('active')){
+    relocateNavLinks(true);
+  }
 })();
   
 /* ═══════════════════════════════════════════════════════
@@ -1580,15 +1587,14 @@ function toggleMenu(){document.getElementById('desktopIconsBar').classList.toggl
 function relocateNavLinks(toHome){
   const bar = document.getElementById('desktopIconsBar');
   const navCenter = document.getElementById('navCenter');
-  const homeSlot = document.getElementById('homeNavSlot');
-  if(!bar || !navCenter || !homeSlot) return;
-  if(toHome && bar.parentElement !== homeSlot){
-    homeSlot.appendChild(bar);
-  } else if(!toHome && bar.parentElement !== navCenter){
-    navCenter.appendChild(bar);
+  const heroBlock = document.querySelector('.home-hero-block');
+  if(!bar || !navCenter) return;
+  if(toHome && heroBlock){
+    if(bar.parentElement !== heroBlock) heroBlock.insertBefore(bar, heroBlock.firstChild);
+  } else if(!toHome){
+    if(bar.parentElement !== navCenter) navCenter.appendChild(bar);
   }
 }
-
 /* ═══════════════════════════════════════════════════════
    RENDER — ART
 ═══════════════════════════════════════════════════════ */
