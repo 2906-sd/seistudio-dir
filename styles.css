@@ -832,117 +832,148 @@ body.admin-mode .admin-log-actions { display: flex; }
 .log-body-text::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
 /* ═══════════════════════════════════════════════════════
-   LOG PHOTOSTRIP — film strip aesthetic
+   LOG PHOTO VIEWER — OS window aesthetic
 ═══════════════════════════════════════════════════════ */
 
-/* Outer strip wrapper — dark film base */
-.log-photostrip {
-  position: relative;
-  background: #111;
+/* Outer window shell */
+.log-photoviewer {
   border: 1.5px solid var(--border);
   box-shadow: 3px 3px 0 var(--border);
+  background: var(--bg2);
   margin: 1.5rem 0 1rem;
-  padding: 18px 0;          /* space for sprocket rows top + bottom */
   overflow: hidden;
 }
 
-/* Sprocket holes — repeating dots along top and bottom */
-.log-photostrip::before,
-.log-photostrip::after {
+/* Titlebar — reuses the pinstripe pattern from .log-titlebar */
+.log-pv-titlebar {
+  position: relative;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  padding: 0 6px;
+  border-bottom: 1.5px solid var(--border);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.log-pv-titlebar::before {
   content: '';
   position: absolute;
-  left: 0; right: 0;
-  height: 14px;
+  inset: 3px;
   background-image: repeating-linear-gradient(
-    to right,
-    transparent 0px,
-    transparent 6px,
-    #2a2a2a 6px,
-    #2a2a2a 18px,   /* hole width */
-    transparent 18px,
-    transparent 28px  /* gap between holes */
+    to bottom, var(--border) 0 1px, transparent 1px 3px
   );
-  /* Punch holes out of the dark strip */
-  -webkit-mask-image: repeating-linear-gradient(
-    to right,
-    black 0 6px,
-    transparent 6px 18px,
-    black 18px 28px
-  );
-  mask-image: repeating-linear-gradient(
-    to right,
-    black 0 6px,
-    transparent 6px 18px,
-    black 18px 28px
-  );
-  background-color: #1a1a1a;
-  border-top: 1px solid #333;
-  border-bottom: 1px solid #333;
 }
-.log-photostrip::before { top: 0; }
-.log-photostrip::after  { bottom: 0; }
-
-/* Scrollable inner frame row */
-.log-photostrip-inner {
-  display: flex;
-  gap: 3px;
-  overflow-x: auto;
-  padding: 0 8px;
-  scrollbar-width: thin;
-  scrollbar-color: #333 #111;
-  /* Snap to each frame */
-  scroll-snap-type: x mandatory;
-  -webkit-overflow-scrolling: touch;
-}
-.log-photostrip-inner::-webkit-scrollbar { height: 4px; }
-.log-photostrip-inner::-webkit-scrollbar-track { background: #111; }
-.log-photostrip-inner::-webkit-scrollbar-thumb { background: #333; }
-
-/* Individual photo frame */
-.log-photostrip-frame {
-  flex: 0 0 auto;
-  width: 90px;
-  height: 90px;
-  scroll-snap-align: start;
-  cursor: zoom-in;
+/* Window control dots — left side */
+.log-pv-controls {
   position: relative;
-  border: 1px solid #2a2a2a;
-  overflow: hidden;
-  transition: filter 0.15s, transform 0.15s;
-  filter: saturate(0.8) brightness(0.9);
-}
-.log-photostrip-frame:hover {
-  filter: saturate(1.1) brightness(1.05);
-  transform: scale(1.04);
   z-index: 2;
-  border-color: var(--accent);
+  display: flex;
+  gap: 4px;
+  margin-right: 8px;
+  flex-shrink: 0;
 }
-.log-photostrip-frame img {
+.log-pv-dot {
+  width: 7px; height: 7px;
+  border: 1.3px solid var(--border);
+  background: var(--bg2);
+}
+/* Titlebar label — centered, white bg cutout */
+.log-pv-titlebar-label {
+  position: relative;
+  z-index: 2;
+  margin: 0 auto;
+  background: var(--bg2);
+  padding: 0 8px;
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text);
+  white-space: nowrap;
+}
+
+/* Main image display area */
+.log-pv-display {
+  position: relative;
   width: 100%;
-  height: 100%;
-  object-fit: cover;
+  aspect-ratio: 16 / 9;
+  background: var(--bg3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.log-pv-display img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
   display: block;
   pointer-events: none;
   -webkit-user-drag: none;
+  transition: opacity 0.12s ease;
+}
+.log-pv-display img.pv-fade {
+  opacity: 0;
 }
 
-/* Photo count label — bottom right of strip */
-.log-photostrip-count {
+/* Prev / Next nav buttons — sit inside the display area */
+.log-pv-nav {
   position: absolute;
-  bottom: 18px;   /* sits above the bottom sprocket row */
-  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  color: var(--text);
   font-family: var(--font-mono);
-  font-size: 7px;
-  color: #555;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  pointer-events: none;
-  line-height: 14px;
+  font-size: 12px;
+  width: 28px; height: 28px;
+  cursor: pointer;
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
 }
+.log-pv-nav:hover   { background: var(--accent); color: #fff; border-color: var(--accent); }
+.log-pv-nav:disabled { opacity: 0.25; pointer-events: none; }
+.log-pv-nav.prev { left: 6px; }
+.log-pv-nav.next { right: 6px; }
 
-/* Remove old sticker styles — kept here as tombstone comment */
-/* .log-sticker { ... } — deleted, replaced by photostrip */
-
+/* Status bar — bottom toolbar */
+.log-pv-statusbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 8px;
+  border-top: 1.5px solid var(--border);
+  background: var(--bg2);
+  gap: 8px;
+}
+.log-pv-counter {
+  font-family: var(--font-mono);
+  font-size: 8.5px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+/* "OPEN" button — opens full lightbox */
+.log-pv-open-btn {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: var(--bg3);
+  border: 1.5px solid var(--border);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  white-space: nowrap;
+}
+.log-pv-open-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
 /* ── LOG TAG SIDEBAR ─────────────────────────────────── */
 .logs-body {
   display: flex;
