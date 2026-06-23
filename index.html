@@ -1677,73 +1677,130 @@ function filterByTag(tag){
   renderLogList();
 }
 
-function readLog(i){
-  const log = logsData[i]; if(!log) return;
+/* ─────────────────────────────────────────────────────
+   Photo viewer state — persists across nav clicks
+───────────────────────────────────────────────────── */
+window._logPvUrls  = [];   // current log's photo URLs
+window._logPvIdx   = 0;    // currently displayed frame index
+window._logPvTitle = '';   // log title — passed to lightbox
+
+/* ── Navigate the in-log viewer (prev / next) ────────── */
+function logPvNav(dir) {
+  const urls = window._logPvUrls;
+  if (!urls.length) return;
+
+  const next = Math.max(0, Math.min(urls.length - 1, window._logPvIdx + dir));
+  if (next === window._logPvIdx) return;
+  window._logPvIdx = next;
+
+  const img     = document.getElementById('log-pv-img');
+  const counter = document.getElementById('log-pv-counter');
+  const prevBtn = document.querySelector('.log-pv-nav.prev');
+  const nextBtn = document.querySelector('.log-pv-nav.next');
+
+  if (!img) return;
+
+  // Quick fade transition so the swap doesn't feel jarring
+  img.classList.add('pv-fade');
+  setTimeout(() => {
+    img.src = normalizeImageUrl(urls[window._logPvIdx]);
+    img.classList.remove('pv-fade');
+  }, 100);
+
+  if (counter) counter.textContent = `${window._logPvIdx + 1} / ${urls.length}`;
+  if (prevBtn) prevBtn.disabled = window._logPvIdx === 0;
+  if (nextBtn) nextBtn.disabled = window._logPvIdx === urls.length - 1;
+}
+
+/* ── Open current frame in the full lightbox ─────────── */
+function logPvOpen() {
+  const url = window._logPvUrls[window._logPvIdx];
+  if (!url) return;
+  openImageLightbox(encodeURIComponent(normalizeImageUrl(url)), window._logPvTitle, '');
+}
+
+/* ── Build the viewer HTML string ────────────────────── */
+function buildPhotoViewer(urls, logTitle) {
+  if (!urls || !urls.length) return '';
+
+  // Seed global state so nav/open handlers have access
+  window._logPvUrls  = urls;
+  window._logPvIdx   = 0;
+  window._logPvTitle = logTitle || 'LOG';
+
+  const firstUrl = normalizeImageUrl(urls[0]);
+  const total    = urls.length;
+  const multi    = total > 1; // only show nav buttons if more than 1 photo
+
+  return `
+    <div class="log-photoviewer">
+
+      <!-- Title bar -->
+      <div class="log-pv-titlebar">
+        <div class="log-pv-controls">
+          <div class="log-pv-dot"></div>
+          <div class="log-pv-dot"></div>
+          <div class="log-pv-dot"></div>
+        </div>
+        <span class="log-pv-titlebar-label">PHOTOS.EXE — ${escHtml(logTitle)}</span>
+      </div>
+
+      <!-- Image display -->
+      <div class="log-pv-display">
+        ${multi ? `<button class="log-pv-nav prev" onclick="logPvNav(-1)" disabled>&#8592;</button>` : ''}
+        <img id="log-pv-img" src="${firstUrl}" alt="Photo 1 of ${total}" draggable="false" />
+        ${multi ? `<button class="log-pv-nav next" onclick="logPvNav(1)" ${total === 1 ? 'disabled' : ''}>&#8594;</button>` : ''}
+      </div>
+
+      <!-- Status bar -->
+      <div class="log-pv-statusbar">
+        <span class="log-pv-counter" id="log-pv-counter">1 / ${total}</span>
+        <button class="log-pv-open-btn" onclick="logPvOpen()">OPEN ↗</button>
+      </div>
+
+    </div>`;
+}
+
+/* ── readLog — replace your existing function with this ─ */
+function readLog(i) {
+  const log = logsData[i]; if (!log) return;
   window._currentLogIndex = i;
 
   const editBtn = document.getElementById('logReaderEditBtn');
-  if(editBtn) editBtn.style.display = isAdminSession() ? 'inline-block' : 'none';
+  if (editBtn) editBtn.style.display = isAdminSession() ? 'inline-block' : 'none';
 
-  // ── Collect photo URLs from log.stickers field (field name kept for
-  //    Firebase compatibility — no migration needed on existing entries)
+  // Collect photo URLs from log.stickers (field name kept for Firebase compat)
   let photoUrls = [], cleanBody = log.body || '';
 
-  if(log.stickers && Array.isArray(log.stickers)){
+  if (log.stickers && Array.isArray(log.stickers)) {
     photoUrls = log.stickers.filter(Boolean);
-  } else if(log.stickers && typeof log.stickers === 'object'){
+  } else if (log.stickers && typeof log.stickers === 'object') {
     photoUrls = Object.values(log.stickers).filter(Boolean);
   } else {
-    // Legacy: URLs embedded as bare lines in the body — extract and strip them out
+    // Legacy: bare URLs embedded in body text — extract and strip
     const lines = cleanBody.split('\n'), cb = [], re = /^(https?:\/\/[^\s]+)$/i;
-    lines.forEach(l => { const t = l.trim(); if(re.test(t)) photoUrls.push(t); else cb.push(l); });
+    lines.forEach(l => { const t = l.trim(); re.test(t) ? photoUrls.push(t) : cb.push(l); });
     cleanBody = cb.join('\n');
   }
 
-  // ── Build photostrip HTML (only rendered if there are photos)
-  const photostripHtml = photoUrls.length ? buildPhotostrip(photoUrls, log.title || 'LOG') : '';
+  // Build viewer HTML (empty string if no photos)
+  const viewerHtml = buildPhotoViewer(photoUrls, log.title || 'LOG');
 
-  // ── Inject full log content: meta → title → body → photostrip → tags
+  // Inject: meta → title → body → viewer → tags
   document.getElementById('log-content').innerHTML =
-    `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ''}</p>`
+      `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ''}</p>`
     + `<h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>`
     + `<div class="log-body-text">${cleanBody}</div>`
-    + photostripHtml
+    + viewerHtml
     + renderTagsHTML(log.tags);
 
-  // ── Wire up photostrip frame clicks → existing image lightbox
-  if(photoUrls.length){
-    document.querySelectorAll('.log-photostrip-frame').forEach((frame, idx) => {
-      frame.addEventListener('click', () => {
-        // openImageLightbox expects an encoded URL, title, and caption
-        openImageLightbox(encodeURIComponent(photoUrls[idx]), log.title || 'LOG', '');
-      });
-    });
-  }
-
-  // ── Clean up any leftover sticker elements from a previous log view
+  // Clean up any orphaned sticker elements from a previous log view
   document.querySelectorAll('.log-sticker').forEach(s => s.remove());
 
   const logHash = '#log/' + log.id;
-  if(window.location.hash !== logHash)
+  if (window.location.hash !== logHash)
     window.history.pushState({ page: 'log-reader', logId: log.id }, '', logHash);
   _activateSection('log-reader');
-}
-
-/* ── Builds the film-strip HTML string for a given URL array ── */
-function buildPhotostrip(urls, logTitle){
-  if(!urls.length) return '';
-
-  const frames = urls.map((url, i) => {
-    const full = normalizeImageUrl(url);
-    return `<div class="log-photostrip-frame" title="Photo ${i + 1} — click to expand">`
-         +   `<img src="${full}" alt="${escHtml(logTitle)} photo ${i + 1}" loading="lazy" draggable="false" />`
-         + `</div>`;
-  }).join('');
-
-  return `<div class="log-photostrip">`
-       +   `<div class="log-photostrip-inner">${frames}</div>`
-       +   `<span class="log-photostrip-count">${urls.length} FRAME${urls.length !== 1 ? 'S' : ''}</span>`
-       + `</div>`;
 }
 
 /* ═══════════════════════════════════════════════════════
