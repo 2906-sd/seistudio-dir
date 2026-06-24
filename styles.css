@@ -1781,7 +1781,7 @@ textarea.board-message-input {
 .profile-meta p    { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
 .about-bio         { font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: var(--text); margin-bottom: 1.25rem; }
 .tag-list          { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
-.tag               { background: #4055fa; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
+.tag               { background: #FA4055; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
 .about-links       { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
 .about-links a     { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
@@ -3334,3 +3334,121 @@ body { overflow-x: hidden; max-width: 100vw; }
 /* But we still need the outer card to clip the viewer's
    top/bottom edges — achieve this by making the bleed only
    horizontal (left/right), which overflow:visible allows  */
+
+/* ═══════════════════════════════════════════════════════
+   POLISH PASS — nav centering, image sizing, photo viewer
+═══════════════════════════════════════════════════════ */
+
+/* ── 1. NAV ICON STRIP — centered, evenly spaced, aesthetic ──
+   Override the previous flex-start + left-padding approach.
+   With 7 icons on a ~375px strip each gets ~53px — they all
+   fit without scrolling and stay perfectly centered.         */
+@media (max-width: 850px) {
+  .desktop-icons-bar {
+    justify-content: center !important;  /* center the group */
+    gap: 0 !important;                   /* no gap — use icon padding instead */
+    padding: 0.35rem 0.5rem !important;  /* even horizontal breathing room */
+    overflow-x: auto;                    /* fallback if icons don't fit */
+  }
+
+  /* Each icon: equal flex so they distribute evenly */
+  .desk-icon {
+    flex: 1 1 0 !important;   /* equal share of available width */
+    min-width: 0 !important;  /* allow shrinking below 50px */
+    max-width: 64px !important;
+    padding: 5px 2px 4px !important;
+    /* Center the icon+label stack */
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Wrap icon image in its wrap div — already centered by flex */
+  .desk-icon-wrap {
+    width: 28px;
+    height: 28px;
+  }
+
+  .desk-icon-img {
+    width: 24px !important;
+    height: 24px !important;
+  }
+
+  .desk-icon-label {
+    font-size: 6px !important;
+    letter-spacing: 0.02em;
+    text-align: center;
+  }
+
+  /* Active indicator: subtle underline instead of bg box on mobile */
+  .desk-icon.active {
+    background: transparent;
+    border-color: transparent;
+    position: relative;
+  }
+  .desk-icon.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 20%;
+    right: 20%;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 1px;
+  }
+  .desk-icon.active .desk-icon-label {
+    color: var(--accent);
+  }
+
+  /* Logo row: tighter on the sides */
+  .nav-left  { padding: 0.5rem 0.75rem !important; }
+  .nav-right { padding: 0.5rem 0.75rem !important; }
+}
+
+/* ── 2. HOME IMAGE CARDS — constrain height on mobile ──
+   At full-width single column, a 1:1 aspect card on a 375px
+   screen is 375px tall — way too much vertical real estate.
+   Cap to a sensible height while keeping object-fit:cover.  */
+@media (max-width: 580px) {
+  .home-image-card {
+    aspect-ratio: unset !important; /* override the 16/9 from previous fix */
+    height: 200px;                  /* fixed, controlled height */
+    max-height: 200px;
+  }
+
+  .home-image-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center top; /* bias toward top — usually the face/subject */
+  }
+}
+
+/* ── 3. LOG PHOTO VIEWER — inset panel, not wall-to-wall ──
+   Revert the negative-margin bleed. Instead: contained panel
+   with its own border-radius, margin spacing from text,
+   and a subtle bg distinction. Feels like a window docked
+   INSIDE the log — not bleeding through its walls.          */
+.log-photoviewer {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  border-left: 1.5px solid var(--border) !important;
+  border-right: 1.5px solid var(--border) !important;
+  border-top: 1.5px solid var(--border) !important;
+  border-bottom: 1.5px solid var(--border) !important;
+  border-radius: var(--radius) !important;  /* match site card radius */
+  box-shadow: var(--shadow) !important;     /* same shadow as other cards */
+  overflow: hidden !important;              /* clip titlebar to radius */
+  background: var(--bg3) !important;        /* slightly different bg to pop */
+}
+
+/* Restore log container clipping */
+.log-container {
+  overflow: hidden !important;
+}
+
+/* Photo viewer titlebar gets radius on top via parent overflow:hidden */
+.log-pv-titlebar {
+  border-radius: 0; /* parent clips it */
+}
