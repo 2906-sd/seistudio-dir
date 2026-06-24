@@ -1781,7 +1781,7 @@ textarea.board-message-input {
 .profile-meta p    { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
 .about-bio         { font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: var(--text); margin-bottom: 1.25rem; }
 .tag-list          { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
-.tag               { background: #4055fa; color: #ffff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
+.tag               { background: #4055fa; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
 .about-links       { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
 .about-links a     { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
@@ -3224,3 +3224,113 @@ body { overflow-x: hidden; max-width: 100vw; }
     white-space: nowrap;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   LOG PAGE FIXES
+   1. Tag filter pills — compact + consistent on mobile
+   2. Blog list items — rounded corners to match site
+   3. Photo viewer — visually separated from log text
+═══════════════════════════════════════════════════════ */
+
+/* ── 1. BLOG LIST ITEMS — add radius to match site cards ── */
+.blog-list-item {
+  border-radius: var(--radius) !important;
+  overflow: hidden; /* keep the pinstripe titlebar clipped to rounded corners */
+}
+
+/* The pinstripe titlebar top edge needs to follow the card's radius */
+.blog-list-item .log-titlebar {
+  /* Already overflow:hidden on the parent clips this correctly */
+}
+
+/* ── 2. TAG FILTER PILLS — smaller, pill-shaped on mobile ──
+   On desktop the sidebar is 190px wide so items stack fine.
+   On mobile they flex-wrap into a tag cloud — they should
+   look like compact chips, not big rectangle buttons.      */
+@media (max-width: 720px) {
+  .logs-sidebar {
+    gap: 5px;
+  }
+
+  .tag-sidebar-title {
+    width: 100%;           /* force the title onto its own line */
+    flex: 0 0 100%;
+    margin-bottom: 0.35rem;
+    font-size: 10px;
+  }
+
+  .tag-sidebar-item {
+    /* Compact pill — not a full-width rectangle */
+    flex: 0 0 auto;
+    width: auto;
+    padding: 4px 10px;
+    font-size: 9px;
+    border-radius: 999px;   /* pill shape instead of boxy var(--radius) */
+    gap: 5px;
+    margin-bottom: 0;
+    /* Kill the translateX hover — doesn't make sense on wrapped pills */
+  }
+
+  .tag-sidebar-item:hover {
+    transform: none;
+    border-color: var(--accent);
+  }
+
+  .tag-sidebar-count {
+    font-size: 8px;
+  }
+}
+
+/* ── 3. LOG PHOTO VIEWER — break out of text container ──
+   Currently sits inside .log-container's padding so it
+   looks embedded in the prose. Pull it edge-to-edge so
+   it reads as a distinct OS window, not inline content.  */
+.log-photoviewer {
+  /* Negative margins to bleed past the container's 3rem padding
+     so the viewer sits edge-to-edge inside the card        */
+  margin-left: -3rem;
+  margin-right: -3rem;
+  margin-top: 1.75rem;
+  margin-bottom: 1.75rem;
+
+  /* Rounded corners only on the outside to match site cards */
+  border-radius: 0;        /* flush to card edges, no inner radius */
+  border-left: none;
+  border-right: none;
+
+  /* Stronger visual separation from surrounding text */
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  box-shadow: none;        /* remove the floating shadow — it's IN a card now */
+}
+
+/* Tighter padding compensation on mobile where log-container
+   already reduces to 1.75rem or 1.25rem                   */
+@media (max-width: 850px) {
+  .log-photoviewer {
+    margin-left: -1.75rem;
+    margin-right: -1.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .log-photoviewer {
+    margin-left: -0.9rem;
+    margin-right: -0.9rem;
+  }
+}
+
+/* Photo viewer titlebar: no radius (already flush) */
+.log-pv-titlebar {
+  border-radius: 0;
+}
+
+/* The log container itself: make sure overflow is visible
+   so the negative-margin bleed works and isn't clipped    */
+.log-container {
+  overflow: visible;
+}
+
+/* But we still need the outer card to clip the viewer's
+   top/bottom edges — achieve this by making the bleed only
+   horizontal (left/right), which overflow:visible allows  */
