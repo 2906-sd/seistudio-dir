@@ -3114,3 +3114,113 @@ body { overflow-x: hidden; max-width: 100vw; }
     padding: 7px 12px;
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   NAV OVERLAP FIX
+   Problem: .desktop-icons-bar uses position:absolute on
+   mobile, dropping it out of flow and overlapping content.
+   Solution: on mobile, collapse the top-nav into two rows —
+   the logo/controls row stays, and the icon bar becomes a
+   full-width scroll strip in normal flow below it.
+   The hamburger trigger is hidden; no dropdown needed.
+═══════════════════════════════════════════════════════ */
+
+@media (max-width: 850px) {
+
+  /* Make the nav a two-row flex column so the icon strip
+     sits IN FLOW below the logo row, not floating over content */
+  .top-nav {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0;
+    gap: 0;
+  }
+
+  /* Row 1: logo + controls */
+  .nav-left,
+  .nav-right {
+    /* Wrap them into their own row */
+  }
+
+  /* Inner row wrapper — logo left, controls right */
+  .top-nav > .nav-left,
+  .top-nav > .nav-center,
+  .top-nav > .nav-right {
+    /* These three are direct children; put them in a sub-row */
+  }
+
+  /* The trick: wrap logo+controls in a flex row, then icon
+     bar goes below as a second block. We do this by making
+     .top-nav itself a column and giving the first three
+     children a shared row via a pseudo-wrapper approach —
+     but since we can't add wrappers in CSS alone, we use
+     order + a clear border-top on the icon bar instead.   */
+
+  .nav-left  { order: 1; padding: 0.5rem 0.85rem 0.5rem; }
+  .nav-center { order: 2; display: none !important; }  /* marquee gone on mobile */
+  .nav-right { order: 3; padding: 0.3rem 0.85rem 0.5rem; padding-left: 0; }
+
+  /* Override: top-nav goes back to flex-row for the logo+controls line */
+  .top-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 0 0 0 0;
+    align-items: center;
+  }
+
+  /* nav-left + nav-right share the first row */
+  .nav-left  { flex: 1 1 auto; padding: 0.5rem 0.85rem; }
+  .nav-right { flex: 0 0 auto; padding: 0.5rem 0.85rem; }
+
+  /* Icon bar: full-width SECOND row, in normal flow */
+  .desktop-icons-bar {
+    order: 99;              /* always last */
+    position: static !important;  /* CRITICAL: take it out of absolute */
+    display: flex !important;     /* always visible — no hamburger toggle */
+    flex: 0 0 100%;         /* full width of the nav */
+    width: 100%;
+
+    /* Horizontal scroll strip */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    flex-wrap: nowrap !important; /* single row, scroll don't wrap */
+
+    /* Visual separation from logo row */
+    border-top: 1.5px solid var(--border);
+    border-bottom: 1.5px solid var(--border);
+    padding: 0.4rem 0.75rem;
+    gap: 0.25rem;
+    justify-content: flex-start; /* left-aligned so scroll works */
+    background: var(--bg2);
+    box-shadow: none;
+
+    /* Reset the absolute-positioning values */
+    top: auto; left: auto; right: auto;
+    z-index: auto;
+  }
+
+  .desktop-icons-bar::-webkit-scrollbar { display: none; }
+
+  /* Hide the hamburger — not needed anymore */
+  .menu-trigger { display: none !important; }
+
+  /* Icon sizing in the strip — slightly tighter */
+  .desk-icon {
+    min-width: 50px;
+    max-width: 58px;
+    padding: 4px 4px 3px;
+    flex-shrink: 0; /* don't squish — rely on scroll */
+  }
+
+  .desk-icon-img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .desk-icon-label {
+    font-size: 6.5px;
+    white-space: nowrap;
+  }
+}
