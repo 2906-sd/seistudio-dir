@@ -1485,15 +1485,7 @@ function escHtml(str) {
 let statusData = [];
 
 // ── Load status entries from Firebase (newest first) ──
-db.ref('content/status').orderByChild('timestamp').once('value', snap => {
-  statusData = [];
-  snap.forEach(child => {
-    const d = child.val();
-    statusData.push({ id: child.key, ...d });
-  });
-  renderStatus();
-  updateLastUpdatedDisplay(); // refresh "LAST UPDATED" date
-}).catch(e => console.error('Status load failed:', e));
+
 
 // ── Render — always picks the entry with the highest timestamp ──
 function renderStatus() {
@@ -1827,6 +1819,16 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     renderStickers();
     updateLastUpdatedDisplay();
   }).catch(e=>console.error('Stickers load failed:',e));
+
+  db.ref('content/status').orderByChild('timestamp').once('value', snap => {
+  statusData = [];
+  snap.forEach(child => {
+    const d = child.val();
+    statusData.push({ id: child.key, ...d });
+  });
+  renderStatus();
+  updateLastUpdatedDisplay(); // refresh "LAST UPDATED" date
+}).catch(e => console.error('Status load failed:', e));
 }
 
 /* ═══════════════════════════════════════════════════════
