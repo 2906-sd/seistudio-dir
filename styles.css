@@ -1671,7 +1671,7 @@ textarea.board-message-input {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
-  align-items: start;        /* don't stretch rows to match tallest sibling */
+  align-items: stretch;      /* equal height cards within each row */
   max-width: 100%;
 }
 
