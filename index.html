@@ -2995,7 +2995,7 @@ function adminDeleteSticker(id){
 function updateLastUpdatedDisplay(){
   const el=document.getElementById('statusLastUpdated');if(!el)return;
   let maxTs=0;
-  [artData,logsData,shrinesData,lettersData,trashData,badgesData,infoData,bagData,stickersData].forEach(arr=>{
+ [artData,logsData,shrinesData,lettersData,trashData,badgesData,infoData,bagData,stickersData,statusData].forEach(arr=>{
     (arr||[]).forEach(item=>{if(item&&item.timestamp&&item.timestamp>maxTs)maxTs=item.timestamp;});
   });
   if(!maxTs){el.textContent='--.--.--';return;}
