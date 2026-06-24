@@ -139,23 +139,23 @@
             <span class="status-last-updated">LAST UPDATED // <span id="statusLastUpdated">--.--.--</span></span>
           </div>
           <div class="home-card-body">
-            <div class="status-row">
-              <span class="status-row-label">MOOD //</span>
-              <span class="status-row-val">IRRITATED AF</span>
-            </div>
-            <div class="status-row">
-              <span class="status-row-label">LISTENING TO //</span>
-              <span class="status-row-val">Demon Time by Chase Atlantic</span>
-            </div>
-            <div class="status-row">
-              <span class="status-row-label">WORKING ON //</span>
-              <span class="status-row-val">Rearranging my room</span>
-            </div>
-            <div class="status-row">
-              <span class="status-row-label">TIME //</span>
-              <span class="status-row-val" id="homeTime">...</span>
-            </div>
-          </div>
+  <div class="status-row">
+    <span class="status-row-label">MOOD //</span>
+    <span class="status-row-val" id="statusMood">...</span>
+  </div>
+  <div class="status-row">
+    <span class="status-row-label">LISTENING TO //</span>
+    <span class="status-row-val" id="statusListening">...</span>
+  </div>
+  <div class="status-row">
+    <span class="status-row-label">WORKING ON //</span>
+    <span class="status-row-val" id="statusWorking">...</span>
+  </div>
+  <div class="status-row">
+    <span class="status-row-label">TIME //</span>
+    <span class="status-row-val" id="homeTime">...</span>
+  </div>
+</div>
         </div>
 
         <!-- QUOTE -->
@@ -888,6 +888,7 @@ Tokyo shoegazer </div>
         <button class="admin-tab"        id="tab-bag"     onclick="switchAdminTab('bag')">ADD BAG ITEM</button>
         <button class="admin-tab"        id="tab-stickers" onclick="switchAdminTab('stickers')">ADD STICKER</button>
         <button class="admin-tab"        id="tab-info"    onclick="switchAdminTab('info')">ADD INFO</button>
+        <button class="admin-tab" id="tab-status" onclick="switchAdminTab('status')">UPDATE STATUS</button>
       </div>
 
       <!-- ART FORM -->
@@ -1094,6 +1095,28 @@ Tokyo shoegazer </div>
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddInfo()">ADD ENTRY →</button>
         <p id="infoSuccess" class="admin-success">// ADDED.</p>
       </div>
+!-- ══════════════════════════════════════════════════════
+     STATUS CARD FORM
+     ══════════════════════════════════════════════════════ -->
+<div id="adminStatusForm" class="admin-form" style="display:none">
+  <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+    // Updates the STATUS.EXE card on the home page.<br />
+    // Leave any field blank to keep it showing a dash.
+  </p>
+
+  <label class="admin-label">Mood</label>
+  <input type="text" id="statusMoodInput" class="admin-input" placeholder="irritated af..." />
+
+  <label class="admin-label">Listening To</label>
+  <input type="text" id="statusListeningInput" class="admin-input" placeholder="Artist — Song" />
+
+  <label class="admin-label">Working On</label>
+  <input type="text" id="statusWorkingInput" class="admin-input" placeholder="what are you up to..." />
+
+  <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminUpdateStatus()">UPDATE STATUS →</button>
+  <p id="statusSuccess" class="admin-success" style="display:none">// STATUS UPDATED.</p>
+</div>
+      
     </div>
   </div>
 </div>
@@ -1453,6 +1476,71 @@ function openUpdateItem(section, id) {
 function escHtml(str) {
   if (!str) return '';
   return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+
+  /* ═══════════════════════════════════════════════════════
+   STATUS.EXE — dynamic Firebase-backed status card
+═══════════════════════════════════════════════════════ */
+let statusData = [];
+
+// ── Load status entries from Firebase (newest first) ──
+db.ref('content/status').orderByChild('timestamp').once('value', snap => {
+  statusData = [];
+  snap.forEach(child => {
+    const d = child.val();
+    statusData.push({ id: child.key, ...d });
+  });
+  renderStatus();
+  updateLastUpdatedDisplay(); // refresh "LAST UPDATED" date
+}).catch(e => console.error('Status load failed:', e));
+
+// ── Render — always picks the entry with the highest timestamp ──
+function renderStatus() {
+  if (!statusData.length) return;
+
+  const latest = statusData.reduce((a, b) =>
+    (a.timestamp || 0) > (b.timestamp || 0) ? a : b
+  );
+
+  const set = (id, val) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val || '—';
+  };
+
+  set('statusMood',      latest.mood      || '');
+  set('statusListening', latest.listening || '');
+  set('statusWorking',   latest.working   || '');
+}
+
+// ── Admin: push a new status entry ───────────────────
+function adminUpdateStatus() {
+  if (!isAdminSession()) return;
+
+  const mood      = document.getElementById('statusMoodInput').value.trim();
+  const listening = document.getElementById('statusListeningInput').value.trim();
+  const working   = document.getElementById('statusWorkingInput').value.trim();
+
+  if (!mood && !listening && !working) return; // nothing to save
+
+  const entry = { mood, listening, working };
+
+  adminWrite('push', 'content/status', entry)
+    .then(r => {
+      entry.id        = r.id;
+      entry.timestamp = Date.now();
+      statusData.push(entry);
+      renderStatus();
+      updateLastUpdatedDisplay();
+
+      const s = document.getElementById('statusSuccess');
+      if (s) { s.style.display = 'block'; setTimeout(() => s.style.display = 'none', 3000); }
+    })
+    .catch(e => { console.error('Status update failed:', e); alert('// COULD NOT SAVE: ' + e.message); });
+
+  // Clear fields after save
+  ['statusMoodInput', 'statusListeningInput', 'statusWorkingInput']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -2424,7 +2512,8 @@ function switchAdminTab(tab){
   document.getElementById('adminBagForm').style.display=tab==='bag'?'flex':'none';
   document.getElementById('adminStickersForm').style.display=tab==='stickers'?'flex':'none';
   document.getElementById('adminInfoForm').style.display=tab==='info'?'flex':'none';
-  ['art','logs','shrines','letters','trash','badges','bag','stickers','info'].forEach(t=>{
+document.getElementById('adminStatusForm').style.display = tab === 'status' ? 'flex' : 'none';
+  ['art','logs','shrines','letters','trash','badges','bag','stickers','info','status'].forEach(t=>{
     const btn=document.getElementById('tab-'+t);if(btn)btn.classList.toggle('active',t===tab);
   });
   // Reset the shrine paired-input UI whenever the shrine tab is opened from a
