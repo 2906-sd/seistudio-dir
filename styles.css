@@ -1663,190 +1663,63 @@ textarea.board-message-input {
 }
 
 /* ═══════════════════════════════════════════════════════
-   ABOUT — PROFILE + EXTRAS GRID
+   ABOUT — LAYOUT
 ═══════════════════════════════════════════════════════ */
 #about.active { display: block; }
 
-/* ── ABOUT LAYOUT — Stacked Bento Grid ── */
 .about-layout {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
-  align-items: stretch;
+  gap: 1rem;
+  align-items: start;        /* don't stretch rows to match tallest sibling */
   max-width: 100%;
 }
 
-.about-widgets-panel {
-  display: contents; 
-}
+/* display:contents lets all child widgets sit directly in the parent grid */
+.about-widgets-panel { display: contents; }
 
+/* ── Profile card — full width, row 1 ── */
 .about-card {
-  background: var(--bg2); border: 1.5px solid var(--border);
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
   width: 100%; max-width: 800px; margin: 0 auto;
   box-shadow: var(--shadow-lg);
-  position: relative; z-index: 2; border-radius: var(--radius); overflow: hidden;
-  grid-column: 1 / 4;
+  position: relative; z-index: 2;
+  border-radius: var(--radius); overflow: hidden;
+  grid-column: 1 / -1;
   grid-row: 1;
 }
 
-.about-header { background: var(--bg3); border-bottom: 1.5px solid var(--border);
-               padding: 0.5rem 1rem; font-family: var(--font-mono);
-               font-size: 10px; color: var(--text);
-               display: flex; justify-content: space-between; }
-.about-body { padding: 1.5rem 2rem; font-family: var(--font-mono); }
-.profile-header { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; align-items: center; }
-.profile-img { width: 80px; height: 80px; object-fit: cover; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0; }
-.profile-meta h3 { font-family: var(--font-mono); text-transform: uppercase; font-size: 1.05rem; color: var(--text); letter-spacing: -0.01em; }
-.profile-meta p { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
-.about-bio {
-  font-family: var(--font-mono);
-  font-size: 0.85rem;
-  line-height: 1.7;
-  color: var(--text);
-  margin-bottom: 1.25rem;
-}
-.tag-list { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
-.tag { background: #FA4055; color: #FFFFFF; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
-body.dark .tag { background: #FA4055; color: #FFFFFF; }
-.about-links { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
-.about-links a { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
+/* ── Bento widget placement — 3×2 grid below profile ── */
+/*    Row 2: Bag | Games | Likes                         */
+/*    Row 3: Hobbies | Music | Quiz                      */
+.aw-bag      { grid-column: 1; grid-row: 2; }
+.aw-games    { grid-column: 2; grid-row: 2; }
+.aw-likes    { grid-column: 3; grid-row: 2; }
+.aw-hobbies  { grid-column: 1; grid-row: 3; }
+.aw-music    { grid-column: 2; grid-row: 3; }
+.aw-quizzes  { grid-column: 3; grid-row: 3; }
 
-/* ── BENTO WIDGET PLACEMENT ── */
+/* Badges — full width below everything */
+.about-badges-wrap { grid-column: 1 / -1; }
 
 /* ═══════════════════════════════════════════════════════
-   ABOUT — INTERESTS TEXT LISTS
+   ABOUT — WIDGET SHELL
 ═══════════════════════════════════════════════════════ */
-
-/* Overrides the sticker-era widget-body padding for text lists */
-.interests-body {
-  padding: 0.65rem 0.75rem !important;
-  display: flex;
-  flex-direction: column;
-  gap: 0.6rem;
-  overflow-y: auto;
-  max-height: 240px;            /* scroll if the list is long */
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-.interests-body::-webkit-scrollbar { width: 4px; }
-.interests-body::-webkit-scrollbar-thumb { background: var(--border); }
-
-/* Subsection group — ANIMALS, FOOD, SERIES, etc. */
-.interests-section {
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
-}
-
-/* Subsection label — italic, muted, dashed underline */
-.interests-sublabel {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  font-style: italic;
-  padding-bottom: 3px;
-  margin-bottom: 3px;
-  border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
-}
-
-/* Individual list item */
-.interests-item {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  color: var(--text);
-  line-height: 1.6;
-  padding: 0;
-}
-
-/* ═══════════════════════════════════════════════════════
-   ABOUT — PERSONALITY QUIZZES WIDGET
-═══════════════════════════════════════════════════════ */
-
-/* Span full bento width — same pattern as aw-bag */
-.aw-quizzes {
-  grid-column: 1 / -1;
-}
-
-/* Scrollable inner body */
-.quiz-scroll-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  max-height: 380px;
-  overflow-y: auto;
-  padding: 0.65rem 0.75rem;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
-}
-.quiz-scroll-body::-webkit-scrollbar { width: 4px; }
-.quiz-scroll-body::-webkit-scrollbar-thumb { background: var(--border); }
-
-/* Individual quiz result card */
-.quiz-result-card {
-  border: 1.5px solid var(--border);
-  box-shadow: 2px 2px 0 var(--border);
-  background: var(--bg3);
-  overflow: hidden;
-}
-
-/* Title + host line */
-.quiz-result-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  padding: 0.4rem 0.6rem;
-  border-bottom: 1px solid var(--border);
-}
-.quiz-result-title {
-  font-family: var(--font-mono);
-  font-size: 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
-  color: var(--accent);
-  text-decoration: none;
-}
-.quiz-result-title:hover { text-decoration: underline; }
-
-.quiz-result-host {
-  font-family: var(--font-mono);
-  font-size: 8px;
-  color: var(--text-muted);
-}
-
-/* Result screenshot image */
-.quiz-result-img {
-  width: 100%;
-  display: block;
-  border-bottom: 1px solid var(--border);
-  object-fit: cover;
-}
-
-/* Optional caption below the image */
-.quiz-result-caption {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-muted);
-  padding: 0.35rem 0.6rem;
-  font-style: italic;
-}
-
 .about-widget {
   background: var(--bg2);
   border: 1.5px solid var(--border);
   box-shadow: var(--shadow);
   border-radius: var(--radius);
-  overflow: visible; 
+  overflow: hidden;
   display: flex;
   flex-direction: column;
-  height: 100%;
 }
 
 .about-widget-header {
   background: var(--bg3);
   border-bottom: 1.5px solid var(--border);
-  padding: 0.55rem 1rem;
+  padding: 0.5rem 0.75rem;
   font-family: var(--font-mono);
   font-size: 9px;
   text-transform: uppercase;
@@ -1854,26 +1727,28 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   letter-spacing: 0.07em;
   font-weight: bold;
   flex-shrink: 0;
-  border-radius: var(--radius) var(--radius) 0 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 8px;
 }
 
+/* Shared body — capped height so no widget blows out the row */
 .about-widget-body {
-  padding: 1.25rem;
+  padding: 0.75rem;
   flex: 1 1 auto;
   display: flex;
   flex-wrap: wrap;
-  gap: 1rem;
+  gap: 0.75rem;
   align-items: flex-start;
   align-content: flex-start;
-  min-height: 110px; 
-  height: auto;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
 }
-
-body.admin-mode .sticker-del { display: inline-block !important; }
+.about-widget-body::-webkit-scrollbar { width: 4px; }
+.about-widget-body::-webkit-scrollbar-thumb { background: var(--border); }
 
 .widget-hint {
   font-family: var(--font-mono);
@@ -1886,140 +1761,197 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   padding: 1rem 0;
 }
 
+/* ═══════════════════════════════════════════════════════
+   ABOUT — PROFILE CARD INTERNALS
+═══════════════════════════════════════════════════════ */
+.about-header {
+  background: var(--bg3);
+  border-bottom: 1.5px solid var(--border);
+  padding: 0.5rem 1rem;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text);
+  display: flex;
+  justify-content: space-between;
+}
+.about-body        { padding: 1.5rem 2rem; font-family: var(--font-mono); }
+.profile-header    { display: flex; gap: 1.5rem; margin-bottom: 1.5rem; align-items: center; }
+.profile-img       { width: 80px; height: 80px; object-fit: cover; border: 1.5px solid var(--border); border-radius: 50%; flex-shrink: 0; }
+.profile-meta h3   { font-family: var(--font-mono); text-transform: uppercase; font-size: 1.05rem; color: var(--text); letter-spacing: -0.01em; }
+.profile-meta p    { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
+.about-bio         { font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: var(--text); margin-bottom: 1.25rem; }
+.tag-list          { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.tag               { background: #FA4055; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
+.about-links       { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
+.about-links a     { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
+/* ═══════════════════════════════════════════════════════
+   ABOUT — BAG WIDGET
+═══════════════════════════════════════════════════════ */
+
+/* 2-col inner grid — fits the narrower 1/3-width card */
 .bag-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-  gap: 2.5rem 1rem; /* Tightened horizontal gap from 1.5rem to 1rem */
-  padding: 30px 20px;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1rem 0.5rem;
+  padding: 0.5rem;
+  width: 100%;
 }
 
 .bag-item {
-  position: relative;
-  background: transparent;
-  border: none;
-  padding: 0;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: 0.8rem;
+  gap: 0.4rem;
   transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
-
-.bag-item:hover { 
-  transform: translateY(-4px); 
-}
+.bag-item:hover { transform: translateY(-3px); }
 
 .bag-item img {
-  max-width: 160px; /* Increased from 120px */
-  max-height: 160px; /* Increased from 120px */
-  width: auto;
-  height: auto;
+  max-width: 80px;
+  max-height: 80px;
+  width: auto; height: auto;
   object-fit: contain;
-  filter: drop-shadow(3px 5px 6px rgba(0,0,0,0.18));
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.15));
   transition: transform 0.2s ease, filter 0.2s ease;
 }
-
 .bag-item:hover img {
   transform: scale(1.08) rotate(-2deg);
-  filter: drop-shadow(6px 10px 12px rgba(0,0,0,0.15));
+  filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.15));
 }
 
-.bag-item-emoji { 
-  font-size: 96px; /* Increased from 72px */
-  line-height: 1; 
-  filter: drop-shadow(3px 5px 6px rgba(0,0,0,0.15));
+.bag-item-emoji {
+  font-size: 48px;
+  line-height: 1;
+  filter: drop-shadow(2px 4px 4px rgba(0,0,0,0.12));
   transition: transform 0.2s ease;
 }
-
-.bag-item:hover .bag-item-emoji {
-  transform: scale(1.1) rotate(4deg);
-}
+.bag-item:hover .bag-item-emoji { transform: scale(1.1) rotate(4deg); }
 
 .bag-item-label {
   font-family: var(--font-mono);
-  font-size: 10px;
+  font-size: 9px;
   color: var(--text);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   line-height: 1.3;
   font-weight: 700;
-  max-width: 150px;
 }
-
 .bag-item-note {
   font-family: var(--font-mono);
-  font-size: 9px;
+  font-size: 8px;
   color: var(--text-muted);
   font-style: italic;
   line-height: 1.4;
-  max-width: 140px;
-  margin: 0 auto;
 }
 
-/* ── RESPONSIVE MEDIA QUERIES ── */
+/* ═══════════════════════════════════════════════════════
+   ABOUT — INTERESTS TEXT LISTS
+═══════════════════════════════════════════════════════ */
+.interests-body {
+  padding: 0.65rem 0.75rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  max-height: 280px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.interests-body::-webkit-scrollbar { width: 4px; }
+.interests-body::-webkit-scrollbar-thumb { background: var(--border); }
 
+.interests-section { display: flex; flex-direction: column; gap: 1px; }
+
+.interests-sublabel {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
+}
+
+.interests-item {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.6;
+}
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT — PERSONALITY QUIZZES WIDGET
+═══════════════════════════════════════════════════════ */
+.quiz-scroll-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 280px;
+  overflow-y: auto;
+  padding: 0.65rem 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.quiz-scroll-body::-webkit-scrollbar { width: 4px; }
+.quiz-scroll-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+.quiz-result-card {
+  border: 1.5px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  background: var(--bg3);
+  overflow: hidden;
+}
+.quiz-result-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.35rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.quiz-result-title {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+}
+.quiz-result-title:hover { text-decoration: underline; }
+.quiz-result-host { font-family: var(--font-mono); font-size: 7.5px; color: var(--text-muted); }
+.quiz-result-img  { width: 100%; display: block; border-bottom: 1px solid var(--border); object-fit: cover; }
+.quiz-result-caption { font-family: var(--font-mono); font-size: 8.5px; color: var(--text-muted); padding: 0.3rem 0.5rem; font-style: italic; }
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT — RESPONSIVE
+═══════════════════════════════════════════════════════ */
 @media (max-width: 1140px) {
-  .about-layout { 
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .about-card, .aw-bag, .aw-likes, .about-badges-wrap { 
-    grid-column: 1 / 3; 
-    grid-row: auto;
-  }
-  /* Games + Hobbies pair up; Music drops to its own full-width row
-     since 3 equal items don't divide evenly into 2 tablet columns */
-  .aw-games   { grid-column: 1; grid-row: auto; }
-  .aw-hobbies { grid-column: 2; grid-row: auto; }
-  .aw-music   { grid-column: 1 / 3; grid-row: auto; }
+  .about-layout { grid-template-columns: repeat(2, 1fr); }
+
+  /* Row 2: Bag full-width */
+  .aw-bag     { grid-column: 1 / -1; grid-row: 2; }
+  /* Row 3: Games | Likes */
+  .aw-games   { grid-column: 1;      grid-row: 3; }
+  .aw-likes   { grid-column: 2;      grid-row: 3; }
+  /* Row 4: Hobbies | Music */
+  .aw-hobbies { grid-column: 1;      grid-row: 4; }
+  .aw-music   { grid-column: 2;      grid-row: 4; }
+  /* Row 5: Quiz full-width */
+  .aw-quizzes { grid-column: 1 / -1; grid-row: 5; }
+
+  /* Bag can show 3 columns when it's full-width again */
+  .bag-grid { grid-template-columns: repeat(3, 1fr); }
 }
 
 @media (max-width: 768px) {
-  .about-layout { 
-    grid-template-columns: 1fr; 
-  }
-  .about-card, .aw-bag, .aw-likes, .aw-hobbies, .aw-games, .aw-music, .about-badges-wrap { 
-    grid-column: 1 / -1; 
-  }
-}
-
-
-/* GAMES — horizontal marquee, height synced to Hobbies via JS */
-.games-marquee-viewport {
-  overflow: hidden;
-  position: relative;
-  align-items: center;
-  align-content: center;
-}
-
-
-.games-marquee-track {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  width: max-content;
-  animation: games-marquee 24s linear infinite;
-}
-
-.games-marquee-viewport:hover .games-marquee-track {
-  animation-play-state: paused; /* lets visitors actually look at one mid-scroll */
-}
-
-@keyframes games-marquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
-
-/* slightly bigger than the shared 85px cap, per request — Games only */
-.aw-games .about-sticker-img {
-  max-width: 130px;
-  max-height: 130px;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .games-marquee-track { animation: none; }
+  .about-layout { grid-template-columns: 1fr; }
+  .aw-bag, .aw-games, .aw-likes,
+  .aw-hobbies, .aw-music, .aw-quizzes,
+  .about-card, .about-badges-wrap { grid-column: 1; grid-row: auto; }
+  .bag-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
 
