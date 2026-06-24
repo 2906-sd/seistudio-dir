@@ -78,7 +78,7 @@
   <div class="nav-right">
     <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
-    <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">◈</span>
+    <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">✿</span>
   </div>
 </header>
 
@@ -141,15 +141,15 @@
           <div class="home-card-body">
             <div class="status-row">
               <span class="status-row-label">MOOD //</span>
-              <span class="status-row-val">somewhere between tired and inspired</span>
+              <span class="status-row-val">IRRITATED AF</span>
             </div>
             <div class="status-row">
               <span class="status-row-label">LISTENING TO //</span>
-              <span class="status-row-val">Cream Soda by Chestnut Bakery</span>
+              <span class="status-row-val">Demon Time by Chase Atlantic</span>
             </div>
             <div class="status-row">
               <span class="status-row-label">WORKING ON //</span>
-              <span class="status-row-val">Rearranging some features on this website</span>
+              <span class="status-row-val">Rearranging my room</span>
             </div>
             <div class="status-row">
               <span class="status-row-label">TIME //</span>
@@ -402,73 +402,248 @@
             </div>
           </div>
 
-          <div class="about-widget aw-games">
-            <div class="about-widget-header">
-              <span>GAMES //</span>
-              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
-            </div>
-         <div class="about-widget-body games-marquee-viewport" id="widget-games" data-sticker-cat="games">
-  <div class="games-marquee-track" id="widget-games-track">
-    <span class="widget-hint">// stickers loading...</span>
+          <!-- Replace everything from aw-games down to the end of aw-music.
+     The aw-bag widget above stays untouched.                        -->
+
+<!-- GAMES -->
+<div class="about-widget aw-games">
+  <div class="about-widget-header"><span>GAMES & Movies//</span></div>
+  <div class="about-widget-body interests-body" id="widget-games">
+
+       <div class="interests-section">
+      <div class="interests-sublabel">NINTENDO DS</div>
+      <div class="interests-item">◈ The Legend of Zelda: Phantom Hourglass</div>
+      <div class="interests-item">◈ Animal Crossing: Wild World</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">NINTENDO 3DS</div>
+      <div class="interests-item">◈ The Legend of Zelda: Ocarina of Time 3D</div>
+      <div class="interests-item">◈ The Legend of Zelda: Majora's Mask 3D</div>
+      <div class="interests-item">◈ Hyrule Warriors Legends</div>
+      <div class="interests-item">◈ Animal Crossing: New Leaf</div>
+      <div class="interests-item">◈ Fantasy Life</div>
+      <div class="interests-item">◈ Ever Oasis</div>
+      <div class="interests-item">◈ Tomodachi Life</div>
+      <div class="interests-item">◈ Story of Seasons</div>
+      <div class="interests-item">◈ Story of Seasons: Friends of Mineral Town</div>
+      <div class="interests-item">◈ Nintendogs</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">WII</div>
+      <div class="interests-item">◈ The Legend of Zelda: Twilight Princess</div>
+      <div class="interests-item">◈ Monster Hunter Tri</div>
+      <div class="interests-item">◈ Harvest Moon: Animal Parade</div>
+      <div class="interests-item">◈ Spyro: Shadow Legacy</div>
+      <div class="interests-item">◈ The Dog Island</div>
+      <div class="interests-item">◈ Endless Ocean: Blue World</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">PLAYSTATION 2</div>
+      <div class="interests-item">◈ Spyro: The Eternal Night</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">PLAYSTATION 3</div>
+      <div class="interests-item">◈ Journey</div>
+      <div class="interests-item">◈ The Amazing Spider-Man</div>
+      <div class="interests-item">◈ Tales of Berseria</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">PLAYSTATION 4</div>
+      <div class="interests-item">◈ Marvel's Spider-Man</div>
+      <div class="interests-item">◈ Okami HD</div>
+      <div class="interests-item">◈ Dark Souls Remastered</div>
+      <div class="interests-item">◈ Voice of Cards</div>
+      <div class="interests-item">◈ No Man's Sky</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">NINTENDO SWITCH</div>
+      <div class="interests-item">◈ Animal Crossing: New Horizons</div>
+      <div class="interests-item">◈ The Legend of Zelda: Breath of the Wild</div>
+      <div class="interests-item">◈ The Legend of Zelda: Tears of the Kingdom</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">PC</div>
+      <div class="interests-item">◈ Minecraft</div>
+      <div class="interests-item">◈ Monster Hunter Wilds</div>
+    </div>
+    <div class="interests-section">
+      <div class="interests-sublabel">MOVIES</div>
+      <div class="interests-item">✿ Spirited Away</div>
+      <div class="interests-item">✿ Princess Mononoke</div>
+      <div class="interests-item">✿ Howl's Moving Castle</div>
+      <div class="interests-item">✿ Pretty much all the Spider-Man movies</div>
+      <div class="interests-item">✿ Avatar (James Cameron, all 3 movies)</div>
+      <div class="interests-item">✿ Most movies that have Oscar Isaac in it lol</div>
+      <div class="interests-item">✿ Lord of the Rings</div>
+      <div class="interests-item">✿ Pacific Rim</div>
+      <div class="interests-item">✿ Me Before You</div>
+      <div class="interests-item">✿ Mononoke The Movie</div>
+                                      
+      <!-- copy an interests-item line here to add more -->
+    </div>
+
   </div>
 </div>
-          </div>
-          <!-- LIKES — tall card with the about stickers -->
-          <div class="about-widget aw-likes">
-            <div class="about-widget-header">LIKES //</div>
-            <div class="about-widget-body" id="widget-likes">
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828469/rakko-Photoroom_dtoxxn.png" alt="racco" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828454/tiger-Photoroom_jfcpdp.png" alt="tiger" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828452/fish-Photoroom_v7lnce.png" alt="goldfish" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828450/sloth-Photoroom_janx6h.png" alt="sloth" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828436/pango-Photoroom_cvotur.png" alt="pangolin" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828456/spidey-Photoroom_gfbztu.png" alt="spiderman" />
-              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/kuchi-Photoroom.png" alt="kuchi" />
-               <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/oscar-Photoroom.png" alt="oscar isaac" />
-              <img src="https://uploads.onecompiler.io/44fs42h6r/44frzkq7v/tira-Photoroom.png" alt="tiramisu" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828447/190f91a990c4e2d6530fed64493274c1-Photoroom_z1udas.png" alt="castella" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828439/5c8e8511b021f3377491199e482b04cf-Photoroom_zq0rgm.png" alt="boba" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828425/yak-Photoroom_bl0sj5.png" alt="yakult" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828431/takoyak-Photoroom_pmqn7f.png" alt="takoyaki" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828460/sinigang-Photoroom_xzowwc.png" alt="sinigang" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828472/61e9b32b85c603ad46c180e37186528b-Photoroom_tjqycv.png" alt="ramen" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828468/28d2366e1e13d2ec699054aa4c13367d-Photoroom_gtvaxq.png" alt="tsumu" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828432/samu-Photoroom_ocsd1e.png" alt="osamu" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828435/021cf55ec0a6dc0adbc712ce25c86dd0-Photoroom_loznds.png" alt="iwaizumi" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828478/choso-Photoroom_o2xvs5.png" alt="choso" />
-             <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828463/9b09df35854d11ace8279a9fe7ce9434-Photoroom_o5gq1i.png" alt="tamaki" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828459/alucard-Photoroom_ikgaou.png" alt="alucard" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828464/00f274f4d0e3e76574982bf82c3089f5-Photoroom_fhtwzo.png" alt="saiki" />
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781828474/yotsu-Photoroom_wal101.png" alt="yotsuba" />
-            
-              <img src="https://i.pinimg.com/736x/a1/94/64/a194640da790be36ec1bd7e680b19082.jpg" alt="zinogre" />
-              <img src="https://i.pinimg.com/736x/61/cf/30/61cf30e0c30371fb121ffe98b54490ec.jpg" alt="reydau" />
-              <img src="https://i.pinimg.com/736x/ef/6e/68/ef6e68498fdac83daa0d2bd176d8c748.jpg" alt="barioth" />
-              <img src="https://i.pinimg.com/736x/3c/1b/c5/3c1bc55a24ae27a2a82349083dd7eda6.jpg" alt="gore" />
-              <img src="https://i.pinimg.com/736x/f1/10/ec/f110ec662bef9b9bbeb7ec6ea995172f.jpg" alt="steve" />
-              
-            </div>
-          </div>
 
-          <div class="about-widget aw-hobbies">
-            <div class="about-widget-header">
-              <span>HOBBIES //</span>
-              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
-            </div>
-            <div class="about-widget-body" id="widget-hobbies" data-sticker-cat="hobbies">
-              <span class="widget-hint">// stickers loading...</span>
-            </div>
-          </div>
+<!-- LIKES -->
+<div class="about-widget aw-likes">
+  <div class="about-widget-header">LIKES //</div>
+  <div class="about-widget-body interests-body" id="widget-likes">
 
-          <div class="about-widget aw-music">
-            <div class="about-widget-header">
-              <span>MUSIC //</span>
-              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('stickers'),100);" style="display:none">+ ADD STICKER</button>
-            </div>
-            <div class="about-widget-body" id="widget-music" data-sticker-cat="music">
-              <span class="widget-hint">// stickers loading...</span>
-            </div>
-          </div>
+    <div class="interests-section">
+      <div class="interests-sublabel">ANIMALS</div>
+      <div class="interests-item">♡ Raccoon</div>
+      <div class="interests-item">♡ Tiger</div>
+      <div class="interests-item">♡ Goldfish</div>
+      <div class="interests-item">♡ Sloth</div>
+      <div class="interests-item">♡ Pangolin</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">FOOD</div>
+      <div class="interests-item">♡ Boba</div>
+      <div class="interests-item">♡ Yakult</div>
+      <div class="interests-item">♡ Takoyaki</div>
+      <div class="interests-item">♡ Sinigang</div>
+      <div class="interests-item">♡ Ramen</div>
+      <div class="interests-item">♡ Castella</div>
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">CHARACTERS</div>
+      <div class="interests-item">♡ Spiderman</div>
+      <div class="interests-item">♡ Oscar Isaac</div>
+      <div class="interests-item">♡ Choso</div>
+      <div class="interests-item">♡ Tamaki</div>
+      <div class="interests-item">♡ Alucard</div>
+      <div class="interests-item">♡ Saiki K.</div>
+      <div class="interests-item">♡ Yotsuba</div>
+      <div class="interests-item">♡ Miya Twins</div>
+      <div class="interests-item">♡ Iwaizumi Hajime</div>
+      <div class="interests-item">♡ Steb & Scar from Arcane</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- HOBBIES -->
+<div class="about-widget aw-hobbies">
+  <div class="about-widget-header"><span>HOBBIES //</span></div>
+  <div class="about-widget-body interests-body" id="widget-hobbies">
+    <div class="interests-item">✦ Front end web development</div>
+    <div class="interests-item">✦ Drawing</div>
+    <div class="interests-item">✦ Knitting &amp; crochet</div>
+    <div class="interests-item">✦ Writing</div>
+    <div class="interests-item">✦ Piano</div>
+    <div class="interests-item">✦ Karaoke</div>
+    <div class="interests-item">✦ Sewing</div>
+    <!-- copy an interests-item line here to add more -->
+  </div>
+</div>
+
+<!-- MUSIC -->
+<div class="about-widget aw-music">
+  <div class="about-widget-header"><span>MUSIC //</span></div>
+  <div class="about-widget-body interests-body" id="widget-music">
+
+    <div class="interests-section">
+      <div class="interests-sublabel">ENGLISH</div>
+      <div class="interests-item">♪ Chase Atlantic</div>
+      <div class="interests-item">♪ pryme</div>
+      <div class="interests-item">♪ lil hero</div>
+      <div class="interests-item">♪ beabadobee</div>
+      <div class="interests-item">♪ Tyler, The Creator</div>
+      <div class="interests-item">♪ Megan Thee Stallion</div>
+      <div class="interests-item">♪ SZA</div>
+      <div class="interests-item">♪ Summer Walker</div>
+      <div class="interests-item">♪ Doja Cat</div>
+      <div class="interests-item">♪ Tame Impala</div>
+      <div class="interests-item">♪ Pond</div>
+      <div class="interests-item">♪ Joji</div>
+      <div class="interests-item">♪ Cafuné</div>
+       <div class="interests-item">♪ Zeph</div>
+      <div class="interests-item">♪ keshi</div>
+      <div class="interests-item">♪ olivia rodrigo</div>
+      <div class="interests-item">♪ Paramore</div>
+      <div class="interests-item">♪ Fall Out Boy</div>
+       <div class="interests-item">♪ malcom todd</div>
+      <div class="interests-item">♪ Inhaler</div>
+      <div class="interests-item">♪ The Vamps</div>
+      <div class="interests-item">♪ 1D</div>
+      <div class="interests-item">♪ 5SOS</div>
+       <div class="interests-item">♪ Hojean</div>
+      <div class="interests-item">♪ Sarah Kinsley</div>
+      <div class="interests-item">♪ Flawed Mangoes</div>
+      <div class="interests-item">♪ Whirr</div>
+      <div class="interests-item">♪ wisp</div>
+      <div class="interests-item">♪ mult</div>
+      <!-- copy an interests-item line here to add more -->
+    </div>
+
+    <div class="interests-section">
+      <div class="interests-sublabel">JAPANESE</div>
+      <div class="interests-item">♪ COALTAR OF THE DEEPERS</div>
+      <div class="interests-item">♪ MASS OF THE FERMENTING DREGS</div>
+      <div class="interests-item">♪ Kinoko Teikoku</div>
+      <div class="interests-item">♪ Oeil</div>
+      <div class="interests-item">♪ My Dead Girlfriend</div>
+      <div class="interests-item">♪ incense</div>
+      <div class="interests-item">♪ 
+Tokyo shoegazer </div>
+      <div class="interests-item">♪ iri</div>
+      <div class="interests-item">♪ Taichi Mukai</div>
+      <div class="interests-item">♪ Vaundy</div>
+      <!-- copy an interests-item line here to add more -->
+    </div>
+    <div class="interests-section">
+      <div class="interests-sublabel">KOREAN</div>
+      <div class="interests-item">♪ Monsta X</div>
+      <div class="interests-item">♪ EXO</div>
+      <div class="interests-item">♪ BTS</div>
+      <div class="interests-item">♪ ATEEZ</div>
+      <div class="interests-item">♪ CORTIS</div>
+      <div class="interests-item">♪ Le sserafim</div>
+      <div class="interests-item">♪ Day6</div>
+      <div class="interests-item">♪ The Rose</div>
+      <div class="interests-item">♪ wave to earth</div>
+      <div class="interests-item">♪ BIBI</div>
+      <div class="interests-item">♪ DEAN</div>
+      <div class="interests-item">♪ parannoul</div>
+      <!-- copy an interests-item line here to add more -->
+    </div>
+
+  </div>
+</div>
+
+<!-- PERSONALITY QUIZZES — full-width scrollable card -->
+<div class="about-widget aw-quizzes">
+  <div class="about-widget-header">PERSONALITY QUIZZES //</div>
+  <div class="about-widget-body quiz-scroll-body" id="widget-quizzes">
+
+    <!-- ── Copy this block to add a new quiz result ───────── -->
+    <div class="quiz-result-card">
+      <div class="quiz-result-meta">
+        <a class="quiz-result-title" href="https://www.theotaku.com/quizzes/view/7780/which_hatsune_miku_nendoroid_model_are_you%3F" target="_blank" rel="noopener">
+          Which Hatsune Miku Nendoroid Model Are You?
+        </a>
+        <span class="quiz-result-host">// theOtaku.com</span>
+      </div>
+      <img class="quiz-result-img" src="YOUR_SCREENSHOT_URL_HERE" alt="Dandere result" />
+      <div class="quiz-result-caption">You are a Dandere!</div>
+    </div>
+    <!-- ────────────────────────────────────────────────────── -->
+
+    <!-- add more quiz-result-card blocks below -->
+
+  </div>
+</div>
 
           <!-- BADGES STRIP — internet stamps, full-width across widgets panel -->
           <div class="about-widget about-badges-wrap">
