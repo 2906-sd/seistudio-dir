@@ -1713,42 +1713,123 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
 
 /* ── BENTO WIDGET PLACEMENT ── */
 
-/* BAG: full-width banner, below profile */
-.aw-bag { 
-  grid-column: 1 / 4; 
-  grid-row: 2;
+/* ═══════════════════════════════════════════════════════
+   ABOUT — INTERESTS TEXT LISTS
+═══════════════════════════════════════════════════════ */
+
+/* Overrides the sticker-era widget-body padding for text lists */
+.interests-body {
+  padding: 0.65rem 0.75rem !important;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  overflow-y: auto;
+  max-height: 240px;            /* scroll if the list is long */
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.interests-body::-webkit-scrollbar { width: 4px; }
+.interests-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* Subsection group — ANIMALS, FOOD, SERIES, etc. */
+.interests-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
 }
 
-/* ASYMMETRICAL BENTO: 
-   Games gets a large 2x2 box for many stickers. 
-   Likes and Hobbies are stacked on the right. */
-/* Likes — full-width row, the unique photo wall, isolated from everyone else */
-.aw-likes {
-  grid-column: 1 / 4;
-  grid-row: 3;
+/* Subsection label — italic, muted, dashed underline */
+.interests-sublabel {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-bottom: 3px;
+  margin-bottom: 3px;
+  border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
 }
 
-/* Games + Hobbies — paired, both now fixed-height cards (Games synced via JS) */
-.aw-games {
-  grid-column: 1 / 3;
-  grid-row: 4;
+/* Individual list item */
+.interests-item {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--text);
+  line-height: 1.6;
+  padding: 0;
 }
 
-.aw-hobbies {
-  grid-column: 3;
-  grid-row: 4;
+/* ═══════════════════════════════════════════════════════
+   ABOUT — PERSONALITY QUIZZES WIDGET
+═══════════════════════════════════════════════════════ */
+
+/* Span full bento width — same pattern as aw-bag */
+.aw-quizzes {
+  grid-column: 1 / -1;
 }
 
-/* Music — own full-width row, room to grow as you add tracks */
-.aw-music {
-  grid-column: 1 / 4;
-  grid-row: 5;
+/* Scrollable inner body */
+.quiz-scroll-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  max-height: 380px;
+  overflow-y: auto;
+  padding: 0.65rem 0.75rem;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.quiz-scroll-body::-webkit-scrollbar { width: 4px; }
+.quiz-scroll-body::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* Individual quiz result card */
+.quiz-result-card {
+  border: 1.5px solid var(--border);
+  box-shadow: 2px 2px 0 var(--border);
+  background: var(--bg3);
+  overflow: hidden;
 }
 
-/* BADGES STRIP: full-width banner, at the bottom */
-.about-badges-wrap { 
-  grid-column: 1 / 4; 
-  grid-row: 6;
+/* Title + host line */
+.quiz-result-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 0.4rem 0.6rem;
+  border-bottom: 1px solid var(--border);
+}
+.quiz-result-title {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  text-decoration: none;
+}
+.quiz-result-title:hover { text-decoration: underline; }
+
+.quiz-result-host {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: var(--text-muted);
+}
+
+/* Result screenshot image */
+.quiz-result-img {
+  width: 100%;
+  display: block;
+  border-bottom: 1px solid var(--border);
+  object-fit: cover;
+}
+
+/* Optional caption below the image */
+.quiz-result-caption {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  color: var(--text-muted);
+  padding: 0.35rem 0.6rem;
+  font-style: italic;
 }
 
 .about-widget {
@@ -1792,43 +1873,6 @@ body.dark .tag { background: #FA4055; color: #FFFFFF; }
   height: auto;
 }
 
-.about-widget-body img,
-.about-sticker-img {
-  max-width: 85px;
-  max-height: 85px;
-  object-fit: contain;
-  pointer-events: none;
-  -webkit-user-drag: none;
-  user-select: none;
-  display: block;
-  filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.15));
-  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.sticker-wrap:hover .about-sticker-img,
-.about-widget-body img:hover {
-  transform: scale(1.1) rotate(2deg);
-  filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.22));
-}
-
-.sticker-wrap {
-  position: relative;
-  display: inline-flex;
-}
-
-.sticker-del {
-  position: absolute !important;
-  top: -6px !important;
-  right: -6px !important;
-  width: 18px;
-  height: 18px;
-  padding: 0 !important;
-  font-size: 11px !important;
-  line-height: 16px !important;
-  display: none !important;
-  border-radius: 50% !important;
-  z-index: 2;
-}
 body.admin-mode .sticker-del { display: inline-block !important; }
 
 .widget-hint {
@@ -1842,10 +1886,6 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   padding: 1rem 0;
 }
 
-.aw-bag .about-widget-body {
-  display: block;
-  padding: 0;
-}
 
 .bag-grid {
   display: grid;
@@ -1982,11 +2022,6 @@ body.admin-mode .sticker-del { display: inline-block !important; }
   .games-marquee-track { animation: none; }
 }
 
-/* ── STICKERS (about page floating — kept for legacy/log use) ─────────────── */
-.sticker { position: absolute; cursor: grab; user-select: none; -webkit-user-select: none; z-index: 3; transition: filter 0.15s; line-height: 0; }
-.sticker:hover  { filter: drop-shadow(2px 3px 5px rgba(0,0,0,0.3)); }
-.sticker:active { cursor: grabbing; }
-.sticker img { display: block; width: auto; height: auto; max-width: 120px; max-height: 120px; pointer-events: none; -webkit-user-drag: none; }
 
 /* ── LIGHTBOX ────────────────────────────────────────── */
 .lightbox { display: none; position: fixed; inset: 0; background: rgba(20,20,20,0.88); backdrop-filter: blur(6px); z-index: 2000; padding: 1.5rem; justify-content: center; align-items: center; }
