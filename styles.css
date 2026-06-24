@@ -2810,3 +2810,307 @@ body.dark .hero-card .hero-image-dark  { display: block; }
 @media (max-width: 700px) {
   .hero-card .hero-image { max-width: 260px; }
 }
+
+/* ═══════════════════════════════════════════════════════
+   MOBILE FIXES — appended
+   Overrides only what's broken on narrow viewports.
+   All breakpoints match or tighten existing ones.
+═══════════════════════════════════════════════════════ */
+
+/* ── 1. PREVENT HORIZONTAL SCROLL (petals + floaters) ──
+   #petal-field is already fixed+overflow:hidden, so the
+   scroll comes from .page-wrapper or body having no
+   overflow-x guard. Lock it down here.                  */
+html { overflow-x: hidden; }
+body { overflow-x: hidden; max-width: 100vw; }
+
+/* ── 2. TOP NAV — mobile tightening ── */
+@media (max-width: 640px) {
+  .top-nav {
+    padding: 0.5rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  /* Marquee strip disappears — wastes 100px on a 375px screen */
+  .nav-center {
+    display: none !important;
+  }
+
+  .logo { font-size: 0.88rem; }
+
+  .dark-toggle {
+    font-size: 9px;
+    padding: 0.3rem 0.45rem;
+    letter-spacing: 0;
+  }
+
+  .nav-admin-trigger {
+    font-size: 11px;
+    padding: 0.25rem 0.3rem;
+  }
+}
+
+/* ── 3. PAGE WRAPPER — tighter side padding on mobile ── */
+@media (max-width: 640px) {
+  .page-wrapper {
+    padding: 1rem 0.75rem 3rem;
+  }
+}
+
+/* ── 4. HOME HERO — fix overflowing site-title + text ──
+   Root cause: letter-spacing:0.4em on a long string pushes
+   it ~40px past the right edge on a 375px card.          */
+@media (max-width: 640px) {
+  .hero-card {
+    min-height: 180px;
+    padding: 1.25rem 1rem 1.5rem;
+  }
+
+  .hero-card .site-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;   /* was 0.4em — this was the bleed culprit */
+    white-space: normal;
+    text-align: center;
+    max-width: 100%;
+    word-break: break-word;
+  }
+
+  .hero-card .hero-text {
+    font-size: clamp(0.95rem, 5.5vw, 1.4rem);
+    letter-spacing: 0.12em;
+    word-break: break-word;
+  }
+
+  /* Hero illustration: don't let it overflow the card */
+  .hero-card .hero-image {
+    max-width: 220px;
+    margin-top: 0.5rem;
+  }
+}
+
+/* ── 5. HOME GRID — single column stacking ──
+   Existing @media 580px already sets areas correctly,
+   but is missing gap + padding tightening.              */
+@media (max-width: 580px) {
+  .home-grid {
+    gap: 0.75rem;
+  }
+
+  /* Image cards look better landscape than 1:1 square at full width */
+  .home-image-card {
+    aspect-ratio: 16 / 9;
+  }
+
+  /* UPDATES: remove the hard max-height clip — it just cuts content */
+  .updates-card {
+    max-height: none;
+    overflow: visible;
+  }
+  .updates-card .home-card-body {
+    overflow: visible;
+  }
+
+  /* Allow titles to wrap instead of ellipsis on narrow viewport */
+  .home-update-title {
+    white-space: normal;
+    overflow: visible;
+    text-overflow: unset;
+  }
+
+  /* STATUS: long values like "Demon Time by Chase Atlantic"
+     were bleeding past the card right edge                 */
+  .status-row-val {
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}
+
+/* ── 6. HOME CARD BODIES — tighter internal padding ── */
+@media (max-width: 580px) {
+  .home-card-header {
+    padding: 0.4rem 0.85rem;
+    font-size: 8px;
+  }
+
+  .home-card-body {
+    padding: 0.85rem 0.9rem;
+    font-size: 0.76rem;
+  }
+}
+
+/* ── 7. DESKTOP ICONS BAR — hamburger dropdown polish ──
+   At ≤850px your JS already toggles .show to reveal it.
+   This just makes the revealed dropdown look right.      */
+@media (max-width: 850px) {
+  .desktop-icons-bar.show {
+    /* Already positioned absolute in your existing rule.
+       Add scroll in case many icons wrap to many rows.   */
+    max-height: 60vh;
+    overflow-y: auto;
+    /* Even wrap distribution */
+    gap: 0.5rem 0.75rem;
+    padding: 0.85rem 1rem;
+  }
+
+  /* Icons in the dropdown: slightly larger tap targets */
+  .desk-icon {
+    min-width: 48px;
+    max-width: 64px;
+    padding: 6px 6px 4px;
+  }
+
+  .desk-icon-img {
+    width: 26px;
+    height: 26px;
+  }
+
+  .desk-icon-label {
+    font-size: 7px;
+  }
+}
+
+/* ── 8. LOG TAG SIDEBAR — already goes flex-wrap at 720px.
+   On very narrow screens, make the pills smaller.        */
+@media (max-width: 480px) {
+  .logs-sidebar {
+    gap: 4px;
+  }
+
+  .tag-sidebar-item {
+    padding: 5px 8px;
+    font-size: 10px;
+    border-radius: var(--radius-sm);
+  }
+}
+
+/* ── 9. LOG / LETTER / SHRINE READER — padding tightening ── */
+@media (max-width: 480px) {
+  .log-container {
+    padding: 1.25rem 0.9rem;
+  }
+
+  .log-body-text {
+    font-size: 0.8rem;
+    max-height: none;       /* let content expand naturally on mobile */
+    overflow-y: visible;
+    padding-right: 0;
+  }
+
+  .letter-paper {
+    padding: 1.25rem 0.9rem;
+  }
+
+  .letter-paper-re {
+    font-size: 1.2rem;
+  }
+
+  .shrine-content {
+    padding: 1.25rem 0.9rem;
+  }
+}
+
+/* ── 10. ABOUT PAGE — profile card tightening ── */
+@media (max-width: 480px) {
+  .about-body {
+    padding: 1rem 1rem;
+  }
+
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+
+  .about-bio {
+    font-size: 0.8rem;
+  }
+
+  .about-widget-body {
+    max-height: none; /* let bag/likes breathe on single column */
+  }
+}
+
+/* ── 11. BULLETIN BOARD — already collapses at 800px.
+   Tighten the controls section on very small screens.  */
+@media (max-width: 480px) {
+  .board-controls {
+    padding: 0.75rem 0.85rem;
+    gap: 8px;
+  }
+
+  .board-input-row {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .board-submit {
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+  }
+
+  /* Board canvas: shorter fixed height on small phones */
+  #board-section {
+    height: 280px;
+  }
+}
+
+/* ── 12. ART FEED — 2 columns (not 1) on mobile,
+   your existing 850px rule collapses to 1 which is too sparse */
+@media (max-width: 850px) and (min-width: 480px) {
+  .art-feed {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .art-feed {
+    grid-template-columns: repeat(2, 1fr); /* keep 2-col even on phone */
+    gap: 0.4rem;
+  }
+}
+
+/* ── 13. INFO GRID — already 1-col at 700px. Fine. ── */
+
+/* ── 14. SHRINES / LETTERS GRIDS on very small screens ── */
+@media (max-width: 380px) {
+  .shrines-grid {
+    grid-template-columns: 1fr;
+  }
+  .letter-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── 15. LIGHTBOX — full-screen on mobile ── */
+@media (max-width: 640px) {
+  .lightbox {
+    padding: 0;
+  }
+
+  .lightbox-content {
+    width: 100vw;
+    max-width: 100vw;
+    max-height: 100dvh;
+    border-radius: 0;
+    box-shadow: none;
+    border: none;
+  }
+
+  .lb-nav-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 0.9rem;
+  }
+}
+
+/* ── 16. ADMIN REOPEN PILL — keep off bottom nav ── */
+@media (max-width: 640px) {
+  .admin-reopen-pill {
+    right: 12px;
+    bottom: 12px;
+    font-size: 11px;
+    padding: 7px 12px;
+  }
+}
