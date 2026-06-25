@@ -1904,7 +1904,7 @@ textarea.board-message-input {
 *::-webkit-scrollbar-thumb {
   background: var(--accent) !important;
   border-radius: 3px;
-
+}
 /* ═══════════════════════════════════════════════════════
    ABOUT — PERSONALITY QUIZZES WIDGET
 ═══════════════════════════════════════════════════════ */
