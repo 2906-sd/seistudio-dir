@@ -1781,7 +1781,7 @@ textarea.board-message-input {
 .profile-meta p    { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text-muted); }
 .about-bio         { font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.7; color: var(--text); margin-bottom: 1.25rem; }
 .tag-list          { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
-.tag               { background: #FA4055; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
+.tag               { background: #4055fa; color: #fff; padding: 3px 10px; font-size: 10px; font-family: var(--font-mono); border-radius: 4px; letter-spacing: 0.02em; font-weight: bold; }
 .about-links       { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); display: flex; gap: 1rem; }
 .about-links a     { font-family: var(--font-mono); font-size: 11px; text-decoration: none; color: var(--accent); font-weight: bold; cursor: pointer; }
 
