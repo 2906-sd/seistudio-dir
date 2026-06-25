@@ -363,14 +363,14 @@
               </div>
             </div>
             <p class="about-bio">Hi, I’m Sage / Sei (セイ) – design student, chronically offline disaster, and self-taught coder behind Sei Out Loud. 
-            This corner of the internet is a digital playground I missed out on growing up and a sort of sanctuary for that weird art kid that lives inside of me.
+            This corner of the internet is a digital playground I missed out on growing up, and a sort of sanctuary for the weird art kid that still lives inside of me.
             Expect multimedia art experiments, some fan art, weird digital shrines, random (sometimes unhinged) thoughts and written pieces that were born at 3 in the morning.</p>
-            <p class="about-bio"> If I'm not slowly tinkering away at this site and blowing up gigabytes with .pngs,
+            <p class="about-bio"> If I'm not slowly tinkering away at this site and accidentally breaking the javascript keeping this thing functional,
               I'm usually studying, working at my job (I'm a dog groomer!), and becoming a slave to my many hobbies.</p>
             <p class="about-bio">
              I might be a bit clumsy at making online connections
-              (consider it the byproduct of being an ambiverted, strict-parented kid), but I’d love to be friends anyway.
-              Email me or add me on discord, I'll answer. :) </p>
+              (consider it the byproduct of being an ambiverted, strict-parented kid), but I promise I won't bite if you reach out or have any questions!
+              Email me or chat with me on discord, I'll answer. :) </p>
             <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet.</p>
             <div class="tag-list">
               <span class="tag">#this site is soooo overengineered with javascript oops</span>
@@ -1904,6 +1904,7 @@ function relocateNavLinks(toHome){
     if(bar.parentElement !== heroBlock) heroBlock.insertBefore(bar, heroBlock.firstChild);
   } else if(!toHome){
     if(bar.parentElement !== navCenter) navCenter.appendChild(bar);
+    navCenter.style.display = '';  // override the !important from CSS
   }
 }
 /* ═══════════════════════════════════════════════════════
