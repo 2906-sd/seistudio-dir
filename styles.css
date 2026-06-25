@@ -475,6 +475,19 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   margin-top: 2px;
 }
 
+@media (max-width: 640px) {
+  .status-card .home-card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1px;
+    padding-bottom: 0.45rem;
+  }
+  .status-last-updated {
+    font-size: 7.5px;
+    opacity: 0.85;
+  }
+}
+
 /* ── QUOTE CARD ── */
 .quote-card { grid-area: quote; overflow: visible; }
 
@@ -1857,7 +1870,8 @@ textarea.board-message-input {
   max-height: 280px;
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-color: var(--accent) var(--bg3);
+  scrollbar-width: thin;
 }
 .interests-body::-webkit-scrollbar { width: 4px; }
 .interests-body::-webkit-scrollbar-thumb { background: var(--border); }
@@ -1865,12 +1879,12 @@ textarea.board-message-input {
 .interests-section { display: flex; flex-direction: column; gap: 1px; }
 
 .interests-sublabel {
+   color: var(--text-sub) !important;
+  font-style: normal !important;
+  font-size: 9px !important;
+  letter-spacing: 0.09em !important;
+  border-bottom-color: color-mix(in srgb, var(--border) 80%, transparent) !important;
   font-family: var(--font-mono);
-  font-size: 8px;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
-  font-style: italic;
   padding-bottom: 3px;
   margin-bottom: 3px;
   border-bottom: 1px dashed color-mix(in srgb, var(--border) 60%, transparent);
@@ -1883,6 +1897,14 @@ textarea.board-message-input {
   line-height: 1.6;
 }
 
+/* WebKit / Blink — !important overrides the scattered
+   var(--border) thumb rules throughout the file           */
+*::-webkit-scrollbar       { width: 6px; height: 6px; }
+*::-webkit-scrollbar-track { background: var(--bg3); }
+*::-webkit-scrollbar-thumb {
+  background: var(--accent) !important;
+  border-radius: 3px;
+
 /* ═══════════════════════════════════════════════════════
    ABOUT — PERSONALITY QUIZZES WIDGET
 ═══════════════════════════════════════════════════════ */
@@ -1894,7 +1916,8 @@ textarea.board-message-input {
   overflow-y: auto;
   padding: 0.65rem 0.75rem;
   scrollbar-width: thin;
-  scrollbar-color: var(--border) transparent;
+ scrollbar-color: var(--accent) var(--bg3);
+  scrollbar-width: thin;
 }
 .quiz-scroll-body::-webkit-scrollbar { width: 4px; }
 .quiz-scroll-body::-webkit-scrollbar-thumb { background: var(--border); }
@@ -2977,9 +3000,9 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 
   .tag-sidebar-item {
-    padding: 5px 8px;
-    font-size: 10px;
-    border-radius: var(--radius-sm);
+padding: 4px 9px !important;
+    font-size: 9px !important;
+    border-radius: 999px !important; /* was var(--radius-sm) — reverted */
   }
 }
 
@@ -3261,14 +3284,12 @@ body { overflow-x: hidden; max-width: 100vw; }
 
   .tag-sidebar-item {
     /* Compact pill — not a full-width rectangle */
-    flex: 0 0 auto;
-    width: auto;
-    padding: 4px 10px;
-    font-size: 9px;
-    border-radius: 999px;   /* pill shape instead of boxy var(--radius) */
-    gap: 5px;
-    margin-bottom: 0;
-    /* Kill the translateX hover — doesn't make sense on wrapped pills */
+   flex: 0 0 auto !important;
+    width: auto !important;
+    padding: 4px 10px !important;
+    font-size: 9px !important;
+    border-radius: 999px !important;
+    margin-bottom: 0 !important;
   }
 
   .tag-sidebar-item:hover {
@@ -3345,6 +3366,12 @@ body { overflow-x: hidden; max-width: 100vw; }
    fit without scrolling and stay perfectly centered.         */
 @media (max-width: 850px) {
   .desktop-icons-bar {
+     ackground: var(--bg2) !important;
+    border: 1.5px solid var(--border) !important;
+    border-radius: var(--radius) !important;
+    margin: 0 0.75rem 0.5rem !important;   /* inset from nav edges */
+    width: calc(100% - 1.5rem) !important; /* account for margin */
+    box-shadow: 3px 3px 0 var(--border) !important;
     justify-content: center !important;  /* center the group */
     gap: 0 !important;                   /* no gap — use icon padding instead */
     padding: 0.35rem 0.5rem !important;  /* even horizontal breathing room */
