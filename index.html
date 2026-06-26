@@ -1141,9 +1141,7 @@ Tokyo shoegazer </div>
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddInfo()">ADD ENTRY →</button>
         <p id="infoSuccess" class="admin-success">// ADDED.</p>
       </div>
-!-- ══════════════════════════════════════════════════════
-     STATUS CARD FORM
-     ══════════════════════════════════════════════════════ -->
+
 <div id="adminStatusForm" class="admin-form" style="display:none">
   <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
     // Updates the STATUS.EXE card on the home page.<br />
@@ -1496,13 +1494,18 @@ function renderHomeUpdates() {
     return;
   }
 
-  el.innerHTML = top.map(item =>
-    `<div class="home-update-item" onclick="openUpdateItem('${item.section}','${item.id}')">
-      <span class="home-update-type">${item.type}</span>
+  el.innerHTML = top.map(item => {
+    let dateStr = '';
+    if (item.ts) {
+      const d = new Date(item.ts);
+      dateStr = ` // ${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')}.${String(d.getFullYear()).slice(-2)}`;
+    }
+    return `<div class="home-update-item" onclick="openUpdateItem('${item.section}','${item.id}')">
+      <span class="home-update-type">${item.type}${dateStr}</span>
       <span class="home-update-title">${escHtml(item.title||'(untitled)')}</span>
       <span class="home-update-meta">${escHtml(item.meta||'')}</span>
-    </div>`
-  ).join('');
+    </div>`;
+  }).join('');
 }
 
 function openUpdateItem(section, id) {
@@ -1795,7 +1798,6 @@ function onFirebaseReady() {
     snap.forEach(child=>{const d=child.val();d.tags=Array.isArray(d.tags)?d.tags:[];d.stickers=Array.isArray(d.stickers)?d.stickers:[];logsData.push({id:child.key,...d});});
     renderLogList();
     renderHomeUpdates();
-    updateLastUpdatedDisplay();
     if(_pendingLogKey){const idx=logsData.findIndex(l=>l.id===_pendingLogKey);_pendingLogKey=null;if(idx!==-1)readLog(idx);}
   }).catch(e=>console.error('Logs load failed:',e));
 
@@ -1805,7 +1807,6 @@ function onFirebaseReady() {
     snap.forEach(child=>{const d=child.val();d.images=normalizeImages(d.images||[]);shrinesData.push({id:child.key,...d});});
     renderShrineGrid();
     renderHomeUpdates();
-    updateLastUpdatedDisplay();
     if(_pendingShrineKey){const idx=shrinesData.findIndex(s=>s.id===_pendingShrineKey);_pendingShrineKey=null;if(idx!==-1)readShrine(idx);}
   }).catch(e=>console.error('Shrines load failed:',e));
 
@@ -1819,7 +1820,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
   });
   renderLetterList();
   renderHomeUpdates();
-  updateLastUpdatedDisplay();
   if (_pendingLetterKey) {
     const idx = lettersData.findIndex(l => l.id === _pendingLetterKey);
     _pendingLetterKey = null;
@@ -1833,7 +1833,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     snap.forEach(child=>{const d=child.val();trashData.push({id:child.key,...d});});
     renderTrashPage();
     renderHomeUpdates();
-    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Trash load failed:',e));
 
   // Load badges
@@ -1841,7 +1840,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     badgesData=[];
     snap.forEach(child=>{const d=child.val();badgesData.push({id:child.key,...d});});
     renderBadgesStrips();
-    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Badges load failed:',e));
 
   // Load info / resources
@@ -1850,7 +1848,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     snap.forEach(child=>{const d=child.val();infoData.push({id:child.key,...d});});
     renderInfoPage();
     renderHomeUpdates();
-    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Info load failed:',e));
 
   // Load bag (What's in My Bag)
@@ -1859,7 +1856,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     snap.forEach(child=>{const d=child.val();bagData.push({id:child.key,...d});});
     renderBag();
     renderHomeUpdates();
-    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Bag load failed:',e));
 
   // Load stickers (games / hobbies / music widgets on About)
@@ -1867,7 +1863,6 @@ db.ref('content/letters').orderByChild('timestamp').once('value', snap => {
     stickersData=[];
     snap.forEach(child=>{const d=child.val();stickersData.push({id:child.key,...d});});
     renderStickers();
-    updateLastUpdatedDisplay();
   }).catch(e=>console.error('Stickers load failed:',e));
 
   db.ref('content/status').orderByChild('timestamp').once('value', snap => {
