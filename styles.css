@@ -583,6 +583,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   aspect-ratio: 1 / 1;
   overflow: hidden;
   border: 1.5px solid var(--border);
+  border-radius: var(--radius);
   box-shadow: 2px 2px 0 var(--border); /* scaled down shadow to match smaller cards */
   cursor: pointer;
   background: var(--bg3);
@@ -1053,7 +1054,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   cursor: pointer;
   transition: transform 0.15s, box-shadow 0.15s;
   overflow: hidden;
-  border-radius: 0;                      /* no rounded corners */
+  border-radius: var(--radius);
   display: flex;
   flex-direction: column;
 }
@@ -2015,8 +2016,8 @@ textarea.board-message-input {
 .lb-body { display: flex; flex-direction: row; flex: 1; overflow: hidden; min-height: 0; }
 .lb-image-side { flex: 6; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.25rem; border-right: 1.5px solid var(--border-lt); overflow: hidden; min-height: 0; }
 .lb-info-side  { flex: 4; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; min-width: 200px; max-width: 400px; white-space: pre-wrap;}
-.lb-image-wrap { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; width: 100%; padding: 0 44px; min-height: 0; overflow: hidden; }
-#lb-image { max-width: 100%; max-height: 100%; width: auto; height: auto; object-fit: contain; border: 1px solid var(--border-lt); display: block; transition: transform 0.2s ease; cursor: grab; touch-action: none; }
+.lb-image-wrap { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; width: 100%; padding: 0 44px; min-height: 0; overflow: auto; }
+#lb-image { width: auto; height: auto; max-width: none; max-height: none; object-fit: none; border: 1px solid var(--border-lt); display: block; transition: transform 0.2s ease; cursor: grab; touch-action: none; }
 #lb-image.zoomed { cursor: move; }
 .lb-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: var(--bg2); border: 1.5px solid var(--border); color: var(--text); font-family: var(--font-mono); font-size: 1.1rem; width: 42px; height: 42px; cursor: pointer; z-index: 12; transition: background 0.15s, color 0.15s; border-radius: var(--radius-sm); }
 .lb-nav-btn:hover    { background: var(--bg4); }
@@ -2086,7 +2087,8 @@ textarea.board-message-input {
 .lightbox.lb-simple .lb-image-counter { display: none; }
 .lightbox.lb-simple .lb-caption-top:empty { display: none; }
 
-.zoom-controls { position: absolute; bottom: 1rem; right: 1rem; display: flex; gap: 0.5rem; z-index: 15; }
+.lb-toolbar-right { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.zoom-controls { display: flex; gap: 0.35rem; }
 .zoom-btn { background: var(--bg2); border: 1.5px solid var(--border); color: var(--text); font-family: var(--font-mono); font-size: 16px; width: 36px; height: 36px; cursor: pointer; box-shadow: 2px 2px 0 rgba(0,0,0,0.1); transition: background 0.15s, color 0.15s; border-radius: var(--radius-sm); }
 .zoom-btn:hover { background: var(--bg4); }
 .zoom-btn:disabled { opacity: 0.3; pointer-events: none; }
@@ -2194,7 +2196,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   .lb-image-side { flex: none; border-right: none; border-bottom: 1.5px solid var(--border-lt); min-height: 240px; }
   .lb-image-wrap { padding: 0 36px; flex: 1; min-height: 200px; }
   .lb-info-side  { flex: none; max-width: 100%; }
-  #lb-image { max-height: 50vh; }
+  #lb-image { max-height: 50vh; max-width: 100%; object-fit: contain; }
   .shrines-grid { grid-template-columns: 1fr 1fr; }
 }
 
@@ -2214,6 +2216,15 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
   border: 1.5px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
+}
+
+/* When the bar lives inside the top-nav, strip the card chrome */
+.desktop-icons-bar.in-nav {
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+  padding: 0.25rem 0;
+  margin: 0;
 }
 
 .desk-icon {
