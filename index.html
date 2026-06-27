@@ -39,7 +39,7 @@
     <span class="logo" onclick="showPage('home')"><span class="logo-slash">[</span>Sei <span class="logo-slash">✿</span>ut Loud<span class="logo-slash">]</span></span>
   </div>
   <div class="nav-center" id="navCenter">
-    <div class="desktop-icons-bar" id="desktopIconsBar">
+    <div class="desktop-icons-bar in-nav" id="desktopIconsBar">
       <div class="desk-icon active" onclick="showPage('home')" id="desk-link-home">
         <div class="desk-icon-wrap"><img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781474916/Interface-Essential-Home-2--Streamline-Pixel_xcnr7v.svg" class="desk-icon-img" alt="HOME" /></div>
         <span class="desk-icon-label">HOME</span>
@@ -869,7 +869,14 @@ Tokyo shoegazer </div>
   <div class="lightbox-content" onclick="event.stopPropagation()">
     <div class="lb-toolbar">
       <span class="lb-toolbar-title" id="lb-title">FILE</span>
-      <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
+      <div class="lb-toolbar-right">
+        <div class="zoom-controls">
+          <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(-1)" title="Zoom out">−</button>
+          <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" title="Reset zoom">⊙</button>
+          <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(1)" title="Zoom in">+</button>
+        </div>
+        <button class="lb-close-btn" onclick="closeLightbox()">[X] CLOSE</button>
+      </div>
     </div>
     <!-- Caption shown at top for simple (shrine/trash) mode -->
     <div class="lb-caption-top" id="lb-caption-top"></div>
@@ -879,11 +886,6 @@ Tokyo shoegazer </div>
           <button class="lb-nav-btn" id="lb-prev" onclick="event.stopPropagation(); lbNav(-1)">&#8592;</button>
           <img id="lb-image" src="" alt="" draggable="false" />
           <button class="lb-nav-btn" id="lb-next" onclick="event.stopPropagation(); lbNav(1)">&#8594;</button>
-          <div class="zoom-controls">
-            <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(-1)" title="Zoom out">−</button>
-            <button class="zoom-btn" onclick="event.stopPropagation(); resetZoom()" title="Reset zoom">⊙</button>
-            <button class="zoom-btn" onclick="event.stopPropagation(); zoomImage(1)" title="Zoom in">+</button>
-          </div>
         </div>
         <div class="lb-image-counter" id="lb-counter"></div>
       </div>
@@ -1141,7 +1143,9 @@ Tokyo shoegazer </div>
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddInfo()">ADD ENTRY →</button>
         <p id="infoSuccess" class="admin-success">// ADDED.</p>
       </div>
-
+!-- ══════════════════════════════════════════════════════
+     STATUS CARD FORM
+     ══════════════════════════════════════════════════════ -->
 <div id="adminStatusForm" class="admin-form" style="display:none">
   <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
     // Updates the STATUS.EXE card on the home page.<br />
@@ -1947,9 +1951,11 @@ function relocateNavLinks(toHome){
   if(!bar || !navCenter) return;
   if(toHome && heroBlock){
     if(bar.parentElement !== heroBlock) heroBlock.insertBefore(bar, heroBlock.firstChild);
+    bar.classList.remove('in-nav');
   } else if(!toHome){
     if(bar.parentElement !== navCenter) navCenter.appendChild(bar);
     navCenter.style.display = '';  // override the !important from CSS
+    bar.classList.add('in-nav');
   }
 }
 /* ═══════════════════════════════════════════════════════
