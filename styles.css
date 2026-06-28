@@ -1,6 +1,6 @@
-/* ══════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════
    DESIGN TOKENS
-══════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════ */
 :root {
   --bg:          #f4f4f4;
   --bg2:         #ffffff;
@@ -41,29 +41,24 @@ body.dark {
   --shadow-lg:  8px 8px 0px rgba(0,0,0,0.55);
 }
 
-/* ══════════════════════════════════════════════════════
-LINKS STYLING
-══════════════════════════════════════════════════════ */
-/* Unvisited links (Default state) */
+/* ═══════════════════════════════════════════════════
+   LINKS
+═══════════════════════════════════════════════════ */
 a {
   color: var(--link);
   text-decoration: underline;
 }
-
-/* Visited links (After a user has clicked them) */
 a:visited {
   color: var(--link-visited);
 }
-
-/* Hover state (When a mouse is over the link) */
 a:hover {
   color: var(--link-hover);
-  opacity: 1;    /* Overrides the opacity transition if you want full color intensity */
+  opacity: 1; /* full color intensity on hover, no fade */
 }
 
-/* ══════════════════════════════════════════════════════
-PETAL FALLING
-══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   PETAL FALLING ANIMATION
+═══════════════════════════════════════════════════ */
 #petal-field {
   position: fixed;
   inset: 0;
@@ -105,7 +100,8 @@ PETAL FALLING
 @media (prefers-reduced-motion: reduce) {
   #petal-field { display: none; }
 }
-/* ── BASE ────────────────────────────────────────────── */
+
+/* ── BASE RESET ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
 body {
@@ -132,7 +128,8 @@ body.dark { background-image: none; }
   min-height: 60vh;
   overflow-x: hidden;
 }
-/* ── TOP NAV ─────────────────────────────────────────── */
+
+/* ── TOP NAV ── */
 .top-nav {
   position: sticky;
   top: 0;
@@ -241,7 +238,7 @@ body.dark { background-image: none; }
 }
 .nav-admin-trigger:hover { color: var(--accent); }
 
-/* ── STATUS FOOTER ───────────────────────────────────── */
+/* ── STATUS FOOTER ── */
 .status-footer {
   margin-top: auto;
   width: 100%;
@@ -263,7 +260,7 @@ body.dark { background-image: none; }
 .status-dot { color: var(--accent); font-size: 0.9rem; animation: blink 1.5s infinite; flex-shrink: 0; }
 @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0.2; } }
 
-/* ── MAIN / SECTIONS ─────────────────────────────────── */
+/* ── MAIN / SECTIONS ── */
 main { width: 100%; min-width: 0; }
 section        { display: none; width: 100%; }
 section.active { display: block; animation: fadeIn 0.35s ease; }
@@ -536,7 +533,6 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   .updates-card { max-height: 260px; }
 }
 
-
 @media (max-width: 580px) {
   .home-grid {
     grid-template-columns: 1fr;
@@ -551,7 +547,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   }
 }
 
-/* ── SECTION HEADER ─────────────────────────────────── */
+/* ── SECTION HEADER ── */
 .section-header { margin-bottom: 2rem; text-align: center; }
 .section-header h1 {
   font-family: var(--font-tech);
@@ -572,7 +568,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   letter-spacing: 0.05em;
 }
 
-/* ── ART GRID ────────────────────────────────────────── */
+/* ── ART GRID ── */
 .art-feed {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); /* tight thumbnail columns */
@@ -593,7 +589,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 .art-post img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; }
 .art-post:hover img { transform: scale(1.04); }
 
-/* ── POST LABEL ──────────────────────────────────────── */
+/* ── POST LABEL ── */
 .post-label {
   font-family: var(--font-mono);
   font-size: 10px;
@@ -640,7 +636,7 @@ body.dark .art-post .post-label { background: rgba(20,20,20,0.88); color: #aaa; 
   opacity: 0.75;                     /* de-emphasise meta vs title */
 }
 
-/* ── ADMIN DELETE/EDIT BUTTONS ───────────────────────── */
+/* ── ADMIN DELETE / EDIT BUTTONS ── */
 .admin-delete-btn {
   position: absolute;
   top: 8px; right: 8px;
@@ -686,7 +682,7 @@ body.admin-mode .admin-edit-btn { display: inline-block; }
 .admin-log-actions .admin-edit-btn { position: static; }
 body.admin-mode .admin-log-actions { display: flex; }
 
-/* ── CATEGORY NAVIGATION ─────────────────────────────── */
+/* ── CATEGORY NAVIGATION ── */
 .category-nav {
   display: flex;
   gap: 0.5rem;
@@ -711,7 +707,7 @@ body.admin-mode .admin-log-actions { display: flex; }
 .category-tab:hover { background: var(--bg4); }
 .category-tab.active { background: var(--accent); color: var(--text-inv); border-color: var(--accent); }
 
-/* ── LOGS / WRITING ──────────────────────────────────── */
+/* ── LOGS / WRITING ── */
 .blog-list-item {
   padding: 0;
   border: 1.5px solid var(--border);
@@ -725,7 +721,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   transition: border-color 0.15s;
 }
 .blog-list-item:hover {
-  transform: translateY(-2px);             /* explicitly cancels your old lift effect */
+  transform: translateY(-2px);             /* subtle lift on hover */
   border-color: var(--accent);
 }
 .blog-list-item:hover h2,
@@ -801,7 +797,6 @@ body.admin-mode .admin-log-actions { display: flex; }
   padding: 1.5px 7px;
   border-radius: 999px;
 }
-
 
 .log-container {
   background: var(--bg2);
@@ -975,7 +970,8 @@ body.admin-mode .admin-log-actions { display: flex; }
   white-space: nowrap;
 }
 .log-pv-open-btn:hover { background: var(--accent); color: #fff; border-color: var(--accent); }
-/* ── LOG TAG SIDEBAR ─────────────────────────────────── */
+
+/* ── LOG TAG SIDEBAR ── */
 .logs-body {
   display: flex;
   gap: 2rem;
@@ -1039,14 +1035,14 @@ body.admin-mode .admin-log-actions { display: flex; }
    SHRINES — Y2K REDESIGN
 ═══════════════════════════════════════════════════════ */
 
-/* ── Grid: tight, dense, more columns ── */
+/* ── GRID — tight, dense, more columns ── */
 .shrines-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 0.5rem;
 }
 
-/* ── Card: OS window chrome aesthetic ── */
+/* ── CARD — OS window chrome aesthetic ── */
 .shrine-card {
   background: var(--bg2);
   border: 1.5px solid var(--border);
@@ -1134,7 +1130,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   text-overflow: ellipsis;
 }
 
-/* ── Shrine reader container ── */
+/* ── SHRINE READER CONTAINER ── */
 .shrine-container {
   background: var(--bg2);
   border: 1.5px solid var(--border);
@@ -1161,7 +1157,7 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 .shrine-content .log-body-text { white-space: normal; }
 
-/* ── Gallery: smaller, denser, harder borders ── */
+/* ── GALLERY — smaller, denser, harder borders ── */
 .shrine-gallery {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
@@ -1186,9 +1182,9 @@ body.admin-mode .admin-log-actions { display: flex; }
   border-color: var(--accent);
 }
 
-/* ═══════════════════════════════════════════════════════
-   LETTERS — sealed back-of-envelope redesign
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   LETTERS — SEALED BACK-OF-ENVELOPE REDESIGN
+═══════════════════════════════════════════════════ */
 
 .letter-grid {
   display: grid;
@@ -1197,11 +1193,11 @@ body.admin-mode .admin-log-actions { display: flex; }
   margin-top: 0.5rem;
 }
 
-/* ── Envelope shell ── */
+/* ── ENVELOPE SHELL ── */
 .letter-envelope {
   position: relative;
   aspect-ratio: 16 / 11;
-  /* removed min-width — was fighting the grid */
+  /* no fixed min-width — would fight the grid's own sizing */
   background-color: var(--bg2);
   background-image: radial-gradient(
     color-mix(in srgb, var(--border) 14%, transparent) 1px,
@@ -1220,7 +1216,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   box-shadow: 5px 5px 0 var(--border);
 }
 
-/* ── Top triangular flap ── */
+/* ── TOP TRIANGULAR FLAP ── */
 .letter-envelope::before {
   content: '';
   position: absolute;
@@ -1232,7 +1228,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   z-index: 2;
 }
 
-/* ── X fold lines — back of sealed envelope ── */
+/* ── X-FOLD LINES — back of sealed envelope ── */
 .env-flap {
   position: absolute;
   inset: 0;
@@ -1255,7 +1251,7 @@ body.admin-mode .admin-log-actions { display: flex; }
     );
 }
 
-/* ── Wax seal — the visual anchor, center of the X ── */
+/* ── WAX SEAL — visual anchor at the center of the X ── */
 .env-seal {
   position: absolute;
   top: 50%; left: 50%;
@@ -1276,7 +1272,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   transform: translate(-50%, -50%) scale(1.1);
 }
 
-/* ── Stamp — unchanged visually, z-index bumped ── */
+/* ── STAMP — layered above the flap ── */
 .letter-envelope .env-stamp {
   position: absolute;
   top: 8px; right: 10px;
@@ -1322,7 +1318,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   margin-bottom: 1px;
 }
 
-/* ── Postmark circle ── */
+/* ── POSTMARK CIRCLE ── */
 .letter-envelope .env-postmark {
   position: absolute;
   top: 12px;
@@ -1343,7 +1339,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   line-height: 1.2;
 }
 
-/* ── Letter number — bottom left ── */
+/* ── LETTER NUMBER — bottom-left corner ── */
 .env-letter-num {
   position: absolute;
   bottom: 7px; left: 9px;
@@ -1354,7 +1350,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   z-index: 6;
 }
 
-/* ── "CLICK TO OPEN" hint — fades in on hover ── */
+/* ── "CLICK TO OPEN" HINT — fades in on hover ── */
 .env-open-hint {
   position: absolute;
   bottom: 7px; right: 9px;
@@ -1369,7 +1365,7 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 .letter-envelope:hover .env-open-hint { opacity: 1; }
 
-/* ── Admin actions ── */
+/* ── ADMIN ACTIONS ── */
 body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
 .letter-envelope .admin-log-actions .admin-edit-btn,
 .letter-envelope .admin-log-actions .admin-delete-btn {
@@ -1377,7 +1373,8 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   font-size: 8px;
   padding: 2px 5px;
 }
-/* ── LETTERS — legacy card kept below in case other places still use it ── */
+
+/* ── LETTERS — LEGACY CARD STYLE (kept in case it's still referenced) ── */
 
 .letter-card {
   padding: 1.5rem 1.75rem;
@@ -1491,7 +1488,7 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   letter-spacing: 0.08em;
 }
 
-/* ── BULLETIN BOARD ──────────────────────────────────── */
+/* ── BULLETIN BOARD ── */
 .board-home-row {
   display: flex;
   gap: 1.25rem;
@@ -1642,9 +1639,9 @@ textarea.board-message-input {
   border-radius: var(--radius-sm);
   flex-shrink: 0;
 }
-/* country code tag inside each message header */
-.comment-country { opacity: 0.8; margin-left: 3px; }
 
+/* ── BULLETIN — COMMENT POPUPS & META ── */
+.comment-country { opacity: 0.8; margin-left: 3px; } /* country code tag in message header */
 
 .char-counter { font-family: var(--font-mono); font-size: 9px; color: var(--text-muted); text-align: right; transition: color 0.2s; }
 .char-counter.warn { color: var(--accent); }
@@ -1688,7 +1685,7 @@ textarea.board-message-input {
 /* display:contents lets all child widgets sit directly in the parent grid */
 .about-widgets-panel { display: contents; }
 
-/* ── Profile card — full width, row 1 ── */
+/* ── PROFILE CARD — full width, row 1 ── */
 .about-card {
   background: var(--bg2);
   border: 1.5px solid var(--border);
@@ -1700,7 +1697,7 @@ textarea.board-message-input {
   grid-row: 1;
 }
 
-/* ── Bento widget placement — 3×2 grid below profile ── */
+/* ── BENTO WIDGET PLACEMENT — 3×2 grid below profile ── */
 /*    Row 2: Bag | Games | Likes                         */
 /*    Row 3: Hobbies | Music | Quiz                      */
 .aw-bag      { grid-column: 1; grid-row: 2; }
@@ -1999,8 +1996,7 @@ textarea.board-message-input {
   .bag-grid { grid-template-columns: repeat(2, 1fr); }
 }
 
-
-/* ── LIGHTBOX ────────────────────────────────────────── */
+/* ── LIGHTBOX ── */
 .lightbox { display: none; position: fixed; inset: 0; background: rgba(20,20,20,0.88); backdrop-filter: blur(6px); z-index: 2000; padding: 1.5rem; justify-content: center; align-items: center; }
 .lightbox.show { display: flex; }
 .lightbox-content {
@@ -2024,6 +2020,7 @@ textarea.board-message-input {
 .lb-nav-btn:disabled { opacity: 0.3; pointer-events: none; }
 #lb-prev { left: 0; } #lb-next { right: 0; }
 .lb-image-counter { font-family: var(--font-mono); font-size: 10px; color: var(--text-muted); text-align: center; flex-shrink: 0; display: none; }
+
 /* ── ADMIN — paired image+caption rows for shrine form ── */
 .shrine-pair-rows {
   display: flex;
@@ -2093,17 +2090,17 @@ textarea.board-message-input {
 .zoom-btn:hover { background: var(--bg4); }
 .zoom-btn:disabled { opacity: 0.3; pointer-events: none; }
 
-/* ── MODAL OVERLAY (admin) ───────────────────────────── */
+/* ── MODAL OVERLAY (admin) ── */
 .modal-overlay { position: fixed; inset: 0; background: rgba(10,10,10,0.78); backdrop-filter: blur(4px); z-index: 3000; display: none; align-items: center; justify-content: center; padding: 1rem; }
 
-/* BIGGER ADMIN BOX */
+/* ── ADMIN MODAL BOX ── */
 .admin-box {
   background: var(--bg2);
   border: 1.5px solid var(--border);
   box-shadow: var(--shadow-lg);
   width: 95vw;
-  max-width: 860px;        /* ← was 620px */
-  max-height: 92vh;        /* ← was 90vh */
+  max-width: 860px;
+  max-height: 92vh;
   display: flex;
   flex-direction: column;
   overflow: hidden;
@@ -2131,13 +2128,13 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 
 .admin-success { font-family: var(--font-mono); font-size: 10px; color: #22c55e; display: none; }
 
-/* ── LOG TAGS ─────────────────────────────────────────── */
+/* ── LOG TAGS ── */
 .log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
 .log-tag { font-family: var(--font-mono); font-size: 10px; cursor: default; letter-spacing: 0.02em; }
 .log-container .log-tags { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); }
 .log-container .log-tag  { font-size: 12px; }
 
-/* ── BACK TO LOGS BUTTON ─────────────────────────────── */
+/* ── BACK TO LOGS BUTTON ── */
 .back-to-logs-btn {
   font-family: var(--font-mono);
   font-size: 11px;
@@ -2157,7 +2154,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 .back-to-logs-btn:hover { background: var(--text); color: var(--bg); box-shadow: 4px 4px 0 var(--accent); transform: translate(-2px, -2px); }
 .back-to-logs-btn:active { transform: translate(1px, 1px); box-shadow: 1px 1px 0 var(--accent); }
 
-/* ── MOBILE ──────────────────────────────────────────── */
+/* ── MOBILE (≤850px) ── */
 @media (max-width: 850px) {
   .page-wrapper { padding: 1.5rem 1rem 3rem; }
   .top-nav { padding: 0.6rem 1rem; gap: 0.6rem; }
@@ -2303,7 +2300,6 @@ a.desk-icon, a.desk-icon-external {
   min-height: auto !important;
 }
 
-
 .marquee-card .home-card-body { padding: 0 !important; }
 .marquee-card .marquee-container {
   border: none;
@@ -2441,7 +2437,7 @@ a.desk-icon, a.desk-icon-external {
   color: var(--text);
 }
 
-/* ── CURSORS ─────────────────────────────────────────── */
+/* ── CURSORS ── */
 *, *::before, *::after {
   cursor: url('cursors/Miffy-Normal-64x64.png') 0 0, auto;
 }
@@ -2471,13 +2467,7 @@ input[type="url"], textarea, [contenteditable] {
   cursor: url('cursors/Miffy-Help.ani') 0 0, help;
 }
 
-/* ══════════════════════════════════════════════════════════
-   NEW — LAST UPDATED, HOME BOTTOM ROW, INFO BTN,
-         BADGES STRIP, INFO / RESOURCES PAGE,
-         BOARD NAME INPUT
-   ══════════════════════════════════════════════════════════ */
-
-/* ── STATUS.EXE last-updated indicator ── */
+/* ── STATUS.EXE LAST-UPDATED INDICATOR ── */
 .status-last-updated {
   font-family: var(--font-mono);
   font-size: 8px;
@@ -2641,9 +2631,9 @@ body.admin-mode .badge-del { display: inline-block !important; }
   font-size: 0.78rem;
 }
 
-/* ══════════════════════════════════════════════════════════
+/* ═══════════════════════════════════════════════════
    INFO / RESOURCES PAGE
-   ══════════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════ */
 #info { padding-bottom: 4rem; }
 
 .info-grid {
@@ -2736,7 +2726,7 @@ body.admin-mode .badge-del { display: inline-block !important; }
 }
 body.admin-mode .info-del { display: inline-block !important; }
 
-/* ── Info card pagination controls ─────────────────────── */
+/* ── INFO CARD PAGINATION CONTROLS ── */
 .info-pager {
   display: flex;
   align-items: center;
@@ -2780,7 +2770,7 @@ body.admin-mode .info-del { display: inline-block !important; }
   text-transform: uppercase;
 }
 
-/* ── Admin re-open pill (shows after HIDE PANEL) ───────── */
+/* ── ADMIN RE-OPEN PILL — shown after the panel is closed ── */
 .admin-reopen-pill {
   position: fixed;
   right: 18px;
@@ -2836,8 +2826,7 @@ body.admin-mode .info-del { display: inline-block !important; }
   .home-bottom-row { flex-direction: row; }
 }
 
-
-/* ── Hero illustration (swaps per theme) ── */
+/* ── HERO ILLUSTRATION — swaps per theme ── */
 @keyframes snap-tilt {
   0%   { transform: rotate(0deg); }
   25%  { transform: rotate(-4deg); }
@@ -2856,8 +2845,6 @@ body.admin-mode .info-del { display: inline-block !important; }
   user-select: none;
   -webkit-user-drag: none;
   pointer-events: none;
-  
-  /* ── Add this line to trigger the animation ── */
   animation: snap-tilt 1.2s step-end infinite;
 }
 
@@ -2870,11 +2857,10 @@ body.dark .hero-card .hero-image-dark  { display: block; }
   .hero-card .hero-image { max-width: 260px; }
 }
 
-/* ═══════════════════════════════════════════════════════
-   MOBILE FIXES — appended
-   Overrides only what's broken on narrow viewports.
-   All breakpoints match or tighten existing ones.
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   MOBILE — RESPONSIVE OVERRIDES
+   Narrow-viewport fixes; breakpoints match or tighten the ones above.
+═══════════════════════════════════════════════════ */
 
 /* ── 1. PREVENT HORIZONTAL SCROLL (petals + floaters) ──
    #petal-field is already fixed+overflow:hidden, so the
@@ -2933,7 +2919,7 @@ body { overflow-x: hidden; max-width: 100vw; }
 
   .hero-card .site-title {
     font-size: 0.72rem;
-    letter-spacing: 0.18em;   /* was 0.4em — this was the bleed culprit */
+    letter-spacing: 0.18em;   /* prevents the text from bleeding past the card edge */
     white-space: normal;
     text-align: center;
     max-width: 100%;
@@ -2966,7 +2952,7 @@ body { overflow-x: hidden; max-width: 100vw; }
     aspect-ratio: 16 / 9;
   }
 
-  /* UPDATES: remove the hard max-height clip — it just cuts content */
+  /* updates list grows naturally instead of clipping content */
   .updates-card {
     max-height: none;
     overflow: visible;
@@ -2982,8 +2968,7 @@ body { overflow-x: hidden; max-width: 100vw; }
     text-overflow: unset;
   }
 
-  /* STATUS: long values like "Demon Time by Chase Atlantic"
-     were bleeding past the card right edge                 */
+  /* long values can bleed past the card's right edge without this */
   .status-row-val {
     word-break: break-word;
     overflow-wrap: break-word;
@@ -3004,12 +2989,12 @@ body { overflow-x: hidden; max-width: 100vw; }
 }
 
 /* ── 7. DESKTOP ICONS BAR — hamburger dropdown polish ──
-   At ≤850px your JS already toggles .show to reveal it.
-   This just makes the revealed dropdown look right.      */
+   JS toggles .show to reveal this at ≤850px; these rules
+   style the revealed dropdown.                           */
 @media (max-width: 850px) {
   .desktop-icons-bar.show {
-    /* Already positioned absolute in your existing rule.
-       Add scroll in case many icons wrap to many rows.   */
+    /* parent rule already sets position:absolute; this adds
+       scroll in case many icons wrap onto multiple rows    */
     max-height: 60vh;
     overflow-y: auto;
     /* Even wrap distribution */
@@ -3034,8 +3019,8 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 8. LOG TAG SIDEBAR — already goes flex-wrap at 720px.
-   On very narrow screens, make the pills smaller.        */
+/* ── 8. LOG TAG SIDEBAR — smaller pills below 480px ──
+   (the 720px breakpoint above already wraps them into a row) */
 @media (max-width: 480px) {
   .logs-sidebar {
     gap: 4px;
@@ -3095,8 +3080,8 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 11. BULLETIN BOARD — already collapses at 800px.
-   Tighten the controls section on very small screens.  */
+/* ── 11. BULLETIN BOARD — tighter controls below 480px ──
+   (800px breakpoint above already stacks the layout)   */
 @media (max-width: 480px) {
   .board-controls {
     padding: 0.75rem 0.85rem;
@@ -3120,8 +3105,8 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 12. ART FEED — 2 columns (not 1) on mobile,
-   your existing 850px rule collapses to 1 which is too sparse */
+/* ── 12. ART FEED — keep 2 columns on mobile ──
+   the 850px rule above collapses to 1, which felt too sparse */
 @media (max-width: 850px) and (min-width: 480px) {
   .art-feed {
     grid-template-columns: repeat(2, 1fr);
@@ -3180,20 +3165,14 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ═══════════════════════════════════════════════════════
-   NAV OVERLAP FIX
-   Problem: .desktop-icons-bar uses position:absolute on
-   mobile, dropping it out of flow and overlapping content.
-   Solution: on mobile, collapse the top-nav into two rows —
-   the logo/controls row stays, and the icon bar becomes a
-   full-width scroll strip in normal flow below it.
-   The hamburger trigger is hidden; no dropdown needed.
-═══════════════════════════════════════════════════════ */
+/* ═══════════════════════════════════════════════════
+   NAV — MOBILE OVERLAP FIX
+   Collapses the top-nav into two in-flow rows so the icon
+   bar sits below the logo row instead of floating over content.
+═══════════════════════════════════════════════════ */
 
 @media (max-width: 850px) {
 
-  /* Make the nav a two-row flex column so the icon strip
-     sits IN FLOW below the logo row, not floating over content */
   .top-nav {
     flex-direction: column;
     align-items: stretch;
@@ -3201,32 +3180,13 @@ body { overflow-x: hidden; max-width: 100vw; }
     gap: 0;
   }
 
-  /* Row 1: logo + controls */
-  .nav-left,
-  .nav-right {
-    /* Wrap them into their own row */
-  }
-
-  /* Inner row wrapper — logo left, controls right */
-  .top-nav > .nav-left,
-  .top-nav > .nav-center,
-  .top-nav > .nav-right {
-    /* These three are direct children; put them in a sub-row */
-  }
-
-  /* The trick: wrap logo+controls in a flex row, then icon
-     bar goes below as a second block. We do this by making
-     .top-nav itself a column and giving the first three
-     children a shared row via a pseudo-wrapper approach —
-     but since we can't add wrappers in CSS alone, we use
-     order + a clear border-top on the icon bar instead.   */
-
+  /* Reordered via flex `order` — no extra wrapper markup needed */
   .nav-left  { order: 1; padding: 0.5rem 0.85rem 0.5rem; }
   .nav-center { order: 2; flex: 0 0 100%; }
   .nav-center:not(:has(.desktop-icons-bar)) { display: none; }
   .nav-right { order: 3; padding: 0.3rem 0.85rem 0.5rem; padding-left: 0; }
 
-  /* Override: top-nav goes back to flex-row for the logo+controls line */
+  /* Logo + controls share row 1 (row direction); icon bar below stays row 2 */
   .top-nav {
     flex-direction: row;
     flex-wrap: wrap;
@@ -3241,7 +3201,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   /* Icon bar: full-width SECOND row, in normal flow */
   .desktop-icons-bar {
     order: 99;              /* always last */
-    position: static !important;  /* CRITICAL: take it out of absolute */
+    position: static !important;  /* takes it out of the absolute positioning above */
     display: flex !important;     /* always visible — no hamburger toggle */
     flex: 0 0 100%;         /* full width of the nav */
     width: 100%;
@@ -3291,28 +3251,22 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ═══════════════════════════════════════════════════════
-   LOG PAGE FIXES
-   1. Tag filter pills — compact + consistent on mobile
-   2. Blog list items — rounded corners to match site
+/* ═══════════════════════════════════════════════════
+   LOG PAGE — REFINEMENTS
+   1. Blog list items — rounded corners to match site
+   2. Tag filter pills — compact + consistent on mobile
    3. Photo viewer — visually separated from log text
-═══════════════════════════════════════════════════════ */
+═══════════════════════════════════════════════════ */
 
 /* ── 1. BLOG LIST ITEMS — add radius to match site cards ── */
 .blog-list-item {
   border-radius: var(--radius) !important;
-  overflow: hidden; /* keep the pinstripe titlebar clipped to rounded corners */
-}
-
-/* The pinstripe titlebar top edge needs to follow the card's radius */
-.blog-list-item .log-titlebar {
-  /* Already overflow:hidden on the parent clips this correctly */
+  overflow: hidden; /* clips the pinstripe titlebar to the same rounded corners */
 }
 
 /* ── 2. TAG FILTER PILLS — smaller, pill-shaped on mobile ──
-   On desktop the sidebar is 190px wide so items stack fine.
-   On mobile they flex-wrap into a tag cloud — they should
-   look like compact chips, not big rectangle buttons.      */
+   Sidebar items stack fine at 190px on desktop; on mobile they
+   flex-wrap into a cloud, so they read as compact chips here. */
 @media (max-width: 720px) {
   .logs-sidebar {
     gap: 5px;
@@ -3349,9 +3303,8 @@ body { overflow-x: hidden; max-width: 100vw; }
 }
 
 /* ── 3. LOG PHOTO VIEWER — break out of text container ──
-   Currently sits inside .log-container's padding so it
-   looks embedded in the prose. Pull it edge-to-edge so
-   it reads as a distinct OS window, not inline content.  */
+   Bleeds past .log-container's padding so it reads as its
+   own OS window rather than content embedded in the prose. */
 .log-photoviewer {
   /* Negative margins to bleed past the container's 3rem padding
      so the viewer sits edge-to-edge inside the card        */
@@ -3371,8 +3324,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   box-shadow: none;        /* remove the floating shadow — it's IN a card now */
 }
 
-/* Tighter padding compensation on mobile where log-container
-   already reduces to 1.75rem or 1.25rem                   */
+/* Compensates for log-container's smaller padding on mobile (1.75rem / 1.25rem) */
 @media (max-width: 850px) {
   .log-photoviewer {
     margin-left: -1.75rem;
@@ -3398,18 +3350,13 @@ body { overflow-x: hidden; max-width: 100vw; }
   overflow: visible;
 }
 
-/* But we still need the outer card to clip the viewer's
-   top/bottom edges — achieve this by making the bleed only
-   horizontal (left/right), which overflow:visible allows  */
+/* ═══════════════════════════════════════════════════
+   FINAL POLISH — nav centering, image sizing, photo viewer
+═══════════════════════════════════════════════════ */
 
-/* ═══════════════════════════════════════════════════════
-   POLISH PASS — nav centering, image sizing, photo viewer
-═══════════════════════════════════════════════════════ */
-
-/* ── 1. NAV ICON STRIP — centered, evenly spaced, aesthetic ──
-   Override the previous flex-start + left-padding approach.
-   With 7 icons on a ~375px strip each gets ~53px — they all
-   fit without scrolling and stay perfectly centered.         */
+/* ── 1. NAV ICON STRIP — centered, evenly spaced ──
+   On a ~375px strip, 7 icons get ~53px each — fits without
+   scrolling and stays perfectly centered.                  */
 @media (max-width: 850px) {
   .desktop-icons-bar {
     justify-content: center !important;  /* center the group */
@@ -3472,9 +3419,8 @@ body { overflow-x: hidden; max-width: 100vw; }
 }
 
 /* ── 2. HOME IMAGE CARDS — constrain height on mobile ──
-   At full-width single column, a 1:1 aspect card on a 375px
-   screen is 375px tall — way too much vertical real estate.
-   Cap to a sensible height while keeping object-fit:cover.  */
+   A 1:1 card at full single-column width would be 375px tall
+   on a 375px screen, so cap it and keep object-fit:cover.   */
 @media (max-width: 580px) {
   .home-image-card {
     aspect-ratio: unset !important; /* override the 16/9 from previous fix */
@@ -3491,10 +3437,9 @@ body { overflow-x: hidden; max-width: 100vw; }
 }
 
 /* ── 3. LOG PHOTO VIEWER — inset panel, not wall-to-wall ──
-   Revert the negative-margin bleed. Instead: contained panel
-   with its own border-radius, margin spacing from text,
-   and a subtle bg distinction. Feels like a window docked
-   INSIDE the log — not bleeding through its walls.          */
+   Supersedes the negative-margin bleed above with a contained
+   panel (own radius, margin, bg) that docks inside the log
+   rather than bleeding through its edges.                   */
 .log-photoviewer {
   margin-left: 0 !important;
   margin-right: 0 !important;
