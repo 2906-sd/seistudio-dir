@@ -617,7 +617,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .art-post:hover { transform: translateY(-2px); box-shadow: 3px 4px 0 var(--border); }
-.art-post img { width:100%; height:100%; object-fit:contain; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; background:var(--bg3); }
+.art-post img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; background:var(--bg3); }
 .art-post:hover img { transform: scale(1.04); }
 
 /* ── POST LABEL ── */
@@ -1971,7 +1971,7 @@ textarea.board-message-input {
 .lb-image-side { flex: 6; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 1.25rem; border-right: 1.5px solid var(--border-lt); overflow: auto; min-height: 0; }
 .lb-info-side  { flex: 4; padding: 1.5rem; overflow-y: auto; display: flex; flex-direction: column; gap: 0.75rem; min-width: 200px; max-width: 400px; white-space: pre-wrap;}
 .lb-image-wrap { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; width: 100%; padding: 0 44px; min-height: 0; overflow: auto; }
-#lb-image { width: auto; height: auto; max-width: none; max-height: none; object-fit: none; border: 1px solid var(--border-lt); display: block; transition: transform 0.2s ease; cursor: grab; touch-action: none; }
+#lb-image { width: auto; height: auto; max-width: 100%; max-height: 100%; object-fit: contain; border: 1px solid var(--border-lt); display: block; transition: transform 0.2s ease; cursor: grab; touch-action: none; }
 #lb-image.zoomed { cursor: move; }
 .lb-nav-btn { position: absolute; top: 50%; transform: translateY(-50%); background: var(--bg2); border: 1.5px solid var(--border); color: var(--text); font-family: var(--font-mono); font-size: 1.1rem; width: 42px; height: 42px; cursor: pointer; z-index: 12; transition: background 0.15s, color 0.15s; border-radius: var(--radius-sm); }
 .lb-nav-btn:hover    { background: var(--bg4); }
@@ -2501,7 +2501,8 @@ input[type="url"], textarea, [contenteditable] {
 }
 
 /* ── BADGES CARDS — full-width on home + about ── */
-/* Badges marquee — sits below the text marquee */
+
+/* Legacy marquee wrapper (unused but kept for safety) */
 .badges-marquee-wrap {
   margin-top: 0.5rem;
   position: relative;
@@ -2516,40 +2517,68 @@ input[type="url"], textarea, [contenteditable] {
   scrollbar-width: thin;
   scrollbar-color: var(--accent) var(--bg3);
 }
-.badges-marquee::-webkit-scrollbar {
-  height: 6px;
-}
-.badges-marquee::-webkit-scrollbar-track {
-  background: var(--bg3);
-  border-radius: 3px;
-}
-.badges-marquee::-webkit-scrollbar-thumb {
-  background: var(--accent);
-  border-radius: 3px;
-}
-.badges-marquee .badge-cell {
-  flex: 0 0 auto;
-  display: inline-block;
-}
-.badges-marquee .badge-stamp {
-  height: 40px;
-  width: auto;
-  display: block;
-}
+.badges-marquee::-webkit-scrollbar { height: 6px; }
+.badges-marquee::-webkit-scrollbar-track { background: var(--bg3); border-radius: 3px; }
+.badges-marquee::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+.badges-marquee .badge-cell { flex: 0 0 auto; display: inline-block; }
+.badges-marquee .badge-stamp { height: 40px; width: auto; display: block; }
 
+/* ── Badges card — full-width row, visually separate from marquee ── */
 .home-grid .badges-card {
   grid-column: 1 / -1;
   grid-row: auto;
+  margin-top: 0; /* sits in its own grid row, no extra gap needed */
 }
+
+/* ── Badges strip — horizontal marquee with pause on hover ── */
 .badges-strip {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 10px;
   padding: 0.9rem 1rem;
   min-height: 56px;
-  overflow: visible;       /* never clip a stamp */
+  overflow: hidden;
+  position: relative;
 }
+
+/* Fade edges so stamps scroll in/out smoothly */
+.badges-strip::before,
+.badges-strip::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+  z-index: 2;
+  pointer-events: none;
+}
+.badges-strip::before {
+  left: 0;
+  background: linear-gradient(to right, var(--bg2), transparent);
+}
+.badges-strip::after {
+  right: 0;
+  background: linear-gradient(to left, var(--bg2), transparent);
+}
+
+/* Duplicate stamps for seamless loop */
+.badges-strip .badge-cell {
+  flex: 0 0 auto;
+  animation: badgesScroll 25s linear infinite;
+}
+
+@keyframes badgesScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(calc(-100% - 10px)); }
+}
+
+/* Pause on hover */
+.badges-strip:hover .badge-cell {
+  animation-play-state: paused;
+}
+
+/* ── Badge cell ── */
 .badge-cell {
   position: relative;
   display: inline-flex;
@@ -2559,7 +2588,6 @@ input[type="url"], textarea, [contenteditable] {
   border: none;
   border-radius: 2px;
   padding: 0;
-  /* Reserve full stamp footprint so adjacent stamps can't crop into it */
   min-width: 100px;
   min-height: 40px;
   flex: 0 0 auto;
@@ -2569,22 +2597,22 @@ input[type="url"], textarea, [contenteditable] {
   transform: translate(-1px, -1px);
 }
 .badge-link { display: inline-flex; line-height: 0; }
+
+/* ── Badge stamp — smooth rendering, properly centered ── */
 .badge-stamp {
-  /* Use max-width/height instead of fixed dims so non-100x40 stamps don't get cropped.
-     contain (vs cover) guarantees the whole stamp is visible.
-     !important is needed so the about-widget-body img rule doesn't override
-     these dimensions and balloon the home/about stamps to inconsistent sizes. */
   max-width: 100px !important;
   max-height: 40px !important;
   width: auto;
   height: auto;
   object-fit: contain;
   display: block;
-  image-rendering: pixelated;
+  image-rendering: auto; /* FIX: was pixelated — now renders smoothly */
   pointer-events: auto;
   -webkit-user-drag: none;
-  filter: none !important; /* about-widget-body img adds a drop-shadow; not wanted on stamps */
+  filter: none !important;
 }
+
+/* ── Admin delete button on badge ── */
 .badge-del {
   position: absolute !important;
   top: -8px !important;
@@ -2599,7 +2627,7 @@ input[type="url"], textarea, [contenteditable] {
 }
 body.admin-mode .badge-del { display: inline-block !important; }
 
-/* about-page badges row — placed as a full-width grid row beneath the bento */
+/* ── About-page badges row ── */
 .about-widgets-panel .about-badges-wrap {
   grid-column: 1 / -1;
   grid-row: auto;
@@ -2618,6 +2646,21 @@ body.admin-mode .badge-del { display: inline-block !important; }
   }
 }
 
+/* ── Small screens: disable marquee, center badges ── */
+@media (max-width: 580px) {
+  .badges-strip {
+    flex-wrap: wrap;
+    justify-content: center;
+    overflow: visible;
+  }
+  .badges-strip .badge-cell {
+    animation: none;
+  }
+  .badges-strip::before,
+  .badges-strip::after {
+    display: none;
+  }
+}
 /* ── BOARD NAME INPUT ── */
 .board-name-row { margin-bottom: 6px; }
 .board-name-input {
