@@ -1920,7 +1920,7 @@ if (sortOrder === 'latest') displayLogs.reverse();
     el.innerHTML = `
    <div class="log-titlebar">
    <span class="log-titlebar-flower">✿</span>
-   <div class="log-titlebar-label">${log.meta}</span>
+  <div class="log-titlebar-label">${log.meta}</div>
       </div>
       <div class="log-card-body">
         <h2 class="log-card-title">${log.title}</h2>
@@ -2567,8 +2567,8 @@ function renderTrashPage() {
   el.innerHTML = sortedDates.map(date => {
     const items = groups[date];
     return `<div class="trash-date-group"><div class="trash-date-header">[ ${date} ]</div><div class="trash-items-grid">${items.map(item => {
-      cconst labelMap = { stupid:'thoughts', doodle:'doodles', pic:'doodles', uhhhhh:'uhhhhh', thought:'thoughts', note:'uhhhhh' };
-      const label  = typeLabel[item.type] || 'SCRAP';
+      const labelMap = { stupid:'Thoughts', doodle:'Doodles', pic:'Doodles', uhhhhh:'Uhhhh', thought:'Thoughts', note:'Uhhhh' };
+      const label  = labelMap[item.type] || 'SCRAP';
       const delBtn = isAdminSession() ? `<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>` : '';
       if (item.type === 'doodle' || item.type === 'pic') {
         return `<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openImageLightbox('${encodeURIComponent(item.content)}','${escHtml(label)}','')" />${delBtn}</div>`;
