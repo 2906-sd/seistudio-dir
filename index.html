@@ -170,25 +170,20 @@
           </div>
         </div>
 
-        <!-- MARQUEE -->
-        <div class="home-card marquee-card">
-          <div class="home-card-body">
-            <div class="marquee-container">
-              <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- BADGES STRIP -->
-        <div class="home-card badges-card">
-          <div class="home-card-header">
-            <span> ✿ // </span>
-            <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
-          </div>
-          <div class="home-card-body badges-strip" id="badgesStripHome">
-            <p class="home-updates-empty">// no badges yet</p>
-          </div>
-        </div>
+    <!-- MARQUEE + BADGES -->
+<div class="home-card marquee-card">
+  <div class="home-card-body">
+    <div class="marquee-container">
+      <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+    </div>
+    <div class="badges-marquee-wrap">
+      <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
+      <div class="badges-marquee" id="badgesStripHome">
+        <span class="home-updates-empty widget-hint">// no badges yet</span>
+      </div>
+    </div>
+  </div>
+</div>
 
       </div>
 
@@ -2000,24 +1995,13 @@ function buildPhotoViewer(urls, logTitle) {
   const total    = urls.length;
   const multi    = total > 1;
   return `
-    <div class="log-photoviewer">
-      <div class="log-pv-titlebar">
-        <div class="log-pv-controls">
-          <div class="log-pv-dot"></div>
-          <div class="log-pv-dot"></div>
-          <div class="log-pv-dot"></div>
-        </div>
-        <span class="log-pv-titlebar-label">PHOTOS.EXE — ${escHtml(logTitle)}</span>
-      </div>
+    <div class="log-photoviewer log-photoviewer--simple">
       <div class="log-pv-display">
         ${multi ? `<button class="log-pv-nav prev" onclick="logPvNav(-1)" disabled>&#8592;</button>` : ''}
         <img id="log-pv-img" src="${firstUrl}" alt="Photo 1 of ${total}" draggable="false" />
         ${multi ? `<button class="log-pv-nav next" onclick="logPvNav(1)" ${total === 1 ? 'disabled' : ''}>&#8594;</button>` : ''}
       </div>
-      <div class="log-pv-statusbar">
-        <span class="log-pv-counter" id="log-pv-counter">1 / ${total}</span>
-        <button class="log-pv-open-btn" onclick="logPvOpen()">OPEN ↗</button>
-      </div>
+      ${multi ? `<div class="log-pv-counter-simple"><span id="log-pv-counter">1 / ${total}</span></div>` : ''}
     </div>`;
 }
 
@@ -2041,11 +2025,11 @@ function readLog(i) {
   }
 
   const viewerHtml = buildPhotoViewer(photoUrls, log.title || 'LOG');
-  document.getElementById('log-content').innerHTML =
+document.getElementById('log-content').innerHTML =
       `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ''}</p>`
     + `<h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>`
-    + `<div class="log-body-text">${cleanBody}</div>`
     + viewerHtml
+    + `<div class="log-body-text">${cleanBody}</div>`
     + renderTagsHTML(log.tags);
 
   document.querySelectorAll('.log-sticker').forEach(s => s.remove());
