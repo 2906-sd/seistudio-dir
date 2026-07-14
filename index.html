@@ -1880,9 +1880,17 @@ function renderLogList() {
   if (activeTagFilter) {
     displayLogs = displayLogs.filter(log => (log.tags || []).some(t => String(t).trim() === activeTagFilter));
   }
-  const sortOrder = document.getElementById('logSortOrder')?.value || 'latest';
-  displayLogs.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-  if (sortOrder === 'latest') displayLogs.reverse();
+ const sortOrder = document.getElementById('logSortOrder')?.value || 'latest';
+/* Parse MM.DD.YY from the meta string (e.g. "LOG_01.TXT // 05.01.26") */
+function parseMetaDate(meta) {
+  if (!meta) return 0;
+  const m = String(meta).match(/(\d{1,2})\.(\d{1,2})\.(\d{2})/);
+  if (!m) return 0;
+  const year = 2000 + parseInt(m[3], 10);
+  return year * 10000 + parseInt(m[1], 10) * 100 + parseInt(m[2], 10);
+}
+displayLogs.sort((a, b) => parseMetaDate(a.meta) - parseMetaDate(b.meta));
+if (sortOrder === 'latest') displayLogs.reverse();
   if (!displayLogs.length) {
     list.innerHTML = `<p class="post-label" style="opacity:0.6;">// no logs found for this tag.</p>`;
     return;
@@ -2840,7 +2848,15 @@ function adminSaveEditLog() {
   const tags     = parseTags(document.getElementById('editLogTags').value);
   const stickers = document.getElementById('editLogStickers').value.split('\n').map(s => s.trim()).filter(Boolean);
   if (!title || !body) { document.getElementById('editLogError').textContent = '// TITLE AND BODY ARE REQUIRED.'; document.getElementById('editLogError').style.display = 'block'; return; }
-  const updated = { title, meta, body, tags, stickers };
+  let newTimestamp = log.timestamp;
+const metaMatch = meta.match(/(\d{1,2})\.(\d{1,2})\.(\d{2})/);
+if (metaMatch) {
+  const yr = 2000 + parseInt(metaMatch[3], 10);
+  const mo = parseInt(metaMatch[1], 10) - 1;
+  const dy = parseInt(metaMatch[2], 10);
+  newTimestamp = new Date(yr, mo, dy, 12, 0, 0).getTime();
+}
+const updated = { title, meta, body, tags, stickers, timestamp: newTimestamp };
   if (id) {
     adminWrite('update', 'content/logs', { id, data: updated }).then(() => { Object.assign(logsData[idx], updated); renderLogList(); renderHomeUpdates(); document.getElementById('editLogSuccess').style.display = 'block'; document.getElementById('editLogError').style.display = 'none'; setTimeout(() => { document.getElementById('editLogSuccess').style.display = 'none'; }, 3000); }).catch(e => { console.error('Edit log failed:', e); document.getElementById('editLogError').textContent = '// ERROR SAVING: ' + e.message; document.getElementById('editLogError').style.display = 'block'; });
   } else {
