@@ -1971,11 +1971,10 @@ function logPvNav(dir) {
   window._logPvIdx = next;
   const img     = document.getElementById('log-pv-img');
   const counter = document.getElementById('log-pv-counter');
-  const prevBtn = document.querySelector('.log-pv-nav.prev');
-  const nextBtn = document.querySelector('.log-pv-nav.next');
+  const prevBtn = document.querySelector('.log-carousel-arrow.left');
+  const nextBtn = document.querySelector('.log-carousel-arrow.right');
   if (!img) return;
-  img.classList.add('pv-fade');
-  setTimeout(() => { img.src = normalizeImageUrl(urls[window._logPvIdx]); img.classList.remove('pv-fade'); }, 100);
+  img.src = normalizeImageUrl(urls[window._logPvIdx]);
   if (counter) counter.textContent = `${window._logPvIdx + 1} / ${urls.length}`;
   if (prevBtn) prevBtn.disabled = window._logPvIdx === 0;
   if (nextBtn) nextBtn.disabled = window._logPvIdx === urls.length - 1;
@@ -1995,13 +1994,13 @@ function buildPhotoViewer(urls, logTitle) {
   const total    = urls.length;
   const multi    = total > 1;
   return `
-    <div class="log-photoviewer log-photoviewer--simple">
-      <div class="log-pv-display">
-        ${multi ? `<button class="log-pv-nav prev" onclick="logPvNav(-1)" disabled>&#8592;</button>` : ''}
+    <div class="log-carousel">
+      <div class="log-carousel-inner" onclick="logPvOpen()">
+        ${multi ? `<button class="log-carousel-arrow left" onclick="event.stopPropagation();logPvNav(-1)">&#8592;</button>` : ''}
         <img id="log-pv-img" src="${firstUrl}" alt="Photo 1 of ${total}" draggable="false" />
-        ${multi ? `<button class="log-pv-nav next" onclick="logPvNav(1)" ${total === 1 ? 'disabled' : ''}>&#8594;</button>` : ''}
+        ${multi ? `<button class="log-carousel-arrow right" onclick="event.stopPropagation();logPvNav(1)">&#8594;</button>` : ''}
       </div>
-      ${multi ? `<div class="log-pv-counter-simple"><span id="log-pv-counter">1 / ${total}</span></div>` : ''}
+      ${multi ? `<div class="log-carousel-counter"><span id="log-pv-counter">1 / ${total}</span></div>` : ''}
     </div>`;
 }
 
