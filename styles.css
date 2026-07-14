@@ -617,7 +617,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   transition: transform 0.2s, box-shadow 0.2s;
 }
 .art-post:hover { transform: translateY(-2px); box-shadow: 3px 4px 0 var(--border); }
-.art-post img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; }
+.art-post img { width:100%; height:100%; object-fit:contain; display:block; transition:transform 0.35s ease; pointer-events:none; -webkit-user-drag:none; background:var(--bg3); }
 .art-post:hover img { transform: scale(1.04); }
 
 /* ── POST LABEL ── */
@@ -861,6 +861,27 @@ body.admin-mode .admin-log-actions { display: flex; }
 /* ═══════════════════════════════════════════════════════
    LOG PHOTO VIEWER — OS window aesthetic
 ═══════════════════════════════════════════════════════ */
+
+/* Simplified photo viewer */
+.log-photoviewer--simple {
+  border: none;
+  box-shadow: none;
+  margin: 1.5rem 0;
+}
+.log-photoviewer--simple .log-pv-display {
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg3);
+}
+.log-pv-counter-simple {
+  text-align: center;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--text-muted);
+  margin-top: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
 
 /* Outer window shell */
 .log-photoviewer {
@@ -2590,6 +2611,42 @@ input[type="url"], textarea, [contenteditable] {
 }
 
 /* ── BADGES CARDS — full-width on home + about ── */
+/* Badges marquee — sits below the text marquee */
+.badges-marquee-wrap {
+  margin-top: 0.5rem;
+  position: relative;
+}
+.badges-marquee {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  padding: 0.5rem 0;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent) var(--bg3);
+}
+.badges-marquee::-webkit-scrollbar {
+  height: 6px;
+}
+.badges-marquee::-webkit-scrollbar-track {
+  background: var(--bg3);
+  border-radius: 3px;
+}
+.badges-marquee::-webkit-scrollbar-thumb {
+  background: var(--accent);
+  border-radius: 3px;
+}
+.badges-marquee .badge-cell {
+  flex: 0 0 auto;
+  display: inline-block;
+}
+.badges-marquee .badge-stamp {
+  height: 40px;
+  width: auto;
+  display: block;
+}
+
 .home-grid .badges-card {
   grid-column: 1 / -1;
   grid-row: auto;
