@@ -1543,7 +1543,7 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   }
 }
 
-/* System / pre-made bulletin messages — distinct style */
+/* separate style for the  pre-made bulletin messages */
 .comment-popup--system {
   border-color: var(--accent);
   border-style: dashed;
