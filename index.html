@@ -2610,13 +2610,13 @@ function renderBadgesStrips() {
     const el = document.getElementById(t.id); if (!el) return;
     const valid = all.filter(t.match);
     if (!valid.length) { el.innerHTML = '<span class="home-updates-empty widget-hint">// no badges yet — admin can add them.</span>'; return; }
-    el.innerHTML = valid.map(b => {
-      const img    = `<img class="badge-stamp" src="${escHtml(b.image)}" alt="${escHtml(b.alt || 'badge')}" title="${escHtml(b.alt || '')}" loading="lazy" onerror="this.style.opacity=0.3" />`;
-      const delBtn = isAdminSession() ? `<button class="admin-delete-btn badge-del" onclick="event.stopPropagation();event.preventDefault();adminDeleteBadge('${b.id}')">×</button>` : '';
-      const inner  = b.link ? `<a href="${escHtml(b.link)}" target="_blank" rel="noopener" class="badge-link">${img}</a>` : img;
-      return `<div class="badge-cell">${inner}${delBtn}</div>`;
-    }).join('');
-  });
+   const cells = valid.map(b => {
+  const img    = `<img class="badge-stamp" src="${escHtml(b.image)}" alt="${escHtml(b.alt || 'badge')}" title="${escHtml(b.alt || '')}" loading="lazy" onerror="this.style.opacity=0.3" />`;
+  const delBtn = isAdminSession() ? `<button class="admin-delete-btn badge-del" onclick="event.stopPropagation();event.preventDefault();adminDeleteBadge('${b.id}')">×</button>` : '';
+  const inner  = b.link ? `<a href="${escHtml(b.link)}" target="_blank" rel="noopener" class="badge-link">${img}</a>` : img;
+  return `<div class="badge-cell">${inner}${delBtn}</div>`;
+}).join('');
+el.innerHTML = cells + cells; /* duplicate for seamless marquee loop */
   const bAdmin = document.getElementById('badgesAdminBtn');
   if (bAdmin) bAdmin.style.display = isAdminSession() ? 'inline-block' : 'none';
 }
