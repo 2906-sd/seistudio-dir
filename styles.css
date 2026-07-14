@@ -1,4 +1,19 @@
-/* ═══════════════════════════════════════════════════
+/* ── CUSTOM LOADER ── */
+    .loader-overlay {
+      position: fixed; inset: 0;
+      background: rgba(244, 244, 244, 0.95);
+      backdrop-filter: blur(2px);
+      z-index: 9999; display: none;
+      flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+    }
+    body.dark .loader-overlay { background: rgba(0, 0, 0, 0.95); }
+    .loader-overlay.show { display: flex; }
+    .loader-flower { font-size: 4.5rem; animation: spin 2s linear infinite; color: var(--accent); }
+    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+    .loader-message { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; min-width: 200px; text-align: center; }
+
+
+    /* ═══════════════════════════════════════════════════
    DESIGN TOKENS
 ═══════════════════════════════════════════════════ */
 :root {
@@ -1550,9 +1565,9 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
   opacity: 0.75;
 }
 .comment-popup--system .comment-header {
-  background: var(--bg3);
-  color: var(--text-muted);
-  border-bottom-color: var(--accent);
+  background: #ff3b4f;
+  color: var(--text-inv);
+
 }
 .comment-popup--system .comment-body {
   font-style: italic;
@@ -2908,7 +2923,6 @@ body { overflow-x: hidden; max-width: 100vw; }
     gap: 0.5rem;
   }
 
-  /* Marquee strip disappears — wastes 100px on a 375px screen */
   .nav-center {
     display: none;
   }
@@ -2933,16 +2947,13 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 3. PAGE WRAPPER — tighter side padding on mobile ── */
 @media (max-width: 640px) {
   .page-wrapper {
     padding: 1rem 0.75rem 3rem;
   }
 }
 
-/* ── 4. HOME HERO — fix overflowing site-title + text ──
-   Root cause: letter-spacing:0.4em on a long string pushes
-   it ~40px past the right edge on a 375px card.          */
+
 @media (max-width: 640px) {
   .hero-card {
     min-height: 180px;
@@ -2951,7 +2962,7 @@ body { overflow-x: hidden; max-width: 100vw; }
 
   .hero-card .site-title {
     font-size: 0.72rem;
-    letter-spacing: 0.18em;   /* prevents the text from bleeding past the card edge */
+    letter-spacing: 0.18em; 
     white-space: normal;
     text-align: center;
     max-width: 100%;
@@ -2964,27 +2975,24 @@ body { overflow-x: hidden; max-width: 100vw; }
     word-break: break-word;
   }
 
-  /* Hero illustration: don't let it overflow the card */
+
   .hero-card .hero-image {
     max-width: 220px;
     margin-top: 0.5rem;
   }
 }
 
-/* ── 5. HOME GRID — single column stacking ──
-   Existing @media 580px already sets areas correctly,
-   but is missing gap + padding tightening.              */
 @media (max-width: 580px) {
   .home-grid {
     gap: 0.75rem;
   }
 
-  /* Image cards look better landscape than 1:1 square at full width */
+
   .home-image-card {
     aspect-ratio: 16 / 9;
   }
 
-  /* updates list grows naturally instead of clipping content */
+
   .updates-card {
     max-height: none;
     overflow: visible;
@@ -2993,21 +3001,18 @@ body { overflow-x: hidden; max-width: 100vw; }
     overflow: visible;
   }
 
-  /* Allow titles to wrap instead of ellipsis on narrow viewport */
   .home-update-title {
     white-space: normal;
     overflow: visible;
     text-overflow: unset;
   }
 
-  /* long values can bleed past the card's right edge without this */
   .status-row-val {
     word-break: break-word;
     overflow-wrap: break-word;
   }
 }
 
-/* ── 6. HOME CARD BODIES — tighter internal padding ── */
 @media (max-width: 580px) {
   .home-card-header {
     padding: 0.4rem 0.85rem;
@@ -3020,21 +3025,16 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 7. DESKTOP ICONS BAR — hamburger dropdown polish ──
-   JS toggles .show to reveal this at ≤850px; these rules
-   style the revealed dropdown.                           */
+
 @media (max-width: 850px) {
   .desktop-icons-bar.show {
-    /* parent rule already sets position:absolute; this adds
-       scroll in case many icons wrap onto multiple rows    */
     max-height: 60vh;
     overflow-y: auto;
-    /* Even wrap distribution */
     gap: 0.5rem 0.75rem;
     padding: 0.85rem 1rem;
   }
 
-  /* Icons in the dropdown: slightly larger tap targets */
+ 
   .desk-icon {
     min-width: 48px;
     max-width: 64px;
@@ -3051,8 +3051,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 8. LOG TAG SIDEBAR — smaller pills below 480px ──
-   (the 720px breakpoint above already wraps them into a row) */
+
 @media (max-width: 480px) {
   .logs-sidebar {
     gap: 4px;
@@ -3065,7 +3064,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 9. LOG / LETTER / SHRINE READER — padding tightening ── */
+
 @media (max-width: 480px) {
   .log-container {
     padding: 1.25rem 0.9rem;
@@ -3073,7 +3072,7 @@ body { overflow-x: hidden; max-width: 100vw; }
 
   .log-body-text {
     font-size: 0.8rem;
-    max-height: none;       /* let content expand naturally on mobile */
+    max-height: none;   
     overflow-y: visible;
     padding-right: 0;
   }
@@ -3091,7 +3090,6 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 10. ABOUT PAGE — profile card tightening ── */
 @media (max-width: 480px) {
   .about-body {
     padding: 1rem 1rem;
@@ -3112,8 +3110,6 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 11. BULLETIN BOARD — tighter controls below 480px ──
-   (800px breakpoint above already stacks the layout)   */
 @media (max-width: 480px) {
   .board-controls {
     padding: 0.75rem 0.85rem;
@@ -3131,14 +3127,13 @@ body { overflow-x: hidden; max-width: 100vw; }
     text-align: center;
   }
 
-  /* Board canvas: shorter fixed height on small phones */
+
   #board-section {
     height: 280px;
   }
 }
 
-/* ── 12. ART FEED — keep 2 columns on mobile ──
-   the 850px rule above collapses to 1, which felt too sparse */
+
 @media (max-width: 850px) and (min-width: 480px) {
   .art-feed {
     grid-template-columns: repeat(2, 1fr);
@@ -3148,14 +3143,12 @@ body { overflow-x: hidden; max-width: 100vw; }
 
 @media (max-width: 480px) {
   .art-feed {
-    grid-template-columns: repeat(2, 1fr); /* keep 2-col even on phone */
+    grid-template-columns: repeat(2, 1fr);
     gap: 0.4rem;
   }
 }
 
-/* ── 13. INFO GRID — already 1-col at 700px. Fine. ── */
 
-/* ── 14. SHRINES / LETTERS GRIDS on very small screens ── */
 @media (max-width: 380px) {
   .shrines-grid {
     grid-template-columns: 1fr;
@@ -3165,7 +3158,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 15. LIGHTBOX — full-screen on mobile ── */
+
 @media (max-width: 640px) {
   .lightbox {
     padding: 0;
@@ -3187,7 +3180,7 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 16. ADMIN REOPEN PILL — keep off bottom nav ── */
+
 @media (max-width: 640px) {
   .admin-reopen-pill {
     right: 12px;
@@ -3198,7 +3191,7 @@ body { overflow-x: hidden; max-width: 100vw; }
 }
 
 /* ═══════════════════════════════════════════════════
-   NAV — MOBILE OVERLAP FIX
+   NAV MOBILE OVERLAP FIX
    Collapses the top-nav into two in-flow rows so the icon
    bar sits below the logo row instead of floating over content.
 ═══════════════════════════════════════════════════ */
@@ -3212,13 +3205,13 @@ body { overflow-x: hidden; max-width: 100vw; }
     gap: 0;
   }
 
-  /* Reordered via flex `order` — no extra wrapper markup needed */
+
   .nav-left  { order: 1; padding: 0.5rem 0.85rem 0.5rem; }
   .nav-center { order: 2; flex: 0 0 100%; }
   .nav-center:not(:has(.desktop-icons-bar)) { display: none; }
   .nav-right { order: 3; padding: 0.3rem 0.85rem 0.5rem; padding-left: 0; }
 
-  /* Logo + controls share row 1 (row direction); icon bar below stays row 2 */
+
   .top-nav {
     flex-direction: row;
     flex-wrap: wrap;
@@ -3233,9 +3226,9 @@ body { overflow-x: hidden; max-width: 100vw; }
   /* Icon bar: full-width SECOND row, in normal flow */
   .desktop-icons-bar {
     order: 99;              /* always last */
-    position: static !important;  /* takes it out of the absolute positioning above */
-    display: flex !important;     /* always visible — no hamburger toggle */
-    flex: 0 0 100%;         /* full width of the nav */
+    position: static !important;  
+    display: flex !important;    
+    flex: 0 0 100%;    
     width: 100%;
 
     /* Horizontal scroll strip */
@@ -3243,33 +3236,30 @@ body { overflow-x: hidden; max-width: 100vw; }
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    flex-wrap: nowrap !important; /* single row, scroll don't wrap */
+    flex-wrap: nowrap !important; 
 
-    /* Visual separation from logo row */
     border-top: 1.5px solid var(--border);
     border-bottom: 1.5px solid var(--border);
     padding: 0.4rem 0.75rem;
     gap: 0.25rem;
-    justify-content: flex-start; /* left-aligned so scroll works */
+    justify-content: flex-start;
     background: var(--bg2);
     box-shadow: none;
 
-    /* Reset the absolute-positioning values */
     top: auto; left: auto; right: auto;
     z-index: auto;
   }
 
   .desktop-icons-bar::-webkit-scrollbar { display: none; }
 
-  /* Hide the hamburger — not needed anymore */
   .menu-trigger { display: none !important; }
 
-  /* Icon sizing in the strip — slightly tighter */
+
   .desk-icon {
     min-width: 50px;
     max-width: 58px;
     padding: 4px 4px 3px;
-    flex-shrink: 0; /* don't squish — rely on scroll */
+    flex-shrink: 0;
   }
 
   .desk-icon-img {
@@ -3283,41 +3273,31 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ═══════════════════════════════════════════════════
-   LOG PAGE — REFINEMENTS
-   1. Blog list items — rounded corners to match site
-   2. Tag filter pills — compact + consistent on mobile
-   3. Photo viewer — visually separated from log text
-═══════════════════════════════════════════════════ */
 
-/* ── 1. BLOG LIST ITEMS — add radius to match site cards ── */
+
 .blog-list-item {
   border-radius: var(--radius) !important;
-  overflow: hidden; /* clips the pinstripe titlebar to the same rounded corners */
-}
+  overflow: hidden; 
 
-/* ── 2. TAG FILTER PILLS — smaller, pill-shaped on mobile ──
-   Sidebar items stack fine at 190px on desktop; on mobile they
-   flex-wrap into a cloud, so they read as compact chips here. */
 @media (max-width: 720px) {
   .logs-sidebar {
     gap: 5px;
   }
 
   .tag-sidebar-title {
-    width: 100%;           /* force the title onto its own line */
+    width: 100%;    
     flex: 0 0 100%;
     margin-bottom: 0.35rem;
     font-size: 10px;
   }
 
   .tag-sidebar-item {
-    /* Compact pill — not a full-width rectangle */
+
     flex: 0 0 auto;
     width: auto;
     padding: 2px 8px;
     font-size: 8px;
-    border-radius: var(--radius);   /* subtle rounding, not full pill */
+    border-radius: var(--radius);
     gap: 4px;
     margin-bottom: 0;
     justify-content: center;
@@ -3334,29 +3314,24 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* ── 3. LOG PHOTO VIEWER — break out of text container ──
-   Bleeds past .log-container's padding so it reads as its
-   own OS window rather than content embedded in the prose. */
 .log-photoviewer {
-  /* Negative margins to bleed past the container's 3rem padding
-     so the viewer sits edge-to-edge inside the card        */
   margin-left: -3rem;
   margin-right: -3rem;
   margin-top: 1.75rem;
   margin-bottom: 1.75rem;
 
-  /* Rounded corners only on the outside to match site cards */
-  border-radius: 0;        /* flush to card edges, no inner radius */
+
+  border-radius: 0;       
   border-left: none;
   border-right: none;
 
-  /* Stronger visual separation from surrounding text */
+
   border-top: 1.5px solid var(--border);
   border-bottom: 1.5px solid var(--border);
-  box-shadow: none;        /* remove the floating shadow — it's IN a card now */
+  box-shadow: none;    
 }
 
-/* Compensates for log-container's smaller padding on mobile (1.75rem / 1.25rem) */
+
 @media (max-width: 850px) {
   .log-photoviewer {
     margin-left: -1.75rem;
@@ -3371,44 +3346,40 @@ body { overflow-x: hidden; max-width: 100vw; }
   }
 }
 
-/* Photo viewer titlebar: no radius (already flush) */
+
 .log-pv-titlebar {
   border-radius: 0;
 }
 
-/* The log container itself: make sure overflow is visible
-   so the negative-margin bleed works and isn't clipped    */
 .log-container {
   overflow: visible;
 }
 
-/* ═══════════════════════════════════════════════════
-   FINAL POLISH — nav centering, image sizing, photo viewer
-═══════════════════════════════════════════════════ */
+/*
+   fix on nav centering, image sizing, photo viewer
+*/
 
-/* ── 1. NAV ICON STRIP — centered, evenly spaced ──
-   On a ~375px strip, 7 icons get ~53px each — fits without
-   scrolling and stays perfectly centered.                  */
+/* NAV ICONS  */
 @media (max-width: 850px) {
   .desktop-icons-bar {
-    justify-content: center !important;  /* center the group */
-    gap: 0 !important;                   /* no gap — use icon padding instead */
-    padding: 0.35rem 0.5rem !important;  /* even horizontal breathing room */
+    justify-content: center !important;  
+    gap: 0 !important;                   
+    padding: 0.35rem 0.5rem !important;  /
     overflow-x: auto;                    /* fallback if icons don't fit */
   }
 
   /* Each icon: equal flex so they distribute evenly */
   .desk-icon {
-    flex: 1 1 0 !important;   /* equal share of available width */
-    min-width: 0 !important;  /* allow shrinking below 50px */
+    flex: 1 1 0 !important;  
+    min-width: 0 !important; 
     max-width: 64px !important;
     padding: 5px 2px 4px !important;
-    /* Center the icon+label stack */
+
     align-items: center;
     justify-content: center;
   }
 
-  /* Wrap icon image in its wrap div — already centered by flex */
+
   .desk-icon-wrap {
     width: 28px;
     height: 28px;
@@ -3445,18 +3416,15 @@ body { overflow-x: hidden; max-width: 100vw; }
     color: var(--accent);
   }
 
-  /* Logo row: tighter on the sides */
   .nav-left  { padding: 0.5rem 0.75rem !important; }
   .nav-right { padding: 0.5rem 0.75rem !important; }
 }
 
-/* ── 2. HOME IMAGE CARDS — constrain height on mobile ──
-   A 1:1 card at full single-column width would be 375px tall
-   on a 375px screen, so cap it and keep object-fit:cover.   */
+/* HOME IMAGE CARDS   */
 @media (max-width: 580px) {
   .home-image-card {
-    aspect-ratio: unset !important; /* override the 16/9 from previous fix */
-    height: 200px;                  /* fixed, controlled height */
+    aspect-ratio: unset !important; 
+    height: 200px;                 
     max-height: 200px;
   }
 
@@ -3464,14 +3432,11 @@ body { overflow-x: hidden; max-width: 100vw; }
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: center top; /* bias toward top — usually the face/subject */
+    object-position: center top; 
   }
 }
 
-/* ── 3. LOG PHOTO VIEWER — inset panel, not wall-to-wall ──
-   Supersedes the negative-margin bleed above with a contained
-   panel (own radius, margin, bg) that docks inside the log
-   rather than bleeding through its edges.                   */
+/* ──  LOG PHOTO VIEWER  */
 .log-photoviewer {
   margin-left: 0 !important;
   margin-right: 0 !important;
@@ -3481,10 +3446,10 @@ body { overflow-x: hidden; max-width: 100vw; }
   border-right: 1.5px solid var(--border) !important;
   border-top: 1.5px solid var(--border) !important;
   border-bottom: 1.5px solid var(--border) !important;
-  border-radius: var(--radius) !important;  /* match site card radius */
-  box-shadow: var(--shadow) !important;     /* same shadow as other cards */
-  overflow: hidden !important;              /* clip titlebar to radius */
-  background: var(--bg3) !important;        /* slightly different bg to pop */
+  border-radius: var(--radius) !important; 
+  box-shadow: var(--shadow) !important;    
+  overflow: hidden !important;             
+  background: var(--bg3) !important;        
 }
 
 /* Restore log container clipping */
