@@ -1711,9 +1711,11 @@ function onFirebaseReady() {
   const sysNow  = new Date();
   const sysTime = sysNow.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
   const sysDate = `${String(sysNow.getMonth()+1).padStart(2,'0')}.${String(sysNow.getDate()).padStart(2,'0')}.${String(sysNow.getFullYear()).slice(-2)}`;
-  permanentSystemMessages.forEach(msg => {
+ permanentSystemMessages.forEach(msg => {
     renderMessage(msg.id, { text: msg.text, name: genAnonName(), time: sysTime, date: sysDate, xPct: 2 + Math.random() * 70, yPct: 4 + Math.random() * 62, timestamp: Date.now() }, true);
+  });
 
+  // Load art
   // Load art
   db.ref('content/art').orderByChild('timestamp').once('value', snap => {
     artData = [];
