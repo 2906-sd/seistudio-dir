@@ -2028,8 +2028,8 @@ function readLog(i) {
 document.getElementById('log-content').innerHTML =
       `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ''}</p>`
     + `<h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>`
-    + viewerHtml
     + `<div class="log-body-text">${cleanBody}</div>`
+    + viewerHtml
     + renderTagsHTML(log.tags);
 
   document.querySelectorAll('.log-sticker').forEach(s => s.remove());
