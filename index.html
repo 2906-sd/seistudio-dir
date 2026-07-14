@@ -1918,9 +1918,9 @@ if (sortOrder === 'latest') displayLogs.reverse();
     const originalIndex = logsData.findIndex(item => item.id === log.id);
     const el = document.createElement('div'); el.className = 'blog-list-item'; el.onclick = () => readLog(originalIndex);
     el.innerHTML = `
-      <div class="log-titlebar">
-        <span class="log-titlebar-close"></span>
-        <span class="log-titlebar-label">${log.meta}</span>
+   <div class="log-titlebar">
+   <span class="log-titlebar-flower">✿</span>
+   <div class="log-titlebar-label">${log.meta}</span>
       </div>
       <div class="log-card-body">
         <h2 class="log-card-title">${log.title}</h2>
@@ -2567,7 +2567,7 @@ function renderTrashPage() {
   el.innerHTML = sortedDates.map(date => {
     const items = groups[date];
     return `<div class="trash-date-group"><div class="trash-date-header">[ ${date} ]</div><div class="trash-items-grid">${items.map(item => {
-      const typeLabel = { stupid: '💭 STUPID THOUGHT', doodle: '🖊️ DOODLE', pic: '🖼️ PIC', uhhhhh: '🌀 UHHHHH', thought: '💭 STUPID THOUGHT', note: '🌀 UHHHHH' };
+      cconst labelMap = { stupid:'thoughts', doodle:'doodles', pic:'doodles', uhhhhh:'uhhhhh', thought:'thoughts', note:'uhhhhh' };
       const label  = typeLabel[item.type] || 'SCRAP';
       const delBtn = isAdminSession() ? `<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>` : '';
       if (item.type === 'doodle' || item.type === 'pic') {
@@ -2617,6 +2617,7 @@ function renderBadgesStrips() {
   return `<div class="badge-cell">${inner}${delBtn}</div>`;
 }).join('');
 el.innerHTML = cells + cells; /* duplicate for seamless marquee loop */
+      });
   const bAdmin = document.getElementById('badgesAdminBtn');
   if (bAdmin) bAdmin.style.display = isAdminSession() ? 'inline-block' : 'none';
 }
