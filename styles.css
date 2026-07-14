@@ -101,6 +101,22 @@ a:hover {
   #petal-field { display: none; }
 }
 
+.petal-toggle-btn {
+  font-family: var(--font-mono);
+  font-size: 9px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  padding: 3px 8px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.petal-toggle-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+}
+
 /* ── BASE RESET ── */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; cursor: default; }
 
@@ -1525,6 +1541,22 @@ body.admin-mode .letter-envelope .admin-log-actions { display: flex; }
     flex-direction: row;
     gap: 0.75rem;
   }
+}
+
+/* System / pre-made bulletin messages — distinct style */
+.comment-popup--system {
+  border-color: var(--accent);
+  border-style: dashed;
+  opacity: 0.75;
+}
+.comment-popup--system .comment-header {
+  background: var(--bg3);
+  color: var(--text-muted);
+  border-bottom-color: var(--accent);
+}
+.comment-popup--system .comment-body {
+  font-style: italic;
+  color: var(--text-sub);
 }
 
 /* ── BULLETIN SIDEBAR — compact visitor count + image slot ── */
