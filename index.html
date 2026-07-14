@@ -1652,14 +1652,17 @@ function normalizeImageUrl(url) {
   const hero    = document.querySelector('.hero-card');
   const marquee = document.querySelector('.marquee-card');
   if (!hero || !marquee) return;
+
+  /* Wrap only the hero card */
   const wrapper = document.createElement('div');
   wrapper.className = 'home-hero-block';
   hero.parentNode.insertBefore(wrapper, hero);
   wrapper.appendChild(hero);
-  wrapper.appendChild(marquee);
 
-  // Home is already .active in raw HTML on first load, so _activateSection
-  // never runs for it until the user navigates away and back.
+  /* Place marquee-card right after the hero-block in the grid,
+     so it sits in the center column below the hero */
+  wrapper.parentNode.insertBefore(marquee, wrapper.nextSibling);
+
   if (document.getElementById('home')?.classList.contains('active')) {
     relocateNavLinks(true);
   }
