@@ -49,7 +49,7 @@
          target="_blank" rel="noopener"
          id="desk-link-neocities"
          title="Mirror on Neocities">
-        <div class="desk-icon-wrap"><img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Pet-Animals-Cat--Streamline-Pixel_nixwg4.png" class="desk-icon-img" alt="NEOCITIES" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,&lt;svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22 shape-rendering=%22crispEdges%22 fill=%22%23100C08%22&gt;&lt;path d=%22M1 2h14v2H1zM1 4h2v10H1zM13 4h2v10h-2zM3 5h10v1H3zM3 14h10v1H3zM4 7h2v2H4zM7 7h2v2H7zM10 7h2v2h-2zM4 10h2v2H4zM7 10h2v2H7zM10 10h2v2h-2z%22/&gt;&lt;/svg&gt;'" /></div>
+        <div class="desk-icon-wrap"><img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Pet-Animals-Cat--Streamline-Pixel_nixwg4.png" class="desk-icon-img" alt="NEOCITIES" onerror="this.onerror=null;this.src='data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 16 16%22 shape-rendering=%22crispEdges%22 fill=%22%23100C08%22><path d=%22M1 2h14v2H1zM1 4h2v10H1zM13 4h2v10h-2zM3 5h10v1H3zM3 14h10v1H3zM4 7h2v2H4zM7 7h2v2H7zM10 7h2v2h-2zM4 10h2v2H4zM7 10h2v2H7zM10 10h2v2h-2z%22/></svg>'" /></div>
         <span class="desk-icon-label">NEOCITIES</span>
       </a>
       <div class="desk-icon" onclick="showPage('art')" id="desk-link-art">
@@ -75,7 +75,7 @@
     </div>
   </div>
   <div class="nav-right">
-    <button class="petal-toggle-btn" id="petalToggleBtn" onclick="togglePetals()" title="Toggle falling petals">PETALS</button>
+    <button class="petal-toggle-btn" id="petalToggleBtn" onclick="togglePetals()" title="Toggle falling petals" aria-pressed="true">✿ PETALS: ON</button>
     <button class="menu-trigger" id="menuTrigger" onclick="toggleMenu()" aria-label="Toggle navigation">☰</button>
     <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">◐ MODE</button>
     <span class="nav-admin-trigger" onclick="showAdminLogin()" title="Admin access">✿</span>
@@ -104,18 +104,36 @@
           <img src="https://media.tenor.com/gaWi_LdRGPUAAAAd/rakko-chiikawa.gif" alt="rakkolockin" />
         </div>
 
-        <!-- HERO (image swaps between light + dark) -->
-        <div class="home-card hero-card">
-          <span class="site-title">// SEI ✿UT LOUD. //</span>
-          <img class="hero-image hero-image-light"
-               src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png"
-               alt="A halftone bunny illustration"
-               loading="eager" decoding="async" />
-          <img class="hero-image hero-image-dark"
-               src="https://res.cloudinary.com/djohhxipz/image/upload/v1781819377/darkmodecat-photoaidcom-invert_bpcmkq.png"
-               alt=""
-               aria-hidden="true"
-               loading="eager" decoding="async" />
+        <!-- HERO + MARQUEE + BADGES (stacked center column) -->
+        <div class="home-hero-block">
+
+          <!-- HERO (image swaps between light + dark) -->
+          <div class="home-card hero-card">
+            <span class="site-title">// SEI ✿UT LOUD. //</span>
+            <img class="hero-image hero-image-light"
+                 src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png"
+                 alt="A halftone bunny illustration"
+                 loading="eager" decoding="async" />
+            <img class="hero-image hero-image-dark"
+                 src="https://res.cloudinary.com/djohhxipz/image/upload/v1781819377/darkmodecat-photoaidcom-invert_bpcmkq.png"
+                 alt=""
+                 aria-hidden="true"
+                 loading="eager" decoding="async" />
+            <div class="marquee-container">
+              <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+            </div>
+          </div>
+
+          <!-- BADGES (internet stamps, marquee animation) -->
+          <div class="home-card badges-card">
+            <div class="home-card-body badges-card-body">
+              <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
+              <div class="badges-strip" id="badgesStripHome">
+                <span class="home-updates-empty widget-hint">// no badges yet</span>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- UPDATES -->
@@ -170,27 +188,12 @@
           </div>
         </div>
 
-    <!-- MARQUEE + BADGES -->
-<div class="home-card marquee-card">
-  <div class="home-card-body">
-    <div class="marquee-container">
-      <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
-    </div>
-    <div class="badges-marquee-wrap">
-      <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
-      <div class="badges-marquee" id="badgesStripHome">
-        <span class="home-updates-empty widget-hint">// no badges yet</span>
-      </div>
-    </div>
-  </div>
-</div>
-
       </div>
 
       <!-- HOME BOTTOM ROW — info (left) + recycling bin (right) -->
       <div class="home-bottom-row">
         <div id="infoBtn" class="info-btn" onclick="showPage('info')" title="ⓘ site info / resources">
-          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Interface-Essential-Question-Help-Circle-1--Streamline-Pixel_oityrk.png" onerror="this.onerror=null;this.outerHTML='<span class=&quot;info-btn-emoji&quot;>ⓘ</span>'" alt="ⓘ" />
+          <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781625979/Interface-Essential-Question-Help-Circle-1--Streamline-Pixel_oityrk.png" onerror="this.onerror=null;this.outerHTML='<span class="info-btn-emoji">ⓘ</span>'" alt="ⓘ" />
           <span>Info / Resources</span>
         </div>
         <div id="recyclingBinBtn" class="recycling-bin-btn" onclick="showPage('trash')" title="🗑 secret trash">
@@ -385,21 +388,17 @@
         <div class="about-widgets-panel">
 
           <!-- WHAT'S IN MY BAG -->
-          <div class="about-widget aw-bag">
-            <div class="about-widget-header">
-              <span>WHAT'S IN MY BAG //</span>
-              <button class="admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('bag'),100);" style="display:none">+ ADD ITEM</button>
-            </div>
-            <div class="about-widget-body" id="widget-bag" style="display:block">
-              <div class="bag-grid" id="bagGrid">
-                <span class="widget-hint">// loading...</span>
-              </div>
-            </div>
+          <div class="about-widget aw-bag bag-widget-bare">
+            <button class="admin-edit-btn bag-admin-edit-btn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('bag'),100);" style="display:none">+ ADD ITEM</button>
+            <button class="bag-cover-btn" onclick="openBagModal()" title="What's in my bag? Click to see.">
+              <img class="bag-cover-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png" alt="My bag" />
+              <span class="bag-cover-hint">✿ WHAT'S IN MY BAG? TAP TO SEE</span>
+            </button>
           </div>
 
           <!-- GAMES & MOVIES -->
           <div class="about-widget aw-games">
-            <div class="about-widget-header"><span>GAMES & Movies//</span></div>
+            <div class="about-widget-header"><span>GAMES //</span></div>
             <div class="about-widget-body interests-body" id="widget-games">
               <div class="interests-section">
                 <div class="interests-sublabel">NINTENDO DS</div>
@@ -457,19 +456,23 @@
                 <div class="interests-item">◈ Minecraft</div>
                 <div class="interests-item">◈ Monster Hunter Wilds</div>
               </div>
-              <div class="interests-section">
-                <div class="interests-sublabel">MOVIES</div>
-                <div class="interests-item">✿ Spirited Away</div>
-                <div class="interests-item">✿ Princess Mononoke</div>
-                <div class="interests-item">✿ Howl's Moving Castle</div>
-                <div class="interests-item">✿ Pretty much all the Spider-Man movies</div>
-                <div class="interests-item">✿ Avatar (James Cameron, all 3 movies)</div>
-                <div class="interests-item">✿ Most movies that have Oscar Isaac in it lol</div>
-                <div class="interests-item">✿ Lord of the Rings</div>
-                <div class="interests-item">✿ Pacific Rim</div>
-                <div class="interests-item">✿ Me Before You</div>
-                <div class="interests-item">✿ Mononoke The Movie</div>
-              </div>
+            </div>
+          </div>
+
+          <!-- MOVIES -->
+          <div class="about-widget aw-movies">
+            <div class="about-widget-header"><span>MOVIES //</span></div>
+            <div class="about-widget-body interests-body" id="widget-movies">
+              <div class="interests-item">✿ Spirited Away</div>
+              <div class="interests-item">✿ Princess Mononoke</div>
+              <div class="interests-item">✿ Howl's Moving Castle</div>
+              <div class="interests-item">✿ Pretty much all the Spider-Man movies</div>
+              <div class="interests-item">✿ Avatar (James Cameron, all 3 movies)</div>
+              <div class="interests-item">✿ Most movies that have Oscar Isaac in it lol</div>
+              <div class="interests-item">✿ Lord of the Rings</div>
+              <div class="interests-item">✿ Pacific Rim</div>
+              <div class="interests-item">✿ Me Before You</div>
+              <div class="interests-item">✿ Mononoke The Movie</div>
             </div>
           </div>
 
@@ -600,74 +603,74 @@
             <div class="about-widget-body quiz-scroll-body" id="widget-quizzes">
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/fairy_lbi9en.png" alt="creature result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://pennylovespandas.neocities.org/quiz/creature" target="_blank" rel="noopener">What Creature Are You?</a>
                   <span class="quiz-result-host">// pennylovespandas.neocities.org/</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/fairy_lbi9en.png" alt="creature result" /></div>
                 <div class="quiz-result-caption">You are a sweet little fairy!</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/rock_gherjv.png" alt="rock result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://swiftyshq.neocities.org/fun/quiz/rock" target="_blank" rel="noopener">What Rock Are You?</a>
                   <span class="quiz-result-host">// https://swiftyshq.neocities.org</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/rock_gherjv.png" alt="rock result" /></div>
                 <div class="quiz-result-caption">you dont take ANY shit. this boulder will hold your door closed when an angry mob comes after you</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/cryptid_xr6wcn.png" alt="cryptid result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://swiftyshq.neocities.org/fun/quiz/creature" target="_blank" rel="noopener">What Cryptid Are You?</a>
                   <span class="quiz-result-host">// https://swiftyshq.neocities.org</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/cryptid_xr6wcn.png" alt="cryptid result" /></div>
                 <div class="quiz-result-caption">youre the friendly neighborhood cryptid. people have a hard time understanding you and your poetry</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/haunted-house_zxkqcy.jpg" alt="haunted house result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://hallowdaze.neocities.org" target="_blank" rel="noopener">Would you survive a haunted house?</a>
                   <span class="quiz-result-host">// https://hallowdaze.neocities.org</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/haunted-house_zxkqcy.jpg" alt="haunted house result" /></div>
                 <div class="quiz-result-caption">Nope!</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://i.imgur.com/YOPG9hQ.png" alt="isopod result" loading="lazy" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.style.display='none';" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://casiopea.neocities.org" target="_blank" rel="noopener">What Isopod Are You?</a>
                   <span class="quiz-result-host">// https://casiopea.neocities.org/isopod/isopodquiz.html</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://i.imgur.com/YOPG9hQ.png" alt="isopod result" loading="lazy" crossorigin="anonymous" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.style.display='none';" /></div>
                 <div class="quiz-result-caption">YEAH!</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679417/fruitful_wuf1qb.jpg" alt="fruit result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://niyuart.github.io/FruitfulPersonas/index.html" target="_blank" rel="noopener">Fruitful Personas</a>
                   <span class="quiz-result-host">// https://niyuart.github.io/FruitfulPersonas/index.html</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="/https://res.cloudinary.com/djohhxipz/image/upload/v1782679417/fruitful_wuf1qb.jpg" alt="fruit result" /></div>
                 <div class="quiz-result-caption">You are an apple!</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/cosmos-gravity_tc7hz4.png" alt="cosmos result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://iseej.github.io/CosmosPersona/index.html" target="_blank" rel="noopener">Cosmos Personas</a>
                   <span class="quiz-result-host">// https://iseej.github.io/CosmosPersona/index.html</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/cosmos-gravity_tc7hz4.png" alt="cosmos result" /></div>
                 <div class="quiz-result-caption">You are gravity!</div>
               </div>
 
               <div class="quiz-result-card">
+                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/color-peach_fmcups.png" alt="color result" /></div>
                 <div class="quiz-result-meta">
                   <a class="quiz-result-title" href="https://poomang.com/en/t/mycolor_test/result/152341536?c=26&from_detail=True&kc=15" target="_blank" rel="noopener">Find Your Color</a>
                   <span class="quiz-result-host">// https://poomang.com/</span>
                 </div>
-                <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1782679415/color-peach_fmcups.png" alt="color result" /></div>
                 <div class="quiz-result-caption">You are Peach Fuzz!</div>
               </div>
 
@@ -677,11 +680,11 @@
                 2. Copy paste this block:
 
                 <div class="quiz-result-card">
+                  <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="/assets/quiz-results/YOUR_IMAGE.jpg" alt="result" /></div>
                   <div class="quiz-result-meta">
                     <a class="quiz-result-title" href="URL" target="_blank" rel="noopener">Quiz Title</a>
                     <span class="quiz-result-host">// hostname</span>
                   </div>
-                  <div class="quiz-result-img-wrap"><img class="quiz-result-img" src="/assets/quiz-results/YOUR_IMAGE.jpg" alt="result" /></div>
                   <div class="quiz-result-caption">Caption text</div>
                 </div>
               -->
@@ -715,96 +718,133 @@
 
     <!-- ══════════════════ INFO / RESOURCES ══════════════════ -->
     <section id="info">
-      <div class="section-header">
-        <h1>INFO + RESOURCE<span>S</span></h1>
-        <p>// the anatomy of this place and resources that might help you build your digital and visual identity :)</p>
-        <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
-      </div>
+      <div class="info-page-layout">
 
-      <div class="info-grid">
-
-        <!-- HOW IT WORKS -->
-        <div class="info-card info-card-wide">
-          <div class="info-card-header">
-            <span>HOW_IT_WORKS.MD</span>
-          </div>
-          <div class="info-card-body" style="text-transform: none; line-height: 1.6;">
-            <p><strong>How does this site function?</strong></p>
-            <p style="color: var(--text-sub);">
-              The main version of this site runs on <strong>Vercel</strong> and features a built-in administrative panel.
-              This panel allows me to instantly publish and manage content without manually editing any HTML or CSS files. (I haaaaate scrolling through lines of code, lol.)
-            </p>
-            <p style="color: var(--text-sub);">
-              All underlying text and content data (all my art, logs, letters, shrines, and even the bulletin board messages) are kept secure via <strong>Firebase</strong>,
-              while the codebase is managed through <strong>GitHub</strong>. Whenever I push an update or add a post on the Vercel side,
-              an automated GitHub YML workflow triggers to compile those changes and push a static mirror over to <strong>Neocities!</strong>.
-            </p>
-            <p style="color: var(--text-sub); font-style: italic; border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.75rem 0;">
-              <strong>Note on Neocities Login:</strong> If you are viewing this on Neocities and tried logging into the admin portal, it will not work. :p
-              Because Neocities only hosts a static copy of the site, the secure serverless authentication routines only execute on the primary Vercel deployment.
-            </p>
-            <p style="margin-top: 0.75rem; margin-bottom: 0.25rem;"><strong>Resources:</strong></p>
-            <ul style="color: var(--text-sub); padding-left: 1.5rem; margin: 0;">
-              <li>Icons: <a href="https://www.streamlinehq.com/icons/pixel" target="_blank">Streamline Pixel</a></li>
-              <li>Hosting & Optimization: <a href="https://cloudinary.com" target="_blank">Cloudinary</a> (used for icon and image hosting)</li>
-              <li>Fonts: <a href="https://fonts.google.com/specimen/Comfortaa" target="_blank">Comfortaa</a>, <a href="https://fonts.google.com/specimen/Newsreader" target="_blank">Newsreader</a>, and <a href="https://fonts.google.com/specimen/Space+Mono" target="_blank">Space Mono</a></li>
-            </ul>
-          </div>
+        <!-- decorative side stickers — swap the src / rotate values for your own art any time -->
+        <div class="info-side-rail info-side-rail-left">
+          <img class="info-sticker" src="https://media.tenor.com/gaWi_LdRGPUAAAAd/rakko-chiikawa.gif" style="width:110px; align-self:flex-start; margin-left:6%; transform:rotate(-10deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-light" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png" style="width:96px; align-self:flex-end; margin-right:10%; transform:rotate(7deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-dark" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781819377/darkmodecat-photoaidcom-invert_bpcmkq.png" style="width:96px; align-self:flex-end; margin-right:10%; transform:rotate(7deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker" src="https://media.tenor.com/GEOfTuJR1w8AAAAC/atsumu-atsufox.gif" style="width:104px; align-self:flex-start; margin-left:14%; transform:rotate(-6deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker" src="https://media.tenor.com/gaWi_LdRGPUAAAAd/rakko-chiikawa.gif" style="width:88px; align-self:flex-end; margin-right:4%; transform:rotate(11deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-light" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png" style="width:100px; align-self:flex-start; margin-left:8%; transform:rotate(-4deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-dark" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781819377/darkmodecat-photoaidcom-invert_bpcmkq.png" style="width:100px; align-self:flex-start; margin-left:8%; transform:rotate(-4deg);" alt="" aria-hidden="true" />
         </div>
 
-        <!-- CODE RESOURCES -->
-        <div class="info-card">
-          <div class="info-card-header">
-            <span>CODE_RESOURCES.MD</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('code')" style="display:none">+ ADD</button>
+        <div class="info-main-column">
+
+          <div class="section-header">
+            <h1>INFO<span>.</span></h1>
+            <p>// the anatomy of this place — how it's built, and what's running under the hood.</p>
+            <a href="javascript:void(0)" onclick="showPage('home')" class="back-to-logs-btn" style="display:inline-block;margin-top:1rem;">← BACK</a>
           </div>
-          <div class="info-card-body" id="info-code">
-            <p class="info-empty">// loading...</p>
+
+          <div class="info-grid">
+
+            <!-- HOW IT WORKS -->
+            <div class="info-card info-card-wide">
+              <div class="info-card-header">
+                <span>HOW_IT_WORKS.MD</span>
+              </div>
+              <div class="info-card-body info-howitworks-body" style="text-transform: none;">
+                <img class="info-howitworks-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png" alt="A halftone bunny illustration" />
+                <div class="info-howitworks-text" style="line-height: 1.6;">
+                  <p><strong>How does this site actually work?</strong></p>
+                  <p style="color: var(--text-sub);">
+                    The main version of this site runs on <strong>Vercel</strong> and has a hidden admin panel built right in.
+                    That means I can publish and edit content — art, logs, letters, whatever — instantly, without touching a single line of HTML or CSS. (I haaaaate scrolling through lines of code, lol.)
+                  </p>
+                  <p style="color: var(--text-sub);">
+                    All the actual content — art, logs, letters, shrines, even the bulletin board messages — lives in a database called <strong>Firebase</strong>, which keeps it stored and synced safely.
+                    The site's code itself is version-controlled on <strong>GitHub</strong>. Whenever I publish something new, an automated workflow kicks in and mirrors the update over to <strong>Neocities</strong> as a static copy, so both versions stay in sync without any manual work on my end.
+                  </p>
+                  <p style="color: var(--text-sub); font-style: italic; border-left: 3px solid var(--accent); padding-left: 0.75rem; margin: 0.75rem 0;">
+                    <strong>Heads up:</strong> if you're viewing this on Neocities and try to log into the admin panel, it won't work there. :p
+                    Neocities only hosts a static snapshot of the site, so the login and publishing tools only run on the primary Vercel deployment.
+                  </p>
+                  <p style="margin-top: 0.75rem; margin-bottom: 0.25rem;"><strong>Built with:</strong></p>
+                  <ul style="color: var(--text-sub); padding-left: 1.5rem; margin: 0;">
+                    <li>Icons: <a href="https://www.streamlinehq.com/icons/pixel" target="_blank">Streamline Pixel</a></li>
+                    <li>Image hosting: <a href="https://cloudinary.com" target="_blank">Cloudinary</a></li>
+                    <li>Fonts: <a href="https://fonts.google.com/specimen/Newsreader" target="_blank">Newsreader</a>, <a href="https://fonts.google.com/specimen/Karla" target="_blank">Karla</a>, and <a href="https://fonts.google.com/specimen/Space+Mono" target="_blank">Space Mono</a></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+
           </div>
+
+          <div class="section-header info-resources-header">
+            <h1>RESOURCE<span>S</span></h1>
+            <p>// tools, credits, and other corners of the internet worth a visit.</p>
+          </div>
+
+          <div class="info-grid">
+
+            <!-- CODE RESOURCES -->
+            <div class="info-card">
+              <div class="info-card-header">
+                <span>CODE_RESOURCES.MD</span>
+                <button class="admin-edit-btn" onclick="openAddInfoItem('code')" style="display:none">+ ADD</button>
+              </div>
+              <div class="info-card-body" id="info-code">
+                <p class="info-empty">// loading...</p>
+              </div>
+            </div>
+
+            <!-- OTHER RESOURCES -->
+            <div class="info-card">
+              <div class="info-card-header">
+                <span>OTHER_RESOURCES.LOG</span>
+                <button class="admin-edit-btn" onclick="openAddInfoItem('other')" style="display:none">+ ADD</button>
+              </div>
+              <div class="info-card-body" id="info-other">
+                <p class="info-empty">// loading...</p>
+              </div>
+            </div>
+
+            <!-- ART -->
+            <div class="info-card">
+              <div class="info-card-header">
+                <span>ART.MD</span>
+                <button class="admin-edit-btn" onclick="openAddInfoItem('art')" style="display:none">+ ADD</button>
+              </div>
+              <div class="info-card-body" id="info-art">
+                <p class="info-empty">// nothing here yet.</p>
+              </div>
+            </div>
+
+            <!-- DESIGN -->
+            <div class="info-card">
+              <div class="info-card-header">
+                <span>DESIGN.MD</span>
+                <button class="admin-edit-btn" onclick="openAddInfoItem('design')" style="display:none">+ ADD</button>
+              </div>
+              <div class="info-card-body" id="info-design">
+                <p class="info-empty">// nothing here yet.</p>
+              </div>
+            </div>
+
+            <!-- OTHER COOL THINGS -->
+            <div class="info-card info-card-wide">
+              <div class="info-card-header">
+                <span>OTHER_COOL_THINGS.TXT</span>
+                <button class="admin-edit-btn" onclick="openAddInfoItem('otherCool')" style="display:none">+ ADD</button>
+              </div>
+              <div class="info-card-body" id="info-otherCool">
+                <p class="info-empty">// nothing here yet.</p>
+              </div>
+            </div>
+
+          </div>
+
         </div>
 
-        <!-- OTHER RESOURCES -->
-        <div class="info-card">
-          <div class="info-card-header">
-            <span>OTHER_RESOURCES.LOG</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('other')" style="display:none">+ ADD</button>
-          </div>
-          <div class="info-card-body" id="info-other">
-            <p class="info-empty">// loading...</p>
-          </div>
-        </div>
-
-        <!-- ART -->
-        <div class="info-card">
-          <div class="info-card-header">
-            <span>ART.MD</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('art')" style="display:none">+ ADD</button>
-          </div>
-          <div class="info-card-body" id="info-art">
-            <p class="info-empty">// nothing here yet.</p>
-          </div>
-        </div>
-
-        <!-- DESIGN -->
-        <div class="info-card">
-          <div class="info-card-header">
-            <span>DESIGN.MD</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('design')" style="display:none">+ ADD</button>
-          </div>
-          <div class="info-card-body" id="info-design">
-            <p class="info-empty">// nothing here yet.</p>
-          </div>
-        </div>
-
-        <!-- OTHER COOL THINGS -->
-        <div class="info-card info-card-wide">
-          <div class="info-card-header">
-            <span>OTHER_COOL_THINGS.TXT</span>
-            <button class="admin-edit-btn" onclick="openAddInfoItem('otherCool')" style="display:none">+ ADD</button>
-          </div>
-          <div class="info-card-body" id="info-otherCool">
-            <p class="info-empty">// nothing here yet.</p>
-          </div>
+        <div class="info-side-rail info-side-rail-right">
+          <img class="info-sticker" src="https://media.tenor.com/GEOfTuJR1w8AAAAC/atsumu-atsufox.gif" style="width:84px; align-self:flex-end; margin-right:6%; transform:rotate(8deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-light" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781633948/color-changed-image_odb3wd.png" style="width:78px; align-self:flex-start; margin-left:10%; transform:rotate(-7deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker info-sticker-dark" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781819377/darkmodecat-photoaidcom-invert_bpcmkq.png" style="width:78px; align-self:flex-start; margin-left:10%; transform:rotate(-7deg);" alt="" aria-hidden="true" />
+          <img class="info-sticker" src="https://media.tenor.com/gaWi_LdRGPUAAAAd/rakko-chiikawa.gif" style="width:90px; align-self:flex-end; margin-right:10%; transform:rotate(5deg);" alt="" aria-hidden="true" />
         </div>
 
       </div>
@@ -837,9 +877,9 @@
     <div class="lb-body">
       <div class="lb-image-side">
         <div class="lb-image-wrap" id="lbImageWrap">
-          <button class="lb-nav-btn" id="lb-prev" onclick="event.stopPropagation(); lbNav(-1)">&#8592;</button>
+          <button class="lb-nav-btn" id="lb-prev" onclick="event.stopPropagation(); lbNav(-1)">←</button>
           <img id="lb-image" src="" alt="" draggable="false" />
-          <button class="lb-nav-btn" id="lb-next" onclick="event.stopPropagation(); lbNav(1)">&#8594;</button>
+          <button class="lb-nav-btn" id="lb-next" onclick="event.stopPropagation(); lbNav(1)">→</button>
         </div>
         <div class="lb-image-counter" id="lb-counter"></div>
       </div>
@@ -905,7 +945,8 @@
           <option value="other">Other</option>
         </select>
         <label class="admin-label">Image URLs — one per line (first = thumbnail)</label>
-        <textarea id="artImages" class="admin-input" placeholder="https://&#10;https://"></textarea>
+        <textarea id="artImages" class="admin-input" placeholder="https://
+https://"></textarea>
         <label class="admin-label">Artist Note</label>
         <textarea id="artDesc" class="admin-input" placeholder="Say something about the piece..."></textarea>
         <label class="admin-label">Date / Meta tag</label>
@@ -943,7 +984,7 @@
           <option value="pic">🖼️ Pic (image URL)</option>
           <option value="uhhhhh">🌀 Uhhhhh</option>
         </select>
-        <label class="admin-label">Content &mdash; text, or image URL if doodle / pic</label>
+        <label class="admin-label">Content — text, or image URL if doodle / pic</label>
         <textarea id="trashItemContent" class="admin-input" placeholder="one-liner thought, or https://image-url.png"></textarea>
         <label class="admin-label">Date (auto-fills today, adjust if needed)</label>
         <input type="text" id="trashDate" class="admin-input" placeholder="06.14.26" />
@@ -977,7 +1018,11 @@
         <label class="admin-label">Subject / Title (Re:)</label>
         <input type="text" id="letterSubject" class="admin-input" placeholder="we made it" />
         <label class="admin-label">Body — HTML is fine</label>
-        <textarea id="letterBody" class="admin-input admin-body-field" style="min-height:240px" placeholder="Dear ...&#10;&#10;...&#10;&#10;— Sage"></textarea>
+        <textarea id="letterBody" class="admin-input admin-body-field" style="min-height:240px" placeholder="Dear ...
+
+...
+
+— Sage"></textarea>
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddLetter()">SEAL LETTER →</button>
         <p id="letterSuccess" class="admin-success">// SEALED.</p>
       </div>
@@ -1167,6 +1212,21 @@
   </div>
 </div>
 
+<!-- BAG CONTENTS MODAL -->
+<div id="bagModal" class="modal-overlay" onclick="closeBagModal()">
+  <div class="admin-box bag-modal-box" onclick="event.stopPropagation()">
+    <div class="admin-toolbar">
+      <span>MY_BAG.EXE // WHAT'S INSIDE</span>
+      <button onclick="closeBagModal()">× CLOSE</button>
+    </div>
+    <div class="admin-body">
+      <div class="bag-grid" id="bagGrid">
+        <span class="widget-hint">// loading...</span>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- FIREBASE SDK -->
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -1343,21 +1403,35 @@ function newQuote() {
     if (petalInterval) {
       stopPetals();
       localStorage.setItem('sei_petals_off', '1');
-      if (btn) btn.textContent = '✿ PETALS';
+      setButtonState(false);
     } else {
       startPetals();
       localStorage.removeItem('sei_petals_off');
-      if (btn) btn.textContent = '✿✿ PETALS';
+      setButtonState(true);
     }
   };
 
+  /* Keeps the button's label, pressed-state, and styling in sync */
+  function setButtonState(on) {
+    const btn = document.getElementById('petalToggleBtn');
+    if (!btn) return;
+    btn.textContent = on ? '✿ PETALS: ON' : '✿ PETALS: OFF';
+    btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+    btn.classList.toggle('is-active', on);
+  }
+
   /* Init — respect saved preference and prefers-reduced-motion */
   function initPetals() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      setButtonState(false);
+      return;
+    }
     if (localStorage.getItem('sei_petals_off')) {
       /* Start in off state */
+      setButtonState(false);
     } else {
       startPetals();
+      setButtonState(true);
     }
   }
 
@@ -1444,7 +1518,7 @@ function openUpdateItem(section, id) {
 /* Shared HTML-escape utility used throughout. */
 function escHtml(str) {
   if (!str) return '';
-  return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  return String(str).replace(/&/g,'&').replace(/</g,'<').replace(/>/g,'>').replace(/"/g,'"');
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1642,31 +1716,6 @@ function normalizeImageUrl(url) {
   if (!u.startsWith('http')) return encodePath(u);
   return u;
 }
-
-/* ═══════════════════════════════════════════════════════
-   HOME HERO + MARQUEE BLOCK
-   Wraps the hero card and marquee into a shared container
-   so they stack correctly in the bento grid.
-═══════════════════════════════════════════════════════ */
-(function () {
-  const hero    = document.querySelector('.hero-card');
-  const marquee = document.querySelector('.marquee-card');
-  if (!hero || !marquee) return;
-
-  /* Wrap only the hero card */
-  const wrapper = document.createElement('div');
-  wrapper.className = 'home-hero-block';
-  hero.parentNode.insertBefore(wrapper, hero);
-  wrapper.appendChild(hero);
-
-  /* Place marquee-card right after the hero-block in the grid,
-     so it sits in the center column below the hero */
-  wrapper.parentNode.insertBefore(marquee, wrapper.nextSibling);
-
-  if (document.getElementById('home')?.classList.contains('active')) {
-    relocateNavLinks(true);
-  }
-})();
 
 /* ═══════════════════════════════════════════════════════
    FIREBASE INIT
@@ -1999,9 +2048,9 @@ function buildPhotoViewer(urls, logTitle) {
   return `
     <div class="log-carousel">
       <div class="log-carousel-inner" onclick="logPvOpen()">
-        ${multi ? `<button class="log-carousel-arrow left" onclick="event.stopPropagation();logPvNav(-1)">&#8592;</button>` : ''}
+        ${multi ? `<button class="log-carousel-arrow left" onclick="event.stopPropagation();logPvNav(-1)">←</button>` : ''}
         <img id="log-pv-img" src="${firstUrl}" alt="Photo 1 of ${total}" draggable="false" />
-        ${multi ? `<button class="log-carousel-arrow right" onclick="event.stopPropagation();logPvNav(1)">&#8594;</button>` : ''}
+        ${multi ? `<button class="log-carousel-arrow right" onclick="event.stopPropagation();logPvNav(1)">→</button>` : ''}
       </div>
       ${multi ? `<div class="log-carousel-counter"><span id="log-pv-counter">1 / ${total}</span></div>` : ''}
     </div>`;
@@ -2172,8 +2221,8 @@ function openLightbox(i) {
   document.getElementById('lightbox').classList.add('show');
 }
 
-/* Simplified single-image lightbox for shrines and trash.
-   Shows only the image and caption — no info panel. */
+/* Simplified the single-image lightbox for shrines and trash.
+   should only show the image and caption — no info panel. */
 function openImageLightbox(encodedUrl, title, caption) {
   const url = decodeURIComponent(encodedUrl);
   lbPiece   = { title: title || 'IMAGE', caption: caption || '', images: [url], simple: true };
@@ -2252,7 +2301,7 @@ function makeDraggable(el, handle, parent) {
 /* ═══════════════════════════════════════════════════════
    VISITOR COUNTRY DETECTION
    Calls a Vercel serverless function. Fails silently on
-   Neocities / local environments.
+   Neocities / local environments!
 ═══════════════════════════════════════════════════════ */
 let visitorCountry = null;
 
@@ -2619,7 +2668,7 @@ function renderBadgesStrips() {
   const inner  = b.link ? `<a href="${escHtml(b.link)}" target="_blank" rel="noopener" class="badge-link">${img}</a>` : img;
   return `<div class="badge-cell">${inner}${delBtn}</div>`;
 }).join('');
-el.innerHTML = cells + cells; /* duplicate for seamless marquee loop */
+el.innerHTML = cells + cells;
       });
   const bAdmin = document.getElementById('badgesAdminBtn');
   if (bAdmin) bAdmin.style.display = isAdminSession() ? 'inline-block' : 'none';
@@ -2738,7 +2787,7 @@ function adminDeleteInfo(id) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   BAG (What's in My Bag — About widget)
+   What's in My Bag widget
 ═══════════════════════════════════════════════════════ */
 function renderBag() {
   const el = document.getElementById('bagGrid'); if (!el) return;
@@ -2751,6 +2800,14 @@ function renderBag() {
     const delBtn = isAdminSession() ? `<button class="admin-delete-btn" onclick="adminDeleteBag('${item.id}')">×</button>` : '';
     return `<div class="bag-item">${visual}<div class="bag-item-label">${escHtml(item.label || '')}</div>${note}${delBtn}</div>`;
   }).join('');
+}
+
+/* Bag contents live inside a modal, clicking the bag photo opens it */
+function openBagModal() {
+  document.getElementById('bagModal').style.display = 'flex';
+}
+function closeBagModal() {
+  document.getElementById('bagModal').style.display = 'none';
 }
 
 function adminAddBag() {
@@ -2773,65 +2830,6 @@ function adminDeleteBag(id) {
   else { bagData.splice(idx, 1); renderBag(); }
 }
 
-/* ═══════════════════════════════════════════════════════
-   STICKERS (About — Games / Hobbies / Music widgets)
-═══════════════════════════════════════════════════════ */
-const STICKER_CATS = ['games', 'hobbies', 'music'];
-
-function renderStickers() {
-  STICKER_CATS.forEach(cat => {
-    const items = (stickersData || []).filter(s => s.category === cat && s.image);
-    if (cat === 'games') {
-      const track = document.getElementById('widget-games-track');
-      if (!track) return;
-      if (!items.length) { track.innerHTML = '<span class="widget-hint">// stickers loading...</span>'; syncGamesHeightToHobbies(); return; }
-      const buildSticker = (s, withDelete) => {
-        const del = (withDelete && isAdminSession()) ? `<button class="admin-delete-btn sticker-del" onclick="event.stopPropagation();adminDeleteSticker('${s.id}')" title="Remove sticker">×</button>` : '';
-        return `<div class="sticker-wrap"><img class="about-sticker-img" src="${escHtml(s.image)}" alt="${escHtml(s.alt || cat)}" title="${escHtml(s.alt || '')}" loading="lazy" onerror="this.style.opacity=0.3" />${del}</div>`;
-      };
-      // Duplicate sequence so the loop animation has no visible seam.
-      track.innerHTML = items.map(s => buildSticker(s, true)).join('') + items.map(s => buildSticker(s, false)).join('');
-      syncGamesHeightToHobbies();
-      return;
-    }
-    const el = document.querySelector(`[data-sticker-cat="${cat}"]`); if (!el) return;
-    if (!items.length) { el.innerHTML = '<span class="widget-hint">// no stickers yet.</span>'; if (cat === 'hobbies') syncGamesHeightToHobbies(); return; }
-    el.innerHTML = items.map(s => {
-      const del = isAdminSession() ? `<button class="admin-delete-btn sticker-del" onclick="event.stopPropagation();adminDeleteSticker('${s.id}')" title="Remove sticker">×</button>` : '';
-      return `<div class="sticker-wrap"><img class="about-sticker-img" src="${escHtml(s.image)}" alt="${escHtml(s.alt || cat)}" title="${escHtml(s.alt || '')}" loading="lazy" onerror="this.style.opacity=0.3" />${del}</div>`;
-    }).join('');
-    if (cat === 'hobbies') syncGamesHeightToHobbies();
-  });
-}
-
-/* Matches the games widget height to the hobbies widget height. */
-function syncGamesHeightToHobbies() {
-  const hobbies = document.querySelector('.aw-hobbies .about-widget-body');
-  const games   = document.getElementById('widget-games');
-  if (!hobbies || !games) return;
-  games.style.height = hobbies.offsetHeight + 'px';
-}
-window.addEventListener('resize', syncGamesHeightToHobbies);
-
-function adminAddSticker() {
-  if (!isAdminSession()) return;
-  const category = (document.getElementById('stickerCategory').value || 'games').toLowerCase();
-  const image    = document.getElementById('stickerImage').value.trim();
-  const alt      = document.getElementById('stickerAlt').value.trim();
-  if (!image) return;
-  if (!STICKER_CATS.includes(category)) return;
-  const entry = { category, image, alt, timestamp: Date.now() };
-  adminWrite('push', 'content/stickers', entry).then(r => { entry.id = r.id; stickersData.push(entry); renderStickers(); const s = document.getElementById('stickerSuccess'); s.style.display = 'block'; setTimeout(() => s.style.display = 'none', 3000); }).catch(e => { console.error('Sticker push failed:', e); alert('// COULD NOT SAVE: ' + e.message); });
-  ['stickerImage','stickerAlt'].forEach(id => document.getElementById(id).value = '');
-}
-
-function adminDeleteSticker(id) {
-  if (!isAdminSession()) return;
-  if (!confirm('Remove this sticker?')) return;
-  const idx = stickersData.findIndex(s => s.id === id); if (idx < 0) return;
-  if (id && !String(id).startsWith('local_')) { adminWrite('remove', 'content/stickers', { id }).then(() => { stickersData.splice(idx, 1); renderStickers(); }).catch(e => { console.error('Sticker delete failed:', e); alert('// DELETE FAILED'); }); }
-  else { stickersData.splice(idx, 1); renderStickers(); }
-}
 
 /* ═══════════════════════════════════════════════════════
    LAST UPDATED (status card header)
@@ -2961,14 +2959,6 @@ function adminSaveEditLetter() {
 }
 
 /* ═══════════════════════════════════════════════════════
-   ABOUT — DRAGGABLE STICKERS
-═══════════════════════════════════════════════════════ */
-function initStickers() {
-  const s = document.getElementById('about');
-  document.querySelectorAll('.sticker').forEach(st => makeDraggable(st, st, s));
-}
-
-/* ═══════════════════════════════════════════════════════
    ROUTER
    Reads URL hash on load and popstate to deep-link
    directly into logs, shrines, letters, or sections.
@@ -2991,7 +2981,7 @@ window.addEventListener('hashchange', handleRouting);
    INIT
 ═══════════════════════════════════════════════════════ */
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') { closeLightbox(); closeAdminLogin(); closeAdminPanel(); closeEditLog(); closeEditShrine(); closeEditLetter(); }
+  if (e.key === 'Escape') { closeLightbox(); closeAdminLogin(); closeAdminPanel(); closeEditLog(); closeEditShrine(); closeEditLetter(); closeBagModal(); }
   if (lbPiece) { if (e.key === 'ArrowRight') lbNav(1); if (e.key === 'ArrowLeft') lbNav(-1); }
 });
 
@@ -3001,7 +2991,7 @@ document.addEventListener('DOMContentLoaded', () => {
   renderInfoPage(); renderBadgesStrips(); updateLastUpdatedDisplay();
   newQuote();
 
-  // Shrine caption tooltip — follows mouse on gallery items with data-caption.
+  // Shrine caption tooltip — follows mouse on gallery items with data-caption
   (function () {
     const tt = document.createElement('div'); tt.className = 'shrine-img-tooltip'; document.body.appendChild(tt);
     document.addEventListener('mouseover', e => { const item = e.target.closest('[data-caption]'); if (item) { tt.textContent = item.dataset.caption; tt.style.display = 'block'; } });
@@ -3022,8 +3012,6 @@ window.addEventListener('load', () => { initFirebase(); initStickers(); updateLi
 
 /* ═══════════════════════════════════════════════════════
    MIFFY CURSOR ANIMATOR
-   Loads sprite sheets and cycles frames via CSS variables
-   so all cursor states animate in sync.
 ═══════════════════════════════════════════════════════ */
 (function () {
   const CURSORS = {
