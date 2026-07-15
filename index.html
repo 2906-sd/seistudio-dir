@@ -170,25 +170,20 @@
           </div>
         </div>
 
-    <!-- MARQUEE TEXT -->
-    <div class="home-card marquee-card">
-      <div class="home-card-body">
-        <div class="marquee-container">
-          <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
-        </div>
+    <!-- MARQUEE + BADGES -->
+<div class="home-card marquee-card">
+  <div class="home-card-body">
+    <div class="marquee-container">
+      <div class="marquee-content">✿ SEI_OUT_LOUD_SYSTEM_LOG ✿ REMEMBERING HOW TO REST ✿ 2026 ARCHIVE ✿</div>
+    </div>
+    <div class="badges-marquee-wrap">
+      <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
+      <div class="badges-marquee" id="badgesStripHome">
+        <span class="home-updates-empty widget-hint">// no badges yet</span>
       </div>
     </div>
-
-    <!-- BADGES STRIP -->
-    <div class="home-card badges-card">
-      <div class="home-card-header">
-        <span> ✿ // </span>
-        <button class="admin-edit-btn" id="badgesAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);" style="display:none">+ ADD BADGE</button>
-      </div>
-      <div class="home-card-body badges-strip" id="badgesStripHome">
-        <p class="home-updates-empty">// no badges yet</p>
-      </div>
-    </div>
+  </div>
+</div>
 
       </div>
 
@@ -1649,19 +1644,24 @@ function normalizeImageUrl(url) {
 }
 
 /* ═══════════════════════════════════════════════════════
-   HOME HERO BLOCK
-   Wraps the hero card into a shared container
-   so it stacks correctly in the bento grid.
- ═══════════════════════════════════════════════════════ */
+   HOME HERO + MARQUEE BLOCK
+   Wraps the hero card and marquee into a shared container
+   so they stack correctly in the bento grid.
+═══════════════════════════════════════════════════════ */
 (function () {
-  const hero = document.querySelector('.hero-card');
-  if (!hero) return;
+  const hero    = document.querySelector('.hero-card');
+  const marquee = document.querySelector('.marquee-card');
+  if (!hero || !marquee) return;
 
   /* Wrap only the hero card */
   const wrapper = document.createElement('div');
   wrapper.className = 'home-hero-block';
   hero.parentNode.insertBefore(wrapper, hero);
   wrapper.appendChild(hero);
+
+  /* Place marquee-card right after the hero-block in the grid,
+     so it sits in the center column below the hero */
+  wrapper.parentNode.insertBefore(marquee, wrapper.nextSibling);
 
   if (document.getElementById('home')?.classList.contains('active')) {
     relocateNavLinks(true);
@@ -3057,6 +3057,5 @@ window.addEventListener('load', () => { initFirebase(); initStickers(); updateLi
 </script>
 
 <script defer src="https://static.cloudflareinsights.com/beacon.min.js/v833ccba57c9e4d2798f2e76cebdd09a11778172276447" integrity="sha512-57MDmcccJXYtNnH+ZiBwzC4jb2rvgVCEokYN+L/nLlmO8rfYT/gIpW2A569iJ/3b+0UEasghjuZH/ma3wIs/EQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
-<script defer src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
 </body>
 </html>
