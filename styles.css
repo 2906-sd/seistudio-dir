@@ -1,19 +1,4 @@
-/* ── CUSTOM LOADER ── */
-    .loader-overlay {
-      position: fixed; inset: 0;
-      background: rgba(244, 244, 244, 0.95);
-      backdrop-filter: blur(2px);
-      z-index: 9999; display: none;
-      flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
-    }
-    body.dark .loader-overlay { background: rgba(0, 0, 0, 0.95); }
-    .loader-overlay.show { display: flex; }
-    .loader-flower { font-size: 4.5rem; animation: spin 2s linear infinite; color: var(--accent); }
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .loader-message { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; min-width: 200px; text-align: center; }
-
-
-    /* ═══════════════════════════════════════════════════
+ /* ═══════════════════════════════════════════════════
    DESIGN TOKENS
 ═══════════════════════════════════════════════════ */
 :root {
@@ -1964,77 +1949,26 @@ textarea.board-message-input {
 }
 
 /* ── CONTENT ADVISORY ── */
+body.advisory-lock { overflow: hidden; }
 .advisory-overlay {
   z-index: 10000;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background-color: #ffffff !important; 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background: var(--bg);
+  backdrop-filter: none;
 }
 
-/* ── SPRINGY ALARM ICON ── */
+.advisory-box { width: 92vw; max-width: 440px; }
+.advisory-body { text-align: center; gap: 1.1rem; padding: 1.75rem 1.5rem; }
 .advisory-icon {
-  font-size: 2.4rem;
+  font-size: 2rem;
   color: var(--accent);
   display: inline-block;
   margin: 0 auto -0.1rem auto;
-  transform-origin: bottom center;
-  /* yummy cubic-bezier for animation */
-  animation: spring-alarm 2.5s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  animation: advisory-icon-bob 2.6s ease-in-out infinite;
 }
-
-/* The physics-based squash, stretch, and ring loop, adjust as needed at each stage */
-@keyframes spring-alarm {
-  0% {
-    transform: translateY(0) scale(1) rotate(0deg);
-  }
-  /* 1. squash down before jumping) */
-  10% {
-    transform: translateY(0) scaleY(0.85) scaleX(1.1) rotate(0deg);
-  }
-  /* 2. stretch upwards */
-  18% {
-    transform: translateY(-12px) scaleY(1.15) scaleX(0.85) rotate(-3deg);
-  }
-  /* 3. rings side to side */
-  24% {
-    transform: translateY(-15px) scale(1) rotate(6deg);
-  }
-  30% {
-    transform: translateY(-15px) scale(1) rotate(-6deg);
-  }
-  36% {
-    transform: translateY(-15px) scale(1) rotate(4deg);
-  }
-  42% {
-    transform: translateY(-15px) scale(1) rotate(0deg);
-  }
-  /* 4. squashes on landing */
-  48% {
-    transform: translateY(0) scaleY(0.9) scaleX(1.1) rotate(0deg);
-  }
-  /* 5. recover to normal */
-  54% {
-    transform: translateY(-2px) scaleY(1.03) scaleX(0.97) rotate(0deg);
-  }
-  60% {
-    transform: translateY(0) scale(1) rotate(0deg);
-  }
-  /* 60% to 100% should be clean, resting pause */
-  100% {
-    transform: translateY(0) scale(1) rotate(0deg);
-  }
+@keyframes advisory-icon-bob {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-6px) rotate(-4deg); }
 }
-
-body.advisory-lock { overflow: hidden; }
-.advisory-overlay { z-index: 10000; }
-.advisory-box { max-width: 440px; }
-.advisory-body { text-align: center; gap: 1.1rem; padding: 1.75rem 1.5rem; }
 .advisory-body p { font-family: var(--font-mono); font-size: 13px; line-height: 1.6; color: var(--text); }
 .advisory-actions { display: flex; flex-direction: column; gap: 0.6rem; margin-top: 0.5rem; }
 .advisory-btn {
@@ -2054,6 +1988,13 @@ body.advisory-lock { overflow: hidden; }
 .advisory-enter:hover { background: color-mix(in srgb, var(--accent) 85%, black); }
 .advisory-leave { background: transparent; color: var(--text-muted); border: 1.5px solid var(--border); }
 .advisory-leave:hover { color: var(--text); border-color: var(--text-muted); }
+
+@media (max-width: 480px) {
+  .advisory-body { padding: 1.4rem 1.1rem; gap: 0.9rem; }
+  .advisory-icon { font-size: 1.7rem; }
+  .advisory-body p { font-size: 12px; }
+  .advisory-btn { font-size: 10.5px; padding: 11px 14px; }
+}
 
 .admin-toolbar { background: var(--accent); color: var(--text-inv); padding: 0.6rem 1rem; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; display: flex; justify-content: space-between; align-items: center; flex-shrink: 0; }
 .admin-toolbar button { background: none; border: 1px solid rgba(255,255,255,0.5); color: var(--text-inv); font-family: var(--font-mono); font-size: 9px; padding: 3px 8px; cursor: pointer; transition: background 0.15s; border-radius: 3px; }
@@ -2150,7 +2091,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 }
 
 /* webneko cat (About page only) — stays above page content */
-#nl { z-index: 500 !important; }
+#nl { z-index: 1500 !important; }
 
 /* ── DESKTOP ICONS NAV ── */
 .desktop-icons-bar {
