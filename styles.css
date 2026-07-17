@@ -1547,15 +1547,90 @@ textarea.board-message-input {
 .about-widgets-panel { display: contents; }
 
 /* ── PROFILE CARD — full width, row 1 ── */
+.about-card-wrap {
+  position: relative;
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
 .about-card {
   background: var(--bg2);
   border: 1.5px solid var(--border);
   width: 100%;
   box-shadow: var(--shadow-lg);
-  position: relative; z-index: 2;
+  position: relative; z-index: 1;
   border-radius: var(--radius); overflow: hidden;
-  grid-column: 1 / -1;
-  grid-row: 1;
+}
+
+/* ── Overlapping tabs — pinned to the profile card's corners like sticky notes ── */
+.about-tab {
+  position: absolute;
+  z-index: 2;
+  width: 190px;
+  background: var(--bg2);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.about-tab-stats { top: -26px; right: 40px; }
+.about-tab-jpg   { bottom: -26px; left: 40px; }
+.about-tab-header {
+  background: var(--accent);
+  color: var(--text-inv);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1.5px solid var(--border);
+}
+.about-tab-body { padding: 0.75rem 0.85rem; }
+
+.about-stat-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  font-family: var(--font-mono);
+  font-size: 10.5px;
+  padding: 4px 0;
+  border-bottom: 1px dashed var(--border-lt);
+}
+.about-stat-row:last-child { border-bottom: none; }
+.about-stat-label { color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
+
+.about-jpg-body { padding: 0.6rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.about-jpg-viewport {
+  width: 100%;
+  aspect-ratio: 1;
+  background: var(--bg3);
+  border: 1px solid var(--border-lt);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.about-jpg-viewport img { width: 100%; height: 100%; object-fit: cover; }
+.about-jpg-controls { display: flex; align-items: center; justify-content: space-between; }
+.about-jpg-controls button {
+  background: none;
+  border: 1.5px solid var(--border-lt);
+  border-radius: var(--radius-sm);
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1;
+  padding: 3px 9px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.about-jpg-controls button:hover { border-color: var(--accent); color: var(--accent); }
+.about-jpg-dots { display: flex; gap: 4px; }
+.about-jpg-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--border-lt); }
+.about-jpg-dot.is-active { background: var(--accent); }
+
+@media (max-width: 900px) {
+  .about-tab { position: static; width: 100%; margin-top: 1rem; }
 }
 
 /* ── BENTO WIDGET PLACEMENT — wide 4-col grid, sized to content ── */
@@ -1951,7 +2026,7 @@ textarea.board-message-input {
   .about-layout { grid-template-columns: 1fr; }
   .aw-bag, .aw-games, .aw-likes, .aw-movies,
   .aw-hobbies, .aw-music, .aw-quizzes,
-  .about-card, .about-badges-wrap { grid-column: 1; grid-row: auto; }
+  .about-card-wrap, .about-badges-wrap { grid-column: 1; grid-row: auto; }
 }
 
 /* ── LIGHTBOX ── */
