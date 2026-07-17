@@ -398,40 +398,69 @@
       <div class="about-layout">
 
         <!-- LEFT — Main profile card -->
-        <div class="about-card">
-          <div class="about-header">
-            <span>USER_PROFILE.EXE</span><span>_ X</span>
-          </div>
-          <div class="about-body">
-            <div class="profile-header">
-              <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png" class="profile-img" alt="Avatar" />
-              <div class="profile-meta">
-                <h3>Sage</h3>
-                <p>25 // DFW // 🇵🇭 | 🇯🇵 </p>
+        <div class="about-card-wrap">
+          <div class="about-card">
+            <div class="about-header">
+              <span>USER_PROFILE.EXE</span><span>_ X</span>
+            </div>
+            <div class="about-body">
+              <div class="profile-header">
+                <img src="https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png" class="profile-img" alt="Avatar" />
+                <div class="profile-meta">
+                  <h3>Sage</h3>
+                  <p>Sei (セイ)</p>
+                </div>
+              </div>
+              <p class="about-bio">Hi, I'm Sage / Sei (セイ) – design student, chronically offline disaster, and self-taught coder behind Sei Out Loud.
+                I got my first taste of web-design in a community college course about three years ago, and have been continuing to learn off and on ever since.
+              This corner of the internet is a digital playground I missed out on growing up, and a sanctuary for me to be myself without the stress of algorithms and being perceived by people that sit <i>just</i> outside my circle.
+              Expect multimedia art experiments, some fan art, weird digital shrines, random (sometimes unhinged) thoughts and written pieces that were born at 3 in the morning.</p>
+              <p class="about-bio"> If I'm not slowly tinkering away at this site and accidentally breaking the javascript keeping this place functional,
+                I'm usually studying, working at my job (I'm a dog groomer!), and becoming a slave to my many hobbies.</p>
+              <p class="about-bio">
+               I might be a bit clumsy at making online connections
+                (consider it the byproduct of being an ambiverted, strict-parented kid), but I promise I won't bite if you reach out or have any questions!
+                Email me or chat with me on discord, I'll answer. :) </p>
+              <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet.</p>
+              <div class="tag-list">
+                <span class="tag"># this site is soooo overengineered with javascript oops</span>
+                <span class="tag"># pls clap for my genius site name, that's called branding babyyy</span>
+                <span class="tag"># NEOCITIES</span>
+                <span class="tag"># ✿</span>
+              </div>
+              <div class="about-links">
+                <a href="/cdn-cgi/l/email-protection#90f9e7f1f3f8f1fefef5fcbea2a9a0a6d0f7fdf1f9fcbef3fffd">EMAIL</a>
+                <a href="https://discord.com/users/1380280160972177460">DISCORD</a>
               </div>
             </div>
-            <p class="about-bio">Hi, I'm Sage / Sei (セイ) – design student, chronically offline disaster, and self-taught coder behind Sei Out Loud.
-              I got my first taste of web-design in a community college course about three years ago, and have been continuing to learn off and on ever since.
-            This corner of the internet is a digital playground I missed out on growing up, and a sanctuary for me to be myself without the stress of algorithms and being perceived by people that sit <i>just</i> outside my circle.
-            Expect multimedia art experiments, some fan art, weird digital shrines, random (sometimes unhinged) thoughts and written pieces that were born at 3 in the morning.</p>
-            <p class="about-bio"> If I'm not slowly tinkering away at this site and accidentally breaking the javascript keeping this place functional,
-              I'm usually studying, working at my job (I'm a dog groomer!), and becoming a slave to my many hobbies.</p>
-            <p class="about-bio">
-             I might be a bit clumsy at making online connections
-              (consider it the byproduct of being an ambiverted, strict-parented kid), but I promise I won't bite if you reach out or have any questions!
-              Email me or chat with me on discord, I'll answer. :) </p>
-            <p class="about-bio" style="color:#405FFA;">Welcome to my pocket of the internet.</p>
-            <div class="tag-list">
-              <span class="tag"># this site is soooo overengineered with javascript oops</span>
-              <span class="tag"># pls clap for my genius site name, that's called branding babyyy</span>
-              <span class="tag"># NEOCITIES</span>
-              <span class="tag"># ✿</span>
-            </div>
-            <div class="about-links">
-              <a href="/cdn-cgi/l/email-protection#90f9e7f1f3f8f1fefef5fcbea2a9a0a6d0f7fdf1f9fcbef3fffd">EMAIL</a>
-              <a href="https://discord.com/users/1380280160972177460">DISCORD</a>
+          </div>
+
+          <!-- STATS TAB — overlaps the top-right corner -->
+          <div class="about-tab about-tab-stats">
+            <div class="about-tab-header">SEI_STATS</div>
+            <div class="about-tab-body">
+              <div class="about-stat-row"><span class="about-stat-label">Age</span><span>25</span></div>
+              <div class="about-stat-row"><span class="about-stat-label">Location</span><span>DFW</span></div>
+              <div class="about-stat-row"><span class="about-stat-label">Pronouns</span><span>she/her</span></div>
+              <div class="about-stat-row"><span class="about-stat-label">Flags</span><span>🇵🇭 🇯🇵</span></div>
             </div>
           </div>
+
+          <!-- SELFIE TAB — overlaps the bottom-left corner -->
+          <div class="about-tab about-tab-jpg">
+            <div class="about-tab-header">SEI_JPG</div>
+            <div class="about-tab-body about-jpg-body">
+              <div class="about-jpg-viewport">
+                <img id="selfieCarouselImg" src="https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png" alt="Selfie" />
+              </div>
+              <div class="about-jpg-controls">
+                <button onclick="selfieCarouselNav(-1)" aria-label="Previous photo">‹</button>
+                <span id="selfieCarouselDots" class="about-jpg-dots"></span>
+                <button onclick="selfieCarouselNav(1)" aria-label="Next photo">›</button>
+              </div>
+            </div>
+          </div>
+
         </div>
 
         <!-- RIGHT — Personality widgets (dynamic bento) -->
@@ -955,7 +984,6 @@
         <button class="admin-tab"        id="tab-trash"    onclick="switchAdminTab('trash')">ADD TRASH</button>
         <button class="admin-tab"        id="tab-badges"   onclick="switchAdminTab('badges')">ADD BADGE</button>
         <button class="admin-tab"        id="tab-bag"      onclick="switchAdminTab('bag')">ADD BAG ITEM</button>
-        <button class="admin-tab"        id="tab-stickers" onclick="switchAdminTab('stickers')">ADD STICKER</button>
         <button class="admin-tab"        id="tab-info"     onclick="switchAdminTab('info')">ADD INFO</button>
         <button class="admin-tab"        id="tab-status"   onclick="switchAdminTab('status')">UPDATE STATUS</button>
         <button class="admin-tab"        id="tab-todo"     onclick="switchAdminTab('todo')">EDIT TO-DO</button>
@@ -1092,26 +1120,6 @@ https://"></textarea>
         <input type="text" id="bagNote" class="admin-input" placeholder="lifeline / for the commute" />
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddBag()">PIN TO BAG →</button>
         <p id="bagSuccess" class="admin-success">// PINNED.</p>
-      </div>
-
-      <!-- STICKER FORM -->
-      <div id="adminStickersForm" class="admin-form" style="display:none">
-        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
-          // Stickers shown in the GAMES / HOBBIES / MUSIC widgets on the About page.<br />
-          // Transparent PNGs work best.
-        </p>
-        <label class="admin-label">Widget</label>
-        <select id="stickerCategory" class="admin-input" style="cursor:pointer;">
-          <option value="games">Games</option>
-          <option value="hobbies">Hobbies</option>
-          <option value="music">Music</option>
-        </select>
-        <label class="admin-label">Sticker Image URL</label>
-        <input type="text" id="stickerImage" class="admin-input" placeholder="https://.../sticker.png" />
-        <label class="admin-label">Alt text / Title (optional)</label>
-        <input type="text" id="stickerAlt" class="admin-input" placeholder="e.g. Monster Hunter" />
-        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddSticker()">ADD STICKER →</button>
-        <p id="stickerSuccess" class="admin-success">// PINNED.</p>
       </div>
 
       <!-- INFO FORM -->
@@ -1483,6 +1491,30 @@ function newQuote() {
     initPetals();
   }
 })();
+
+/* ═══════════════════════════════════════════════════════
+   ABOUT PAGE — SEI_JPG SELFIE CAROUSEL
+   Swap these URLs for your own photos.
+═══════════════════════════════════════════════════════ */
+const SELFIES = [
+  'https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png',
+  'https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png',
+  'https://res.cloudinary.com/djohhxipz/image/upload/v1781475506/pxArt_wun5ux.png'
+];
+let selfieIndex = 0;
+function renderSelfieCarousel() {
+  const img = document.getElementById('selfieCarouselImg');
+  if (!img || !SELFIES.length) return;
+  img.src = SELFIES[selfieIndex];
+  const dots = document.getElementById('selfieCarouselDots');
+  if (dots) dots.innerHTML = SELFIES.map((_, i) => `<span class="about-jpg-dot${i === selfieIndex ? ' is-active' : ''}"></span>`).join('');
+}
+function selfieCarouselNav(dir) {
+  if (!SELFIES.length) return;
+  selfieIndex = (selfieIndex + dir + SELFIES.length) % SELFIES.length;
+  renderSelfieCarousel();
+}
+document.addEventListener('DOMContentLoaded', renderSelfieCarousel);
 /* ═══════════════════════════════════════════════════════
    DATA STORES
    Global arrays populated by Firebase on load.
@@ -1502,7 +1534,6 @@ let trashData   = [];
 let badgesData  = [];
 let infoData    = [];
 let bagData     = [];
-let stickersData = [];
 let statusData  = [];
 let todosData   = [];
 
@@ -1809,7 +1840,6 @@ function setAdminMode(active) {
   if (lettersData.length) renderLetterList();
   if (trashData.length)   renderTrashPage();
   if (typeof renderBag      === 'function') renderBag();
-  if (typeof renderStickers === 'function') renderStickers();
   renderBadgesStrips();
   renderInfoPage();
   if (typeof renderHomeTodo === 'function') renderHomeTodo();
@@ -1956,13 +1986,6 @@ function onFirebaseReady() {
     snap.forEach(child => { const d = child.val(); bagData.push({ id: child.key, ...d }); });
     renderBag(); renderHomeUpdates();
   }).catch(e => console.error('Bag load failed:', e));
-
-  // Load about-page stickers
-  db.ref('content/stickers').orderByChild('timestamp').once('value', snap => {
-    stickersData = [];
-    snap.forEach(child => { const d = child.val(); stickersData.push({ id: child.key, ...d }); });
-    renderStickers();
-  }).catch(e => console.error('Stickers load failed:', e));
 
   // Load status entries
   db.ref('content/status').orderByChild('timestamp').once('value', snap => {
@@ -2601,7 +2624,7 @@ async function adminWrite(op, path, payload) {
    ADMIN — TAB SWITCHING
 ═══════════════════════════════════════════════════════ */
 function switchAdminTab(tab) {
-  const forms = ['art','logs','shrines','letters','trash','badges','bag','stickers','info','status','todo'];
+  const forms = ['art','logs','shrines','letters','trash','badges','bag','info','status','todo'];
   forms.forEach(t => {
     const form = document.getElementById('admin' + t.charAt(0).toUpperCase() + t.slice(1) + 'Form');
     if (form) form.style.display = (t === tab) ? 'flex' : 'none';
