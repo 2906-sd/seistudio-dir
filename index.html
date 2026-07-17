@@ -139,7 +139,7 @@
 
         <!-- BLOG STAMP -->
         <div class="home-card home-stamp-card home-image-left">
-          <div class="home-card-header">LINK BACK TO ME?</div>
+          <div class="home-card-header">LET'S LINK UP!</div>
           <div class="home-card-body home-stamp-body">
             <img class="home-stamp-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1784243000/button-88x31_gyoqlm.gif" alt="sei out loud 88x31 button" width="88" height="31" />
             <textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href="https://seioutloud.neocities.org"&gt;&lt;img src="https://res.cloudinary.com/djohhxipz/image/upload/v1784243000/button-88x31_gyoqlm.gif" width="88" height="31" alt="sei out loud"&gt;&lt;/a&gt;</textarea>
@@ -188,13 +188,13 @@
 
         <!-- TO-DO LIST -->
         <div class="home-card home-todo-card home-image-right">
-          <div class="home-card-header">TODO.LIST</div>
+          <div class="home-card-header">
+            <span>TODO.LIST</span>
+            <button class="admin-edit-btn" id="todoAdminBtn" onclick="showAdminLogin();setTimeout(()=>switchAdminTab('todo'),100);" style="display:none">+ EDIT</button>
+          </div>
           <div class="home-card-body home-todo-body">
-            <ul class="home-todo-list">
-              <li class="home-todo-item"><label><input type="checkbox" /> <span>finish the letters page redesign</span></label></li>
-              <li class="home-todo-item"><label><input type="checkbox" /> <span>upload new sketchbook scans</span></label></li>
-              <li class="home-todo-item"><label><input type="checkbox" checked /> <span>fix the bag modal</span></label></li>
-              <li class="home-todo-item"><label><input type="checkbox" /> <span>write next devlog entry</span></label></li>
+            <ul class="home-todo-list" id="homeTodoList">
+              <li class="home-updates-empty widget-hint">// loading...</li>
             </ul>
           </div>
         </div>
@@ -958,6 +958,7 @@
         <button class="admin-tab"        id="tab-stickers" onclick="switchAdminTab('stickers')">ADD STICKER</button>
         <button class="admin-tab"        id="tab-info"     onclick="switchAdminTab('info')">ADD INFO</button>
         <button class="admin-tab"        id="tab-status"   onclick="switchAdminTab('status')">UPDATE STATUS</button>
+        <button class="admin-tab"        id="tab-todo"     onclick="switchAdminTab('todo')">EDIT TO-DO</button>
       </div>
 
       <!-- ART FORM -->
@@ -1152,6 +1153,19 @@ https://"></textarea>
         <input type="text" id="statusWorkingInput" class="admin-input" placeholder="what are you up to..." />
         <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminUpdateStatus()">UPDATE STATUS →</button>
         <p id="statusSuccess" class="admin-success" style="display:none">// STATUS UPDATED.</p>
+      </div>
+
+      <!-- TODO FORM -->
+      <div id="adminTodoForm" class="admin-form" style="display:none">
+        <p style="font-family:var(--font-mono);font-size:9px;color:var(--text-muted);line-height:1.7;">
+          // Updates the TODO.LIST card on the home page. Visitors see these as read-only; only you can check items off or edit this list.
+        </p>
+        <label class="admin-label">New item</label>
+        <input type="text" id="todoText" class="admin-input" placeholder="e.g. finish the letters page redesign" />
+        <button class="board-submit" style="cursor:pointer;margin-top:4px" onclick="adminAddTodo()">ADD ITEM →</button>
+        <p id="todoSuccess" class="admin-success" style="display:none">// ADDED.</p>
+        <label class="admin-label" style="margin-top:10px;">Current items</label>
+        <div id="adminTodoList" class="admin-todo-list"></div>
       </div>
 
     </div>
@@ -1490,6 +1504,7 @@ let infoData    = [];
 let bagData     = [];
 let stickersData = [];
 let statusData  = [];
+let todosData   = [];
 
 /* ═══════════════════════════════════════════════════════
    HOME — UPDATES BOX
@@ -1593,6 +1608,83 @@ function adminUpdateStatus() {
 
   ['statusMoodInput', 'statusListeningInput', 'statusWorkingInput']
     .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+}
+
+/* ═══════════════════════════════════════════════════════
+   TO-DO LIST — admin-editable, checkboxes only work in admin mode
+═══════════════════════════════════════════════════════ */
+function renderHomeTodo() {
+  const list = document.getElementById('homeTodoList');
+  if (!list) return;
+  const admin = isAdminSession();
+
+  if (!todosData.length) {
+    list.innerHTML = '<li class="home-updates-empty widget-hint">// nothing on the list right now.</li>';
+  } else {
+    const sorted = [...todosData].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+    list.innerHTML = sorted.map(item => {
+      const delBtn = admin ? `<button class="home-todo-delete" onclick="adminDeleteTodo('${item.id}')" title="Remove item">×</button>` : '';
+      return `
+      <li class="home-todo-item${item.done ? ' is-done' : ''}" data-todo-id="${item.id}">
+        <input type="checkbox" class="home-todo-checkbox" ${item.done ? 'checked' : ''} ${admin ? '' : 'disabled'} onchange="adminToggleTodo('${item.id}', this.checked)" aria-label="Mark done" />
+        <span class="home-todo-text">${escHtml(item.text || '')}</span>
+        ${delBtn}
+      </li>`;
+    }).join('');
+  }
+
+  renderAdminTodoList();
+}
+
+/* Admin panel's own copy of the list — always interactive when the panel is open, since you're already logged in */
+function renderAdminTodoList() {
+  const el = document.getElementById('adminTodoList');
+  if (!el) return;
+  if (!todosData.length) { el.innerHTML = '<p class="widget-hint" style="font-size:10px;">// no items yet.</p>'; return; }
+  const sorted = [...todosData].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+  el.innerHTML = sorted.map(item => `
+    <div class="admin-todo-row">
+      <input type="checkbox" ${item.done ? 'checked' : ''} onchange="adminToggleTodo('${item.id}', this.checked)" />
+      <span class="${item.done ? 'is-done' : ''}">${escHtml(item.text || '')}</span>
+      <button class="admin-delete-btn" style="display:inline-block;position:static" onclick="adminDeleteTodo('${item.id}')">DELETE</button>
+    </div>
+  `).join('');
+}
+
+function adminAddTodo() {
+  if (!isAdminSession()) return;
+  const input = document.getElementById('todoText');
+  const text = input.value.trim();
+  if (!text) return;
+  const entry = { text, done: false, timestamp: Date.now() };
+  adminWrite('push', 'content/todos', entry).then(r => {
+    entry.id = r.id;
+    todosData.push(entry);
+    renderHomeTodo();
+    const s = document.getElementById('todoSuccess');
+    if (s) { s.style.display = 'block'; setTimeout(() => s.style.display = 'none', 3000); }
+  }).catch(e => { console.error('Todo push failed:', e); alert('// COULD NOT SAVE: ' + e.message); });
+  input.value = '';
+}
+
+function adminToggleTodo(id, done) {
+  if (!isAdminSession()) return;
+  const idx = todosData.findIndex(t => t.id === id); if (idx < 0) return;
+  todosData[idx].done = done;
+  adminWrite('update', 'content/todos', { id, data: { done } })
+    .then(() => renderHomeTodo())
+    .catch(e => { console.error('Todo update failed:', e); todosData[idx].done = !done; renderHomeTodo(); alert('// COULD NOT SAVE: ' + e.message); });
+}
+
+function adminDeleteTodo(id) {
+  if (!isAdminSession()) return;
+  if (!confirm('Remove this to-do item?')) return;
+  const idx = todosData.findIndex(t => t.id === id); if (idx < 0) return;
+  if (id && !String(id).startsWith('local_')) {
+    adminWrite('remove', 'content/todos', { id }).then(() => { todosData.splice(idx, 1); renderHomeTodo(); }).catch(e => { console.error('Todo delete failed:', e); alert('// DELETE FAILED'); });
+  } else {
+    todosData.splice(idx, 1); renderHomeTodo();
+  }
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1720,10 +1812,12 @@ function setAdminMode(active) {
   if (typeof renderStickers === 'function') renderStickers();
   renderBadgesStrips();
   renderInfoPage();
+  if (typeof renderHomeTodo === 'function') renderHomeTodo();
   const eb = document.getElementById('logReaderEditBtn');    if (eb) eb.style.display = active ? 'inline-block' : 'none';
   const sb = document.getElementById('shrineReaderEditBtn'); if (sb) sb.style.display = active ? 'inline-block' : 'none';
   const lb = document.getElementById('letterReaderEditBtn'); if (lb) lb.style.display = active ? 'inline-block' : 'none';
   const bb = document.getElementById('badgesAdminBtn');      if (bb) bb.style.display = active ? 'inline-block' : 'none';
+  const tb = document.getElementById('todoAdminBtn');        if (tb) tb.style.display = active ? 'inline-block' : 'none';
   document.querySelectorAll('#info .info-card-header .admin-edit-btn').forEach(b => b.style.display = active ? 'inline-block' : 'none');
   document.querySelectorAll('.aw-bag .admin-edit-btn, .aw-games .admin-edit-btn, .aw-hobbies .admin-edit-btn, .aw-music .admin-edit-btn').forEach(b => b.style.display = active ? 'inline-block' : 'none');
 }
@@ -1877,6 +1971,13 @@ function onFirebaseReady() {
     renderStatus();
     updateLastUpdatedDisplay();
   }).catch(e => console.error('Status load failed:', e));
+
+  // Load to-do list
+  db.ref('content/todos').orderByChild('timestamp').once('value', snap => {
+    todosData = [];
+    snap.forEach(child => { const d = child.val(); todosData.push({ id: child.key, ...d }); });
+    renderHomeTodo();
+  }).catch(e => console.error('Todos load failed:', e));
 }
 
 /* ═══════════════════════════════════════════════════════
@@ -1895,14 +1996,18 @@ function nameFromKey(key) { let h1 = 0, h2 = 5381; for (let i = 0; i < key.lengt
 ═══════════════════════════════════════════════════════ */
 function toggleDark() {
   const dark = document.body.classList.toggle('dark');
-  document.getElementById('darkToggle').textContent = dark ? '◑ MODE' : '◐ MODE';
+  const btn = document.getElementById('darkToggle');
+  btn.textContent = dark ? '◑ MODE' : '◐ MODE';
+  btn.classList.toggle('is-active', dark);
   try { localStorage.setItem('darkMode', dark ? '1' : '0'); } catch (_) {}
 }
 
 try {
   if (localStorage.getItem('darkMode') === '1') {
     document.body.classList.add('dark');
-    document.getElementById('darkToggle').textContent = '◑ MODE';
+    const btn = document.getElementById('darkToggle');
+    btn.textContent = '◑ MODE';
+    btn.classList.add('is-active');
   }
 } catch (_) {}
 
@@ -2062,50 +2167,22 @@ function filterByTag(tag) {
 }
 
 /* ─────────────────────────────────────────────────────
-   LOG PHOTO VIEWER
-   Embeds a mini OS-window image viewer inside log entries.
+   LOG ATTACHMENTS
+   Small thumbnail grid (matches shrine gallery sizing) —
+   click a thumbnail to open it full-size in the lightbox.
 ───────────────────────────────────────────────────── */
-window._logPvUrls  = [];
-window._logPvIdx   = 0;
-window._logPvTitle = '';
-
-function logPvNav(dir) {
-  const urls = window._logPvUrls; if (!urls.length) return;
-  const next = Math.max(0, Math.min(urls.length - 1, window._logPvIdx + dir));
-  if (next === window._logPvIdx) return;
-  window._logPvIdx = next;
-  const img     = document.getElementById('log-pv-img');
-  const counter = document.getElementById('log-pv-counter');
-  const prevBtn = document.querySelector('.log-carousel-arrow.left');
-  const nextBtn = document.querySelector('.log-carousel-arrow.right');
-  if (!img) return;
-  img.src = normalizeImageUrl(urls[window._logPvIdx]);
-  if (counter) counter.textContent = `${window._logPvIdx + 1} / ${urls.length}`;
-  if (prevBtn) prevBtn.disabled = window._logPvIdx === 0;
-  if (nextBtn) nextBtn.disabled = window._logPvIdx === urls.length - 1;
-}
-
-function logPvOpen() {
-  const url = window._logPvUrls[window._logPvIdx]; if (!url) return;
-  openImageLightbox(encodeURIComponent(normalizeImageUrl(url)), window._logPvTitle, '');
-}
-
-function buildPhotoViewer(urls, logTitle) {
+function buildAttachmentsGrid(urls, logTitle) {
   if (!urls || !urls.length) return '';
-  window._logPvUrls  = urls;
-  window._logPvIdx   = 0;
-  window._logPvTitle = logTitle || 'LOG';
-  const firstUrl = normalizeImageUrl(urls[0]);
-  const total    = urls.length;
-  const multi    = total > 1;
+  const safeTitle = escHtml(logTitle || 'LOG');
+  const items = urls.map(u => {
+    const fullUrl = normalizeImageUrl(u);
+    return `<div class="log-attachment-item" data-log-img="${escHtml(fullUrl)}" data-log-title="${safeTitle}">`
+         + `<img class="log-attachment-img" src="${fullUrl}" alt="Attachment" loading="lazy" draggable="false" /></div>`;
+  }).join('');
   return `
-    <div class="log-carousel">
-      <div class="log-carousel-inner" onclick="logPvOpen()">
-        ${multi ? `<button class="log-carousel-arrow left" onclick="event.stopPropagation();logPvNav(-1)">←</button>` : ''}
-        <img id="log-pv-img" src="${firstUrl}" alt="Photo 1 of ${total}" draggable="false" />
-        ${multi ? `<button class="log-carousel-arrow right" onclick="event.stopPropagation();logPvNav(1)">→</button>` : ''}
-      </div>
-      ${multi ? `<div class="log-carousel-counter"><span id="log-pv-counter">1 / ${total}</span></div>` : ''}
+    <div class="log-attachments">
+      <div class="log-attachments-label">ATTACHMENTS //</div>
+      <div class="log-attachments-grid">${items}</div>
     </div>`;
 }
 
@@ -2128,15 +2205,20 @@ function readLog(i) {
     cleanBody = cb.join('\n');
   }
 
-  const viewerHtml = buildPhotoViewer(photoUrls, log.title || 'LOG');
+  const attachmentsHtml = buildAttachmentsGrid(photoUrls, log.title || 'LOG');
 document.getElementById('log-content').innerHTML =
       `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ''}</p>`
     + `<h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || 'UNTITLED'}</h1>`
     + `<div class="log-body-text">${cleanBody}</div>`
-    + viewerHtml
+    + attachmentsHtml
     + renderTagsHTML(log.tags);
 
-  document.querySelectorAll('.log-sticker').forEach(s => s.remove());
+  document.querySelectorAll('.log-attachment-item[data-log-img]').forEach(item => {
+    item.addEventListener('click', ev => {
+      ev.preventDefault(); ev.stopPropagation();
+      openImageLightbox(encodeURIComponent(item.getAttribute('data-log-img') || ''), item.getAttribute('data-log-title') || 'LOG', '');
+    });
+  });
 
   const logHash = '#log/' + log.id;
   if (window.location.hash !== logHash) window.history.pushState({ page: 'log-reader', logId: log.id }, '', logHash);
@@ -2519,7 +2601,7 @@ async function adminWrite(op, path, payload) {
    ADMIN — TAB SWITCHING
 ═══════════════════════════════════════════════════════ */
 function switchAdminTab(tab) {
-  const forms = ['art','logs','shrines','letters','trash','badges','bag','stickers','info','status'];
+  const forms = ['art','logs','shrines','letters','trash','badges','bag','stickers','info','status','todo'];
   forms.forEach(t => {
     const form = document.getElementById('admin' + t.charAt(0).toUpperCase() + t.slice(1) + 'Form');
     if (form) form.style.display = (t === tab) ? 'flex' : 'none';
@@ -2527,6 +2609,7 @@ function switchAdminTab(tab) {
     if (btn) btn.classList.toggle('active', t === tab);
   });
   if (tab === 'shrines') { if (typeof initShrinePairRowsIfEmpty === 'function') initShrinePairRowsIfEmpty(); }
+  if (tab === 'todo') { if (typeof renderAdminTodoList === 'function') renderAdminTodoList(); }
   if (tab === 'trash') {
     const dateEl = document.getElementById('trashDate');
     if (dateEl && !dateEl.value) { const now = new Date(); dateEl.value = `${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}.${String(now.getFullYear()).slice(-2)}`; }
