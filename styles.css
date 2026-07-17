@@ -374,10 +374,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
 }
 .home-todo-text { flex: 1; min-width: 0; }
 
-/* Real checkbox, styled to match the site's mono/pixel aesthetic instead of
-   the browser default. Disabled (and visually muted) for regular visitors —
-   only interactive once admin session is active, so only the site owner can
-   actually check things off. */
+/* Custom checkbox; disabled for visitors, interactive only in admin mode. */
 .home-todo-checkbox {
   appearance: none;
   -webkit-appearance: none;
@@ -636,7 +633,7 @@ section.active { display: block; animation: fadeIn 0.35s ease; }
   line-height: 1;
 }
 .quote-refresh:hover { color: var(--accent); border-color: var(--accent); }
-/* header bg is now accent-blue — these need their own contrast instead of inheriting the light-bg colors above */
+/* headers are accent-blue now — these need their own contrast override */
 .home-card-header .quote-refresh {
   border-color: rgba(255,255,255,0.55);
   color: var(--text-inv);
@@ -935,14 +932,15 @@ body.admin-mode .admin-log-actions { display: flex; }
 }
 
 /* tags — accent pill chips */
-.log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.4rem; } /* was 4px gap */
+.log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
 .log-tag {
   display: inline-block;
   background: var(--accent);
   color: #ffffff;
   font-family: var(--font-mono);
-  font-size: 8px;
-  letter-spacing: 0.03em;
+  font-size: 10px;
+  letter-spacing: 0.02em;
+  cursor: default;
   text-transform: lowercase;
   line-height: 1.4;
   padding: 3px 10px;
@@ -965,8 +963,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   line-height: 1.7;
   white-space: pre-wrap;
   color: var(--text);
-  /* Long entries scroll inside the log card instead of stretching the page.
-     Title + tags + stickers stay anchored; only the prose scrolls. */
+  /* Long entries scroll inside the card instead of stretching the page. */
   max-height: 68vh;
   overflow-y: auto;
   overflow-x: hidden;
@@ -1183,9 +1180,7 @@ body.admin-mode .admin-log-actions { display: flex; }
   border-radius: var(--radius);
 }
 
-/* Hero image — taller, feels like an old fanlisting banner.
-   object-fit: contain (not cover) so the full image is always visible,
-   never cropped; background fills any letterboxed space. */
+/* Hero banner image — contain (not cover) so it's never cropped. */
 .shrine-hero-img {
   width: 100%;
   max-height: 260px;
@@ -1367,13 +1362,6 @@ body.admin-mode .letter-envelope .admin-log-actions {
   #board-section { height: 340px; }
 }
 
-.visitor-count-label {
-  font-family: var(--font-mono);
-  font-size: 9px;
-  color: var(--text-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
 @media (max-width: 800px) {
   .board-home-row { flex-direction: column; }
   .board-sidebar {
@@ -1433,8 +1421,7 @@ body.admin-mode .letter-envelope .admin-log-actions {
   letter-spacing: 0.05em;
 }
 
-/* fixed-shape, responsive-sized image slot — aspect-ratio holds the shape
-   constant while the actual pixel size scales with the sidebar's width */
+/* Fixed-shape, responsive-sized image slot. */
 .board-image-card {
   flex: 0 0 auto;
   aspect-ratio: 1 / 1;
@@ -1674,8 +1661,7 @@ textarea.board-message-input {
    ABOUT — BAG WIDGET
 ═══════════════════════════════════════════════════════ */
 
-/* No card chrome — just the bare bag photo sitting in its grid slot,
-   given real breathing room (2 grid columns) so the png is never cropped */
+/* No card chrome — bare bag photo with room to breathe. */
 .bag-widget-bare {
   background: transparent;
   border: none;
@@ -1772,9 +1758,7 @@ textarea.board-message-input {
   filter: drop-shadow(4px 6px 8px rgba(0,0,0,0.15));
 }
 
-/* Stop-motion wobble — steps() holds each frame instead of easing smoothly
-   between them, so it reads as a jittery hand-animated sticker rather than
-   a slick continuous wobble. */
+/* Stop-motion wobble — steps() jumps between frames instead of easing. */
 @keyframes bagItemStopMotion {
   0%   { transform: translate(0, 0)        rotate(0deg); }
   12%  { transform: translate(0.6px, -1px) rotate(-1.2deg); }
@@ -2150,9 +2134,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 
 .admin-success { font-family: var(--font-mono); font-size: 10px; color: #22c55e; display: none; }
 
-/* ── LOG TAGS ── */
-.log-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 0.75rem; }
-.log-tag { font-family: var(--font-mono); font-size: 10px; cursor: default; letter-spacing: 0.02em; }
+/* ── LOG TAGS (reader view spacing) ── */
 .log-container .log-tags { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border-lt); }
 .log-container .log-tag  { font-size: 12px; }
 
@@ -2601,8 +2583,7 @@ input[type="url"], textarea, [contenteditable] {
 
 /* ── BADGES CARDS — home (stacked under hero) + about (full-width) ── */
 
-/* Home page: badges card sits directly below the hero card,
-   stacked inside .home-hero-block (see grid-area: heroblock) */
+/* Badges card sits inside .home-hero-block, below the hero card */
 .home-hero-block .badges-card {
   min-height: auto;
   min-width: 0;
@@ -3037,10 +3018,7 @@ body.dark .hero-card .hero-image-dark  { display: block; }
    Narrow-viewport fixes; breakpoints match or tighten the ones above.
 ═══════════════════════════════════════════════════ */
 
-/* ── 1. PREVENT HORIZONTAL SCROLL (petals + floaters) ──
-   #petal-field is already fixed+overflow:hidden, so the
-   scroll comes from .page-wrapper or body having no
-   overflow-x guard. Lock it down here.                  */
+/* ── Prevent horizontal scroll from petals/floaters ── */
 html { overflow-x: hidden; }
 body { overflow-x: hidden; max-width: 100vw; }
 
@@ -3400,7 +3378,8 @@ body { overflow-x: hidden; max-width: 100vw; }
 
 .blog-list-item {
   border-radius: var(--radius) !important;
-  overflow: hidden; 
+  overflow: hidden;
+}
 
 @media (max-width: 720px) {
   .logs-sidebar {
@@ -3526,3 +3505,17 @@ body { overflow-x: hidden; max-width: 100vw; }
   .nav-left  { padding: 0.5rem 0.75rem !important; }
   .nav-right { padding: 0.5rem 0.75rem !important; }
 }
+
+/* ── CUSTOM LOADER ── */
+.loader-overlay {
+  position: fixed; inset: 0;
+  background: rgba(244, 244, 244, 0.95);
+  backdrop-filter: blur(2px);
+  z-index: 9999; display: none;
+  flex-direction: column; align-items: center; justify-content: center; gap: 1.5rem;
+}
+body.dark .loader-overlay { background: rgba(0, 0, 0, 0.95); }
+.loader-overlay.show { display: flex; }
+.loader-flower { font-size: 4.5rem; animation: spin 2s linear infinite; color: var(--accent); }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+.loader-message { font-family: var(--font-mono); font-size: 0.85rem; color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em; min-width: 200px; text-align: center; }
