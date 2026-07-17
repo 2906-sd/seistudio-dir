@@ -139,7 +139,7 @@
 
         <!-- BLOG STAMP -->
         <div class="home-card home-stamp-card home-image-left">
-          <div class="home-card-header">LET'S LINK UP!</div>
+          <div class="home-card-header">LINK BACK TO ME?</div>
           <div class="home-card-body home-stamp-body">
             <img class="home-stamp-img" src="https://res.cloudinary.com/djohhxipz/image/upload/v1784243000/button-88x31_gyoqlm.gif" alt="sei out loud 88x31 button" width="88" height="31" />
             <textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href="https://seioutloud.neocities.org"&gt;&lt;img src="https://res.cloudinary.com/djohhxipz/image/upload/v1784243000/button-88x31_gyoqlm.gif" width="88" height="31" alt="sei out loud"&gt;&lt;/a&gt;</textarea>
@@ -1636,7 +1636,7 @@ function renderHomeTodo() {
   renderAdminTodoList();
 }
 
-/* Admin panel's own copy of the list — always interactive when the panel is open, since you're already logged in */
+/* Admin panel's own live copy — always interactive here since you're already logged in */
 function renderAdminTodoList() {
   const el = document.getElementById('adminTodoList');
   if (!el) return;
@@ -3137,7 +3137,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (typeof initShrinePairRowsIfEmpty === 'function') initShrinePairRowsIfEmpty();
 });
 
-window.addEventListener('load', () => { initFirebase(); initStickers(); updateLiveStatus(); setInterval(updateLiveStatus, 1000); });
+window.addEventListener('load', () => { initFirebase(); updateLiveStatus(); setInterval(updateLiveStatus, 1000); });
 
 /* ═══════════════════════════════════════════════════════
    MIFFY CURSOR ANIMATOR
