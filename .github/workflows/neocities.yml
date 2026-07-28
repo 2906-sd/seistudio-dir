@@ -14,9 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Deploy to Neocities
-        uses: bcomnes/deploy-to-neocities@v3
-        with:
-          api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
-          dist_dir: .
-          cleanup: false
+      # Temporarily paused Neocities deploy step
+      # - name: Deploy to Neocities
+      #   uses: bcomnes/deploy-to-neocities@v3
+      #   with:
+      #     api_key: ${{ secrets.NEOCITIES_API_TOKEN }}
+      #     dist_dir: .
+      #     cleanup: false
