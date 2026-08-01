@@ -5006,76 +5006,132 @@ body.dark .loader-spinner-img {
     setInterval(updateLiveStatus, 1000);
    });
 
-   /* ═══════════════════════════════════════════════════════
-   MIFFY CURSOR ANIMATOR
-═══════════════════════════════════════════════════════ */
-   (function () {
-    const CURSORS = {
-     normal: ["cursors/normal_sprite.png", 4, 32, 32, 0, 0, 167],
-     busy: ["cursors/busy_sprite.png", 24, 32, 32, 15, 14, 83],
-     pointer: ["cursors/pointer.png", 1, 32, 32, 10, 0, 0],
-     text: ["cursors/text.png", 1, 32, 32, 5, 8, 0],
-    };
-    const canvas = document.createElement("canvas");
-    canvas.width = canvas.height = 32;
-    const ctx = canvas.getContext("2d");
-    const images = {};
-    let loaded = 0;
-    const total = Object.keys(CURSORS).length;
+  /* ────────────────────────────────────────────────────────────────────────
+   POCHACCO CURSOR ANIMATOR — full set
+   ──────────────────────────────────────────────────────────────────────── */
+(function () {
+  const CURSORS = {
+    normal: ["cursors/normal_sprite.png", 1, 32, 32, 0, 0, 167],
+    busy: ["cursors/busy_sprite.png", 3, 32, 32, 15, 15, 167],
+    pointer: ["cursors/pointer_sprite.png", 2, 32, 32, 4, 2, 167],
+    text: ["cursors/text.png", 1, 32, 32, 15, 15, 0],
+    notAllowed: ["cursors/not_allowed.png", 1, 32, 32, 0, 0, 0],
+    help: ["cursors/help_sprite.png", 1, 32, 32, 0, 0, 0],
+    move: ["cursors/move.png", 1, 32, 32, 15, 15, 0],
+    crosshair: ["cursors/precision_select.png", 1, 32, 32, 15, 5, 0],
+    nwseResize: ["cursors/diagonal_resize_1.png", 1, 32, 32, 15, 15, 0],
+    neswResize: ["cursors/diagonal_resize_2.png", 1, 32, 32, 16, 15, 0],
+    ewResize: ["cursors/horizontal_resize.png", 1, 32, 32, 15, 15, 0],
+    nsResize: ["cursors/vertical_resize.png", 1, 32, 32, 15, 15, 0],
+    cell: ["cursors/handwriting.png", 1, 32, 32, 1, 30, 0],
+    alternate: ["cursors/alternate_sprite.png", 2, 32, 32, 16, 0, 167],
+    location: ["cursors/location.png", 1, 32, 32, 0, 0, 0],
+    person: ["cursors/person.png", 1, 32, 32, 0, 0, 0],
+  };
 
-    function getDataURL(key, frame) {
-     const [, , fw, fh] = CURSORS[key];
-     ctx.clearRect(0, 0, 32, 32);
-     ctx.drawImage(images[key], frame * fw, 0, fw, fh, 0, 0, 32, 32);
-     return canvas.toDataURL("image/png");
-    }
-    function applyCursor(key, frame) {
-     const [, , fw, fh, hx, hy] = CURSORS[key];
-     const url = getDataURL(key, frame);
-     const cssValue = `url('${url}') ${hx} ${hy}, auto`;
-     if (key === "pointer")
-      document.documentElement.style.setProperty(
-       "--mc-pointer",
-       `url('${url}') ${hx} ${hy}, pointer`,
-      );
-     else if (key === "text")
-      document.documentElement.style.setProperty(
-       "--mc-text",
-       `url('${url}') ${hx} ${hy}, text`,
-      );
-     else if (key === "normal")
-      document.documentElement.style.setProperty("--mc-default", cssValue);
-     else if (key === "busy")
-      document.documentElement.style.setProperty(
-       "--mc-busy",
-       `url('${url}') ${hx} ${hy}, wait`,
-      );
-    }
-    function startAnimations() {
-     const style = document.createElement("style");
-     style.textContent = `*,*::before,*::after{cursor:var(--mc-default,auto)!important;}a,button,[role=button],input[type=submit],input[type=button],label[for],.clickable,[onclick]{cursor:var(--mc-pointer,pointer)!important;}input[type=text],input[type=email],input[type=password],input[type=search],textarea,[contenteditable]{cursor:var(--mc-text,text)!important;}[aria-busy=true],.loading,.busy{cursor:var(--mc-busy,wait)!important;}`;
-     document.head.appendChild(style);
-     ["normal", "busy"].forEach((key) => {
-      const [, frames, , , , , ms] = CURSORS[key];
+  const PROP_MAP = {
+    normal: "--mc-default",
+    busy: "--mc-busy",
+    pointer: "--mc-pointer",
+    text: "--mc-text",
+    notAllowed: "--mc-not-allowed",
+    help: "--mc-help",
+    move: "--mc-move",
+    crosshair: "--mc-crosshair",
+    nwseResize: "--mc-nwse-resize",
+    neswResize: "--mc-nesw-resize",
+    ewResize: "--mc-ew-resize",
+    nsResize: "--mc-ns-resize",
+    cell: "--mc-cell",
+    alternate: "--mc-alternate",
+    location: "--mc-location",
+    person: "--mc-person",
+  };
+
+  const FALLBACK_MAP = {
+    normal: "auto",
+    busy: "wait",
+    pointer: "pointer",
+    text: "text",
+    notAllowed: "not-allowed",
+    help: "help",
+    move: "move",
+    crosshair: "crosshair",
+    nwseResize: "nwse-resize",
+    neswResize: "nesw-resize",
+    ewResize: "ew-resize",
+    nsResize: "ns-resize",
+    cell: "cell",
+    alternate: "auto",
+    location: "auto",
+    person: "auto",
+  };
+
+  const canvas = document.createElement("canvas");
+  canvas.width = canvas.height = 32;
+  const ctx = canvas.getContext("2d");
+  const images = {};
+  let loaded = 0;
+  const total = Object.keys(CURSORS).length;
+
+  function getDataURL(key, frame) {
+    const [, , fw, fh] = CURSORS[key];
+    ctx.clearRect(0, 0, 32, 32);
+    ctx.drawImage(images[key], frame * fw, 0, fw, fh, 0, 0, 32, 32);
+    return canvas.toDataURL("image/png");
+  }
+
+  function applyCursor(key, frame) {
+    const [, , , , hx, hy] = CURSORS[key];
+    const url = getDataURL(key, frame);
+    document.documentElement.style.setProperty(
+      PROP_MAP[key],
+      `url('${url}') ${hx} ${hy}, ${FALLBACK_MAP[key]}`,
+    );
+  }
+
+  function startAnimations() {
+    const style = document.createElement("style");
+    style.textContent = `
+*,*::before,*::after{cursor:var(--mc-default,auto)!important;}
+a,button,[role=button],input[type=submit],input[type=button],label[for],.clickable,[onclick]{cursor:var(--mc-pointer,pointer)!important;}
+input[type=text],input[type=email],input[type=password],input[type=search],textarea,[contenteditable]{cursor:var(--mc-text,text)!important;}
+[aria-busy=true],.loading,.busy{cursor:var(--mc-busy,wait)!important;}
+[disabled],.disabled,[aria-disabled=true]{cursor:var(--mc-not-allowed,not-allowed)!important;}
+[title],.help,[data-tooltip]{cursor:var(--mc-help,help)!important;}
+.draggable,[draggable=true]{cursor:var(--mc-move,move)!important;}
+.crosshair{cursor:var(--mc-crosshair,crosshair)!important;}
+.resize-nwse{cursor:var(--mc-nwse-resize,nwse-resize)!important;}
+.resize-nesw{cursor:var(--mc-nesw-resize,nesw-resize)!important;}
+.resize-ew{cursor:var(--mc-ew-resize,ew-resize)!important;}
+.resize-ns{cursor:var(--mc-ns-resize,ns-resize)!important;}
+.handwriting{cursor:var(--mc-cell,cell)!important;}
+`;
+    document.head.appendChild(style);
+
+    Object.entries(CURSORS).forEach(([key, cfg]) => {
+      const frames = cfg[1];
+      const ms = cfg[6];
       let frame = 0;
       applyCursor(key, frame);
-      setInterval(() => {
-       frame = (frame + 1) % frames;
-       applyCursor(key, frame);
-      }, ms);
-     });
-     applyCursor("pointer", 0);
-     applyCursor("text", 0);
-    }
-    Object.entries(CURSORS).forEach(([key, cfg]) => {
-     const img = new Image();
-     img.onload = () => {
+      if (frames > 1 && ms > 0) {
+        setInterval(() => {
+          frame = (frame + 1) % frames;
+          applyCursor(key, frame);
+        }, ms);
+      }
+    });
+  }
+
+  Object.entries(CURSORS).forEach(([key, cfg]) => {
+    const img = new Image();
+    img.onload = () => {
       images[key] = img;
       if (++loaded === total) startAnimations();
-     };
-     img.src = cfg[0];
-    });
-   })();
+    };
+    img.src = cfg[0];
+  });
+})();
 
        /* ═══════════════════════════════════════════════════════
    RESOURCE CARD PAGINATION
