@@ -286,25 +286,26 @@
         <span class="desk-subnav-caret" aria-hidden="true">›</span>
        </div>
        <div class="desk-subnav" id="desk-subnav-goodies">
-        <div class="desk-subnav-item" data-subpage="code-snippets" onclick="goToGoodiesFromNav(event, 'code-snippets')">Code Snippets</div>
+        <div class="desk-subnav-item" data-subpage="code-snippets" onclick="goToGoodiesFromNav(event, 'code-snippets')">Tutorials</div>
         <div class="desk-subnav-item" data-subpage="graphics" onclick="goToGoodiesFromNav(event, 'graphics')">Graphics</div>
+        <div class="desk-subnav-item" data-subpage="resources" onclick="goToGoodiesFromNav(event, 'resources')">Resources</div>
        </div>
       </div>
       <div
        class="desk-icon desk-icon-info-nav"
-       onclick="showPage('info')"
-       id="desk-link-info"
-       title="ⓘ site info / resources"
+       onclick="showPage('colophon')"
+       id="desk-link-colophon"
+       title="ⓘ site colophon / credits"
       >
       <div class="desk-icon-wrap">
        <img
         src="https://gabestash.neocities.org/favicons/monochrome/mono340.gif"
         class="desk-icon-img"
 
-        alt="INFO"
+        alt="COLOPHON"
        />
       </div>
-      <span class="desk-icon-label">INFO</span>
+      <span class="desk-icon-label">COLOPHON</span>
      </div>
 
 <div class="desk-icon" onclick="showPage('PAGE_ID')" id="desk-link-manny">
@@ -1381,7 +1382,7 @@
            >
           </div>
           <div class="quiz-result-caption">
-           you dont take ANY shit. this boulder will hold your door closed when
+           you dont take ANY *****. this boulder will hold your door closed when
            an angry mob comes after you
           </div>
          </div>
@@ -1653,7 +1654,7 @@
           <b>Blorbo:</b> a person's favorite fictional character from a certain media.
             (Honestly, I hate the term, not sure who came up with it but alas.)
           </p>
-          <p class="about-bio"> I'm drawn to characters that are: 1) arrogant assholes with a secret soft side 2) characters that are the silent, put-together types that you'd want as your emergency contacts 3) nerds/geeks/losers with that boyish charm and emotional sensitivity 4) characters with heavy trauma yet still go out of their way to do good. These blorbos are the cause for many hours in the TRENCHES of A03, fanart, and late night delusions.
+          <p class="about-bio"> I'm drawn to characters that are: 1) arrogant ***** with a secret soft side 2) characters that are the silent, put-together types that you'd want as your emergency contacts 3) nerds/geeks/losers with that boyish charm and emotional sensitivity 4) characters with heavy trauma yet still go out of their way to do good. These blorbos are the cause for many hours in the TRENCHES of A03, fanart, and late night delusions.
          </p>
          </p>
 
@@ -1828,7 +1829,7 @@
            </div>
            <div class="faq-answer">
             <span class="faq-answer-bullet">✿</span>
-            <p>I can't stop you from snooping the code, so I’d appreciate if you didn’t copy directly! I’ve listed my inspo sites on the Outgoing page and resources on the Info page, if you want further inspiration and help. If there’s any code that I’m willing to share, you’ll find it on the Code Snippets page under Goodies. :)</p>
+            <p>I can't stop you from snooping the code, so I’d appreciate if you didn’t copy directly! I’ve listed my inspo sites on the Outgoing page and resources under Goodies → Resources, if you want further inspiration and help. If there’s any code that I’m willing to share, you’ll find it on the Tutorials page under Goodies. :)</p>
            </div>
           </div>
 
@@ -1962,11 +1963,11 @@
      <div id="trashContent"></div>
     </section>
 
-    <!-- ══════════════════ INFO / RESOURCES ══════════════════ -->
-    <section id="info">
+    <!-- ══════════════════ COLOPHON ══════════════════ -->
+    <section id="colophon">
      <div class="info-page-layout">
       <div class="section-header">
-       <h1>INFO<span>.</span></h1>
+       <h1>COLOPHON<span>.</span></h1>
        <p>the how, the what, the huh. (WORK IN PROGRESS)</p>
        <a
         href="javascript:void(0)"
@@ -1994,7 +1995,7 @@
          />
          <div class="info-howitworks-text" style="line-height: 1.6">
           <p><strong>How does this site actually work?</strong></p>
-          <p style="color: var(--text-sub)">
+          <p>
            The main version of this site runs on
            <strong>Vercel</strong> and has a hidden (not really) admin panel
            built right in. That means I can publish and edit content without
@@ -2002,7 +2003,7 @@
            I actually made this site originally for Vercel before giving it a
            second home here on neocities!
           </p>
-          <p style="color: var(--text-sub)">
+          <p>
            All content — art, logs, letters, shrines, even the bulletin board
            messages — lives in a database called <strong>Firebase</strong>,
            which keeps it stored and synced safely. The site's code itself is
@@ -2026,177 +2027,140 @@
            only hosts a static snapshot of the site, so the login and publishing
            tools only run on the originsl Vercel deployment.
           </p>
-          <p style="margin-top: 0.75rem; margin-bottom: 0.25rem">
-           <strong>Made with:</strong>
-          </p>
-          <ul style="color: var(--text-sub); padding-left: 1.5rem; margin: 0">
-           <li>
-            Icons:
-            <a href="https://pixelsafari.neocities.org/favicon/" target="_blank"
-             >Pixel Safari</a
-            >
-           </li>
-           <li>
-            Image hosting:
-            <a href="https://cloudinary.com" target="_blank">Cloudinary</a>
-           </li>
-           <li>
-            Fonts:
-            <a
-             href="https://fonts.google.com/specimen/Pixelify+Sans"
-             target="_blank"
-             >Pixelify Sans</a
-            >, and
-            <a
-             href="https://fonts.google.com/specimen/Space+Mono"
-             target="_blank"
-             >Space Mono</a
-            >
-           </li>
-           <li>
-            Automated workflow:
-            <a
-             href="https://nenrikido.neocities.org/blog/post/deploy-site/"
-             target="_blank"
-             >Tutorial by nenrikido</a
-            >
-           </li>
-          </ul>
-         </div>
-        </div>
-       </div>
-
-       <div class="section-header info-resources-header">
-        <h1>RESOURCE<span>S</span></h1>
         <p>
-         tools, credits, and other corners of the internet that have been
-         taking up my bookmarks but are helpful and inspiring.
-        </p>
-       </div>
-
-       <!-- START HERE -->
-       <div class="info-card info-card-wide info-card-featured">
-        <div class="info-card-header">
-         <span>START_HERE.MD</span>
-        </div>
-        <div class="info-card-body">
-         <p class="info-featured-intro">
-          New to making your own website? These are the sources that have helped me a lot!
-         </p>
-         <div class="info-row">
-          <span class="info-row-label">MDN Web Docs</span>
-          <span class="info-row-value"
-           >THE reference for HTML, CSS, and JavaScript</span
-          >
-          <a
-           href="https://developer.mozilla.org/en-US/docs/Web"
-           target="_blank"
-           rel="noopener"
-           class="info-row-link"
-           >developer.mozilla.org</a
-          >
-         </div>
-         <div class="info-row">
-          <span class="info-row-label">freeCodeCamp</span>
-          <span class="info-row-value"
-           >Free, project-based coding curriculum</span
-          >
-          <a
-           href="https://www.freecodecamp.org/"
-           target="_blank"
-           rel="noopener"
-           class="info-row-link"
-           >freecodecamp.org</a
-          >
-         </div>
-         <div class="info-row">
-          <span class="info-row-label">The Odin Project</span>
-          <span class="info-row-value"
-           >Full-stack web dev curriculum, start to finish</span
-          >
-          <a
-           href="https://www.theodinproject.com/"
-           target="_blank"
-           rel="noopener"
-           class="info-row-link"
-           >theodinproject.com</a
-          >
-         </div>
-         <div class="info-row">
-          <span class="info-row-label">Firebase Docs</span>
-          <span class="info-row-value"
-           >Official docs for the database powering this site</span
-          >
-          <a
-           href="https://firebase.google.com/docs"
-           target="_blank"
-           rel="noopener"
-           class="info-row-link"
-           >firebase.google.com/docs</a
-          >
-         </div>
-
-         <div class="mascot-prompt">
-          <img
-           class="mascot-prompt-img"
-           src="https://res.cloudinary.com/seioutloud/image/upload/v1785285594/IMG_2957-Photoroom-dithered_f1bsok.png"
-           alt="site mascot"
-          />
-          <div class="mascot-prompt-text">
-           <p class="mascot-prompt-speech">
-            Hullo, I'm Manny! I want to help you find some cool resources.
-            Click on the buttons below to start your search.
-           </p>
-           <p class="mascot-prompt-label">I want to...</p>
-           <div class="mascot-prompt-buttons">
-            <button
-             type="button"
-             class="mascot-btn"
-             data-category="code"
-             onclick="showResourceCategory('code')"
-            >Style my site</button>
-            <button
-             type="button"
-             class="mascot-btn"
-             data-category="graphics"
-             onclick="showResourceCategory('graphics')"
-            >Decorate!</button>
-            <button
-             type="button"
-             class="mascot-btn"
-             data-category="other"
-             onclick="showResourceCategory('other')"
-            >Find other resources</button>
-           </div>
+          </p>
+          <p style="margin-top: 0.75rem; margin-bottom: 0.25rem">
+           <strong>Credits</strong>
+          </p>
+          <div class="info-row">
+           <span class="info-row-label">Icons</span>
+           <span class="info-row-value">Pixel Safari</span>
+           <a
+            href="https://pixelsafari.neocities.org/favicon/"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >pixelsafari.neocities.org</a
+           >
+          </div>
+          <div class="info-row">
+           <span class="info-row-label">Image hosting</span>
+           <span class="info-row-value">Cloudinary</span>
+           <a
+            href="https://cloudinary.com"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >cloudinary.com</a
+           >
+          </div>
+          <div class="info-row">
+           <span class="info-row-label">Fonts</span>
+           <span class="info-row-value">Pixelify Sans</span>
+           <a
+            href="https://fonts.google.com/specimen/Pixelify+Sans"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >fonts.google.com</a
+           >
+          </div>
+          <div class="info-row">
+           <span class="info-row-label">Fonts</span>
+           <span class="info-row-value">Space Mono</span>
+           <a
+            href="https://fonts.google.com/specimen/Space+Mono"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >fonts.google.com</a
+           >
+          </div>
+          <div class="info-row">
+           <span class="info-row-label">Cursor</span>
+           <span class="info-row-value">Strawberry Pochacco set by Britichi6</span>
+           <a
+            href="https://www.rw-designer.com/cursor-set/strawberry-pochacco"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >rw-designer.com</a
+           >
+          </div>
+          <div class="info-row">
+           <span class="info-row-label">Deploy workflow</span>
+           <span class="info-row-value">Vercel → Neocities mirror tutorial</span>
+           <a
+            href="https://nenrikido.neocities.org/blog/post/deploy-site/"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >nenrikido.neocities.org</a
+           >
           </div>
          </div>
         </div>
        </div>
 
-       <!-- RESOURCE RESULTS — populated by showResourceCategory() based on
-            the mascot buttons above. Hidden until a category is chosen. -->
-       <div class="info-card info-card-wide info-card-featured info-card-results" id="resourceResultsCard">
+       <!-- WHY I MADE THIS -->
+       <div class="info-card">
         <div class="info-card-header">
-         <span id="resourceResultsTitle">RESOURCES</span>
+         <span>WHY_I_MADE_THIS.MD</span>
         </div>
-        <div class="info-card-body" id="resourceResultsBody">
-        </div>
-        <div class="info-pagination" id="resourceResultsPagination">
-         <button class="info-page-btn info-page-prev" id="resourceResultsPrev">← PREV</button>
-         <span class="info-page-indicator" id="resourceResultsIndicator">1 / 1</span>
-         <button class="info-page-btn info-page-next" id="resourceResultsNext">NEXT →</button>
+        <div
+         class="info-card-body info-origin-body"
+         style="text-transform: none"
+        >
+         <div class="info-origin-text" style="line-height: 1.6">
+          <p style="color: var(--text-sub)">
+           <strong>So why does this site even exist?</strong>
+          </p>
+          <p >
+           For all intents and purposes, Sei Out Loud is a corner on the web that I coded out of spite and anger, in retaliation against Big Algorithm! This is place where I can say and show things without worrying if people will enjoy it enough to give it a like, a comment or a repost. I barely experienced that era of the Internet when I was wee child with parents who did, unfortunately, give a damn about what their kid was looking at on the family computer. </p>
+           <p>That did not stop me from being a weird kid with "weird" interests, nor stop me from growing up into an adult with even more "weird" interests.</p>
+           <p>Everything Sei Out Loud is here because I thought it looked cool or held personal value to me. Things are here because I wanted them here, and the site functions. Out of free will. And you, Intrepid Neocities Wanderer, are here out of free will too! There will be no AI or data stealing or any of that corporate tech evildoing. I am here to be unapologetic, loud, and  unorganized.
+          </p>
+
+          <div class="info-origin-gallery">
+           <div class="origin-carousel">
+            <div
+             class="origin-carousel-viewport"
+             id="originCarouselViewport"
+             onclick="openSimpleViewer(encodeURIComponent(ORIGIN_SHOTS[originCarouselIndex].url), ORIGIN_SHOTS[originCarouselIndex].caption)"
+            >
+             <img id="originCarouselImg" src="" alt="Earlier version of this site" />
+            </div>
+            <div class="origin-carousel-caption" id="originCarouselCaption"></div>
+            <div class="origin-carousel-controls">
+             <button onclick="event.stopPropagation(); originCarouselNav(-1)" aria-label="Previous screenshot">‹</button>
+             <span class="origin-carousel-dots" id="originCarouselDots"></span>
+             <button onclick="event.stopPropagation(); originCarouselNav(1)" aria-label="Next screenshot">›</button>
+            </div>
+           </div>
+          </div>
+
+          <p style="color: var(--text-sub)">
+           This isn't the first shape this site has worn. The earliest
+           version leaned towards a more brutalist design and only had pages for an art gallery, blog posts and a bulletin board intended for my friends or other people I was willing to show the site to. I originally intended it to be a private thing.
+          </p>
+          <p style="color: var(--text-sub)">
+           A lot of the inspiration came from what I remember from my experience being on the internet as a kid. I remember
+          </p>
+          <p style="color: var(--text-sub); font-style: italic">
+           It's still not "done," and I don't think it ever will be! 
+          </p>
+         </div>
         </div>
        </div>
-
       </div>
      </div>
-     </section>
+    </section>
 
      <section id="goodies">
       <div class="category-nav" id="goodiesTabNav">
        <div class="category-tab-group" id="codeSnippetsTabGroup">
         <div class="category-tab active has-toc" data-subpage="code-snippets">
-         CODE SNIPPETS
+         TUTORIALS
          <span class="category-tab-caret">▾</span>
         </div>
         <div class="snippets-toc-dropdown" id="snippetsToc">
@@ -2230,6 +2194,11 @@
            data-snippet="custom-loader"
            onclick="loadSnippet('custom-loader')"
           >Custom Loading Messages</div>
+          <div
+           class="snippets-toc-item"
+           data-snippet="bulletin-board"
+           onclick="loadSnippet('bulletin-board')"
+          >Bulletin Board / Comment Box</div>
           <!--
              for adding more tutorials, copy paste block, add matching
              entry to SNIPPETS_DATA below, and give it a unique key:
@@ -2243,10 +2212,11 @@
         </div>
        </div>
        <div class="category-tab" data-subpage="graphics">GRAPHICS</div>
+       <div class="category-tab" data-subpage="resources">RESOURCES</div>
       </div>
       <div class="goodies-subpage active" id="goodies-code-snippets">
        <div class="about-personality-header">
-        <h2>Code Snippet<span>s</span></h2>
+        <h2>Tutorial<span>s</span></h2>
         <p>reusable bits and pieces. copy, paste, make them yours.</p>
        </div>
 
@@ -2264,6 +2234,133 @@
        </div>
        <div class="goodies-placeholder">
         <p class="widget-hint">// coming soon...</p>
+       </div>
+      </div>
+      <div class="goodies-subpage" id="goodies-resources">
+       <div class="info-page-layout">
+        <div class="info-stack">
+         <div class="section-header info-resources-header">
+          <h1>RESOURCE<span>S</span></h1>
+          <p>
+           tools, credits, and other corners of the internet that have been
+           taking up my bookmarks but are helpful and inspiring.
+          </p>
+         </div>
+
+         <!-- START HERE -->
+         <div class="info-card info-card-wide info-card-featured">
+          <div class="info-card-header">
+           <span>START_HERE.MD</span>
+          </div>
+          <div class="info-card-body">
+           <p class="info-featured-intro">
+            New to making your own website? These are the sources that have helped me a lot!
+           </p>
+           <div class="info-row">
+            <span class="info-row-label">MDN Web Docs</span>
+            <span class="info-row-value"
+             >THE reference for HTML, CSS, and JavaScript</span
+            >
+            <a
+             href="https://developer.mozilla.org/en-US/docs/Web"
+             target="_blank"
+             rel="noopener"
+             class="info-row-link"
+             >developer.mozilla.org</a
+            >
+           </div>
+           <div class="info-row">
+            <span class="info-row-label">freeCodeCamp</span>
+            <span class="info-row-value"
+             >Free, project-based coding curriculum</span
+            >
+            <a
+             href="https://www.freecodecamp.org/"
+             target="_blank"
+             rel="noopener"
+             class="info-row-link"
+             >freecodecamp.org</a
+            >
+           </div>
+           <div class="info-row">
+            <span class="info-row-label">The Odin Project</span>
+            <span class="info-row-value"
+             >Full-stack web dev curriculum, start to finish</span
+            >
+            <a
+             href="https://www.theodinproject.com/"
+             target="_blank"
+             rel="noopener"
+             class="info-row-link"
+             >theodinproject.com</a
+            >
+           </div>
+           <div class="info-row">
+            <span class="info-row-label">Firebase Docs</span>
+            <span class="info-row-value"
+             >Official docs for the database powering this site</span
+            >
+            <a
+             href="https://firebase.google.com/docs"
+             target="_blank"
+             rel="noopener"
+             class="info-row-link"
+             >firebase.google.com/docs</a
+            >
+           </div>
+
+           <div class="mascot-prompt">
+            <img
+             class="mascot-prompt-img"
+             src="https://res.cloudinary.com/seioutloud/image/upload/v1785285594/IMG_2957-Photoroom-dithered_f1bsok.png"
+             alt="site mascot"
+            />
+            <div class="mascot-prompt-text">
+             <p class="mascot-prompt-speech">
+              Hullo, I'm Manny! I want to help you find some cool resources.
+              Click on the buttons below to start your search.
+             </p>
+             <p class="mascot-prompt-label">I want to...</p>
+             <div class="mascot-prompt-buttons">
+              <button
+               type="button"
+               class="mascot-btn"
+               data-category="code"
+               onclick="showResourceCategory('code')"
+              >Style my site</button>
+              <button
+               type="button"
+               class="mascot-btn"
+               data-category="graphics"
+               onclick="showResourceCategory('graphics')"
+              >Decorate!</button>
+              <button
+               type="button"
+               class="mascot-btn"
+               data-category="other"
+               onclick="showResourceCategory('other')"
+              >Find other resources</button>
+             </div>
+            </div>
+           </div>
+          </div>
+         </div>
+
+         <!-- RESOURCE RESULTS — populated by showResourceCategory() based on
+              the mascot buttons above. Hidden until a category is chosen. -->
+         <div class="info-card info-card-wide info-card-featured info-card-results" id="resourceResultsCard">
+          <div class="info-card-header">
+           <span id="resourceResultsTitle">RESOURCES</span>
+          </div>
+          <div class="info-card-body" id="resourceResultsBody">
+          </div>
+          <div class="info-pagination" id="resourceResultsPagination">
+           <button class="info-page-btn info-page-prev" id="resourceResultsPrev">← PREV</button>
+           <span class="info-page-indicator" id="resourceResultsIndicator">1 / 1</span>
+           <button class="info-page-btn info-page-next" id="resourceResultsNext">NEXT →</button>
+          </div>
+         </div>
+        </div>
        </div>
       </div>
      </section>
@@ -2293,7 +2390,7 @@
   <div id="lightbox" class="lightbox" onclick="closeLightbox()">
    <div class="lightbox-content" onclick="event.stopPropagation()">
     <div class="lb-toolbar">
-     <span class="lb-toolbar-title" id="lb-title">FILE</span>
+     <span class="lb-toolbar-title" id="lb-title">A CLOSER LOOK</span>
      <div class="lb-toolbar-right">
       <div class="zoom-controls">
        <button

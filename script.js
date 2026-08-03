@@ -341,6 +341,49 @@
    document.addEventListener("DOMContentLoaded", renderSelfieCarousel);
 
    /* ═══════════════════════════════════════════════════════
+   COLOPHON PAGE — SITE HISTORY CAROUSEL
+   Placeholder screenshots — swap these URLs for real earlier-version
+   captures whenever they're ready.
+═══════════════════════════════════════════════════════ */
+   const ORIGIN_SHOTS = [
+    {
+     url: "https://placehold.co/800x500/1a1a1a/e0e0e0?text=v1+%E2%80%94+2023",
+     caption: "V1 — THE ORIGINAL STATIC PAGE",
+    },
+    {
+     url: "https://placehold.co/800x500/1a1a1a/e0e0e0?text=v2+%E2%80%94+2024",
+     caption: "V2 — FIRST REAL REDESIGN",
+    },
+    {
+     url: "https://placehold.co/800x500/1a1a1a/e0e0e0?text=v3+%E2%80%94+2025",
+     caption: "V3 — PRE-VERCEL ERA",
+    },
+   ];
+   let originCarouselIndex = 0;
+   function renderOriginCarousel() {
+    const img = document.getElementById("originCarouselImg");
+    if (!img || !ORIGIN_SHOTS.length) return;
+    const shot = ORIGIN_SHOTS[originCarouselIndex];
+    img.src = shot.url;
+    img.alt = shot.caption;
+    const cap = document.getElementById("originCarouselCaption");
+    if (cap) cap.textContent = shot.caption;
+    const dots = document.getElementById("originCarouselDots");
+    if (dots)
+     dots.innerHTML = ORIGIN_SHOTS.map(
+      (_, i) =>
+       `<span class="origin-carousel-dot${i === originCarouselIndex ? " is-active" : ""}"></span>`,
+     ).join("");
+   }
+   function originCarouselNav(dir) {
+    if (!ORIGIN_SHOTS.length) return;
+    originCarouselIndex =
+     (originCarouselIndex + dir + ORIGIN_SHOTS.length) % ORIGIN_SHOTS.length;
+    renderOriginCarousel();
+   }
+   document.addEventListener("DOMContentLoaded", renderOriginCarousel);
+
+   /* ═══════════════════════════════════════════════════════
    ABOUT PAGE — FAVORITES CAROUSELS (monsters / pokemon)
 ═══════════════════════════════════════════════════════ */
    const PLACEHOLDER_ICON = "https://res.cloudinary.com/seioutloud/image/upload/v1784842594/MH4U-Stygian_Zinogre_Icon_vjtxsw.webp";
@@ -608,6 +651,48 @@
      msgEl.textContent = random;
     };
 
+    /* -- bulletin board demo: local-only comment list, no real Firebase calls -- */
+    function renderDemoBoard() {
+     const list = document.getElementById("demoBoardList");
+     if (!list) return;
+     list.innerHTML = "";
+     window._demoBoardData.forEach((c) => {
+      const item = document.createElement("div");
+      item.className = "demo-board-comment";
+
+      const header = document.createElement("div");
+      header.className = "demo-board-comment-header";
+      const nameSpan = document.createElement("span");
+      nameSpan.textContent = c.name; // textContent, never innerHTML
+      const timeSpan = document.createElement("span");
+      timeSpan.textContent = c.time;
+      header.append(nameSpan, timeSpan);
+
+      const body = document.createElement("div");
+      body.className = "demo-board-comment-body";
+      body.textContent = c.text; // textContent, never innerHTML
+
+      item.append(header, body);
+      list.appendChild(item);
+     });
+     list.scrollTop = list.scrollHeight;
+    }
+    window.demoPostComment = function () {
+     const nameInput = document.getElementById("demoBoardName");
+     const msgInput = document.getElementById("demoBoardMsg");
+     const text = msgInput.value.trim();
+     if (!text) return;
+     const now = new Date();
+     window._demoBoardData.push({
+      name: nameInput.value.trim() || "Anonymous",
+      time: now.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit", hour12: true }),
+      text: text,
+     });
+     nameInput.value = "";
+     msgInput.value = "";
+     renderDemoBoard();
+    };
+
     const SNIPPETS_DATA = {
      "word-of-the-day": {
       title: "Word of the Day Dictionary",
@@ -824,7 +909,7 @@ function refreshWotd() {
       },
      ],
       tip:
-       "If you'd like a truly random word instead of a daily one, swap <code>getDayNumber() % list.length</code> for <code>Math.floor(Math.random() * list.length)</code> — just know it'll pick a new one on every page refresh instead of once a day.",
+       "If you'd like a truly random word instead of a daily one, swap <code>getDayNumber() % list.length</code> for <code>Math.floor(Math.random() * list.length)</code> — just know it'll pick a new one on every page refresh instead of once a day.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date\" target=\"_blank\" rel=\"noopener\">MDN: Date reference</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array\" target=\"_blank\" rel=\"noopener\">MDN: Array reference</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Document/DOMContentLoaded_event\" target=\"_blank\" rel=\"noopener\">MDN: DOMContentLoaded event</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://www.geeksforgeeks.org/random-quote-generator-using-html-css-and-javascript/\" target=\"_blank\" rel=\"noopener\">GeeksforGeeks: Random Quote Generator</a>",
     },
 
     "popup-modal": {
@@ -1030,7 +1115,7 @@ document.addEventListener("DOMContentLoaded", () => {
       },
      ],
       tip:
-       "Combine the \"once\" and \"specific page\" patterns so the advisory only auto-shows on your home page and only on a visitor's first visit. Keep the wording short and centered, a wall of text is easy to skim past without reading, which defeats the point of an advisory (unless you’re using the pop up modal to display new updates and you happen to have a lot of updates, then carry on. Use a high <code>z-index</code> (like 10000) so it sits above your nav, sidebars, and any other overlays. And make sure <b>Abort</b> actually goes somewhere !! since some visitors will genuinely want to leave rather than dismiss and scroll past.",
+       "Combine the \"once\" and \"specific page\" patterns so the advisory only auto-shows on your home page and only on a visitor's first visit. Keep the wording short and centered, a wall of text is easy to skim past without reading, which defeats the point of an advisory (unless you’re using the pop up modal to display new updates and you happen to have a lot of updates, then carry on. Use a high <code>z-index</code> (like 10000) so it sits above your nav, sidebars, and any other overlays. And make sure <b>Abort</b> actually goes somewhere !! since some visitors will genuinely want to leave rather than dismiss and scroll past.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/position\" target=\"_blank\" rel=\"noopener\">MDN: position</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/z-index\" target=\"_blank\" rel=\"noopener\">MDN: z-index</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage\" target=\"_blank\" rel=\"noopener\">MDN: Window.localStorage</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://webdesign.tutsplus.com/how-to-build-flexible-modal-dialogs-with-html-css-and-javascript--cms-33500t\" target=\"_blank\" rel=\"noopener\">Envato Tuts+: Building flexible modal dialogs from scratch</a>",
     },
 
     "theme-toggle": {
@@ -1154,7 +1239,7 @@ document.addEventListener("DOMContentLoaded", function () {
       {
        label: "Bonus: How to Make 3+ Themes",
        note:
-          "Are you a greedy bastard or simply a person that contains multitudes? If you want more than two themes, you have to do something a little different.  Classes can only be on or off, so for 3+ themes you need use something called a 'data attribute' instead. Data attributes are custom attributes you can add to any HTML element (like data-theme=\"sepia\"), and they can hold any text value — not just on/off. In CSS, you target them with body[data-theme=\"sepia\"] instead of body.sepia.",
+          "Are you a greedy ***** or simply a person that contains multitudes? If you want more than two themes, you have to do something a little different.  Classes can only be on or off, so for 3+ themes you need use something called a 'data attribute' instead. Data attributes are custom attributes you can add to any HTML element (like data-theme=\"sepia\"), and they can hold any text value — not just on/off. In CSS, you target them with body[data-theme=\"sepia\"] instead of body.sepia.",
         lang: "css",
         code:
 `/* default theme (no data-theme attribute needed) */
@@ -1219,7 +1304,7 @@ function cycleTheme() {
       },
      ],
       tip:
-        "I've said it before, I'll say it again. Keep the 'remember their choice' code (Step 6) as close to the top of your page as possible (ideally right after <code>&lt;body&gt;</code> opens) so the theme is set before anything renders. Otherwise visitors might see a flash of the wrong theme. Wrap your localStorage calls in <code>try/catch</code> as a safety net for browsers that block it (like private browsing mode); the toggle still works fine for that visit, it just won't remember. Use the same variable names across all your themes — if your default theme has <code>--bg</code>, every other theme needs a <code>--bg</code> too, or elements will fall back to the browser default. Test your color combinations with a contrast checker to make sure text stays readable in every theme. And remember: your themes don't have to be light/dark. A warm sepia, a pastel palette, a high-contrast option — anything goes as long as the variables change.",
+        "I've said it before, I'll say it again. Keep the 'remember their choice' code (Step 6) as close to the top of your page as possible (ideally right after <code>&lt;body&gt;</code> opens) so the theme is set before anything renders. Otherwise visitors might see a flash of the wrong theme. Wrap your localStorage calls in <code>try/catch</code> as a safety net for browsers that block it (like private browsing mode); the toggle still works fine for that visit, it just won't remember. Use the same variable names across all your themes — if your default theme has <code>--bg</code>, every other theme needs a <code>--bg</code> too, or elements will fall back to the browser default. Test your color combinations with a contrast checker to make sure text stays readable in every theme. And remember: your themes don't have to be light/dark. A warm sepia, a pastel palette, a high-contrast option — anything goes as long as the variables change.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Cascading_variables/Using_custom_properties\" target=\"_blank\" rel=\"noopener\">MDN: Using CSS custom properties</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Element/classList\" target=\"_blank\" rel=\"noopener\">MDN: Element.classList</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage\" target=\"_blank\" rel=\"noopener\">MDN: Window.localStorage</a><br>&bull; <a href=\"https://webaim.org/resources/contrastchecker/\" target=\"_blank\" rel=\"noopener\">WebAIM Contrast Checker</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://www.digitalocean.com/community/tutorials/css-theming-custom-properties\" target=\"_blank\" rel=\"noopener\">DigitalOcean: Creating a dark-mode theme with CSS variables</a>",
     },
 
     "falling-elements": {
@@ -1548,7 +1633,7 @@ document.addEventListener("DOMContentLoaded", initFalling);`,
       },
      ],
       tip:
-       "If you want the little icon itself to animate, you need to use a sprite sheet (one image with several frames laid side by side) and animate <code>background-position</code> with a <code>steps()</code> timing function sized to your frame count. It's the same trick classic 2D game sprites use.<br><br><strong>Note on characters &amp; fonts:</strong> Not every font can render every Unicode character! If your chosen symbol (like ✿ or .ᐟ) shows up as a blank box or question mark, it means your primary font lacks that glyph. To fix this, wrap your symbol in a <code>&lt;span&gt;</code> with dedicated symbol fonts:<br><br><code>&lt;span style=&quot;font-family: 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols', sans-serif;&quot;&gt;✿&lt;/span&gt;</code><br><br><strong>Recommended fonts for symbols &amp; special characters:</strong><br>• <strong>Segoe UI Symbol:</strong> Best for Windows users (covers general symbols, geometric shapes, and dingbats).<br>• <strong>Apple Symbols:</strong> The standard fallback built into macOS and iOS.<br>• <strong>Noto Sans Symbols:</strong> Google's comprehensive font for Android/Linux (also available free on Google Fonts for web use).<br>• <strong>Segoe UI Emoji / Apple Color Emoji:</strong> Great if you want characters rendered as full-color emojis.<br><br>Always test your characters in browser dev tools—if a symbol breaks, inspect it under the &quot;Computed&quot; styles tab to see which font the browser is falling back to.",
+       "If you want the little icon itself to animate, you need to use a sprite sheet (one image with several frames laid side by side) and animate <code>background-position</code> with a <code>steps()</code> timing function sized to your frame count. It's the same trick classic 2D game sprites use.<br><br><strong>Note on characters &amp; fonts:</strong> Not every font can render every Unicode character! If your chosen symbol (like ✿ or .ᐟ) shows up as a blank box or question mark, it means your primary font lacks that glyph. To fix this, wrap your symbol in a <code>&lt;span&gt;</code> with dedicated symbol fonts:<br><br><code>&lt;span style=&quot;font-family: 'Segoe UI Symbol', 'Apple Symbols', 'Noto Sans Symbols', sans-serif;&quot;&gt;✿&lt;/span&gt;</code><br><br><strong>Recommended fonts for symbols &amp; special characters:</strong><br>• <strong>Segoe UI Symbol:</strong> Best for Windows users (covers general symbols, geometric shapes, and dingbats).<br>• <strong>Apple Symbols:</strong> The standard fallback built into macOS and iOS.<br>• <strong>Noto Sans Symbols:</strong> Google's comprehensive font for Android/Linux (also available free on Google Fonts for web use).<br>• <strong>Segoe UI Emoji / Apple Color Emoji:</strong> Great if you want characters rendered as full-color emojis.<br><br>Always test your characters in browser dev tools—if a symbol breaks, inspect it under the &quot;Computed&quot; styles tab to see which font the browser is falling back to.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Window/setInterval\" target=\"_blank\" rel=\"noopener\">MDN: Window.setInterval()</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/animation-timing-function\" target=\"_blank\" rel=\"noopener\">MDN: animation-timing-function</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes\" target=\"_blank\" rel=\"noopener\">MDN: @keyframes</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://webdesign.tutsplus.com/how-to-create-animated-snow-on-a-website-with-css-and-javascript--cms-93562t\" target=\"_blank\" rel=\"noopener\">Envato Tuts+: Animated snow with CSS and JavaScript</a>",
      },
 
     "theme-image": {
@@ -1639,7 +1724,7 @@ body.dark .theme-image-dark  { display: block; }  /* show dark */`,
       },
      ],
       tip:
-       "Preload both images (like the <code>loading=\"eager\"</code> above) so there's no flash or pop-in the first time the theme switches, this way the  the browser already has both versions cached and ready to show.",
+       "Preload both images (like the <code>loading=\"eager\"</code> above) so there's no flash or pop-in the first time the theme switches, this way the  the browser already has both versions cached and ready to show.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme\" target=\"_blank\" rel=\"noopener\">MDN: prefers-color-scheme</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/display\" target=\"_blank\" rel=\"noopener\">MDN: display</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/HTMLImageElement/loading\" target=\"_blank\" rel=\"noopener\">MDN: HTMLImageElement.loading</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://chipcullen.com/how-to-have-dark-mode-image-that-works-with-user-choice-yo/\" target=\"_blank\" rel=\"noopener\">Chip Cullen: Dark & light mode images that respect user choice</a>",
     },
 
     "custom-loader": {
@@ -1827,8 +1912,524 @@ body.dark .loader-spinner-img {
       },
      ],
      tip:
-      "Just a couple of ideas on how to customize further. You can use a different CSS animation for the spinner, or swap the random pick for a sequential one that cycles through messages in order if you'd rather visitors see them all before repeats. If you have different themes for your site, I also recommend adjusting the background color of the loader overlay to match your theme.",
+      "Just a couple of ideas on how to customize further. You can use a different CSS animation for the spinner, or swap the random pick for a sequential one that cycles through messages in order if you'd rather visitors see them all before repeats. If you have different themes for your site, I also recommend adjusting the background color of the loader overlay to match your theme.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Math/random\" target=\"_blank\" rel=\"noopener\">MDN: Math.random()</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Window/setTimeout\" target=\"_blank\" rel=\"noopener\">MDN: Window.setTimeout()</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/@keyframes\" target=\"_blank\" rel=\"noopener\">MDN: @keyframes</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/CSS/backdrop-filter\" target=\"_blank\" rel=\"noopener\">MDN: backdrop-filter</a>",
     },
+
+    "bulletin-board": {
+     title: "Realtime Bulletin Board (Firebase)",
+     demoHtml: `
+      <div class="demo-board-wrap">
+        <div class="demo-board-list" id="demoBoardList"></div>
+        <div class="demo-board-controls">
+          <input type="text" id="demoBoardName" class="demo-board-input" placeholder="Name (optional)" maxlength="30" />
+          <div class="demo-board-row">
+            <textarea id="demoBoardMsg" class="demo-board-input demo-board-textarea" placeholder="Say something..." maxlength="200" rows="1"></textarea>
+            <button class="demo-theme-toggle-btn" onclick="demoPostComment()">Post</button>
+          </div>
+        </div>
+      </div>`,
+     initDemo: function () {
+      window._demoBoardData = [
+       { name: "SEI", time: "9:41 AM", text: "I am inside your comment section." },
+       { name: "Anon. Sleepy Pigeon", time: "2:14 PM", text: "coo... just passing through" },
+      ];
+      renderDemoBoard();
+     },
+     blurb:
+      "A little comment box that syncs in <b>real time</b> using <b>Firebase Realtime Database</b>, a free cloud database from Google that stores your data and instantly pushes any changes out to every visitor watching the page. It's the same <b>backend</b> (the behind-the-scenes part of a site that stores and manages data, as opposed to the <b>frontend</b>, the part visitors actually see and click on) powering the bulletin board on this site. Someone types a message, hits post, and it shows up for everyone else on the page, badabing badaboom. Here's how to make the simple stacked-list version first since it's the most beginner-friendly and easiest to restyle into your own site, then cover turning it into a free-roam corkboard of draggable sticky notes like mine, plus a few tips for keeping it from getting spammed. Try entering a comment in the comment box in the example. :)",
+     sections: [
+      {
+       label: "Step 1: Create a Firebase Project + Realtime Database",
+       note:
+        "<b>Firebase</b> is a free backend service by Google, we're using it because it needs zero server code on your end, which is perfect for static sites hosted on places like <b>Neocities</b> or <b>GitHub Pages</b>. Go to the <a href=\"https://console.firebase.google.com/\" target=\"_blank\" rel=\"noopener\">Firebase Console</a> and create a new project (you can skip Google Analytics, you don't need it here). Inside your project, click <b>Build → Realtime Database</b> (not <b>Firestore</b>, a separate database product Firebase also offers, more on the difference in the closing tip) and create one, starting in <b>test mode</b> so it's easier to set up, we'll lock it down properly in the next step since test mode leaves it wide open. Then go to <b>Project Settings → General</b>, scroll to \"Your apps,\" and register a new <b>Web app</b>. Firebase will hand you a <b>config object</b>, a small bundle of IDs and URLs that tells your site which Firebase project to talk to, keep it somewhere safe, you'll need it again soon.",
+       lang: "javascript",
+       code:
+`// found in Project Settings → General → Your apps
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "your-project.firebaseapp.com",
+  databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+  projectId: "your-project",
+  storageBucket: "your-project.appspot.com",
+  messagingSenderId: "1234567890",
+  appId: "1:1234567890:web:abcdef123456"
+};
+
+// this isn't a secret password, it's safe to have this visible in your
+// site's public JavaScript. Security Rules (next step) are what actually
+// control who can read and write your data, not this config.`,
+      },
+      {
+       label: "Step 2: Lock Down Your Database Rules",
+       note:
+        "Easy step to skip, but please don't! Test mode leaves your database completely open, anyone can read, write, or wipe it entirely, and those rules also expire after 30 days and lock everything shut. <b>Security Rules</b> are Firebase's own gatekeeper, they run on Firebase's servers rather than in a visitor's browser, so unlike a JavaScript check, they can't be edited or skipped by anyone poking around your site's code. In the Firebase Console, go to <b>Realtime Database → Rules</b> and replace them with something like this. It limits writes to a \"comments\" node, and the <b>.validate</b> line rejects anything that isn't shaped like a real comment, like a missing message, or one that's way too long.",
+       lang: "json",
+       code:
+`{
+  "rules": {
+    "comments": {
+      ".read": true,
+      ".write": true,
+      "$commentId": {
+        ".validate": "newData.hasChildren(['text', 'timestamp']) && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 500"
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}`,
+      },
+      {
+       label: "Step 3: Add the Firebase SDK to Your Site",
+       note:
+        "An <b>SDK</b> (short for Software Development Kit) is just the bundle of pre-written code a company gives you so you can talk to their service without building that connection yourself. We're using the <b>compat</b> version of Firebase's SDK because it works with a plain &lt;script&gt; tag and creates a global <b>firebase</b> object your code can call, no bundler or build step needed, which matters if you're on a static host. Add both of these BEFORE your own script file, order matters here since your script depends on that global existing first.",
+       lang: "html",
+       code:
+`<!-- check firebase.google.com/docs for the current version number -->
+<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-database-compat.js"></script>
+
+<!-- your own script goes AFTER the two above -->
+<script src="script.js"></script>`,
+      },
+      {
+       label: "Step 4: The HTML",
+       note:
+        "A name field (optional, people can stay anonymous if that's better), a message box, a post button, and an empty list where comments will render in. This structure doesn't lock you into any particular visual style aside from the simple comment box look, restyle it however fits your site, since the JavaScript only looks for the <b>id</b> attributes below, not any specific classes or layout.",
+       lang: "html",
+       code:
+`<div class="comment-box">
+  <div class="comment-list" id="commentList"></div>
+
+  <div class="comment-form">
+    <input
+      type="text"
+      id="commentName"
+      class="comment-input"
+      placeholder="Name (optional)"
+      maxlength="30"
+    />
+    <div class="comment-form-row">
+      <textarea
+        id="commentText"
+        class="comment-input comment-textarea"
+        placeholder="Say something..."
+        maxlength="500"
+        rows="2"
+      ></textarea>
+      <button class="comment-submit" onclick="postComment()">Post</button>
+    </div>
+  </div>
+</div>`,
+      },
+      {
+       label: "Step 5: Connect to the Database",
+       note:
+        "Paste in the config object you copied in Step 1, replacing the placeholder values. Then <b>initialize</b> Firebase (start up the connection using your config) and grab a <b>reference</b>, basically a pointer to one specific spot in your database, kind of like a file path, to a \"comments\" node. That's just a name for where all the messages will live, call it whatever you'd like, just stay consistent with whatever name you used in your Security Rules.",
+       lang: "javascript",
+       code:
+`firebase.initializeApp(firebaseConfig); // firebaseConfig is the object from Step 1
+const db = firebase.database();
+const commentsRef = db.ref("comments");`,
+      },
+      {
+       label: "Step 6: Posting a Comment",
+       note:
+        "<b>push()</b> adds a new entry under commentsRef with a unique, auto-generated ID, so two comments never collide. <b>firebase.database.ServerValue.TIMESTAMP</b> is a special placeholder value that tells Firebase to fill in the current time using its own server clock once the write lands, instead of trusting the visitor's device clock, which could be wrong, or deliberately faked. Always <b>trim()</b> the text (strips extra whitespace from the start and end) and bail out early if it's empty, so no one can post a blank comment.",
+       lang: "javascript",
+       code:
+`function postComment() {
+  const textInput = document.getElementById("commentText");
+  const nameInput = document.getElementById("commentName");
+  const text = textInput.value.trim();
+  if (!text) return; // don't post empty comments
+
+  const name = nameInput.value.trim() || "Anonymous";
+
+  commentsRef.push({
+    name: name,
+    text: text,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
+  });
+
+  textInput.value = "";
+  nameInput.value = "";
+}`,
+      },
+      {
+       label: "Step 7: Displaying Comments in Real Time",
+       note:
+        "<b>child_added</b> is a type of <b>listener</b>, a function that runs automatically whenever something happens instead of you having to check for it yourself. It fires once for every existing comment when the page first loads, then again automatically whenever a new one gets pushed, no manual refreshing or polling needed. <b>limitToLast(50)</b> keeps you from downloading your entire comment history on every visit, only the 50 most recent load in. <b>Important:</b> use <b>textContent</b> for anything a visitor typed, never <b>innerHTML</b>. innerHTML tells the browser to parse a string as actual HTML, so if you used it here, someone could type a comment containing a hidden script and have it run on every visitor's screen, an attack called <b>XSS</b> (cross-site scripting). textContent always treats the string as plain, inert text, so it's the safe choice.",
+       lang: "javascript",
+       code:
+`commentsRef.orderByChild("timestamp").limitToLast(50).on("child_added", (snapshot) => {
+  renderComment(snapshot.val());
+});
+
+function renderComment(comment) {
+  const list = document.getElementById("commentList");
+
+  const item = document.createElement("div");
+  item.className = "comment-item";
+
+  const header = document.createElement("div");
+  header.className = "comment-item-header";
+  const time = new Date(comment.timestamp).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  header.textContent = comment.name + " · " + time; // textContent, never innerHTML
+
+  const body = document.createElement("div");
+  body.className = "comment-item-body";
+  body.textContent = comment.text; // textContent, never innerHTML
+
+  item.append(header, body);
+  list.appendChild(item);
+  list.scrollTop = list.scrollHeight; // auto-scroll to the newest comment
+}`,
+      },
+      {
+       label: "Step 8: Style It Like a Simple Comment Box",
+       note:
+        "A clean, stacked list is the easiest style to fit into an existing site, no absolute positioning or drag logic required. <b>var(--variable-name, fallback)</b> is CSS's syntax for reading a <b>custom property</b> (a reusable value you define once and reference everywhere, similar to a variable in JavaScript), with a backup value after the comma in case that property isn't defined. That means this CSS automatically picks up your site's own color scheme if you already have CSS variables set up (see the Theme System tutorial), and just falls back to the value after the comma if you don't.",
+       lang: "css",
+       code:
+`.comment-box {
+  display: flex;
+  flex-direction: column;
+  max-width: 420px;
+  border: 1.5px solid var(--border, #ccc);
+  border-radius: var(--radius-sm, 6px);
+  overflow: hidden;
+}
+
+.comment-list {
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  background: var(--bg2, #fafafa);
+}
+
+.comment-item {
+  background: var(--bg, #fff);
+  border: 1px solid var(--border-lt, #ddd);
+  border-radius: var(--radius-sm, 6px);
+  padding: 0.5rem 0.7rem;
+}
+
+.comment-item-header {
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--accent, #7c8f6f);
+  margin-bottom: 0.15rem;
+}
+
+.comment-item-body {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: var(--text, #222);
+  word-wrap: break-word;
+}
+
+.comment-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 0.75rem;
+  border-top: 1.5px solid var(--border, #ccc);
+}
+
+.comment-form-row { display: flex; gap: 0.5rem; align-items: flex-end; }
+
+.comment-input {
+  flex: 1;
+  min-width: 0;
+  font: inherit;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid var(--border-lt, #ddd);
+  border-radius: var(--radius-sm, 6px);
+  background: var(--bg, #fff);
+  color: var(--text, #222);
+}
+
+.comment-textarea { resize: vertical; min-height: 38px; }
+
+.comment-submit {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: var(--radius-sm, 6px);
+  background: var(--accent, #7c8f6f);
+  color: #fff;
+  cursor: pointer;
+  white-space: nowrap;
+}`,
+      },
+      {
+       label: "Step 9: A Quick Spam Cooldown",
+       note:
+        "A simple, client-side cooldown using <b>localStorage</b> (a small storage space in the visitor's own browser that remembers values between visits) stops the same visitor from posting over and over in a short span. This replaces the postComment() function from Step 6, adding one check at the very top. It's not real security, since anyone can clear their browser storage or open a private window to reset it, only actual Security Rules enforcement (next step) can't be gotten around that way, but it does stop casual spam and accidental double-posts with almost no effort.",
+       lang: "javascript",
+       code:
+`const COOLDOWN_MS = 30000; // 30 seconds between posts
+
+function canPost() {
+  const last = localStorage.getItem("lastPostTime");
+  return !last || Date.now() - parseInt(last) >= COOLDOWN_MS;
+}
+
+function postComment() {
+  if (!canPost()) {
+    alert("Please wait a bit before posting again!");
+    return;
+  }
+
+  const textInput = document.getElementById("commentText");
+  const nameInput = document.getElementById("commentName");
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  commentsRef.push({
+    name: nameInput.value.trim() || "Anonymous",
+    text: text,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
+  });
+
+  localStorage.setItem("lastPostTime", String(Date.now()));
+  textInput.value = "";
+  nameInput.value = "";
+}`,
+      },
+      {
+       label: "Step 10: Limit Each Visitor to One Comment, For Real",
+       note:
+        "The cooldown above only slows people down, it doesn't actually stop anyone determined, since it's just a value sitting in their own browser. To truly enforce \"one comment per visitor,\" Firebase itself has to check on its own server, which means giving each visitor an identity it can verify. <b>Firebase Authentication</b> can sign visitors in <b>anonymously</b>, no login form, no email or password, it just quietly assigns their browser a permanent, unique ID called a <b>UID</b> the first time they load your page, and that ID persists across future visits. First, add the auth SDK alongside your other two script tags from Step 3, then turn on anonymous sign-in for your project: in the Firebase Console, go to <b>Build → Authentication → Get Started</b>, open the <b>Sign-in method</b> tab, and enable <b>Anonymous</b>.",
+       lang: "html",
+       code:
+`<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/12.16.0/firebase-auth-compat.js"></script>
+
+<script src="script.js"></script>`,
+      },
+      {
+       label: "Step 10 (continued): Updated Security Rules",
+       note:
+        "This replaces your Step 2 rules. Instead of a random push() ID, each comment is now keyed by the visitor's own UID, meaning a visitor can only ever have one comment total: <b>data.exists()</b> checks whether something is already saved at that exact spot, and <b>!data.exists()</b> means the write is only allowed if nothing's there yet. <b>auth.uid === $uid</b> also makes sure a signed-in visitor can only ever write to their own slot, never anyone else's.",
+       lang: "json",
+       code:
+`{
+  "rules": {
+    "comments": {
+      ".read": true,
+      "$uid": {
+        ".write": "auth != null && auth.uid === $uid && !data.exists()",
+        ".validate": "newData.hasChildren(['text', 'timestamp']) && newData.child('text').isString() && newData.child('text').val().length > 0 && newData.child('text').val().length <= 500"
+      }
+    },
+    "$other": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}`,
+      },
+      {
+       label: "Step 10 (continued): Sign In + Update postComment()",
+       note:
+        "onAuthStateChanged is a listener that fires once when the page loads, telling you whether this browser already has a saved anonymous session (a returning visitor) or needs a new one. signInAnonymously() creates that new session, which then fires onAuthStateChanged again with the new user, this is the pattern Firebase's own docs recommend so you never accidentally create a second account for the same visitor. Since the comment is now saved with <b>.set()</b> at a path named after the visitor's UID instead of a random push() ID, trying to post again lands on that exact same path and gets rejected by the Step 10 rules above, so .catch() is there to tell the visitor why.",
+       lang: "javascript",
+       code:
+`let currentUid = null;
+
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    currentUid = user.uid; // returning visitor, already has a session
+  } else {
+    firebase.auth().signInAnonymously(); // new visitor, fires this listener again once done
+  }
+});
+
+function postComment() {
+  if (!currentUid) return; // still signing in, try again in a moment
+
+  const textInput = document.getElementById("commentText");
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  db.ref("comments/" + currentUid).set({
+    name: document.getElementById("commentName").value.trim() || "Anonymous",
+    text: text,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
+  }).catch(() => {
+    alert("Looks like you've already posted, only one comment per visitor!");
+  });
+
+  textInput.value = "";
+}`,
+      },
+      {
+       label: "Step 11: A Basic Word Filter (Optional)",
+       note:
+        "A quick first line of defense: check the text against a list of blocked words before it ever reaches the database. <b>toLowerCase()</b> makes the check case-insensitive, and <b>some()</b> returns true the moment any word in your list is found. Be upfront with yourself about its limits though, this only catches exact matches, so spacing it out, swapping letters for symbols, or misspellings will slip right through. It's a helpful filter, not a moderation system, you'll still want to check your board occasionally and delete anything that gets through, either from the Firebase Console directly or an admin panel of your own.",
+       lang: "javascript",
+       code:
+`const BLOCKED_WORDS = ["badword1", "badword2"]; // fill in your own list
+
+function containsBlockedWord(text) {
+  const lower = text.toLowerCase();
+  return BLOCKED_WORDS.some((word) => lower.includes(word));
+}
+
+// add this check to the top of whichever postComment() you're using
+function postComment() {
+  const textInput = document.getElementById("commentText");
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  if (containsBlockedWord(text)) {
+    alert("Please keep it friendly! Your message wasn't posted.");
+    return;
+  }
+
+  // ...continue with the rest of postComment() from whichever step you're on
+}`,
+      },
+      {
+       label: "Variation: Turning the List into a Free-Roam Corkboard",
+       note:
+        "Want scattered, draggable sticky notes like the board on this site instead of a stacked list? Two changes get you there: give each comment a random position when it's posted, then draw it at that position instead of appending it to the bottom of a list. First, swap the id=\"commentList\" container from Step 4 for a taller, scrollable id=\"commentCanvas\" one, matching the CSS a couple sections down. Then in postComment(), save an <b>xPct</b> and <b>yPct</b>, a horizontal and vertical position written as a percentage rather than a fixed pixel amount, so it scales cleanly with the container instead of breaking on different screen sizes. The snippet below only shows what's changing, merge it into whichever postComment() you already have (plain, with the Step 9 cooldown, or the Step 10 one-per-visitor version), rather than replacing it outright and losing that protection.",
+       lang: "javascript",
+       code:
+`// the plain version from Step 6, with two fields added, merge these into
+// whichever postComment() you're actually using (Step 9's cooldown or
+// Step 10's one-per-visitor version) instead of replacing it outright
+function postComment() {
+  const textInput = document.getElementById("commentText");
+  const text = textInput.value.trim();
+  if (!text) return;
+
+  commentsRef.push({
+    name: document.getElementById("commentName").value.trim() || "Anonymous",
+    text: text,
+    timestamp: firebase.database.ServerValue.TIMESTAMP,
+    xPct: Math.random() * 75, // leave margin so notes don't hang off the edge
+    yPct: Math.random() * 70,
+  });
+
+  textInput.value = "";
+}
+
+// then render by position instead of appending to a list:
+function renderComment(comment) {
+  const canvas = document.getElementById("commentCanvas");
+  const item = document.createElement("div");
+  item.className = "comment-note";
+  item.style.left = (comment.xPct / 100) * canvas.offsetWidth + "px";
+  item.style.top = (comment.yPct / 100) * canvas.offsetHeight + "px";
+
+  const header = document.createElement("div");
+  header.className = "comment-note-header";
+  const time = new Date(comment.timestamp).toLocaleTimeString([], { hour: "numeric", minute: "2-digit" });
+  header.textContent = comment.name + " · " + time;
+
+  const body = document.createElement("div");
+  body.className = "comment-note-body";
+  body.textContent = comment.text;
+
+  item.append(header, body);
+  canvas.appendChild(item);
+  makeDraggable(item, header, canvas); // see below
+}`,
+      },
+      {
+       label: "Variation (continued): Making Notes Draggable",
+       note:
+        "This lets visitors drag notes around on their own screen for fun, it's purely visual and never writes anything back to the database, so everyone still starts from the same layout on their next page load. It's attached to the note's header rather than the whole note, so the header becomes a <b>drag handle</b>, and the position gets <b>clamped</b> (kept within a min/max range using Math.max/Math.min together) so a note can't be dragged outside its container.",
+       lang: "javascript",
+       code:
+`function makeDraggable(el, handle, parent) {
+  let startX = 0, startY = 0;
+
+  handle.onmousedown = function (e) {
+    e.preventDefault();
+    startX = e.clientX;
+    startY = e.clientY;
+    document.onmousemove = drag;
+    document.onmouseup = stopDrag;
+  };
+
+  function drag(e) {
+    const dx = startX - e.clientX;
+    const dy = startY - e.clientY;
+    startX = e.clientX;
+    startY = e.clientY;
+
+    let top = el.offsetTop - dy;
+    let left = el.offsetLeft - dx;
+
+    // clamp so the note can't be dragged outside the canvas
+    top = Math.max(0, Math.min(top, parent.offsetHeight - el.offsetHeight));
+    left = Math.max(0, Math.min(left, parent.offsetWidth - el.offsetWidth));
+
+    el.style.top = top + "px";
+    el.style.left = left + "px";
+  }
+
+  function stopDrag() {
+    document.onmousemove = null;
+    document.onmouseup = null;
+  }
+}`,
+      },
+      {
+       label: "Variation (continued): Canvas + Note CSS",
+       note:
+        "The canvas needs <b>position: relative</b> so the notes, set to <b>position: absolute</b>, place themselves relative to it rather than the whole page, plus a fixed height with <b>overflow: auto</b> so there's a scrollable area to scatter notes across. <b>cursor: move</b> on the header hints to visitors that it's draggable.",
+       lang: "css",
+       code:
+`.comment-canvas {
+  position: relative;
+  width: 100%;
+  height: 400px;
+  overflow: auto;
+  border: 1.5px solid var(--border, #ccc);
+  border-radius: var(--radius-sm, 6px);
+}
+
+.comment-note {
+  position: absolute;
+  width: 180px;
+  background: var(--bg, #fff);
+  border: 1.5px solid var(--border, #ccc);
+  border-radius: var(--radius-sm, 6px);
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+}
+
+.comment-note-header {
+  background: var(--accent, #7c8f6f);
+  color: #fff;
+  padding: 5px 8px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  cursor: move; /* hints that it's draggable */
+  user-select: none;
+}
+
+.comment-note-body {
+  padding: 8px;
+  font-size: 0.75rem;
+  color: var(--text, #222);
+  word-wrap: break-word;
+}`,
+      },
+     ],
+     tip:
+      "A few more things worth knowing before you launch this:<br><br>&bull; <b>Prune old comments.</b> A Realtime Database that grows forever gets slower to load and costs more on Firebase's free tier. Consider deleting anything older than a set number of days, or capping the total count and dropping the oldest ones once you go over.<br>&bull; <b>Test your rules before you trust them.</b> The Rules tab in the Firebase Console has a built-in simulator, use it to try a few reads and writes and confirm they're actually allowed or denied the way you expect, before real visitors find the gaps for you.<br>&bull; <b>Realtime Database vs. Firestore.</b> Firebase actually offers two databases. We used Realtime Database here since it's simpler and cheaper for small, frequently-updated data like a comment feed, Firestore suits more structured, larger-scale apps better.<br><br><b>Sources &amp; further reading:</b><br>&bull; <a href=\"https://firebase.google.com/docs/database/web/start\" target=\"_blank\" rel=\"noopener\">Firebase Realtime Database docs</a><br>&bull; <a href=\"https://firebase.google.com/docs/database/security\" target=\"_blank\" rel=\"noopener\">Firebase Security Rules docs</a><br>&bull; <a href=\"https://firebase.google.com/docs/database/security/user-security\" target=\"_blank\" rel=\"noopener\">Firebase: user-based Security Rules</a><br>&bull; <a href=\"https://firebase.google.com/docs/auth/web/anonymous-auth\" target=\"_blank\" rel=\"noopener\">Firebase Anonymous Authentication docs</a><br>&bull; <a href=\"https://developer.mozilla.org/en-US/docs/Web/API/Node/textContent\" target=\"_blank\" rel=\"noopener\">MDN: textContent vs. innerHTML (XSS)</a><br><br><b>See a similar build:</b><br>&bull; <a href=\"https://dev.to/digital-abetka/blog-comment-system-on-firebase-xss-protection-and-0-cost-4fb8\" target=\"_blank\" rel=\"noopener\">Building a self-hosted comment system on Firebase Realtime Database</a>",
+    },
+
    };
 
    function loadSnippet(key) {
@@ -2009,11 +2610,14 @@ body.dark .loader-spinner-img {
      if (idx !== -1) readLetter(idx);
      else showPage("letters");
     } else if (section === "art") {
-     showPage("art");
+     const idx = artData.findIndex((a) => a.id === id);
+     showPage("art", () => {
+      if (idx !== -1) openLightbox(idx);
+     });
     } else if (section === "trash") {
-     showPage("trash");
+     showPage("trash", () => highlightTrashItem(id));
     } else if (section === "info") {
-     showPage("info");
+     showPage("colophon");
     } else if (section === "personal") {
      showPage("personal");
     } else if (section === "home") {
@@ -2880,7 +3484,7 @@ body.dark .loader-spinner-img {
 
    /* ═══════════════════════════════════════════════════════
    ANON NAME GENERATOR
-  random ass names, these are so goofy.
+  random ***** names, these are so goofy.
 ═══════════════════════════════════════════════════════ */
    const ANON_ADJ = [
     "Crunchy",
@@ -3043,7 +3647,7 @@ body.dark .loader-spinner-img {
    }
 
    /* Shows a page with a brief loader animation and updates the URL hash. */
-   function showPage(id) {
+   function showPage(id, callback) {
     if (id === "board") id = "home";
     showLoader();
     setTimeout(() => {
@@ -3063,6 +3667,7 @@ body.dark .loader-spinner-img {
       );
      }
      hideLoader();
+     if (typeof callback === "function") callback();
     }, 1200);
    }
 
@@ -4301,6 +4906,16 @@ body.dark .loader-spinner-img {
    /* ═══════════════════════════════════════════════════════
    TRASH / RECYCLING BIN
 ═══════════════════════════════════════════════════════ */
+   /* Trash has no separate reader view — items live inline in one
+   feed — so this is its equivalent of readLog/readShrine/readLetter:
+   scrolls to the specific item and briefly highlights it. */
+   function highlightTrashItem(id) {
+    const el = document.querySelector(`[data-trash-id="${CSS.escape(id)}"]`);
+    if (!el) return;
+    el.scrollIntoView({ behavior: "smooth", block: "center" });
+    el.classList.add("trash-item-highlight");
+    setTimeout(() => el.classList.remove("trash-item-highlight"), 1800);
+   }
    function renderTrashPage() {
     const el = document.getElementById("trashContent");
     if (!el) return;
@@ -4334,9 +4949,9 @@ body.dark .loader-spinner-img {
          ? `<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`
          : "";
         if (item.type === "doodle" || item.type === "pic") {
-         return `<div class="trash-item trash-item-doodle"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openSimpleViewer('${encodeURIComponent(item.content)}','')" />${delBtn}</div>`;
+         return `<div class="trash-item trash-item-doodle" data-trash-id="${escHtml(item.id)}"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openSimpleViewer('${encodeURIComponent(item.content)}','')" />${delBtn}</div>`;
         }
-        return `<div class="trash-item"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
+        return `<div class="trash-item" data-trash-id="${escHtml(item.id)}"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
        })
        .join("")}</div></div>`;
      })
@@ -4907,7 +5522,8 @@ body.dark .loader-spinner-img {
       letters: "letters",
       board: "board",
       trash: "trash",
-      info: "info",
+      colophon: "colophon",
+      info: "colophon",
       goodies: "goodies",
      };
     _activateSection(hashMap[hash] || "home");
@@ -5006,8 +5622,8 @@ body.dark .loader-spinner-img {
     setInterval(updateLiveStatus, 1000);
    });
 
-  /* ────────────────────────────────────────────────────────────────────────
-   POCHACCO CURSOR ANIMATOR — full set
+    /* ────────────────────────────────────────────────────────────────────────
+   POCHACCO CURSOR ANIMATOR :D
    ──────────────────────────────────────────────────────────────────────── */
 (function () {
   const CURSORS = {
