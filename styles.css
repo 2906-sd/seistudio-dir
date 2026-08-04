@@ -1,4 +1,36 @@
 /* ═══════════════════════════════════════════════════
+   SELF-HOSTED FONTS
+═══════════════════════════════════════════════════ */
+@font-face {
+  font-family: 'Basiic';
+  src: url('fonts/basiic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Enter Command';
+  src: url('fonts/EnterCommand.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Enter Command';
+  src: url('fonts/EnterCommand-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Enter Command';
+  src: url('fonts/EnterCommand-Italic.ttf') format('truetype');
+  font-weight: normal;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ═══════════════════════════════════════════════════
    MAIN DESIGN SELECTORS
 ═══════════════════════════════════════════════════ */
 :root {
@@ -19,8 +51,9 @@
   --link-hover:  #ffa397;
   --border:      #BE1A32;
   --border-lt:   #D5CFCB;
-  --font-main:   'Pixelify Sans', sans-serif;
-  --font-cute:   'Pixelify Sans', sans-serif;
+  --font-main:   'Basiic', 'Space Mono', sans-serif;
+  --font-cute:   'Enter Command', 'Space Mono', sans-serif;
+  --font-tech:   'Enter Command', 'Space Mono', sans-serif;
   --font-mono:   'Space Mono', monospace;
   --shadow:      4px 4px 0px var(--border);
   --shadow-lg:   8px 8px 0px var(--border);
@@ -4894,4 +4927,4 @@ body { overflow-x: hidden; max-width: 100vw; }
 
 .info-card-body > .info-paginated-hidden {
   display: none !important;
-}v
+}
