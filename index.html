@@ -238,6 +238,20 @@
       </div>
       <span class="desk-icon-label">LETTERS</span>
      </div>
+     <div
+      class="desk-icon"
+      onclick="showPage('outgoing')"
+      id="desk-link-outgoing"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588301/Pet-Animals-Cat--Streamline-Pixel_nixwg4.gif"
+        class="desk-icon-img"
+        alt="OUTGOING"
+       />
+      </div>
+      <span class="desk-icon-label">OUTGOING</span>
+     </div>
      <div class="desk-icon-group" id="desk-group-personal">
       <div
        class="desk-icon has-subnav"
@@ -381,6 +395,25 @@
       <div class="home-card home-nav-card">
        <div class="home-card-header">NAVIGATE.EXE</div>
        <div class="home-card-body home-nav-body" id="homeNavSlot"></div>
+       <div class="home-nav-pagination" id="homeNavPagination" style="display: none">
+        <button
+         class="home-nav-page-btn"
+         id="homeNavPrevBtn"
+         onclick="homeNavGoToPage(-1)"
+         aria-label="Previous nav links"
+        >
+         ‹ PREV
+        </button>
+        <span class="home-nav-page-status" id="homeNavPageStatus"></span>
+        <button
+         class="home-nav-page-btn"
+         id="homeNavNextBtn"
+         onclick="homeNavGoToPage(1)"
+         aria-label="Next nav links"
+        >
+         NEXT ›
+        </button>
+       </div>
       </div>
 
       <!-- BLOG STAMP / LINK BACK -->
@@ -610,24 +643,6 @@
        </div>
       </div>
 
-     </div>
-
-     <!-- HOME BOTTOM ROW — recycling bin.
-          To swap the icon, just change the <img src="..."> URL below. -->
-     <div class="home-bottom-row">
-      <div
-       id="recyclingBinBtn"
-       class="recycling-bin-btn"
-       onclick="showPage('trash')"
-       title="🗑 secret trash"
-      >
-       <img
-        src="https://gabestash.neocities.org/favicons/monochrome/mono24.gif"
-        onerror="this.onerror=null;this.outerHTML='<span class=\'recycling-bin-emoji\'>🗑</span>'"
-        alt="🗑️"
-       />
-       <span>Recycling Bin</span>
-      </div>
      </div>
     </section>
 
@@ -1947,20 +1962,152 @@
       </div>
      </section>
 
-    <!-- ══════════════════ TRASH ══════════════════ -->
-    <section id="trash">
-     <div class="section-header">
-      <h1>THE <span>TRASH</span></h1>
-      <p>for things that need to get out of my head and storage.</p>
-      <a
-       href="javascript:void(0)"
-       onclick="showPage('home')"
-       class="back-to-logs-btn"
-       style="display: inline-block; margin-top: 1rem"
-       >← BACK</a
-      >
+    <!-- ══════════════════ OUTGOING ══════════════════ -->
+    <section id="outgoing">
+     <div class="info-page-layout">
+      <div class="section-header">
+       <h1>OUTGOIN<span>G</span></h1>
+       <p>links out — favorite neocities sites and my favorite corners of the web.</p>
+       <a
+        href="javascript:void(0)"
+        onclick="showPage('home')"
+        class="back-to-logs-btn"
+        style="display: inline-block; margin-top: 1rem"
+        >← BACK</a
+       >
+      </div>
+
+      <div class="info-stack">
+       <!-- FAVORITES -->
+       <div class="info-card">
+        <div class="info-card-header">
+         <span>FAVORITES.MD</span>
+         <button
+          class="admin-edit-btn"
+          id="badgesOutgoingFavoritesAdminBtn"
+          onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);"
+          style="display: none"
+         >
+          + ADD BUTTON
+         </button>
+        </div>
+        <div class="info-card-body" style="text-transform: none">
+         <p class="info-featured-intro">
+          Neocities sites I love and revisit often.
+         </p>
+         <div class="badges-strip button-wall" id="badgesStripOutgoingFavorites">
+          <span class="home-updates-empty widget-hint">// no favorites yet — check back soon.</span>
+         </div>
+        </div>
+       </div>
+
+       <!-- NEIGHBORS -->
+       <div class="info-card">
+        <div class="info-card-header">
+         <span>NEIGHBORS.MD</span>
+         <button
+          class="admin-edit-btn"
+          id="badgesOutgoingNeighborsAdminBtn"
+          onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);"
+          style="display: none"
+         >
+          + ADD BUTTON
+         </button>
+        </div>
+        <div class="info-card-body" style="text-transform: none">
+         <p class="info-featured-intro">
+          Sites that link back or trade badges with me. hi, friends. :)
+         </p>
+         <div class="badges-strip button-wall" id="badgesStripOutgoingNeighbors">
+          <span class="home-updates-empty widget-hint">// no neighbors yet — check back soon.</span>
+         </div>
+        </div>
+       </div>
+
+       <!-- FAVORITE PLACES ON THE WEB -->
+       <div class="info-card info-card-wide">
+        <div class="info-card-header">
+         <span>FAVORITE_PLACES.MD</span>
+        </div>
+        <div class="info-card-body" style="text-transform: none">
+         <p class="info-featured-intro">
+          Non-Neocities corners of the web I keep coming back to.
+         </p>
+         <div class="info-row">
+          <span class="info-row-label">Are.na</span>
+          <span class="info-row-value">Slow social platform for collecting ideas</span>
+          <a
+           href="https://www.are.na/"
+           target="_blank"
+           rel="noopener"
+           class="info-row-link"
+           >are.na</a
+          >
+         </div>
+         <div class="info-row">
+          <span class="info-row-label">Internet Archive</span>
+          <span class="info-row-value">The Wayback Machine + free library</span>
+          <a
+           href="https://archive.org/"
+           target="_blank"
+           rel="noopener"
+           class="info-row-link"
+           >archive.org</a
+          >
+         </div>
+         <div class="info-row">
+          <span class="info-row-label">CSS-Tricks</span>
+          <span class="info-row-value">Reliable web-dev reference + snippets</span>
+          <a
+           href="https://css-tricks.com/"
+           target="_blank"
+           rel="noopener"
+           class="info-row-link"
+           >css-tricks.com</a
+          >
+         </div>
+         <div class="info-row">
+          <span class="info-row-label">Melonking</span>
+          <span class="info-row-value">Old-web philosophy + community</span>
+          <a
+           href="https://www.melonking.net/"
+           target="_blank"
+           rel="noopener"
+           class="info-row-link"
+           >melonking.net</a
+          >
+         </div>
+        </div>
+       </div>
+
+       <!--
+        COMMUNITY — Cliques & Webrings
+        Placeholder card. Uncomment once I've actually joined some. :)
+
+        <div class="info-card info-card-wide">
+         <div class="info-card-header">
+          <span>COMMUNITY.MD</span>
+         </div>
+         <div class="info-card-body" style="text-transform: none">
+          <p class="info-featured-intro">
+           Cliques and webrings I'm part of.
+          </p>
+          <div class="info-row">
+           <span class="info-row-label">Clique / Webring name</span>
+           <span class="info-row-value">Short description</span>
+           <a
+            href="#"
+            target="_blank"
+            rel="noopener"
+            class="info-row-link"
+            >example.neocities.org</a
+           >
+          </div>
+         </div>
+        </div>
+       -->
+      </div>
      </div>
-     <div id="trashContent"></div>
     </section>
 
     <!-- ══════════════════ COLOPHON ══════════════════ -->
@@ -2115,8 +2262,21 @@
           <p style="color: var(--text-sub)">
            <strong>So why does this site even exist?</strong>
           </p>
+          <img
+           class="info-moodboard-img"
+           src="https://placehold.co/900x520?text=Moodboard+%231"
+           alt="Moodboard 1"
+          />
+          <p>
+           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus lacinia odio vitae vestibulum vestibulum. Cras venenatis euismod malesuada. Nulla facilisi. Integer aliquet, nisl at sagittis fermentum, nisi elit facilisis ligula, ac dignissim justo velit ac lectus. Praesent dictum, urna a scelerisque tempus, sapien ligula dictum lorem, non pulvinar tortor massa vel augue.
+          </p>
           <p >
            For all intents and purposes, Sei Out Loud is a corner on the web that I coded out of spite and anger, in retaliation against Big Algorithm! This is place where I can say and show things without worrying if people will enjoy it enough to give it a like, a comment or a repost. I barely experienced that era of the Internet when I was wee child with parents who did, unfortunately, give a damn about what their kid was looking at on the family computer. </p>
+           <img
+            class="info-moodboard-img"
+            src="https://placehold.co/900x520?text=Moodboard+%232"
+            alt="Moodboard 2"
+           />
            <p>That did not stop me from being a weird kid with "weird" interests, nor stop me from growing up into an adult with even more "weird" interests.</p>
            <p>Everything Sei Out Loud is here because I thought it looked cool or held personal value to me. Things are here because I wanted them here, and the site functions. Out of free will. And you, Intrepid Neocities Wanderer, are here out of free will too! There will be no AI or data stealing or any of that corporate tech evildoing. I am here to be unapologetic, loud, and  unorganized.
           </p>
@@ -2373,7 +2533,7 @@
    <span class="footer-tag"> SYSTEM ACTIVE SINCE 2026</span>
   </footer>
 
-  <!-- SIMPLE IMAGE VIEWER — logs & trash only. Image + caption + close, no chrome. -->
+  <!-- SIMPLE IMAGE VIEWER — logs only. Image + caption + close, no chrome. -->
   <div id="simpleViewer" class="simple-viewer" onclick="closeSimpleViewer()">
    <span class="simple-viewer-close" onclick="closeSimpleViewer()">×</span>
    <img
@@ -2538,13 +2698,6 @@
       </button>
       <button
        class="admin-tab"
-       id="tab-trash"
-       onclick="switchAdminTab('trash')"
-      >
-       ADD TRASH
-      </button>
-      <button
-       class="admin-tab"
        id="tab-badges"
        onclick="switchAdminTab('badges')"
       >
@@ -2658,54 +2811,6 @@ https://"
       <p id="logSuccess" class="admin-success">POSTED SUCCESSFULLY.</p>
      </div>
 
-     <!-- TRASH FORM -->
-     <div id="adminTrashForm" class="admin-form" style="display: none">
-      <p
-       style="
-        font-family: var(--font-mono);
-        font-size: 9px;
-        color: var(--text-muted);
-        line-height: 1.7;
-       "
-      >
-       Discarded things, abandoned doodles, one-line intrusive thoughts,
-       failed project notes.<br />
-       New entries auto-group into their matching date bucket!
-      </p>
-      <label class="admin-label">Type</label>
-      <select id="trashType" class="admin-input" style="cursor: pointer">
-       <option value="stupid">💭 Stupid Thoughts</option>
-       <option value="doodle">🖊️ Doodles (image URL)</option>
-       <option value="pic">🖼️ Pic (image URL)</option>
-       <option value="uhhhhh">🌀 Uhhhhh</option>
-      </select>
-      <label class="admin-label"
-       >Content — text, or image URL if doodle / pic</label
-      >
-      <textarea
-       id="trashItemContent"
-       class="admin-input"
-       placeholder="one-liner thought, or https://image-url.png"
-      ></textarea>
-      <label class="admin-label"
-       >Date (auto-fills today, adjust if needed)</label
-      >
-      <input
-       type="text"
-       id="trashDate"
-       class="admin-input"
-       placeholder="06.14.26"
-      />
-      <button
-       class="board-submit"
-       style="cursor: pointer; margin-top: 4px"
-       onclick="adminAddTrash()"
-      >
-       DISCARD →
-      </button>
-      <p id="trashSuccess" class="admin-success">DISCARDED.</p>
-     </div>
-
      <!-- SHRINE FORM -->
      <div id="adminShrinesForm" class="admin-form" style="display: none">
       <p
@@ -2740,6 +2845,13 @@ https://"
        class="admin-input"
        placeholder="https://..."
       />
+      <label class="admin-label">Written Content (optional, scrolls in reader)</label>
+      <textarea
+       id="shrineBody"
+       class="admin-input"
+       style="min-height: 120px"
+       placeholder="Write more about the character, object, or thing this shrine is dedicated to..."
+      ></textarea>
       <label class="admin-label">Gallery Images + Captions</label>
       <div id="shrinePairRows" class="shrine-pair-rows"></div>
       <button
@@ -2815,6 +2927,8 @@ https://"
        <option value="home">Home page only</option>
        <option value="about">About page only</option>
        <option value="neighbors">Home neighbors strip</option>
+       <option value="outgoing-favorites">Outgoing → Favorites wall</option>
+       <option value="outgoing-neighbors">Outgoing → Neighbors wall</option>
        <option value="both">Both pages (home + about)</option>
       </select>
       <label class="admin-label">Badge Image URL (100×40 px recommended)</label>
@@ -3078,6 +3192,13 @@ https://"
      <input type="text" id="editShrineTagline" class="admin-input" />
      <label class="admin-label">Cover / Header Image URL</label>
      <input type="text" id="editShrineCover" class="admin-input" />
+     <label class="admin-label">Written Content (optional, scrolls in reader)</label>
+     <textarea
+      id="editShrineBody"
+      class="admin-input"
+      style="min-height: 120px"
+      placeholder="Write more about the character, object, or thing this shrine is dedicated to..."
+     ></textarea>
      <label class="admin-label">Gallery Images + Captions</label>
      <div id="editShrinePairRows" class="shrine-pair-rows"></div>
      <button
