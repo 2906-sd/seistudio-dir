@@ -2485,9 +2485,15 @@ function renderComment(comment) {
    let shrinesData = [];
    let lettersData = [];
    const LETTER_BALL_IMAGES = [
-    "https://res.cloudinary.com/djohhxipz/image/upload/v1784162294/4-Photoroom_xfkf0i.png",
-    "https://res.cloudinary.com/djohhxipz/image/upload/v1784162291/3-Photoroom_1_mzistl.png",
-    "https://res.cloudinary.com/djohhxipz/image/upload/v1784162294/2-Photoroom_w4qqvs.png",
+    "https://res.cloudinary.com/seioutloud/image/upload/v1785883450/star1-Photoroom-dithered_kvazvx.png",
+    "https://res.cloudinary.com/seioutloud/image/upload/v1785883444/star12-Photoroom-dithered_dhnkag.png",
+    "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star3-Photoroom-dithered_ocimst.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star4-Photoroom-dithered_nxmwei.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star5-Photoroom-dithered_zmy7ty.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star6-Photoroom-dithered_rodvan.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star7-Photoroom-dithered_rtm0t0.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star8-Photoroom-dithered_px54if.png",
+      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star9-Photoroom-dithered_woklhx.png",
    ];
    let badgesData = [];
    let bagData = [];
