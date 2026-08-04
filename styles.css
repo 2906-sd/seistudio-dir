@@ -1,32 +1,11 @@
-	  /* ═══════════════════════════════════════════════════
-   SELF-HOSTED FONTS
+/* ═══════════════════════════════════════════════════
+   FONTS
 ═══════════════════════════════════════════════════ */
 @font-face {
-  font-family: 'Basiic';
-  src: url('fonts/basiic.ttf') format('truetype');
+  font-family: 'HelvetiPixel';
+  src: url('fonts/HelvetiPixel.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Enter Command';
-  src: url('fonts/EnterCommand.ttf') format('truetype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Enter Command';
-  src: url('fonts/EnterCommand-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Enter Command';
-  src: url('fonts/EnterCommand-Italic.ttf') format('truetype');
-  font-weight: normal;
-  font-style: italic;
   font-display: swap;
 }
 
@@ -51,10 +30,9 @@
   --link-hover:  #ffa397;
   --border:      #BE1A32;
   --border-lt:   #D5CFCB;
-  --font-main:   'Basiic', 'Space Mono', sans-serif;
-  --font-cute:   'Enter Command', 'Space Mono', sans-serif;
-  --font-tech:   'Enter Command', 'Space Mono', sans-serif;
-  --font-mono:   'Space Mono', monospace;
+  --font-main:   'HelvetiPixel', sans-serif;
+  --font-cute:   'HelvetiPixel', sans-serif;
+  --font-mono:   'HelvetiPixel', monospace;
   --shadow:      4px 4px 0px var(--border);
   --shadow-lg:   8px 8px 0px var(--border);
   --radius:      7px;
@@ -834,18 +812,10 @@ body.dark .hero-card {
   text-align: center;
   max-width: 560px;
   background: var(--bg2);
-  border: 1.5px solid var(--border);
-  box-shadow: var(--shadow);
+  border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAqCAYAAADFw8lbAAABXElEQVR4AeyT0Q3CMAxES8dgDEZgcEZgDNYAvY9XVW6iBqGmdQXSycS+NHenZBzC73G9vUsItMWytIfeghgacEoItGEhNBKOsp6E6ur+el5KcB6F2y/toef8132T0Piho61HHeMe1AQyA/Kt9MDW+/IkWkui1ie9OWq82J/v4X+cr63Pm+ia863meRLlvgBf8VaJfPtd9aAN5ElUp6gGOrHfu3o+WoDn50tU5Uet+RKt3Y3eCXMvgXo8P0+iKscF0MHeFS1AfXkS3Tu51vP/ibYm1crLkygvC/i6Kg67t9WDNpAnUaNCNdCJ/d7V89ECPD9foio/as2XaO1u9E6YewnU4/l5ElU5LoAO9q5oAerLk+jeybWef95EvTPW1kTkW1v3ycuTKC8LrDl1DncO+zqP1fl8D//tR75r53BBnkR1gGqgk1iZAflWeiDyXTMD8q30gLxYmQH5aRL9AAAA//+ruYWQAAAABklEQVQDAFyVnQbh7fANAAAAAElFTkSuQmCC") 14 / 14px / 0 round;
+  border-width: 14px;
+  border-style: solid;
   border-radius: var(--radius);
-}
-.section-header::before {
-  content: "";
-  display: block;
-  height: 8px;
-  margin: -1px -1px 0;
-  background: var(--header-gradient);
-  border-bottom: 1.5px solid var(--border);
-  border-radius: var(--radius) var(--radius) 0 0;
 }
 .section-header h1 {
   font-family: var(--font-cute);
@@ -4202,7 +4172,7 @@ body.admin-mode .badge-del { display: inline-block !important; }
   .info-howitworks-img { width: 150px; }
 }
 
-/* ── WHY_I_MADE_THIS — origin story card ── */
+/* ── WHY_I_MADE_THIS — origin  card ── */
 .info-card-body.info-origin-body {
   padding: 2rem 2.5rem;
 }
@@ -4217,7 +4187,7 @@ body.admin-mode .badge-del { display: inline-block !important; }
   align-items: center;
   gap: 0.6rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 520px;
   margin: 0 auto;
 }
 .origin-carousel-viewport {
