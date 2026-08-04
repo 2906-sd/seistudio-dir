@@ -922,7 +922,7 @@ function refreshWotd() {
             <span>POP UP MODAL MESSAGE</span>
           </div>
           <div class="demo-modal-body" style="text-align:center; gap:0.8rem;">
-            <p style="font-size:1.5rem; color:var(--accent-2); margin-bottom:0.2rem;">!!</p>
+            <p style="font-size:1.5rem; color:#c33; margin-bottom:0.2rem;">!!</p>
             <p><strong>[ ! ] NOTICE:</strong> This is a pop up modal, You're supposed to put an important message here.</p>
             <div class="demo-modal-actions" style="justify-content:center;">
               <button class="demo-modal-action demo-modal-action-primary" onclick="closeDemoModal()">Enter System</button>
@@ -2489,7 +2489,6 @@ function renderComment(comment) {
     "https://res.cloudinary.com/djohhxipz/image/upload/v1784162291/3-Photoroom_1_mzistl.png",
     "https://res.cloudinary.com/djohhxipz/image/upload/v1784162294/2-Photoroom_w4qqvs.png",
    ];
-   let trashData = [];
    let badgesData = [];
    let bagData = [];
    let statusData = [];
@@ -2545,32 +2544,6 @@ function renderComment(comment) {
       ts: a.timestamp || 0,
      }),
     );
-    (trashData || []).forEach((t) => {
-     const labelMap = {
-      stupid: "stupid thought",
-      doodle: "doodle",
-      pic: "pic",
-      uhhhhh: "uhhhhh",
-      thought: "stupid thought",
-      note: "uhhhhh",
-     };
-     const isImage = t.type === "doodle" || t.type === "pic";
-     const raw = String(t.content || "");
-     const title = isImage
-      ? t.type === "doodle"
-        ? "new doodle"
-        : "new pic"
-      : raw.slice(0, 40) + (raw.length > 40 ? "…" : "");
-     items.push({
-      type: "TRASH",
-      title,
-      meta: labelMap[t.type] || "scrap",
-      section: "trash",
-      id: t.id,
-      ts: t.timestamp || 0,
-     });
-    });
-
     items.sort((a, b) => (b.ts || 0) - (a.ts || 0));
     const top = items.slice(0, 3);
 
@@ -2614,8 +2587,6 @@ function renderComment(comment) {
      showPage("art", () => {
       if (idx !== -1) openLightbox(idx);
      });
-    } else if (section === "trash") {
-     showPage("trash", () => highlightTrashItem(id));
     } else if (section === "info") {
      showPage("colophon");
     } else if (section === "personal") {
@@ -3184,7 +3155,6 @@ function renderComment(comment) {
     if (logsData.length) renderLogList();
     if (shrinesData.length) renderShrineGrid();
     if (lettersData.length) renderLetterList();
-    if (trashData.length) renderTrashPage();
     if (typeof renderBag === "function") renderBag();
     renderBadgesStrips();
     if (typeof renderHomeTodo === "function") renderHomeTodo();
@@ -3408,21 +3378,6 @@ function renderComment(comment) {
      })
      .catch((e) => console.error("Letters load failed:", e));
 
-    // Load trash
-    db
-     .ref("content/trash")
-     .orderByChild("timestamp")
-     .once("value", (snap) => {
-      trashData = [];
-      snap.forEach((child) => {
-       const d = child.val();
-       trashData.push({ id: child.key, ...d });
-      });
-      renderTrashPage();
-      renderHomeUpdates();
-     })
-     .catch((e) => console.error("Trash load failed:", e));
-
     // Load badges
     db
      .ref("content/badges")
@@ -3632,6 +3587,7 @@ function renderComment(comment) {
      if (bar.parentElement !== navSlot) navSlot.appendChild(bar);
      bar.classList.add("in-nav", "home-sidebar-nav");
      navCenter.style.display = "none";
+     initHomeNavPagination();
     } else if (!toHome) {
      const wasInHomeSidebar = bar.parentElement !== navCenter;
      if (wasInHomeSidebar) {
@@ -3643,7 +3599,65 @@ function renderComment(comment) {
      bar.classList.add("in-nav");
      if (wasInHomeSidebar) bar.scrollLeft = 0;
      setTimeout(updateNavCarouselButtons, 0);
+     teardownHomeNavPagination();
     }
+   }
+
+   /* ═══════════════════════════════════════════════════════
+   HOME SIDEBAR NAV — PAGINATION (10 links per page)
+═══════════════════════════════════════════════════════ */
+   const HOME_NAV_LINKS_PER_PAGE = 10;
+   let homeNavCurrentPage = 0;
+
+   function getHomeNavItems() {
+    const bar = document.getElementById("desktopIconsBar");
+    if (!bar) return [];
+    return Array.from(bar.children).filter(
+     (el) => el.classList.contains("desk-icon") || el.classList.contains("desk-icon-group"),
+    );
+   }
+
+   function initHomeNavPagination() {
+    homeNavCurrentPage = 0;
+    renderHomeNavPage();
+   }
+
+   function teardownHomeNavPagination() {
+    getHomeNavItems().forEach((item) => (item.style.display = ""));
+    const pagination = document.getElementById("homeNavPagination");
+    if (pagination) pagination.style.display = "none";
+   }
+
+   function renderHomeNavPage() {
+    const items = getHomeNavItems();
+    const pagination = document.getElementById("homeNavPagination");
+    const totalPages = Math.ceil(items.length / HOME_NAV_LINKS_PER_PAGE);
+    if (!items.length || totalPages <= 1) {
+     items.forEach((item) => (item.style.display = ""));
+     if (pagination) pagination.style.display = "none";
+     return;
+    }
+    const start = homeNavCurrentPage * HOME_NAV_LINKS_PER_PAGE;
+    const end = start + HOME_NAV_LINKS_PER_PAGE;
+    items.forEach((item, i) => {
+     item.style.display = i >= start && i < end ? "" : "none";
+    });
+    if (pagination) {
+     pagination.style.display = "flex";
+     const status = document.getElementById("homeNavPageStatus");
+     if (status) status.textContent = `PAGE ${homeNavCurrentPage + 1} / ${totalPages}`;
+     const prevBtn = document.getElementById("homeNavPrevBtn");
+     const nextBtn = document.getElementById("homeNavNextBtn");
+     if (prevBtn) prevBtn.disabled = homeNavCurrentPage <= 0;
+     if (nextBtn) nextBtn.disabled = homeNavCurrentPage >= totalPages - 1;
+    }
+   }
+
+   function homeNavGoToPage(dir) {
+    const items = getHomeNavItems();
+    const totalPages = Math.ceil(items.length / HOME_NAV_LINKS_PER_PAGE);
+    homeNavCurrentPage = Math.min(Math.max(homeNavCurrentPage + dir, 0), totalPages - 1);
+    renderHomeNavPage();
    }
 
    /* Shows a page with a brief loader animation and updates the URL hash. */
@@ -3988,11 +4002,12 @@ function renderComment(comment) {
        );
       })
       .join("")}</div>`;
-    } else if (shrine.body) {
-     galleryHtml = `<div class="log-body-text" style="white-space:normal;">${shrine.body}</div>`;
     }
+    const bodyHtml = shrine.body
+     ? `<div class="shrine-body-text">${shrine.body}</div>`
+     : "";
 
-    container.innerHTML = `${imgHtml}<div class="shrine-content"><p class="post-label" style="margin-bottom:0.75rem;font-size:0.9rem;color:var(--accent);">SHRINE // ${shrine.tagline || ""}</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);margin-bottom:1.75rem;">${shrine.title}</h1>${galleryHtml}</div>`;
+    container.innerHTML = `<div class="shrine-content" style="padding-bottom:1.25rem;"><p class="post-label" style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.06em;">SHRINE</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);">${shrine.title}</h1>${shrine.tagline ? `<p class="shrine-tagline">${escHtml(shrine.tagline)}</p>` : ""}</div>${imgHtml}<div class="shrine-content">${bodyHtml}${galleryHtml}</div>`;
 
     container
      .querySelectorAll(".shrine-gallery-item[data-shrine-img]")
@@ -4099,7 +4114,7 @@ function renderComment(comment) {
     document.getElementById("lightbox").classList.add("show");
    }
 
-   /* Simple single-image viewer for logs and trash — just an
+   /* Simple single-image viewer for logs — just an
    enlarged image with an optional caption, no toolbar, no zoom,
    no nav, no animation. */
    function openSimpleViewer(encodedUrl, caption) {
@@ -4550,7 +4565,6 @@ function renderComment(comment) {
      "logs",
      "shrines",
      "letters",
-     "trash",
      "badges",
      "bag",
      "status",
@@ -4570,13 +4584,6 @@ function renderComment(comment) {
     }
     if (tab === "todo") {
      if (typeof renderAdminTodoList === "function") renderAdminTodoList();
-    }
-    if (tab === "trash") {
-     const dateEl = document.getElementById("trashDate");
-     if (dateEl && !dateEl.value) {
-      const now = new Date();
-      dateEl.value = `${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}.${String(now.getFullYear()).slice(-2)}`;
-     }
     }
    }
 
@@ -4734,11 +4741,13 @@ function renderComment(comment) {
     if (!title) return;
     const tagline = document.getElementById("shrineTagline").value.trim();
     const coverImage = document.getElementById("shrineCover").value.trim();
+    const body = document.getElementById("shrineBody").value.trim();
     const { images, captions } = readShrinePairRows("shrinePairRows");
     const shrine = {
      title,
      tagline,
      coverImage,
+     body,
      images,
      captions,
      timestamp: Date.now(),
@@ -4759,7 +4768,7 @@ function renderComment(comment) {
       console.error("Shrine push failed:", e);
       alert("// COULD NOT SAVE: " + e.message);
      });
-    ["shrineTitle", "shrineTagline", "shrineCover"].forEach(
+    ["shrineTitle", "shrineTagline", "shrineCover", "shrineBody"].forEach(
      (id) => (document.getElementById(id).value = ""),
     );
     fillShrinePairRows("shrinePairRows", [], []);
@@ -4904,108 +4913,6 @@ function renderComment(comment) {
    }
 
    /* ═══════════════════════════════════════════════════════
-   TRASH / RECYCLING BIN
-═══════════════════════════════════════════════════════ */
-   /* Trash has no separate reader view — items live inline in one
-   feed — so this is its equivalent of readLog/readShrine/readLetter:
-   scrolls to the specific item and briefly highlights it. */
-   function highlightTrashItem(id) {
-    const el = document.querySelector(`[data-trash-id="${CSS.escape(id)}"]`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: "smooth", block: "center" });
-    el.classList.add("trash-item-highlight");
-    setTimeout(() => el.classList.remove("trash-item-highlight"), 1800);
-   }
-   function renderTrashPage() {
-    const el = document.getElementById("trashContent");
-    if (!el) return;
-    if (!trashData.length) {
-     el.innerHTML =
-      '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// nothing here yet. the bin is clean.</p>';
-     return;
-    }
-    const groups = {};
-    trashData.forEach((item) => {
-     const d = item.date || "UNKNOWN";
-     if (!groups[d]) groups[d] = [];
-     groups[d].push(item);
-    });
-    const sortedDates = Object.keys(groups).sort((a, b) => b.localeCompare(a));
-    el.innerHTML = sortedDates
-     .map((date) => {
-      const items = groups[date];
-      return `<div class="trash-date-group"><div class="trash-date-header">[ ${date} ]</div><div class="trash-items-grid">${items
-       .map((item) => {
-        const labelMap = {
-         stupid: "Thoughts",
-         doodle: "Doodles",
-         pic: "Doodles",
-         uhhhhh: "Uhhhh",
-         thought: "Thoughts",
-         note: "Uhhhh",
-        };
-        const label = labelMap[item.type] || "SCRAP";
-        const delBtn = isAdminSession()
-         ? `<button class="admin-delete-btn" style="position:static;display:block;margin-top:8px;" onclick="adminDeleteTrash('${item.id}')">DELETE</button>`
-         : "";
-        if (item.type === "doodle" || item.type === "pic") {
-         return `<div class="trash-item trash-item-doodle" data-trash-id="${escHtml(item.id)}"><div class="trash-item-type">${label}</div><img src="${escHtml(item.content)}" class="trash-doodle-img" alt="${item.type}" onclick="openSimpleViewer('${encodeURIComponent(item.content)}','')" />${delBtn}</div>`;
-        }
-        return `<div class="trash-item" data-trash-id="${escHtml(item.id)}"><div class="trash-item-type">${label}</div><div class="trash-item-content">${escHtml(item.content)}</div>${delBtn}</div>`;
-       })
-       .join("")}</div></div>`;
-     })
-     .join("");
-   }
-
-   function adminAddTrash() {
-    if (!isAdminSession()) return;
-    const type = document.getElementById("trashType").value;
-    const content = document.getElementById("trashItemContent").value.trim();
-    const date = document.getElementById("trashDate").value.trim();
-    if (!content || !date) return;
-    const entry = { type, content, date, timestamp: Date.now() };
-    adminWrite("push", "content/trash", entry)
-     .then((r) => {
-      entry.id = r.id;
-      trashData.push(entry);
-      renderTrashPage();
-      renderHomeUpdates();
-      const s = document.getElementById("trashSuccess");
-      s.style.display = "block";
-      setTimeout(() => (s.style.display = "none"), 3000);
-     })
-     .catch((e) => {
-      console.error("Trash push failed:", e);
-      alert("// COULD NOT SAVE: " + e.message);
-     });
-    document.getElementById("trashItemContent").value = "";
-   }
-
-   function adminDeleteTrash(id) {
-    if (!isAdminSession()) return;
-    const idx = trashData.findIndex((t) => t.id === id);
-    if (idx < 0) return;
-    if (!confirm("Delete this trash entry?")) return;
-    if (id) {
-     adminWrite("remove", "content/trash", { id })
-      .then(() => {
-       trashData.splice(idx, 1);
-       renderTrashPage();
-       renderHomeUpdates();
-      })
-      .catch((e) => {
-       console.error("Trash delete failed:", e);
-       alert("// DELETE FAILED");
-      });
-    } else {
-     trashData.splice(idx, 1);
-     renderTrashPage();
-     renderHomeUpdates();
-    }
-   }
-
-   /* ═══════════════════════════════════════════════════════
    BADGES (internet stamps)
 ═══════════════════════════════════════════════════════ */
    function renderBadgesStrips() {
@@ -5024,6 +4931,14 @@ function renderComment(comment) {
      {
       id: "badgesStripNeighbors",
       match: (b) => (b.location || "both") === "neighbors",
+     },
+     {
+      id: "badgesStripOutgoingFavorites",
+      match: (b) => (b.location || "both") === "outgoing-favorites",
+     },
+     {
+      id: "badgesStripOutgoingNeighbors",
+      match: (b) => (b.location || "both") === "outgoing-neighbors",
      },
     ];
     targets.forEach((t) => {
@@ -5047,9 +4962,18 @@ function renderComment(comment) {
        return `<div class="badge-cell">${inner}${delBtn}</div>`;
       })
       .join("");
-     el.innerHTML = `<div class="badge-cell-group">${cells}</div><div class="badge-cell-group" aria-hidden="true">${cells}</div>`;
+     if (el.classList.contains("button-wall")) {
+      el.innerHTML = `<div class="badge-cell-group">${cells}</div>`;
+     } else {
+      el.innerHTML = `<div class="badge-cell-group">${cells}</div><div class="badge-cell-group" aria-hidden="true">${cells}</div>`;
+     }
     });
-    ["badgesAdminBtn", "badgesNeighborsAdminBtn"].forEach((id) => {
+    [
+     "badgesAdminBtn",
+     "badgesNeighborsAdminBtn",
+     "badgesOutgoingFavoritesAdminBtn",
+     "badgesOutgoingNeighborsAdminBtn",
+    ].forEach((id) => {
      const btn = document.getElementById(id);
      if (btn) btn.style.display = isAdminSession() ? "inline-block" : "none";
     });
@@ -5322,6 +5246,7 @@ function renderComment(comment) {
     document.getElementById("editShrineTitle").value = shrine.title || "";
     document.getElementById("editShrineTagline").value = shrine.tagline || "";
     document.getElementById("editShrineCover").value = shrine.coverImage || "";
+    document.getElementById("editShrineBody").value = shrine.body || "";
     fillShrinePairRows(
      "editShrinePairRows",
      normalizeImages(shrine.images || []),
@@ -5358,6 +5283,7 @@ function renderComment(comment) {
      title,
      tagline: document.getElementById("editShrineTagline").value.trim(),
      coverImage: document.getElementById("editShrineCover").value.trim(),
+     body: document.getElementById("editShrineBody").value.trim(),
      images,
      captions,
     };
@@ -5521,7 +5447,6 @@ function renderComment(comment) {
       shrines: "shrines",
       letters: "letters",
       board: "board",
-      trash: "trash",
       colophon: "colophon",
       info: "colophon",
       goodies: "goodies",
