@@ -3564,6 +3564,7 @@ function renderComment(comment) {
      .forEach((s) => s.classList.remove("active"));
     const sec = document.getElementById(id);
     if (sec) sec.classList.add("active");
+    if (id !== "shrine-reader") applyShrineBackground(null);
     document
      .querySelectorAll(".desk-icon")
      .forEach((n) => n.classList.remove("active"));
@@ -3982,10 +3983,15 @@ function renderComment(comment) {
     });
    }
 
+   function applyShrineBackground(url) {
+    document.body.style.backgroundImage = url ? `url("${url}")` : "";
+   }
+
    function readShrine(i) {
     const shrine = shrinesData[i];
     if (!shrine) return;
     window._currentShrineIndex = i;
+    applyShrineBackground(normalizeImageUrl(shrine.background));
     const editBtn = document.getElementById("shrineReaderEditBtn");
     if (editBtn)
      editBtn.style.display = isAdminSession() ? "inline-block" : "none";
@@ -4747,12 +4753,14 @@ function renderComment(comment) {
     if (!title) return;
     const tagline = document.getElementById("shrineTagline").value.trim();
     const coverImage = document.getElementById("shrineCover").value.trim();
+    const background = document.getElementById("shrineBackground").value.trim();
     const body = document.getElementById("shrineBody").value.trim();
     const { images, captions } = readShrinePairRows("shrinePairRows");
     const shrine = {
      title,
      tagline,
      coverImage,
+     background,
      body,
      images,
      captions,
@@ -4774,7 +4782,7 @@ function renderComment(comment) {
       console.error("Shrine push failed:", e);
       alert("// COULD NOT SAVE: " + e.message);
      });
-    ["shrineTitle", "shrineTagline", "shrineCover", "shrineBody"].forEach(
+    ["shrineTitle", "shrineTagline", "shrineCover", "shrineBackground", "shrineBody"].forEach(
      (id) => (document.getElementById(id).value = ""),
     );
     fillShrinePairRows("shrinePairRows", [], []);
@@ -5252,6 +5260,7 @@ function renderComment(comment) {
     document.getElementById("editShrineTitle").value = shrine.title || "";
     document.getElementById("editShrineTagline").value = shrine.tagline || "";
     document.getElementById("editShrineCover").value = shrine.coverImage || "";
+    document.getElementById("editShrineBackground").value = shrine.background || "";
     document.getElementById("editShrineBody").value = shrine.body || "";
     fillShrinePairRows(
      "editShrinePairRows",
@@ -5289,6 +5298,7 @@ function renderComment(comment) {
      title,
      tagline: document.getElementById("editShrineTagline").value.trim(),
      coverImage: document.getElementById("editShrineCover").value.trim(),
+     background: document.getElementById("editShrineBackground").value.trim(),
      body: document.getElementById("editShrineBody").value.trim(),
      images,
      captions,
