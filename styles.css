@@ -565,7 +565,6 @@ body.dark .hero-card {
   font-size: 2.86rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.4em;
   color: var(--accent);
   margin-bottom: 1.2rem;
   display: inline-block;
@@ -1349,25 +1348,24 @@ body.admin-mode .admin-log-actions { display: flex; }
   font-family: var(--font-mono);
   font-size: 1.12rem;
   line-height: 1.47;
-  color: var(--accent);
+  color: var(--accent-2);
   margin-top: 0.6rem;
 }
 
-/* Written content — scrolls independently so long write-ups don't
-   push the gallery far down the page */
+
 .shrine-body-text {
   font-family: var(--font-mono);
   font-size: 1.14rem;
-  line-height: 1.56;
+  line-height: 1.3;
   white-space: pre-wrap;
   color: var(--text);
-  max-height: 260px;
+  max-height: 400px;
   overflow-y: auto;
   overflow-x: hidden;
   padding: 1rem 1.1rem;
   margin-bottom: 1.25rem;
   background: var(--bg3);
-  border: 1.5px solid var(--border);
+  border: 1.5px dashed var(--border);
   border-radius: var(--radius-sm);
   scrollbar-gutter: stable;
 }
@@ -1487,7 +1485,7 @@ body.admin-mode .letter-envelope .admin-log-actions {
   font-family: var(--font-mono);
   font-size: 1.22rem;
   line-height: 1.61;
-  border-top: 4px solid var(--accent);
+
 }
 .letter-paper-to {
   font-family: var(--font-mono);
@@ -1503,7 +1501,7 @@ body.admin-mode .letter-envelope .admin-log-actions {
   color: var(--text);
   margin-bottom: 2rem;
   padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-lt);
+  border-bottom: 2px dotted var(--border-lt);
 }
 .letter-body-text {
   white-space: pre-wrap;
@@ -1987,7 +1985,15 @@ textarea.board-message-input {
   max-width: 1000px;
   margin: 0 auto;
 }
-.snippets-content-card { width: 100%; }
+.snippets-content-card {
+  width: 100%;
+  border-image: none;
+  border-width: 1.5px;
+  border-style: solid;
+  border-color: var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-lg);
+}
 
 /* ── dropdown menu from tab ── */
 .category-tab-group { position: relative; }
@@ -2791,8 +2797,8 @@ body.dark .about-card {
   margin: 0.5rem auto 0.75rem;
   max-width: 480px;
   background: var(--bg2);
-  border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAABIUlEQVR4AbTN0U3EUAxEUaAMyqAECqcEyqAN0LF0kTfKsvkh0tUbe8aTl6d/+G5KP17fvtF/aDR790zDfnNTynj/+nwWBA2a521ON/Pjt7QQQxA06Cu+jPyUGhxa0N5ovuq7m1IiHFfU7t5sLy+39ZQyLJlotqNBg0Za/siUHpcdOM6j0Xx8ee7sp9RgaUF7HyEvi2N2SgswaZyF+Udk7eTTU2ppwaCvIOtGdmvzb+k2thZ6hHI35abUgmFJex8hLwvZZnpKiWCicPt7ryxPPj2lBkvmGTzk0XDXbr9Tuhd0B144Bg0atDz2PKVMS+bW7exxNsvzNlNqkXl2eNXvdkoNqLiSZu8V3x2mlECHlTR7//J5m5tShgLQ2Lp572jw4gcAAP//PzsEBwAAAAZJREFUAwDznWA6dItLkQAAAABJRU5ErkJggg==") 7 / 7px / 0 round;
-  border-width: 7px;
+  border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAqCAYAAADFw8lbAAABXElEQVR4AeyT0Q3CMAxES8dgDEZgcEZgDNYAvY9XVW6iBqGmdQXSycS+NHenZBzC73G9vUsItMWytIfeghgacEoItGEhNBKOsp6E6ur+el5KcB6F2y/toef8132T0Piho61HHeMe1AQyA/Kt9MDW+/IkWkui1ie9OWq82J/v4X+cr63Pm+ia863meRLlvgBf8VaJfPtd9aAN5ElUp6gGOrHfu3o+WoDn50tU5Uet+RKt3Y3eCXMvgXo8P0+iKscF0MHeFS1AfXkS3Tu51vP/ibYm1crLkygvC/i6Kg67t9WDNpAnUaNCNdCJ/d7V89ECPD9foio/as2XaO1u9E6YewnU4/l5ElU5LoAO9q5oAerLk+jeybWef95EvTPW1kTkW1v3ycuTKC8LrDl1DncO+zqP1fl8D//tR75r53BBnkR1gGqgk1iZAflWeiDyXTMD8q30gLxYmQH5aRL9AAAA//+ruYWQAAAABklEQVQDAFyVnQbh7fANAAAAAElFTkSuQmCC") 14 / 14px / 0 round;
+  border-width: 14px;
   border-style: solid;
   border-radius: var(--radius);
 }
@@ -2835,8 +2841,8 @@ body.dark .about-personality-header {
   break-inside: avoid;
   margin-bottom: 1rem;
   background: var(--bg2);
-  border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABUAAAAVCAYAAACpF6WWAAABIUlEQVR4AbTN0U3EUAxEUaAMyqAECqcEyqAN0LF0kTfKsvkh0tUbe8aTl6d/+G5KP17fvtF/aDR790zDfnNTynj/+nwWBA2a521ON/Pjt7QQQxA06Cu+jPyUGhxa0N5ovuq7m1IiHFfU7t5sLy+39ZQyLJlotqNBg0Za/siUHpcdOM6j0Xx8ee7sp9RgaUF7HyEvi2N2SgswaZyF+Udk7eTTU2ppwaCvIOtGdmvzb+k2thZ6hHI35abUgmFJex8hLwvZZnpKiWCicPt7ryxPPj2lBkvmGTzk0XDXbr9Tuhd0B144Bg0atDz2PKVMS+bW7exxNsvzNlNqkXl2eNXvdkoNqLiSZu8V3x2mlECHlTR7//J5m5tShgLQ2Lp572jw4gcAAP//PzsEBwAAAAZJREFUAwDznWA6dItLkQAAAABJRU5ErkJggg==") 7 / 7px / 0 round;
-  border-width: 7px;
+  border-image: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACoAAAAqCAYAAADFw8lbAAAA7klEQVR4AdzT0Q0CIRCEYbUMy7AEC7cEy7ANffpeNiF4iYDDJWSy7CXD/CyXU8i330Ef19t7xXLh+xBF8f56nmcuJOk+RCVCdrTyq5pPFLlZc1kJ1jqfqETIjlI+Pc0litzo2ewRrP08okhKUmv7qzSHKHJmEjG1vv1VmkN0FaGjvvsQNatHCfz6/xyiiP3L627dRA5RCZBVF11e5hFdjqxzgDyi9dXXuhN4eDuHKHL11av1hyPrGOQQ7QSZ3m7d4D5EzeostPwo3xyiTt6aDYlG6be+OUSRQlYt6Sjlw5far5pHVALJZinfnsYQ/QAAAP//UE6aygAAAAZJREFUAwDWJxhzw0hlkQAAAABJRU5ErkJggg==") 14 / 14px / 0 round;
+  border-width: 14px;
   border-style: solid;
   border-radius: var(--radius);
   padding: 1rem 1.2rem 1.2rem;
@@ -3632,7 +3638,7 @@ textarea.admin-input.admin-body-field { min-height: 200px; }
 
 /* Non-mobile only: the icon bar scrolls horizontally instead of squeezing
    labels into overlapping columns as more links get added. Scoped above the
-   850px breakpoint so it doesn't fight the existing mobile nav strip rules. */
+   850px breakpoint so it doesn't fight the existing mobile nav strip rules */
 @media (min-width: 851px) {
   .desktop-icons-bar.in-nav:not(.home-sidebar-nav) {
     overflow: hidden;
