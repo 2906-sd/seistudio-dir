@@ -3983,73 +3983,85 @@ function renderComment(comment) {
     });
    }
 
-   function applyShrineBackground(url) {
-    document.body.style.backgroundImage = url ? `url("${url}")` : "";
-   }
+  function applyShrineBackground(url) {
+  if (url) {
+    document.body.style.backgroundImage = `url("${url}")`;
+    document.body.style.backgroundSize = "cover";
+    document.body.style.backgroundPosition = "center";
+    document.body.style.backgroundRepeat = "no-repeat";
+    document.body.style.backgroundAttachment = "fixed";
+  } else {
+    document.body.style.backgroundImage = "";
+    document.body.style.backgroundSize = "";
+    document.body.style.backgroundPosition = "";
+    document.body.style.backgroundRepeat = "";
+    document.body.style.backgroundAttachment = "";
+  }
+}
 
-   function readShrine(i) {
-    const shrine = shrinesData[i];
-    if (!shrine) return;
-    window._currentShrineIndex = i;
-    applyShrineBackground(normalizeImageUrl(shrine.background));
-    const editBtn = document.getElementById("shrineReaderEditBtn");
-    if (editBtn)
-     editBtn.style.display = isAdminSession() ? "inline-block" : "none";
+function readShrine(i) {
+  const shrine = shrinesData[i];
+  if (!shrine) return;
+  window._currentShrineIndex = i;
+  applyShrineBackground(normalizeImageUrl(shrine.background));
+  const editBtn = document.getElementById("shrineReaderEditBtn");
+  if (editBtn)
+    editBtn.style.display = isAdminSession() ? "inline-block" : "none";
 
-    const container = document.getElementById("shrine-content");
-    const imgHtml = shrine.coverImage
-     ? `<img class="shrine-hero-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
-     : "";
-    const imgs = normalizeImages(shrine.images || []);
-    const captions = normalizeImages(shrine.captions || []);
-    let galleryHtml = "";
-    if (imgs.length) {
-     galleryHtml = `<div class="shrine-gallery">${imgs
+  const container = document.getElementById("shrine-content");
+  const imgHtml = shrine.coverImage
+    ? `<img class="shrine-hero-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
+    : "";
+  const imgs = normalizeImages(shrine.images || []);
+  const captions = normalizeImages(shrine.captions || []);
+  let galleryHtml = "";
+  if (imgs.length) {
+    galleryHtml = `<div class="shrine-gallery">${imgs
       .map((u, i) => {
-       const cap = captions[i] || "";
-       const fullUrl = normalizeImageUrl(u);
-       return (
-        `<div class="shrine-gallery-item"${cap ? ` data-caption="${escHtml(cap)}"` : ""} data-shrine-img="${escHtml(fullUrl)}" data-shrine-title="${escHtml(shrine.title || "SHRINE")}">` +
-        `<img class="shrine-gallery-img" src="${fullUrl}" alt="${escHtml(cap)}" loading="lazy" draggable="false" /></div>`
-       );
+        const cap = captions[i] || "";
+        const fullUrl = normalizeImageUrl(u);
+        return (
+          `<div class="shrine-gallery-item"${cap ? ` data-caption="${escHtml(cap)}"` : ""} data-shrine-img="${escHtml(fullUrl)}" data-shrine-title="${escHtml(shrine.title || "SHRINE")}">` +
+          `<img class="shrine-gallery-img" src="${fullUrl}" alt="${escHtml(cap)}" loading="lazy" draggable="false" /></div>`
+        );
       })
       .join("")}</div>`;
-    }
-    const bodyHtml = shrine.body
-     ? `<div class="shrine-body-text">${shrine.body}</div>`
-     : "";
+  }
+  const bodyHtml = shrine.body
+    ? `<div class="shrine-body-text">${shrine.body}</div>`
+    : "";
 
-    container.innerHTML = `<div class="shrine-content" style="padding-bottom:1.25rem;"><p class="post-label" style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.06em;">SHRINE</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);">${shrine.title}</h1>${shrine.tagline ? `<p class="shrine-tagline">${escHtml(shrine.tagline)}</p>` : ""}</div>${imgHtml}<div class="shrine-content">${bodyHtml}${galleryHtml}</div>`;
+  container.innerHTML = `<div class="shrine-content" style="padding-bottom:1.25rem;"><p class="post-label" style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.06em;">SHRINE</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);">${shrine.title}</h1>${shrine.tagline ? `<p class="shrine-tagline">${escHtml(shrine.tagline)}</p>` : ""}</div>${imgHtml}<div class="shrine-content">${bodyHtml}${galleryHtml}</div>`;
 
-    container
-     .querySelectorAll(".shrine-gallery-item[data-shrine-img]")
-     .forEach((item) => {
+  container
+    .querySelectorAll(".shrine-gallery-item[data-shrine-img]")
+    .forEach((item) => {
       item.addEventListener("click", (ev) => {
-       ev.preventDefault();
-       ev.stopPropagation();
-       openImageLightbox(
-        encodeURIComponent(item.getAttribute("data-shrine-img") || ""),
-        item.getAttribute("data-shrine-title") || "SHRINE",
-        item.getAttribute("data-caption") || "",
-       );
+        ev.preventDefault();
+        ev.stopPropagation();
+        openImageLightbox(
+          encodeURIComponent(item.getAttribute("data-shrine-img") || ""),
+          item.getAttribute("data-shrine-title") || "SHRINE",
+          item.getAttribute("data-caption") || "",
+        );
       });
-     });
+    });
 
-    const h = "#shrine/" + shrine.id;
-    if (window.location.hash !== h)
-     window.history.pushState(
+  const h = "#shrine/" + shrine.id;
+  if (window.location.hash !== h)
+    window.history.pushState(
       { page: "shrine-reader", shrineId: shrine.id },
       "",
       h,
-     );
-    _activateSection("shrine-reader");
-   }
+    );
+  _activateSection("shrine-reader");
+}
 
-   function editCurrentShrine() {
-    const idx = window._currentShrineIndex;
-    if (idx === undefined || idx < 0) return;
-    openEditShrine(idx);
-   }
+function editCurrentShrine() {
+  const idx = window._currentShrineIndex;
+  if (idx === undefined || idx < 0) return;
+  openEditShrine(idx);
+}
 
    /* ═══════════════════════════════════════════════════════
    RENDER — LETTER LIST + READER
