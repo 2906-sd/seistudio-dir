@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>starmail // sei out loud</title>
+  <meta
+   name="description"
+   content="A constellation of things never said out loud, written in the dark."
+  />
+  <link
+   rel="icon"
+   type="image/gif"
+   href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif"
+  />
+  <link rel="preload" href="../fonts/DotGothic16-Regular.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="../fonts/HelvetiPixel.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="starmail.css" />
+ </head>
+ <body>
+  <div class="sky" aria-hidden="true">
+   <canvas id="starfield"></canvas>
+  </div>
+
+  <a class="back-link" id="backLink" href="https://seistudio.vercel.app/">
+   <span aria-hidden="true">&lt;</span> Back to sei out loud
+  </a>
+
+  <header class="masthead">
+   <p class="tagline" id="tagline">
+    A constellation of things never said out loud, written in the dark.<br />
+    Pick a star. See what was unsaid.
+   </p>
+   <div class="moon-wrap">
+    <img
+     class="moon"
+     id="moon"
+     src="https://res.cloudinary.com/seioutloud/image/upload/v1786141508/moon_tdjgj8.png"
+     alt="A full moon"
+     draggable="false"
+    />
+   </div>
+  </header>
+
+  <main class="field-wrap">
+   <div class="field" id="field" role="list" aria-label="Unsent letters">
+    <p class="field-status" id="fieldStatus">gathering stars<span class="dots"></span></p>
+   </div>
+  </main>
+
+  <div class="note-layer" id="noteLayer" aria-live="polite"></div>
+
+  <div class="sheet" id="loginSheet" hidden>
+   <form
+    class="sheet-box"
+    id="loginForm"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loginTitle"
+   >
+    <h2 class="sheet-title" id="loginTitle">// ACCESS</h2>
+    <input
+     type="text"
+     name="username"
+     value="sei"
+     autocomplete="username"
+     hidden
+     readonly
+    />
+    <input
+     class="sheet-input"
+     type="password"
+     id="passInput"
+     name="password"
+     autocomplete="current-password"
+     placeholder="password"
+    />
+    <p class="sheet-error" id="loginError" role="alert" hidden></p>
+    <div class="sheet-actions">
+     <button class="sheet-btn" type="button" id="loginCancel">CANCEL</button>
+     <button class="sheet-btn is-primary" type="submit" id="loginGo">
+      ENTER
+     </button>
+    </div>
+   </form>
+  </div>
+
+  <div class="sheet" id="composeSheet" hidden>
+   <div
+    class="sheet-box is-wide"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="composeTitle"
+   >
+    <h2 class="sheet-title" id="composeTitle">// FOLD A NEW STAR</h2>
+    <label class="sheet-label" for="fTo">To</label>
+    <input
+     class="sheet-input"
+     type="text"
+     id="fTo"
+     placeholder="to the version of me from last year..."
+    />
+    <label class="sheet-label" for="fSubject">Subject</label>
+    <input class="sheet-input" type="text" id="fSubject" placeholder="we made it" />
+    <label class="sheet-label" for="fBody">Body</label>
+    <textarea
+     class="sheet-input is-body"
+     id="fBody"
+     placeholder="blank line between paragraphs."
+    ></textarea>
+    <p class="sheet-error" id="composeError" role="alert" hidden></p>
+    <div class="sheet-actions">
+     <button class="sheet-btn" type="button" id="composeCancel">CLOSE</button>
+     <button class="sheet-btn is-primary" type="button" id="composeSave">
+      SEAL
+     </button>
+    </div>
+   </div>
+  </div>
+
+  <div class="admin-bar" id="adminBar" hidden>
+   <span class="admin-dot" aria-hidden="true"></span>
+   <span class="admin-bar-label">ADMIN</span>
+   <button class="sheet-btn is-primary" type="button" id="newLetterBtn">
+    + LETTER
+   </button>
+   <button class="sheet-btn" type="button" id="logoutBtn">LOG OUT</button>
+  </div>
+
+  <script src="starmail.js"></script>
+ </body>
+</html>

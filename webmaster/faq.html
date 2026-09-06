@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sei ✿ut Loud — FAQ</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="webmaster.css" />
+ </head>
+ <body>
+  <script>
+   try {
+    if (localStorage.getItem("darkMode") === "1") document.body.classList.add("dark");
+   } catch (_) {}
+  </script>
+
+  <header class="wm-topbar">
+   <button
+    class="petal-toggle-btn"
+    id="petalToggleBtn"
+    onclick="togglePetals()"
+    title="Toggle falling petals"
+    aria-pressed="true"
+   >
+    ✿ PETALS: ON
+   </button>
+   <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+    ◐ MODE
+   </button>
+   <a class="wm-home-flower" href="/" title="Back home">✿</a>
+  </header>
+
+  <div class="lists-layout">
+   <aside class="lists-col-left">
+    <nav class="wm-card wm-nav-card" aria-label="Site navigation">
+     <div class="wm-card-header wm-card-header-italic">navigation</div>
+     <div class="wm-nav-body">
+      <a class="wm-nav-link" href="/#home">home</a>
+      <a class="wm-nav-link" href="/#art">visuals</a>
+      <a class="wm-nav-link" href="/#writing">logs</a>
+      <a class="wm-nav-link" href="/#shrines">shrines</a>
+      <a class="wm-nav-link" href="/#letters">letters</a>
+      <a class="wm-nav-link" href="/#outgoing">outgoing</a>
+      <a class="wm-nav-link" href="/#goodies">goodies</a>
+      <a class="wm-nav-link" href="/#colophon">colophon</a>
+      <div class="wm-nav-divider" role="presentation"></div>
+      <span class="wm-nav-sublabel">webmaster</span>
+      <div class="wm-subnav">
+       <a class="wm-subnav-link" href="webmaster.html">about</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">fangirling</a>
+       <a class="wm-subnav-link is-current" href="faq.html" aria-current="page">faq</a>
+       <a class="wm-subnav-link" href="sei-core.html">sei-core</a>
+       <a class="wm-subnav-link" href="lists.html">lists</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">boywall</a>
+      </div>
+     </div>
+    </nav>
+   </aside>
+
+   <main class="lists-content">
+    <div class="wm-page-header">
+     <h1><span>F</span>.A.Q</h1>
+     <p class="wm-page-sub">common questions that have been asked irl/online, badabing badaboom.</p>
+    </div>
+
+    <p class="faq-intro">
+     
+    </p>
+
+    <div class="faq-list">
+     <!--
+     ═══════════════════════════════════════════════════════════════════
+       HOW TO ADD A Q&A — each answer is a native <details> so it opens
+       and closes on its own, no JS needed. Copy a block below and paste
+       it inside the right <div class="faq-group"> ... </div>.
+
+       ·· NEW Q&A ITEM ················································
+       <details class="faq-item">
+        <summary>
+         <span class="faq-toggle" aria-hidden="true">▾</span>
+         <span class="faq-q">your question here?</span>
+         <span class="faq-icon" aria-hidden="true">✿</span>
+        </summary>
+        <div class="faq-answer">
+         <p>your answer here.</p>
+        </div>
+       </details>
+
+       ·· NEW CATEGORY ················································
+       <section class="faq-group">
+        <h2 class="faq-group-label">category name</h2>
+        ... faq-item blocks ...
+       </section>
+     ═══════════════════════════════════════════════════════════════════
+     -->
+     <section class="faq-group">
+      <h2 class="faq-group-label">me</h2>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Is the beauty mark above your lip real?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Yes, and I think it's really silly that this is the question that I get the most! People thought I drew it on with a sharpie/makeup or mistook it for dirt, and now that I'm an adult, some people think I actually got it tatted on! I didn't always have it, I think it showed up on my face some time during middle school. It's not the only beauty mark I have, so it's genetic.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Which ethnicity do you identify with?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Ehh, neither? I think I identify more with being Filipino than Japanese, mostly thanks to my mom. I'm pretty cut off from my Japanese heritage in comparison, so it's really a matter of exposure and conditioning more than anything. I usually just tell people I'm Wasian.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Do you speak other languages?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> I'm only fluent (a generous term, really) in English. I can speak a little Korean. I used to know how to speak Tagalog when I was younger but forgot how to. I've been meaning to learn Japanese though. If you have any language learning tips and resources, I'd love to hear them.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Are you okay with talking to people under 18?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Yes, for general and SFW stuff only (fandoms, coding, site design, etc.)! Any discussions on adult/NSFW topics, themes, or suggestive content are strictly off-limits and will be ignored.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Can we exchange site buttons?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Of course!! If you've put my button on your site, please let me know so I can add yours to mine and follow you. :)</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Where is the best place to contact or DM you?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Email! If you don't see my reply, check your spam. I may take a while to respond, so please be patient.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">You play video games. Do you play online?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> I don't really like online / multiplayer games :( I only have so much time to play video games, and I'd rather not spend it depending on others for enjoyment. I'd say my play style is also pretty slow, I like to take my time! The few times I do play with others is with close friends while we're hanging out.</p>
+       </div>
+      </details>
+     </section>
+
+     <section class="faq-group">
+      <h2 class="faq-group-label">code &amp; assets</h2>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Can I use/borrow code or CSS from your site?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> I can't stop you from snooping the code, so I'd appreciate if you didn't copy directly! I've listed my inspo sites on the Outgoing page and resources under Goodies → Resources, if you want further inspiration and help. If there's any code that I'm willing to share, you'll find it on the Tutorials page under Goodies. :)</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What assets can I use?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Anything on the Goodies' Graphics page is yours to use if you want! If I found something from somewhere on the web, it's credited.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Can I make tutorial requests?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Out of everything on my site, the tutorials probably take the longest to code (also I had to ask a good friend to help me make them, and there's only so many times I can order Doordash for him for every time he helps ;u;) You can ask me if there's something on my site you want to learn how to make, and I'll probably jot it down somewhere, but it'll definitely take a while before a tutorial comes out of it. I can try and provide you resources that might help, though!</p>
+       </div>
+      </details>
+     </section>
+
+     <section class="faq-group">
+      <h2 class="faq-group-label">art</h2>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What drawing program / brushes / tablet do you use?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> I currently draw on Adobe Photoshop (2025) using a Wacom One 13 drawing tablet.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What sketchbooks do you use?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Right now I'm using the Strathmore 500 Series Mixed Media, and Canson Mixed Media for my usual mixed media stuff, and Leuchtturm1917 for light sketches and doodles.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What pencils/pens/erasers do you use?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> I switch between a 0.5 mm Bic and a uniball Kuru Toga Mechanical Pencil for sketches and use a Faber Castell graphic pencil set for the more detailed stuff. I have a mix of Microns and Faber Castell pens for ink-work/outlining. For erasers, I use Pentel Hi-Polymer erasers (I recommend getting a big pack of them~) and the Tombow Mono Zero Erasers, sized 2.5mm square and 2.3mm round.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What do you use for mixed media?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Everything and anything, not going to lie! I have a bunch of acrylic paint from Liquitex, an Artist Loft gouache palette (hate it), a Prismacolor Colored Pencil Set (150 ct) and a bunch of knock-off alcohol markers someone got me as a gift. I'll use anything honestly.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">Do you prefer traditional or digital?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> Traditional, since that's how I started with learning how to draw! I'm somewhat comfortable with digital, but I haven't quite figured out how to translate my artstyle yet and am still learning what rendering technique works best for me.</p>
+       </div>
+      </details>
+
+      <details class="faq-item">
+       <summary>
+        <span class="faq-toggle" aria-hidden="true">▾</span>
+        <span class="faq-q">What sewing machine do you have?</span>
+        
+       </summary>
+       <div class="faq-answer">
+        <p><span class="faq-icon" aria-hidden="true">✿</span> A Brother CP100x that knows I only know how to hem stuff. (I'm still learning the basics haha)</p>
+       </div>
+      </details>
+     </section>
+    </div>
+   </main>
+  </div>
+
+  <script src="webmaster.js"></script>
+ <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

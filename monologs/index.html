@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MONOlogs — unapologetic thoughts</title>
+<meta name="description" content="MONOlogs — a collection of unapologetic thoughts.">
+<meta name="theme-color" content="#F3F3F3">
+<link rel="stylesheet" href="monologs.css">
+<script>
+(function () {
+  var SKY = {
+    light: 'https://res.cloudinary.com/seioutloud/image/upload/v1786046832/clouds-Photoroom-dithered_kxjugi.png',
+    dark: 'https://res.cloudinary.com/seioutloud/image/upload/v1786048619/clouds-Photoroom-dithered_1_xulywm.png'
+  };
+  var stored = null;
+  try { stored = localStorage.getItem('monologs-theme'); } catch (e) {}
+  var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  var theme = stored || (prefersDark ? 'dark' : 'light');
+
+  if (theme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0C0C0C');
+  }
+
+  var link = document.createElement('link');
+  link.rel = 'preload';
+  link.as = 'image';
+  link.href = SKY[theme];
+  document.head.appendChild(link);
+})();
+</script>
+</head>
+<body>
+
+<header class="topbar">
+  <a class="back-link" href="https://seistudio.vercel.app/">✿ Back to sei out loud</a>
+  <div class="mode-toggle" role="group" aria-label="Display options">
+    <button type="button" id="rainBtn" class="mode-btn" aria-pressed="true" aria-label="Rain">toggle</button>
+    <button type="button" id="modeBtn" class="mode-btn" aria-pressed="false" aria-label="Color mode">mode</button>
+  </div>
+</header>
+
+<div class="rain" id="rain" aria-hidden="true"></div>
+
+<main class="layout">
+  <aside class="sidebar">
+    <h1 class="brand">
+      <span class="brand-main">MONO</span>
+      <span class="brand-sub">logs</span>
+    </h1>
+
+    <nav class="index-nav" aria-label="Blog post index">
+      <div class="index-head">
+        <h2 class="index-label">index</h2>
+        <button type="button" id="sortBtn" class="sort-btn" aria-label="Sort by date">newest</button>
+      </div>
+
+      <ul class="index-list" id="indexList"></ul>
+
+      <div class="pager" id="pager" hidden>
+        <button type="button" id="prevBtn" class="pager-btn" aria-label="Previous page">prev</button>
+        <span class="pager-status" id="pagerStatus" aria-live="polite"></span>
+        <button type="button" id="nextBtn" class="pager-btn" aria-label="Next page">next</button>
+      </div>
+    </nav>
+  </aside>
+
+  <section class="reader broider" id="reader" aria-live="polite">
+    <span class="sr-only" id="readerHint">Select a title from the index to read it here.</span>
+    <article class="post" id="postContent">
+      <header class="post-header">
+        <h3 class="post-title" id="postTitle"></h3>
+        <time class="post-date" id="postDate"></time>
+      </header>
+      <div class="post-body" id="postBody"></div>
+    </article>
+  </section>
+</main>
+
+<p class="tagline">unapologetic thoughts.</p>
+
+<script src="monologs.js"></script>
+</body>
+</html>

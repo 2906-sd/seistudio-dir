@@ -313,34 +313,6 @@
    })();
 
    /* ═══════════════════════════════════════════════════════
-   ABOUT PAGE — PIC CAROUSEL
-═══════════════════════════════════════════════════════ */
-   const SELFIES = [
-
-    "https://res.cloudinary.com/seioutloud/image/upload/v1784332041/IMG_4225_zjyhzd.jpg",
-    "https://res.cloudinary.com/seioutloud/image/upload/v1784332896/Screen_Shot_2026-07-17_at_7.01.13_PM_hrz4c1.png",
-    "https://res.cloudinary.com/seioutloud/image/upload/v1784332482/IMG_4698_nqp30c.png",
-   ];
-   let selfieIndex = 0;
-   function renderSelfieCarousel() {
-    const img = document.getElementById("selfieCarouselImg");
-    if (!img || !SELFIES.length) return;
-    img.src = SELFIES[selfieIndex];
-    const dots = document.getElementById("selfieCarouselDots");
-    if (dots)
-     dots.innerHTML = SELFIES.map(
-      (_, i) =>
-       `<span class="about-jpg-dot${i === selfieIndex ? " is-active" : ""}"></span>`,
-     ).join("");
-   }
-   function selfieCarouselNav(dir) {
-    if (!SELFIES.length) return;
-    selfieIndex = (selfieIndex + dir + SELFIES.length) % SELFIES.length;
-    renderSelfieCarousel();
-   }
-   document.addEventListener("DOMContentLoaded", renderSelfieCarousel);
-
-   /* ═══════════════════════════════════════════════════════
    COLOPHON PAGE — SITE HISTORY CAROUSEL
    Placeholder screenshots — swap these URLs for real earlier-version
    captures whenever they're ready.
@@ -382,129 +354,6 @@
     renderOriginCarousel();
    }
    document.addEventListener("DOMContentLoaded", renderOriginCarousel);
-
-   /* ═══════════════════════════════════════════════════════
-   ABOUT PAGE — FAVORITES CAROUSELS (monsters / pokemon)
-═══════════════════════════════════════════════════════ */
-   const PLACEHOLDER_ICON = "https://res.cloudinary.com/seioutloud/image/upload/v1784842594/MH4U-Stygian_Zinogre_Icon_vjtxsw.webp";
-   const FAVE_DATA = {
-    monster: [
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842594/MH4U-Stygian_Zinogre_Icon_vjtxsw.webp", label: "Stygian Zinogre" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842588/MH4U-Zinogre_Icon_avs8bt.webp", label: "Zinogre" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842588/Frostfang_Barioth_by_Zinotsune_ibom2i.webp", label: "Frost Fang Barioth" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842588/MH4U-Najarala_Icon_pjxuca.webp", label: "Najarala" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842588/Brachydios_Icon_by_Zinotsune_vebgcw.webp", label: "Brachydios" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842588/MHGen-Malfestio_Icon_uphm7n.webp", label: "Malfestio" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842594/MH4U-Gore_Magala_Icon_qd7agm.webp", label: "Gore Magala" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784842594/Akantor_Icon_by_Zinotsune_veykkg.webp", label: "Akantor" },
-    ],
-
-    pokemon: [
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843427/lucario_aigh6s.png", label: "Lucario" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843427/absol_g16nvz.png", label: "Absol" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843426/steelix_lxhpmn.png", label: "Steelix" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843425/scolipede_zvis1s.png", label: "Scolipede" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843424/rayquaza_gqrkov.png", label: "Rayquaza" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843424/zygarde_vth6tt.png", label: "Zygarde" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843422/masquerain_ixfdvj.png", label: "Masquerain" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843422/arcanine_fjabsv.png", label: "Arcanine" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843421/marowak_i6v5da.png", label: "Marowak" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843420/haxorus_emklz3.png", label: "Haxorus" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843419/heracross_wbmt41.png", label: "Heracross" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843419/espurr_d9ujey.png", label: "Espurr" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843414/meowstic_hklhpe.png", label: "Meowstic" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843418/quagsire_v20zt2.png", label: "Quagsire" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843415/mewtwo_zcuukm.png", label: "Mewtwo" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843415/yveltal_lubwor.png", label: "Yveltal" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843423/silvally_do3it3.png", label: "Silvally" },
-     { img: "https://res.cloudinary.com/seioutloud/image/upload/v1784843415/gengar_xezeqi.png", label: "Gengar" },
-    ],
-   };
-   const faveIndex = { monster: 0, pokemon: 0 };
-
-   function renderFaveCarousel(type) {
-    const data = FAVE_DATA[type];
-    const img = document.getElementById(type + "CarouselImg");
-    if (!img || !data.length) return;
-    const idx = faveIndex[type];
-    img.src = data[idx].img;
-    img.alt = data[idx].label;
-    const cap = document.getElementById(type + "CarouselCaption");
-    if (cap) cap.textContent = data[idx].label;
-     const dots = document.getElementById(type + "CarouselDots");
-     if (dots) {
-      dots.className = "fave-carousel-counter";
-      dots.innerHTML = `${idx + 1} / ${data.length}`;
-     }
-   }
-   function faveCarouselNav(type, dir) {
-    const data = FAVE_DATA[type];
-    if (!data.length) return;
-    faveIndex[type] = (faveIndex[type] + dir + data.length) % data.length;
-    renderFaveCarousel(type);
-   }
-   document.addEventListener("DOMContentLoaded", () => {
-    renderFaveCarousel("monster");
-    renderFaveCarousel("pokemon");
-   });
-
-   /* ═══════════════════════════════════════════════════════
-   SEI CORE
-═══════════════════════════════════════════════════════ */
-   const SEI_CORE_DATA = [
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785189483/fbbcafeac22ba9913e7434336ac355fe_psjpvr.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187805/7f816b9904173b6e899d01934dfd8caa_rcbfjc.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785189474/8bd5e5d0272285c8300c9804af36f0ae_ld3kwz.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785189480/fb39bda3afd8759adcca35df0fab9836_indx9o.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187828/2ea209d400b0b76f2a26dd75202e3794_wpsuhi.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785189480/7660259b4e0cb23af9354a706f640d38_lwev9u.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187825/7d545a96dd31f3a72dbd4b1e79bbc6e5_omsj9u.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187805/41b545a01ca4eed7eae51ecfa062ca11_yvwrkb.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187825/47190ac2d4858e525bfe42beab1b27a8_g4hahp.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187820/65b3be2306db4a8dbae9e4191a56f9e2_ev4am9.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187812/f9e18849deae29bbe7f164485f7c4cbb_lvjrlh.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187820/9830cf3fb62f9714e96c29f9ae229a4d_op2623.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187807/31c2cbb21224da75a0602f7e71a5f686_sfgmti.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187826/2267e85118b3a0a8ff94d082a25e29e2_nd0uf7.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187801/5bf7d43111e921c8e86a9b9e80fb8b63_imegoa.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187792/809b3254dac4b7bc5b359bc3c7a15dcd_qwz1cd.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187810/7b577ed438eac24e0235727c17d8960c_xxjc48.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187805/5e260f6d559c18305fbac02ca8971f16_cmwswl.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187802/62a5eba7c9e76c2386fb01902e79367a_guxweb.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187792/96f39aeacfe154fcb52f9e705fbfe3d6_zhn92j.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187814/08b3b793d7f8488e198e6fa57425d84d_qkhluc.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187808/3fb2be16435f86c3a2806e00e625affe_aqpyax.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187806/cd2751a3e1dd828ba9c56e3d985b578c_glupir.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187819/f0d8ff20e50f320cc8a15ceae402368e_aet586.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187791/94bc9a72dce6a9f68bd4c7886102dfb7_eqr47q.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187797/28a6ffbd358ca0acd185b0dd330a8566_dtyatn.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187818/902b4bf21d5976e120b1b206e376717b_znj2eg.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187813/4fd8e1d6a4b4a1253a7b1403b81c4313_kuhwrq.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187809/cb8bcd1cc350a0fb9cfbbdba8351a27e_nuuos1.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187818/554c2ed0a29fe41a6765d97ba895ee71_acqiae.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187815/24db7e8fbc09c4ce6e41b131dac30623_rwcxwg.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187798/8fa71fb8ca48c92643de9e764bb692ee_pnz5hf.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187817/e4fde1fd058f1d1089424a10d263bddb_mlfzp1.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187798/d0706493c7174ef56e109c8181f85021_s8mhej.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187814/682840e9f932becd7e9129a4f97368b0_aqyfym.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187814/9019eab212bce83987441c5eecb9a365_tnsfor.jpg", alt: "" },
-  { img: "https://res.cloudinary.com/seioutloud/image/upload/v1785187791/a157c372e29c851b8232517c78c4b5a6_dgrpeg.jpg", alt: "" }
-];
-
-   function renderSeiCoreGallery() {
-    const gallery = document.getElementById("seiCoreGallery");
-    if (!gallery) return;
-    const items = SEI_CORE_DATA.filter((item) => item.img);
-    if (!items.length) {
-     gallery.innerHTML =
-      '<p class="widget-hint" style="grid-column:1/-1;text-align:center;padding:2rem;">// no images yet</p>';
-     return;
-    }
-    gallery.innerHTML = items
-     .map((item) => `<img src="${item.img}" alt="${item.alt || ""}" loading="lazy" />`)
-     .join("");
-   }
-   document.addEventListener("DOMContentLoaded", renderSeiCoreGallery);
 
         /* ═══════════════════════════════════════════════════════
    CODE SNIPPETS
@@ -2482,19 +2331,48 @@ function renderComment(comment) {
 ═══════════════════════════════════════════════════════ */
    let artData = [];
    let logsData = [];
-   let shrinesData = [];
-   let lettersData = [];
-   const LETTER_BALL_IMAGES = [
-    "https://res.cloudinary.com/seioutloud/image/upload/v1785883450/star1-Photoroom-dithered_kvazvx.png",
-    "https://res.cloudinary.com/seioutloud/image/upload/v1785883444/star12-Photoroom-dithered_dhnkag.png",
-    "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star3-Photoroom-dithered_ocimst.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star4-Photoroom-dithered_nxmwei.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star5-Photoroom-dithered_zmy7ty.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star6-Photoroom-dithered_rodvan.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star7-Photoroom-dithered_rtm0t0.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star8-Photoroom-dithered_px54if.png",
-      "https://res.cloudinary.com/seioutloud/image/upload/v1785883443/star9-Photoroom-dithered_woklhx.png",
+   const MONOLOGS_URL = "monologs/monologs.js";
+   /* MONOlogs stores posts as hardcoded post(date, title, body) calls
+   in its own script.js — no Firebase. This fetches that file as plain
+   text and extracts each call with a regex rather than executing it,
+   so the home updates widget can list recent posts without evaling
+   fetched code. */
+   async function loadMonologs() {
+    try {
+     const res = await fetch(MONOLOGS_URL, { cache: "no-store" });
+     if (!res.ok) throw new Error("HTTP " + res.status);
+     const src = (await res.text())
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/^[ \t]*\/\/.*$/gm, "");
+     const re = /post\(\s*(["'])((?:(?!\1).)*)\1\s*,\s*(["'])((?:(?!\3).)*)\3\s*,\s*`([\s\S]*?)`\s*\)/g;
+     let m;
+     let i = 1;
+     logsData = [];
+     while ((m = re.exec(src))) {
+      const date = m[2];
+      const title = m[4];
+      logsData.push({
+       id: "p" + i++,
+       title,
+       meta: date,
+       timestamp: parseMetaDate(date) || 0,
+      });
+     }
+    } catch (e) {
+     console.error("MONOlogs load failed:", e);
+    }
+   }
+   /* Each shrine is a standalone HTML page — add one entry per shrine.
+   url: path to the dedicated page (e.g. "shrines/monster-hunter.html") */
+   const SHRINES = [
+    {
+     title: "Monster Hunter",
+     tagline: "a small love letter to...",
+     coverImage: "",
+     url: "shrines/monster-hunter.html",
+    },
    ];
+   let lettersData = [];
    let badgesData = [];
    let bagData = [];
    let statusData = [];
@@ -2518,16 +2396,6 @@ function renderComment(comment) {
       section: "log",
       id: l.id,
       ts: parseMetaDate(l.meta) || l.timestamp || 0,
-     }),
-    );
-    (shrinesData || []).forEach((s) =>
-     items.push({
-      type: "SHRINE",
-      title: s.title,
-      meta: s.tagline || "",
-      section: "shrine",
-      id: s.id,
-      ts: s.timestamp || 0,
      }),
     );
     (lettersData || []).forEach((l) =>
@@ -2577,17 +2445,9 @@ function renderComment(comment) {
    /* routes an update-box click to the correct reader / section. */
    function openUpdateItem(section, id) {
     if (section === "log") {
-     const idx = logsData.findIndex((l) => l.id === id);
-     if (idx !== -1) readLog(idx);
-     else showPage("writing");
-    } else if (section === "shrine") {
-     const idx = shrinesData.findIndex((s) => s.id === id);
-     if (idx !== -1) readShrine(idx);
-     else showPage("shrines");
+     window.location.href = "monologs/index.html#log/" + id;
     } else if (section === "letter") {
-     const idx = lettersData.findIndex((l) => l.id === id);
-     if (idx !== -1) readLetter(idx);
-     else showPage("letters");
+     window.location.href = "starmail/index.html#letter/" + id;
     } else if (section === "art") {
      const idx = artData.findIndex((a) => a.id === id);
      showPage("art", () => {
@@ -2595,8 +2455,6 @@ function renderComment(comment) {
      });
     } else if (section === "info") {
      showPage("colophon");
-    } else if (section === "personal") {
-     showPage("personal");
     } else if (section === "home") {
      showPage("home");
     }
@@ -2810,38 +2668,8 @@ function renderComment(comment) {
    }
 
    /* ═══════════════════════════════════════════════════════
-   PERSONAL — SUBPAGE TABS
+   GOODIES — SUBPAGE TABS
 ═══════════════════════════════════════════════════════ */
-   function switchPersonalSubpage(subpage) {
-    document.querySelectorAll("#personalTabNav .category-tab").forEach((tab) => {
-     tab.classList.toggle(
-      "active",
-      tab.getAttribute("data-subpage") === subpage,
-     );
-    });
-    document.querySelectorAll(".personal-subpage").forEach((panel) => {
-     panel.classList.toggle("active", panel.id === "personal-" + subpage);
-    });
-    syncDeskSubnavActive(subpage);
-    updateNekoVisibility(subpage === "about");
-   }
-
-   function goToPersonalSubpage(subpage) {
-    switchPersonalSubpage(subpage);
-    const h = subpage === "about" ? "#personal" : "#personal/" + subpage;
-    if (window.location.hash !== h) {
-     window.history.pushState({ page: "personal", subpage }, "", h);
-    }
-   }
-
-    function initPersonalTabs() {
-     document.querySelectorAll("#personalTabNav .category-tab").forEach((tab) => {
-      tab.addEventListener("click", function () {
-       goToPersonalSubpage(this.getAttribute("data-subpage"));
-      });
-     });
-    }
-
     function switchGoodiesSubpage(subpage) {
      document.querySelectorAll("#goodiesTabNav .category-tab").forEach((tab) => {
       tab.classList.toggle("active", tab.getAttribute("data-subpage") === subpage);
@@ -2906,42 +2734,6 @@ function renderComment(comment) {
     }
     document.addEventListener("DOMContentLoaded", initSnippetsTocToggle);
 
-   /* ═══════════════════════════════════════════════════════
-   FAQ — ACCORDION Q&A
-═══════════════════════════════════════════════════════ */
-   function toggleFaqItem(questionEl) {
-    const item = questionEl.closest(".faq-item");
-    if (item) item.classList.toggle("open");
-   }
-
-   /* ═══════════════════════════════════════════════════════
-   SIDEBAR NAV — EXPANDABLE SUBNAV (e.g. Personal → About/Fangirling/FAQ)
-═══════════════════════════════════════════════════════ */
-   function handleDeskSummaryClick(evt) {
-    showPage("personal");
-   }
-
-   function goToPersonalFromNav(evt, subpage) {
-    evt.stopPropagation();
-    const alreadyOnPersonal = document.getElementById("personal").classList.contains("active");
-    if (alreadyOnPersonal) {
-     goToPersonalSubpage(subpage);
-     return;
-    }
-    showLoader();
-    setTimeout(() => {
-     _activateSection("personal");
-     goToPersonalSubpage(subpage);
-     hideLoader();
-    }, 400);
-   }
-
-   function syncDeskSubnavActive(subpage) {
-    document.querySelectorAll(".desk-subnav-item").forEach((item) => {
-     item.classList.toggle("active", item.getAttribute("data-subpage") === subpage);
-    });
-   }
-
    /* The top-nav strip clips overflow (so icons can scroll horizontally),
    which would clip an absolutely-positioned dropdown too. The subnav there
    uses position:fixed to escape that clip, so its coordinates are computed
@@ -2961,7 +2753,6 @@ function renderComment(comment) {
 
     (function initDeskSubnavPositioning() {
      const groups = [
-      document.getElementById("desk-group-personal"),
       document.getElementById("desk-group-goodies")
      ].filter(Boolean);
      const bar = document.getElementById("desktopIconsBar");
@@ -2982,22 +2773,6 @@ function renderComment(comment) {
       });
      }
     })();
-
-   /* ═══════════════════════════════════════════════════════
-   TAG HELPERS - shared utilities for parsing and rendering content tags
-═══════════════════════════════════════════════════════ */
-   function parseTags(raw) {
-    if (!raw) return [];
-    return raw
-     .split(/[\s,]+/)
-     .map((t) => t.replace(/^#+/, "").trim().toLowerCase())
-     .filter(Boolean);
-   }
-
-   function renderTagsHTML(tags) {
-    if (!tags || !tags.length) return "";
-    return `<div class="log-tags">${tags.map((t) => `<span class="log-tag">#${t}</span>`).join("")}</div>`;
-   }
 
    /* ═══════════════════════════════════════════════════════
    LOADER
@@ -3028,11 +2803,34 @@ function renderComment(comment) {
     document.getElementById("loaderOverlay").classList.remove("show");
    }
 
-   /* content advisory — shown on every page load, blocks the site until dismissed */
-   function dismissAdvisory() {
-    document.getElementById("advisoryModal").style.display = "none";
-    document.body.classList.remove("advisory-lock");
-   }
+   /* content advisory – shown on every page load, blocks the site until dismissed */
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  try {
+    if (localStorage.getItem("modalSeen")) {
+     
+      const modal = document.getElementById("advisoryModal");
+      if (modal) modal.style.display = "none";
+      document.body.classList.remove("advisory-lock");
+    }
+  } catch (_) {
+   
+  }
+});
+
+
+function dismissAdvisory() {
+  const modal = document.getElementById("advisoryModal");
+  if (modal) modal.style.display = "none";
+  document.body.classList.remove("advisory-lock");
+
+  
+  try {
+    localStorage.setItem("modalSeen", "1");
+  } catch (_) {}
+}
+
 
    /* ═══════════════════════════════════════════════════════
    LIGHTBOX — ZOOM + DRAG
@@ -3158,27 +2956,13 @@ function renderComment(comment) {
    /* Toggles admin-mode stuff */
    function setAdminMode(active) {
     document.body.classList.toggle("admin-mode", active);
-    if (logsData.length) renderLogList();
-    if (shrinesData.length) renderShrineGrid();
-    if (lettersData.length) renderLetterList();
     if (typeof renderBag === "function") renderBag();
     renderBadgesStrips();
     if (typeof renderHomeTodo === "function") renderHomeTodo();
-    const eb = document.getElementById("logReaderEditBtn");
-    if (eb) eb.style.display = active ? "inline-block" : "none";
-    const sb = document.getElementById("shrineReaderEditBtn");
-    if (sb) sb.style.display = active ? "inline-block" : "none";
-    const lb = document.getElementById("letterReaderEditBtn");
-    if (lb) lb.style.display = active ? "inline-block" : "none";
     const bb = document.getElementById("badgesAdminBtn");
     if (bb) bb.style.display = active ? "inline-block" : "none";
     const tb = document.getElementById("todoAdminBtn");
     if (tb) tb.style.display = active ? "inline-block" : "none";
-    document
-     .querySelectorAll(
-      ".aw-bag .admin-edit-btn, .aw-games .admin-edit-btn, .aw-hobbies .admin-edit-btn, .aw-music .admin-edit-btn",
-     )
-     .forEach((b) => (b.style.display = active ? "inline-block" : "none"));
    }
 
    /* ═══════════════════════════════════════════════════════
@@ -3320,50 +3104,12 @@ function renderComment(comment) {
      })
      .catch((e) => console.error("Art load failed:", e));
 
-    // Load logs
-    db
-     .ref("content/logs")
-     .orderByChild("timestamp")
-     .once("value", (snap) => {
-      logsData = [];
-      snap.forEach((child) => {
-       const d = child.val();
-       d.tags = Array.isArray(d.tags) ? d.tags : [];
-       d.stickers = Array.isArray(d.stickers) ? d.stickers : [];
-       logsData.push({ id: child.key, ...d });
-      });
-      renderLogList();
-      renderHomeUpdates();
-      if (_pendingLogKey) {
-       const idx = logsData.findIndex((l) => l.id === _pendingLogKey);
-       _pendingLogKey = null;
-       if (idx !== -1) readLog(idx);
-      }
-     })
-     .catch((e) => console.error("Logs load failed:", e));
+    // Load logs (homepage only needs this for the updates widget —
+    // MONOlogs is a standalone static page; see loadMonologs above)
+    loadMonologs().then(renderHomeUpdates);
 
-    // Load shrines
-    db
-     .ref("content/shrines")
-     .orderByChild("timestamp")
-     .once("value", (snap) => {
-      shrinesData = [];
-      snap.forEach((child) => {
-       const d = child.val();
-       d.images = normalizeImages(d.images || []);
-       shrinesData.push({ id: child.key, ...d });
-      });
-      renderShrineGrid();
-      renderHomeUpdates();
-      if (_pendingShrineKey) {
-       const idx = shrinesData.findIndex((s) => s.id === _pendingShrineKey);
-       _pendingShrineKey = null;
-       if (idx !== -1) readShrine(idx);
-      }
-     })
-     .catch((e) => console.error("Shrines load failed:", e));
-
-    // Load letters
+    // Load letters (homepage only needs this for the updates widget —
+    // the letters reader now lives on its own page)
     db
      .ref("content/letters")
      .orderByChild("timestamp")
@@ -3374,13 +3120,7 @@ function renderComment(comment) {
        d.tags = Array.isArray(d.tags) ? d.tags : [];
        lettersData.push({ id: child.key, ...d });
       });
-      renderLetterList();
       renderHomeUpdates();
-      if (_pendingLetterKey) {
-       const idx = lettersData.findIndex((l) => l.id === _pendingLetterKey);
-       _pendingLetterKey = null;
-       if (idx !== -1) readLetter(idx);
-      }
      })
      .catch((e) => console.error("Letters load failed:", e));
 
@@ -3564,15 +3304,10 @@ function renderComment(comment) {
      .forEach((s) => s.classList.remove("active"));
     const sec = document.getElementById(id);
     if (sec) sec.classList.add("active");
-    if (id !== "shrine-reader") applyShrineBackground(null);
     document
      .querySelectorAll(".desk-icon")
      .forEach((n) => n.classList.remove("active"));
-    const navMap = {
-     "log-reader": "writing",
-     "shrine-reader": "shrines",
-     "letter-reader": "letters",
-    };
+    const navMap = {};
     const pageId = navMap[id] || id;
     const deskLink = document.getElementById("desk-link-" + pageId);
     if (deskLink) deskLink.classList.add("active");
@@ -3673,7 +3408,6 @@ function renderComment(comment) {
     showLoader();
     setTimeout(() => {
      _activateSection(id);
-      if (id === "personal") switchPersonalSubpage("about");
       if (id === "goodies") switchGoodiesSubpage("code-snippets");
      const hashVal = id === "home" ? "" : id;
      const newHash = hashVal ? "#" + hashVal : "#";
@@ -3784,187 +3518,23 @@ function renderComment(comment) {
    }
 
    /* ═══════════════════════════════════════════════════════
-   RENDER — LOG LIST + TAG SIDEBAR
-═══════════════════════════════════════════════════════ */
-   let activeTagFilter = null;
-
-   function renderLogList() {
-    try {
-     renderTagSidebar();
-    } catch (e) {
-     console.error("Tag sidebar failed:", e);
-    }
-    const list = document.getElementById("logList");
-    list.innerHTML = "";
-    let displayLogs = [...logsData];
-    if (activeTagFilter) {
-     displayLogs = displayLogs.filter((log) =>
-      (log.tags || []).some((t) => String(t).trim() === activeTagFilter),
-     );
-    }
-    const sortOrder =
-     document.getElementById("logSortOrder")?.value || "latest";
-    displayLogs.sort(
-     (a, b) =>
-      (parseMetaDate(a.meta) || a.timestamp || 0) -
-      (parseMetaDate(b.meta) || b.timestamp || 0),
-    );
-    if (sortOrder === "latest") displayLogs.reverse();
-    if (!displayLogs.length) {
-     list.innerHTML = `<p class="post-label" style="opacity:0.6;">// no logs found for this tag.</p>`;
-     return;
-    }
-    displayLogs.forEach((log) => {
-     const originalIndex = logsData.findIndex((item) => item.id === log.id);
-     const el = document.createElement("div");
-     el.className = "blog-list-item";
-     el.onclick = () => readLog(originalIndex);
-     el.innerHTML = `
-   <div class="log-titlebar">
-   <span class="log-titlebar-flower">✿</span>
-  <div class="log-titlebar-label">${log.meta}</div>
-      </div>
-      <div class="log-card-body">
-        <h2 class="log-card-title">${log.title}</h2>
-        ${renderTagsHTML(log.tags)}
-      </div>
-      <div class="admin-log-actions">
-        <button class="admin-edit-btn" onclick="event.stopPropagation();openEditLog(${originalIndex})">EDIT</button>
-        <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLog(${originalIndex})">DELETE</button>
-      </div>`;
-     list.appendChild(el);
-    });
-   }
-
-   function renderTagSidebar() {
-    const sidebar = document.getElementById("logTagSidebar");
-    if (!sidebar) return;
-    const counts = {};
-    logsData.forEach((log) => {
-     (log.tags || []).forEach((raw) => {
-      const tag = String(raw).trim();
-      if (!tag) return;
-      counts[tag] = (counts[tag] || 0) + 1;
-     });
-    });
-    const sortedTags = Object.keys(counts).sort((a, b) => a.localeCompare(b));
-    let html = `<p class="tag-sidebar-title">// filter by tag</p>`;
-    html += `<div class="tag-sidebar-item ${activeTagFilter === null ? "active" : ""}" onclick="filterByTag(null)"><span>ALL LOGS</span><span class="tag-sidebar-count">${logsData.length}</span></div>`;
-    sortedTags.forEach((tag) => {
-     const isActive = activeTagFilter === tag;
-     const safeTag = tag.replace(/'/g, "\\'");
-     html += `<div class="tag-sidebar-item ${isActive ? "active" : ""}" onclick="filterByTag('${safeTag}')"><span>#${tag.replace(/^#/, "")}</span><span class="tag-sidebar-count">${counts[tag]}</span></div>`;
-    });
-    sidebar.innerHTML = html;
-   }
-
-   function filterByTag(tag) {
-    activeTagFilter = activeTagFilter === tag ? null : tag;
-    renderLogList();
-   }
-
-   /* ─────────────────────────────────────────────────────
-   LOG ATTACHMENTS
-───────────────────────────────────────────────────── */
-   function buildAttachmentsGrid(urls, logTitle) {
-    if (!urls || !urls.length) return "";
-    const safeTitle = escHtml(logTitle || "LOG");
-    const items = urls
-     .map((u) => {
-      const fullUrl = normalizeImageUrl(u);
-      return (
-       `<div class="log-attachment-item" data-log-img="${escHtml(fullUrl)}" data-log-title="${safeTitle}">` +
-       `<img class="log-attachment-img" src="${fullUrl}" alt="Attachment" loading="lazy" draggable="false" /></div>`
-      );
-     })
-     .join("");
-    return `
-    <div class="log-attachments">
-      <div class="log-attachments-label">ATTACHMENTS //</div>
-      <div class="log-attachments-grid">${items}</div>
-    </div>`;
-   }
-
-   /* Opens a log entry in the reader section. */
-   function readLog(i) {
-    const log = logsData[i];
-    if (!log) return;
-    window._currentLogIndex = i;
-    const editBtn = document.getElementById("logReaderEditBtn");
-    if (editBtn)
-     editBtn.style.display = isAdminSession() ? "inline-block" : "none";
-
-    let photoUrls = [],
-     cleanBody = log.body || "";
-    if (log.stickers && Array.isArray(log.stickers)) {
-     photoUrls = log.stickers.filter(Boolean);
-    } else if (log.stickers && typeof log.stickers === "object") {
-     photoUrls = Object.values(log.stickers).filter(Boolean);
-    } else {
-     // Legacy: bare URLs embedded in body text — extract and strip.
-     const lines = cleanBody.split("\n"),
-      cb = [],
-      re = /^(https?:\/\/[^\s]+)$/i;
-     lines.forEach((l) => {
-      const t = l.trim();
-      re.test(t) ? photoUrls.push(t) : cb.push(l);
-     });
-     cleanBody = cb.join("\n");
-    }
-
-    const attachmentsHtml = buildAttachmentsGrid(photoUrls, log.title || "LOG");
-    document.getElementById("log-content").innerHTML =
-     `<p class="post-label" style="margin-bottom:1rem;font-size:1.05rem;">${log.meta || ""}</p>` +
-     `<h1 style="margin-bottom:2rem;font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.4rem,3vw,1.9rem);line-height:1.15;">${log.title || "UNTITLED"}</h1>` +
-     `<div class="log-body-text">${cleanBody}</div>` +
-     attachmentsHtml +
-     renderTagsHTML(log.tags);
-
-    document
-     .querySelectorAll(".log-attachment-item[data-log-img]")
-     .forEach((item) => {
-      item.addEventListener("click", (ev) => {
-       ev.preventDefault();
-       ev.stopPropagation();
-       openSimpleViewer(
-        encodeURIComponent(item.getAttribute("data-log-img") || ""),
-        "",
-       );
-      });
-     });
-
-    const logHash = "#log/" + log.id;
-    if (window.location.hash !== logHash)
-     window.history.pushState(
-      { page: "log-reader", logId: log.id },
-      "",
-      logHash,
-     );
-    _activateSection("log-reader");
-   }
-
-   /* ═══════════════════════════════════════════════════════
-   RENDER — SHRINE GRID + READER
+   RENDER — SHRINE GRID
+   Shrines are standalone hand-coded pages; this just renders
+   the card grid and links each card to its page (SHRINES array).
 ═══════════════════════════════════════════════════════ */
    function renderShrineGrid() {
     const grid = document.getElementById("shrineGrid");
     if (!grid) return;
     grid.innerHTML = "";
-    if (!shrinesData.length) {
+    if (!SHRINES.length) {
      grid.innerHTML =
       '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;">// No shrines yet.</p>';
      return;
     }
-    let display = [...shrinesData];
-    const sortOrder =
-     document.getElementById("shrineSortOrder")?.value || "latest";
-    display.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-    if (sortOrder === "latest") display.reverse();
-    display.forEach((shrine) => {
-     const idx = shrinesData.findIndex((s) => s.id === shrine.id);
-     const el = document.createElement("div");
+    SHRINES.forEach((shrine) => {
+     const el = document.createElement("a");
      el.className = "shrine-card";
-     el.onclick = () => readShrine(idx);
+     el.href = shrine.url;
      const imgHtml = shrine.coverImage
       ? `<img class="shrine-card-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
       : `<div class="shrine-card-img-placeholder">✿</div>`;
@@ -3974,148 +3544,8 @@ function renderComment(comment) {
       <div class="shrine-card-label">
         <div class="shrine-card-title">${shrine.title}</div>
         <div class="shrine-card-desc">${shrine.tagline || ""}</div>
-        <div class="admin-log-actions">
-          <button class="admin-edit-btn" onclick="event.stopPropagation();openEditShrine(${idx})">EDIT</button>
-          <button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteShrine(${idx})">DELETE</button>
-        </div>
       </div>`;
      grid.appendChild(el);
-    });
-   }
-
-  function applyShrineBackground(url) {
-  if (url) {
-    document.body.style.backgroundImage = `url("${url}")`;
-    document.body.style.backgroundSize = "cover";
-    document.body.style.backgroundPosition = "center";
-    document.body.style.backgroundRepeat = "no-repeat";
-    document.body.style.backgroundAttachment = "fixed";
-  } else {
-    document.body.style.backgroundImage = "";
-    document.body.style.backgroundSize = "";
-    document.body.style.backgroundPosition = "";
-    document.body.style.backgroundRepeat = "";
-    document.body.style.backgroundAttachment = "";
-  }
-}
-
-function readShrine(i) {
-  const shrine = shrinesData[i];
-  if (!shrine) return;
-  window._currentShrineIndex = i;
-  applyShrineBackground(normalizeImageUrl(shrine.background));
-  const editBtn = document.getElementById("shrineReaderEditBtn");
-  if (editBtn)
-    editBtn.style.display = isAdminSession() ? "inline-block" : "none";
-
-  const container = document.getElementById("shrine-content");
-  const imgHtml = shrine.coverImage
-    ? `<img class="shrine-hero-img" src="${normalizeImageUrl(shrine.coverImage)}" alt="${shrine.title}" />`
-    : "";
-  const imgs = normalizeImages(shrine.images || []);
-  const captions = normalizeImages(shrine.captions || []);
-  let galleryHtml = "";
-  if (imgs.length) {
-    galleryHtml = `<div class="shrine-gallery">${imgs
-      .map((u, i) => {
-        const cap = captions[i] || "";
-        const fullUrl = normalizeImageUrl(u);
-        return (
-          `<div class="shrine-gallery-item"${cap ? ` data-caption="${escHtml(cap)}"` : ""} data-shrine-img="${escHtml(fullUrl)}" data-shrine-title="${escHtml(shrine.title || "SHRINE")}">` +
-          `<img class="shrine-gallery-img" src="${fullUrl}" alt="${escHtml(cap)}" loading="lazy" draggable="false" /></div>`
-        );
-      })
-      .join("")}</div>`;
-  }
-  const bodyHtml = shrine.body
-    ? `<div class="shrine-body-text">${shrine.body}</div>`
-    : "";
-
-  container.innerHTML = `<div class="shrine-content" style="padding-bottom:1.25rem;"><p class="post-label" style="margin-bottom:0.5rem;font-size:0.75rem;color:var(--text-muted);letter-spacing:0.06em;">SHRINE</p><h1 style="font-family:var(--font-tech);text-transform:uppercase;font-size:clamp(1.6rem,3vw,2.2rem);">${shrine.title}</h1>${shrine.tagline ? `<p class="shrine-tagline">${escHtml(shrine.tagline)}</p>` : ""}</div>${imgHtml}<div class="shrine-content">${bodyHtml}${galleryHtml}</div>`;
-
-  container
-    .querySelectorAll(".shrine-gallery-item[data-shrine-img]")
-    .forEach((item) => {
-      item.addEventListener("click", (ev) => {
-        ev.preventDefault();
-        ev.stopPropagation();
-        openImageLightbox(
-          encodeURIComponent(item.getAttribute("data-shrine-img") || ""),
-          item.getAttribute("data-shrine-title") || "SHRINE",
-          item.getAttribute("data-caption") || "",
-        );
-      });
-    });
-
-  const h = "#shrine/" + shrine.id;
-  if (window.location.hash !== h)
-    window.history.pushState(
-      { page: "shrine-reader", shrineId: shrine.id },
-      "",
-      h,
-    );
-  _activateSection("shrine-reader");
-}
-
-function editCurrentShrine() {
-  const idx = window._currentShrineIndex;
-  if (idx === undefined || idx < 0) return;
-  openEditShrine(idx);
-}
-
-   /* ═══════════════════════════════════════════════════════
-   RENDER — LETTER LIST + READER
-═══════════════════════════════════════════════════════ */
-   function readLetter(i) {
-    const letter = lettersData[i];
-    if (!letter) return;
-    window._currentLetterIndex = i;
-    const editBtn = document.getElementById("letterReaderEditBtn");
-    if (editBtn)
-     editBtn.style.display = isAdminSession() ? "inline-block" : "none";
-    const content = document.getElementById("letter-content");
-    content.innerHTML = `<div class="letter-paper-to">TO: ${escHtml(letter.to || "???")}</div><div class="letter-paper-re">${escHtml(letter.subject || "(untitled)")}</div><div class="letter-body-text">${letter.body || ""}</div>${renderTagsHTML(letter.tags)}<div class="letter-unsent-stamp"><span class="letter-unsent-badge">UNSENT</span>// this letter was never delivered.</div>`;
-    const h = "#letter/" + letter.id;
-    if (window.location.hash !== h)
-     window.history.pushState(
-      { page: "letter-reader", letterId: letter.id },
-      "",
-      h,
-     );
-    _activateSection("letter-reader");
-   }
-
-   function editCurrentLetter() {
-    const idx = window._currentLetterIndex;
-    if (idx === undefined || idx < 0) return;
-    openEditLetter(idx);
-   }
-
-   function renderLetterList() {
-    const list = document.getElementById("letterList");
-    if (!list) return;
-    list.innerHTML = "";
-    if (!lettersData.length) {
-     list.innerHTML =
-      '<p style="font-family:var(--font-mono);font-size:12px;color:var(--text-muted);text-align:center;padding:3rem;grid-column:1/-1;">// No letters yet.</p>';
-     return;
-    }
-    let display = [...lettersData];
-    const sortOrder =
-     document.getElementById("letterSortOrder")?.value || "latest";
-    display.sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
-    if (sortOrder === "latest") display.reverse();
-
-    display.forEach((letter, displayIdx) => {
-     const originalIndex = lettersData.findIndex((l) => l.id === letter.id);
-     const ballSrc = LETTER_BALL_IMAGES[displayIdx % LETTER_BALL_IMAGES.length];
-     const el = document.createElement("div");
-     el.className = "letter-envelope";
-     el.onclick = () => readLetter(originalIndex);
-     el.innerHTML =
-      `<img class="env-ball" src="${ballSrc}" alt="" draggable="false" />` +
-      `<div class="admin-log-actions"><button class="admin-edit-btn" onclick="event.stopPropagation();openEditLetter(${originalIndex})">EDIT</button><button class="admin-delete-btn" onclick="event.stopPropagation();adminDeleteLetter(${originalIndex})">DELETE</button></div>`;
-     list.appendChild(el);
     });
    }
 
@@ -4151,22 +3581,6 @@ function editCurrentShrine() {
    }
    function closeSimpleViewer() {
     document.getElementById("simpleViewer").classList.remove("show");
-   }
-
-   /* Shrine lightbox — image + caption, styled to match the site. */
-   function openImageLightbox(encodedUrl, title, caption) {
-    const url = decodeURIComponent(encodedUrl);
-    lbPiece = {
-     title: title || "IMAGE",
-     caption: caption || "",
-     images: [url],
-     simple: true,
-    };
-    lbIdx = 0;
-    lbArtIndex = -1;
-    resetZoom();
-    renderLightbox();
-    document.getElementById("lightbox").classList.add("show");
    }
 
    function renderLightbox() {
@@ -4586,9 +4000,6 @@ function editCurrentShrine() {
    function switchAdminTab(tab) {
     const forms = [
      "art",
-     "logs",
-     "shrines",
-     "letters",
      "badges",
      "bag",
      "status",
@@ -4602,10 +4013,6 @@ function editCurrentShrine() {
      const btn = document.getElementById("tab-" + t);
      if (btn) btn.classList.toggle("active", t === tab);
     });
-    if (tab === "shrines") {
-     if (typeof initShrinePairRowsIfEmpty === "function")
-      initShrinePairRowsIfEmpty();
-    }
     if (tab === "todo") {
      if (typeof renderAdminTodoList === "function") renderAdminTodoList();
     }
@@ -4673,163 +4080,6 @@ function editCurrentShrine() {
      0,
     ).getTime();
    }
-   function adminAddLog() {
-    if (!isAdminSession()) return;
-    const title = document.getElementById("logTitle").value.trim(),
-     body = document.getElementById("logBody").value.trim();
-    if (!title || !body) return;
-    const tags = parseTags(document.getElementById("logTags").value);
-    const stickers = document
-     .getElementById("logStickers")
-     .value.split("\n")
-     .map((s) => s.trim())
-     .filter(Boolean);
-    const logNumber = String(logsData.length + 1).padStart(2, "0");
-    const now = new Date();
-    const autoMeta = `LOG_${logNumber} // ${String(now.getMonth() + 1).padStart(2, "0")}.${String(now.getDate()).padStart(2, "0")}.${String(now.getFullYear()).slice(-2)}`;
-    const meta = document.getElementById("logMeta").value.trim() || autoMeta;
-    const timestamp = parseMetaDate(meta) || Date.now();
-    const log = { title, meta, body, tags, stickers, timestamp };
-    adminWrite("push", "content/logs", log)
-     .then((r) => {
-      log.id = r.id;
-      logsData.push(log);
-      renderLogList();
-      renderHomeUpdates();
-      const s = document.getElementById("logSuccess");
-      s.style.display = "block";
-      setTimeout(() => {
-       s.style.display = "none";
-      }, 3000);
-     })
-     .catch((e) => {
-      console.error("Log push failed:", e);
-      alert("// COULD NOT SAVE: " + e.message);
-     });
-    ["logTitle", "logBody", "logTags", "logStickers", "logMeta"].forEach(
-     (id) => (document.getElementById(id).value = ""),
-    );
-   }
-
-   /* ── Shrine paired-image+caption row helpers ── */
-   function addShrinePairRow(containerId, url, caption) {
-    const c = document.getElementById(containerId);
-    if (!c) return;
-    const row = document.createElement("div");
-    row.className = "shrine-pair-row";
-    row.innerHTML =
-     `<input type="text" class="admin-input shrine-pair-url" placeholder="https://image-url.png" value="${escHtml(url || "")}" />` +
-     `<input type="text" class="admin-input shrine-pair-caption" placeholder="caption (optional)" value="${escHtml(caption || "")}" />` +
-     `<button type="button" class="shrine-pair-del" onclick="this.parentNode.remove()" title="Remove row">×</button>`;
-    c.appendChild(row);
-   }
-   function initShrinePairRowsIfEmpty() {
-    const c = document.getElementById("shrinePairRows");
-    if (!c) return;
-    if (c.children.length === 0) {
-     addShrinePairRow("shrinePairRows");
-     addShrinePairRow("shrinePairRows");
-    }
-   }
-   function readShrinePairRows(containerId) {
-    const c = document.getElementById(containerId);
-    if (!c) return { images: [], captions: [] };
-    const images = [],
-     captions = [];
-    c.querySelectorAll(".shrine-pair-row").forEach((row) => {
-     const u = row.querySelector(".shrine-pair-url").value.trim();
-     const cap = row.querySelector(".shrine-pair-caption").value.trim();
-     if (u) {
-      images.push(u);
-      captions.push(cap);
-     }
-    });
-    return { images, captions };
-   }
-   function fillShrinePairRows(containerId, images, captions) {
-    const c = document.getElementById(containerId);
-    if (!c) return;
-    c.innerHTML = "";
-    const imgs = images || [],
-     caps = captions || [];
-    const n = Math.max(imgs.length, 1);
-    for (let i = 0; i < n; i++) {
-     addShrinePairRow(containerId, imgs[i] || "", caps[i] || "");
-    }
-   }
-
-   /* Add Shrine */
-   function adminAddShrine() {
-    if (!isAdminSession()) return;
-    const title = document.getElementById("shrineTitle").value.trim();
-    if (!title) return;
-    const tagline = document.getElementById("shrineTagline").value.trim();
-    const coverImage = document.getElementById("shrineCover").value.trim();
-    const background = document.getElementById("shrineBackground").value.trim();
-    const body = document.getElementById("shrineBody").value.trim();
-    const { images, captions } = readShrinePairRows("shrinePairRows");
-    const shrine = {
-     title,
-     tagline,
-     coverImage,
-     background,
-     body,
-     images,
-     captions,
-     timestamp: Date.now(),
-    };
-    adminWrite("push", "content/shrines", shrine)
-     .then((r) => {
-      shrine.id = r.id;
-      shrinesData.push(shrine);
-      renderShrineGrid();
-      renderHomeUpdates();
-      const s = document.getElementById("shrineSuccess");
-      s.style.display = "block";
-      setTimeout(() => {
-       s.style.display = "none";
-      }, 3000);
-     })
-     .catch((e) => {
-      console.error("Shrine push failed:", e);
-      alert("// COULD NOT SAVE: " + e.message);
-     });
-    ["shrineTitle", "shrineTagline", "shrineCover", "shrineBackground", "shrineBody"].forEach(
-     (id) => (document.getElementById(id).value = ""),
-    );
-    fillShrinePairRows("shrinePairRows", [], []);
-    initShrinePairRowsIfEmpty();
-   }
-
-   /* Add Letter */
-   function adminAddLetter() {
-    if (!isAdminSession()) return;
-    const to = document.getElementById("letterTo").value.trim(),
-     subject = document.getElementById("letterSubject").value.trim(),
-     body = document.getElementById("letterBody").value.trim();
-    if (!subject || !body) return;
-    const letter = { to, subject, body, timestamp: Date.now() };
-    adminWrite("push", "content/letters", letter)
-     .then((r) => {
-      letter.id = r.id;
-      lettersData.push(letter);
-      renderLetterList();
-      renderHomeUpdates();
-      const s = document.getElementById("letterSuccess");
-      s.style.display = "block";
-      setTimeout(() => {
-       s.style.display = "none";
-      }, 3000);
-     })
-     .catch((e) => {
-      console.error("Letter push failed:", e);
-      alert("// COULD NOT SAVE: " + e.message);
-     });
-    ["letterTo", "letterSubject", "letterBody"].forEach(
-     (id) => (document.getElementById(id).value = ""),
-    );
-   }
-
    /* ═══════════════════════════════════════════════════════
    ADMIN — DELETE CONTENT
 ═══════════════════════════════════════════════════════ */
@@ -4854,88 +4104,11 @@ function editCurrentShrine() {
      renderHomeUpdates();
     }
    }
-   function adminDeleteLog(idx) {
-    if (!isAdminSession()) return;
-    const log = logsData[idx];
-    if (!confirm(`Delete "${log.title}"?`)) return;
-    if (log.id) {
-     adminWrite("remove", "content/logs", { id: log.id })
-      .then(() => {
-       logsData.splice(idx, 1);
-       renderLogList();
-       renderHomeUpdates();
-      })
-      .catch((e) => {
-       console.error("Delete log failed:", e);
-       alert("// DELETE FAILED");
-      });
-    } else {
-     logsData.splice(idx, 1);
-     renderLogList();
-     renderHomeUpdates();
-    }
-   }
    function adminDeleteCurrentArt() {
     if (!isAdminSession() || lbArtIndex < 0) return;
     const idxToDelete = lbArtIndex;
     closeLightbox();
     adminDeleteArt(idxToDelete);
-   }
-   function adminDeleteShrine(idx) {
-    if (!isAdminSession()) return;
-    const s = shrinesData[idx];
-    if (!confirm(`Delete shrine "${s.title}"?`)) return;
-    if (s.id) {
-     adminWrite("remove", "content/shrines", { id: s.id })
-      .then(() => {
-       shrinesData.splice(idx, 1);
-       renderShrineGrid();
-       renderHomeUpdates();
-      })
-      .catch((e) => {
-       console.error("Delete shrine failed:", e);
-       alert("// DELETE FAILED");
-      });
-    } else {
-     shrinesData.splice(idx, 1);
-     renderShrineGrid();
-     renderHomeUpdates();
-    }
-   }
-   function adminDeleteShrineFromEdit() {
-    if (!isAdminSession()) return;
-    const idx = _editShrineOriginalIndex;
-    if (idx < 0) return;
-    closeEditShrine();
-    adminDeleteShrine(idx);
-   }
-   function adminDeleteLetter(idx) {
-    if (!isAdminSession()) return;
-    const l = lettersData[idx];
-    if (!confirm(`Delete letter "${l.subject}"?`)) return;
-    if (l.id) {
-     adminWrite("remove", "content/letters", { id: l.id })
-      .then(() => {
-       lettersData.splice(idx, 1);
-       renderLetterList();
-       renderHomeUpdates();
-      })
-      .catch((e) => {
-       console.error("Delete letter failed:", e);
-       alert("// DELETE FAILED");
-      });
-    } else {
-     lettersData.splice(idx, 1);
-     renderLetterList();
-     renderHomeUpdates();
-    }
-   }
-   function adminDeleteLetterFromEdit() {
-    if (!isAdminSession()) return;
-    const idx = _editLetterOriginalIndex;
-    if (idx < 0) return;
-    closeEditLetter();
-    adminDeleteLetter(idx);
    }
 
    /* ═══════════════════════════════════════════════════════
@@ -4946,25 +4119,11 @@ function editCurrentShrine() {
     const targets = [
      {
       id: "badgesStripHome",
-      match: (b) =>
-       (b.location || "both") === "home" || (b.location || "both") === "both",
-     },
-     {
-      id: "badgesStripAbout",
-      match: (b) =>
-       (b.location || "both") === "about" || (b.location || "both") === "both",
+      match: (b) => (b.location || "home") !== "neighbors",
      },
      {
       id: "badgesStripNeighbors",
-      match: (b) => (b.location || "both") === "neighbors",
-     },
-     {
-      id: "badgesStripOutgoingFavorites",
-      match: (b) => (b.location || "both") === "outgoing-favorites",
-     },
-     {
-      id: "badgesStripOutgoingNeighbors",
-      match: (b) => (b.location || "both") === "outgoing-neighbors",
+      match: (b) => (b.location || "home") === "neighbors",
      },
     ];
     targets.forEach((t) => {
@@ -4997,8 +4156,6 @@ function editCurrentShrine() {
     [
      "badgesAdminBtn",
      "badgesNeighborsAdminBtn",
-     "badgesOutgoingFavoritesAdminBtn",
-     "badgesOutgoingNeighborsAdminBtn",
     ].forEach((id) => {
      const btn = document.getElementById(id);
      if (btn) btn.style.display = isAdminSession() ? "inline-block" : "none";
@@ -5010,7 +4167,7 @@ function editCurrentShrine() {
     const image = document.getElementById("badgeImage").value.trim();
     const link = document.getElementById("badgeLink").value.trim();
     const alt = document.getElementById("badgeAlt").value.trim();
-    const location = document.getElementById("badgeLocation").value || "both";
+    const location = document.getElementById("badgeLocation").value || "home";
     if (!image) return;
     const entry = { image, link, alt, location, timestamp: Date.now() };
     adminWrite("push", "content/badges", entry)
@@ -5154,331 +4311,27 @@ function editCurrentShrine() {
    }
 
    /* ═══════════════════════════════════════════════════════
-   EDIT LOG
-═══════════════════════════════════════════════════════ */
-   let _editLogOriginalIndex = -1;
-
-   function openEditLog(idx) {
-    if (!isAdminSession()) {
-     alert("// SESSION EXPIRED. Please log in again.");
-     showAdminLogin();
-     return;
-    }
-    const log = logsData[idx];
-    if (!log) return;
-    _editLogOriginalIndex = idx;
-    document.getElementById("editLogId").value = log.id || "";
-    document.getElementById("editLogTitle").value = log.title || "";
-    document.getElementById("editLogMeta").value = log.meta || "";
-    document.getElementById("editLogBody").value = log.body || "";
-    document.getElementById("editLogStickers").value = (
-     log.stickers || []
-    ).join("\n");
-    document.getElementById("editLogTags").value = (log.tags || [])
-     .map((t) => "#" + t)
-     .join(" ");
-    document.getElementById("editLogSuccess").style.display = "none";
-    document.getElementById("editLogError").style.display = "none";
-    document.getElementById("editLogModal").style.display = "flex";
-   }
-   function closeEditLog() {
-    document.getElementById("editLogModal").style.display = "none";
-    _editLogOriginalIndex = -1;
-   }
-   function editCurrentLog() {
-    const idx = window._currentLogIndex;
-    if (idx === undefined || idx < 0) return;
-    openEditLog(idx);
-   }
-   function adminSaveEditLog() {
-    if (!isAdminSession()) {
-     document.getElementById("editLogError").textContent =
-      "// SESSION EXPIRED. Please log in again.";
-     document.getElementById("editLogError").style.display = "block";
-     return;
-    }
-    const idx = _editLogOriginalIndex;
-    if (idx < 0 || idx >= logsData.length) return;
-    const log = logsData[idx],
-     id = log.id;
-    const title = document.getElementById("editLogTitle").value.trim(),
-     meta = document.getElementById("editLogMeta").value.trim(),
-     body = document.getElementById("editLogBody").value.trim();
-    const tags = parseTags(document.getElementById("editLogTags").value);
-    const stickers = document
-     .getElementById("editLogStickers")
-     .value.split("\n")
-     .map((s) => s.trim())
-     .filter(Boolean);
-    if (!title || !body) {
-     document.getElementById("editLogError").textContent =
-      "// TITLE AND BODY ARE REQUIRED.";
-     document.getElementById("editLogError").style.display = "block";
-     return;
-    }
-    const timestamp = parseMetaDate(meta) || log.timestamp;
-    const updated = { title, meta, body, tags, stickers, timestamp };
-    if (id) {
-     adminWrite("update", "content/logs", { id, data: updated })
-      .then(() => {
-       Object.assign(logsData[idx], updated);
-       renderLogList();
-       renderHomeUpdates();
-       document.getElementById("editLogSuccess").style.display = "block";
-       document.getElementById("editLogError").style.display = "none";
-       setTimeout(() => {
-        document.getElementById("editLogSuccess").style.display = "none";
-       }, 3000);
-      })
-      .catch((e) => {
-       console.error("Edit log failed:", e);
-       document.getElementById("editLogError").textContent =
-        "// ERROR SAVING: " + e.message;
-       document.getElementById("editLogError").style.display = "block";
-      });
-    } else {
-     Object.assign(logsData[idx], updated);
-     renderLogList();
-     renderHomeUpdates();
-     document.getElementById("editLogSuccess").style.display = "block";
-     setTimeout(() => {
-      document.getElementById("editLogSuccess").style.display = "none";
-     }, 3000);
-    }
-   }
-   function adminDeleteLogFromEdit() {
-    if (!isAdminSession()) return;
-    const idx = _editLogOriginalIndex;
-    if (idx < 0) return;
-    closeEditLog();
-    adminDeleteLog(idx);
-   }
-
-   /* ═══════════════════════════════════════════════════════
-   EDIT SHRINE
-═══════════════════════════════════════════════════════ */
-   let _editShrineOriginalIndex = -1;
-
-   function openEditShrine(idx) {
-    if (!isAdminSession()) {
-     alert("// SESSION EXPIRED. Please log in again.");
-     showAdminLogin();
-     return;
-    }
-    const shrine = shrinesData[idx];
-    if (!shrine) return;
-    _editShrineOriginalIndex = idx;
-    document.getElementById("editShrineId").value = shrine.id || "";
-    document.getElementById("editShrineTitle").value = shrine.title || "";
-    document.getElementById("editShrineTagline").value = shrine.tagline || "";
-    document.getElementById("editShrineCover").value = shrine.coverImage || "";
-    document.getElementById("editShrineBackground").value = shrine.background || "";
-    document.getElementById("editShrineBody").value = shrine.body || "";
-    fillShrinePairRows(
-     "editShrinePairRows",
-     normalizeImages(shrine.images || []),
-     normalizeImages(shrine.captions || []),
-    );
-    document.getElementById("editShrineSuccess").style.display = "none";
-    document.getElementById("editShrineError").style.display = "none";
-    document.getElementById("editShrineModal").style.display = "flex";
-   }
-   function closeEditShrine() {
-    document.getElementById("editShrineModal").style.display = "none";
-    _editShrineOriginalIndex = -1;
-   }
-   function adminSaveEditShrine() {
-    if (!isAdminSession()) {
-     document.getElementById("editShrineError").textContent =
-      "// SESSION EXPIRED. Please log in again.";
-     document.getElementById("editShrineError").style.display = "block";
-     return;
-    }
-    const idx = _editShrineOriginalIndex;
-    if (idx < 0 || idx >= shrinesData.length) return;
-    const shrine = shrinesData[idx],
-     id = shrine.id;
-    const title = document.getElementById("editShrineTitle").value.trim();
-    if (!title) {
-     document.getElementById("editShrineError").textContent =
-      "// TITLE IS REQUIRED.";
-     document.getElementById("editShrineError").style.display = "block";
-     return;
-    }
-    const { images, captions } = readShrinePairRows("editShrinePairRows");
-    const updated = {
-     title,
-     tagline: document.getElementById("editShrineTagline").value.trim(),
-     coverImage: document.getElementById("editShrineCover").value.trim(),
-     background: document.getElementById("editShrineBackground").value.trim(),
-     body: document.getElementById("editShrineBody").value.trim(),
-     images,
-     captions,
-    };
-    if (id) {
-     adminWrite("update", "content/shrines", { id, data: updated })
-      .then(() => {
-       Object.assign(shrinesData[idx], updated);
-       renderShrineGrid();
-       renderHomeUpdates();
-       document.getElementById("editShrineSuccess").style.display = "block";
-       setTimeout(() => {
-        document.getElementById("editShrineSuccess").style.display = "none";
-       }, 3000);
-      })
-      .catch((e) => {
-       document.getElementById("editShrineError").textContent =
-        "// ERROR: " + e.message;
-       document.getElementById("editShrineError").style.display = "block";
-      });
-    } else {
-     Object.assign(shrinesData[idx], updated);
-     renderShrineGrid();
-     renderHomeUpdates();
-     document.getElementById("editShrineSuccess").style.display = "block";
-     setTimeout(() => {
-      document.getElementById("editShrineSuccess").style.display = "none";
-     }, 3000);
-    }
-   }
-
-   /* ═══════════════════════════════════════════════════════
-   EDIT LETTER
-═══════════════════════════════════════════════════════ */
-   let _editLetterOriginalIndex = -1;
-
-   function openEditLetter(idx) {
-    if (!isAdminSession()) {
-     alert("// SESSION EXPIRED. Please log in again.");
-     showAdminLogin();
-     return;
-    }
-    const letter = lettersData[idx];
-    if (!letter) return;
-    _editLetterOriginalIndex = idx;
-    document.getElementById("editLetterId").value = letter.id || "";
-    document.getElementById("editLetterTo").value = letter.to || "";
-    document.getElementById("editLetterSubject").value = letter.subject || "";
-    document.getElementById("editLetterBody").value = letter.body || "";
-    document.getElementById("editLetterSuccess").style.display = "none";
-    document.getElementById("editLetterError").style.display = "none";
-    document.getElementById("editLetterModal").style.display = "flex";
-   }
-   function closeEditLetter() {
-    document.getElementById("editLetterModal").style.display = "none";
-    _editLetterOriginalIndex = -1;
-   }
-   function adminSaveEditLetter() {
-    if (!isAdminSession()) {
-     document.getElementById("editLetterError").textContent =
-      "// SESSION EXPIRED. Please log in again.";
-     document.getElementById("editLetterError").style.display = "block";
-     return;
-    }
-    const idx = _editLetterOriginalIndex;
-    if (idx < 0 || idx >= lettersData.length) return;
-    const letter = lettersData[idx],
-     id = letter.id;
-    const subject = document.getElementById("editLetterSubject").value.trim(),
-     body = document.getElementById("editLetterBody").value.trim();
-    if (!subject || !body) {
-     document.getElementById("editLetterError").textContent =
-      "// SUBJECT AND BODY ARE REQUIRED.";
-     document.getElementById("editLetterError").style.display = "block";
-     return;
-    }
-    const updated = {
-     to: document.getElementById("editLetterTo").value.trim(),
-     subject,
-     body,
-    };
-    if (id) {
-     adminWrite("update", "content/letters", { id, data: updated })
-      .then(() => {
-       Object.assign(lettersData[idx], updated);
-       renderLetterList();
-       renderHomeUpdates();
-       document.getElementById("editLetterSuccess").style.display = "block";
-       setTimeout(() => {
-        document.getElementById("editLetterSuccess").style.display = "none";
-       }, 3000);
-      })
-      .catch((e) => {
-       document.getElementById("editLetterError").textContent =
-        "// ERROR: " + e.message;
-       document.getElementById("editLetterError").style.display = "block";
-      });
-    } else {
-     Object.assign(lettersData[idx], updated);
-     renderLetterList();
-     renderHomeUpdates();
-     document.getElementById("editLetterSuccess").style.display = "block";
-     setTimeout(() => {
-      document.getElementById("editLetterSuccess").style.display = "none";
-     }, 3000);
-    }
-   }
-
-   /* ═══════════════════════════════════════════════════════
    ROUTER
 ═══════════════════════════════════════════════════════ */
-   let _pendingLogKey = null,
-    _pendingShrineKey = null,
-    _pendingLetterKey = null;
-
    function handleRouting() {
     const hash = window.location.hash.replace(/^#/, "").replace(/\/$/, "");
-    if (hash.startsWith("log/")) {
-     const key = hash.slice(4);
-     _activateSection("log-reader");
-     const idx = logsData.findIndex((l) => l.id === key);
-     if (idx !== -1) readLog(idx);
-     else _pendingLogKey = key;
+    if (hash === "goodies" || hash.startsWith("goodies/")) {
+     _activateSection("goodies");
+     let sub = "code-snippets";
+     if (hash.startsWith("goodies/")) sub = hash.slice(8) || "code-snippets";
+     switchGoodiesSubpage(sub);
      return;
     }
-    if (hash.startsWith("shrine/")) {
-     const key = hash.slice(7);
-     _activateSection("shrine-reader");
-     const idx = shrinesData.findIndex((s) => s.id === key);
-     if (idx !== -1) readShrine(idx);
-     else _pendingShrineKey = key;
-     return;
-    }
-    if (hash.startsWith("letter/")) {
-     const key = hash.slice(7);
-     _activateSection("letter-reader");
-     const idx = lettersData.findIndex((l) => l.id === key);
-     if (idx !== -1) readLetter(idx);
-     else _pendingLetterKey = key;
-     return;
-    }
-     if (hash === "personal" || hash.startsWith("personal/") || hash === "about" || hash.startsWith("about/")) {
-      _activateSection("personal");
-      let sub = "about";
-      if (hash.startsWith("personal/")) sub = hash.slice(9) || "about";
-      else if (hash.startsWith("about/")) sub = hash.slice(6) || "about";
-      switchPersonalSubpage(sub);
-      return;
-     }
-     if (hash === "goodies" || hash.startsWith("goodies/")) {
-      _activateSection("goodies");
-      let sub = "code-snippets";
-      if (hash.startsWith("goodies/")) sub = hash.slice(8) || "code-snippets";
-      switchGoodiesSubpage(sub);
-      return;
-     }
-     const hashMap = {
-      "": "home",
-      home: "home",
-      art: "art",
-      writing: "writing",
-      shrines: "shrines",
-      letters: "letters",
-      board: "board",
-      colophon: "colophon",
-      info: "colophon",
-      goodies: "goodies",
-     };
+    const hashMap = {
+     "": "home",
+     home: "home",
+     art: "art",
+     shrines: "shrines",
+     board: "board",
+     colophon: "colophon",
+     info: "colophon",
+     goodies: "goodies",
+    };
     _activateSection(hashMap[hash] || "home");
    }
 
@@ -5494,9 +4347,6 @@ function editCurrentShrine() {
      closeSimpleViewer();
      closeAdminLogin();
      closeAdminPanel();
-     closeEditLog();
-     closeEditShrine();
-     closeEditLetter();
      closeBagModal();
     }
     if (lbPiece) {
@@ -5508,37 +4358,12 @@ function editCurrentShrine() {
    document.addEventListener("DOMContentLoaded", () => {
     handleRouting();
     renderArtGrid();
-    renderLogList();
+    renderShrineGrid();
     initCategoryTabs();
-     initPersonalTabs();
      initGoodiesTabs();
     renderBadgesStrips();
     updateLastUpdatedDisplay();
     newQuote();
-
-    // Shrine caption tooltip — follows mouse on gallery items with data-caption
-    (function () {
-     const tt = document.createElement("div");
-     tt.className = "shrine-img-tooltip";
-     document.body.appendChild(tt);
-     document.addEventListener("mouseover", (e) => {
-      const item = e.target.closest("[data-caption]");
-      if (item) {
-       tt.textContent = item.dataset.caption;
-       tt.style.display = "block";
-      }
-     });
-     document.addEventListener("mouseout", (e) => {
-      const item = e.target.closest("[data-caption]");
-      if (item) tt.style.display = "none";
-     });
-     document.addEventListener("mousemove", (e) => {
-      if (tt.style.display === "block") {
-       tt.style.left = e.clientX + 14 + "px";
-       tt.style.top = e.clientY - 40 + "px";
-      }
-     });
-    })();
 
     const input = document.getElementById("commentInput");
     input.addEventListener("keydown", (e) => {
@@ -5558,8 +4383,6 @@ function editCurrentShrine() {
     if (isAdminSession()) setAdminMode(true);
     initImageDrag();
     initWheelZoom();
-    if (typeof initShrinePairRowsIfEmpty === "function")
-     initShrinePairRowsIfEmpty();
 
     const iconsBar = document.getElementById("desktopIconsBar");
     if (iconsBar) {

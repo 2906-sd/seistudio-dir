@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sei ✿ut Loud — Lists</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="webmaster.css" />
+ </head>
+ <body>
+  <script>
+   try {
+    if (localStorage.getItem("darkMode") === "1") document.body.classList.add("dark");
+   } catch (_) {}
+  </script>
+
+  <header class="wm-topbar">
+   <button
+    class="petal-toggle-btn"
+    id="petalToggleBtn"
+    onclick="togglePetals()"
+    title="Toggle falling petals"
+    aria-pressed="true"
+   >
+    ✿ PETALS: ON
+   </button>
+   <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+    ◐ MODE
+   </button>
+   <a class="wm-home-flower" href="/" title="Back home">✿</a>
+  </header>
+
+ <div class="lists-layout">
+  <aside class="lists-col-left">
+    <nav class="wm-card wm-nav-card" aria-label="Site navigation">
+      <div class="wm-card-header wm-card-header-italic">navigation</div>
+      <div class="wm-nav-body">
+        <a class="wm-nav-link" href="../#home">home</a>
+        <a class="wm-nav-link" href="../#art">visuals</a>
+        <a class="wm-nav-link" href="../#writing">logs</a>
+        <a class="wm-nav-link" href="../#shrines">shrines</a>
+        <a class="wm-nav-link" href="../#letters">letters</a>
+        <a class="wm-nav-link" href="../#outgoing">outgoing</a>
+        <a class="wm-nav-link" href="../#goodies">goodies</a>
+        <a class="wm-nav-link" href="../#colophon">colophon</a>
+        
+        <div class="wm-nav-divider" role="presentation"></div>
+        <span class="wm-nav-sublabel">webmaster</span>
+        
+        <div class="wm-subnav">
+          <a class="wm-subnav-link" href="index.html">about</a>
+          <a class="wm-subnav-link" href="#" title="coming soon">fangirling</a>
+          <a class="wm-subnav-link" href="#" title="coming soon">faq</a>
+          <a class="wm-subnav-link" href="sei-core.html">sei-core</a>
+          <a class="wm-subnav-link is-current" href="lists.html" aria-current="page">lists</a>
+          <a class="wm-subnav-link" href="#" title="coming soon">boywall</a>
+        </div>
+      </div>
+    </nav>
+   </aside>
+
+   <main class="lists-content">
+    <div class="wm-page-header">
+     <h1>LI<span>S</span>TFAUXGRAPHY</h1>
+     <p class="wm-page-sub">an attempt at organizing thoughts and ponderings.</p>
+    </div>
+
+    <div class="lists-masonry">
+     <!--
+     ═══════════════════════════════════════════════════════════════════
+       ADD NEW LIST — copy block below, paste it inside
+       <div class="lists-masonry"> ... </div>.
+
+       ·· NEW LIST CARD ··
+       <article class="broider list-card">
+        <h2 class="list-card-title">my list title.</h2>
+        <p class="list-note">optional italic subtitle / description.</p>
+        <ul class="list-items">
+         <li>a normal entry</li>
+         <li class="done">a checked-off entry</li>
+         <li><a href="URL">a linked entry</a></li>
+        </ul>
+       </article>
+
+       ·· ENTRY TYPES (put inside <ul class="list-items">) ··
+       <li>plain entry</li>
+       <li class="done">crossed-out / completed entry</li>
+       <li><a href="URL">linked entry</a></li>
+
+       ·· GROUPED / NESTED ENTRIES ··
+       <li class="list-group">group heading:
+        <ul>
+         <li>sub-entry</li>
+         <li class="done">completed sub-entry</li>
+        </ul>
+       </li>
+     ═══════════════════════════════════════════════════════════════════
+     -->
+     <article style="height: 344px; width: 100%;" class="broider list-card">
+      <h2 class="list-card-title">things i need.</h2>
+      <ul class="list-items">
+       <li>new glasses prescription</li>
+       <li>organization bins for supply cabinet</li>
+       <li class="done">steam iron</li>
+       <li>back cushion for office chair</li>
+          <li>a hair cut</li>
+      </ul>
+     </article>
+
+     <article class="broider list-card">
+      <h2 class="list-card-title">things i want</h2>
+      <p class="list-note">but don't really need</p>
+      <ul class="list-items">
+        <li class="list-group">tattoos<ul>
+         <li>tiger tattoo on left side, below collarbone</li>
+         <li>crane tattoo on right side, below collarbone</li>
+        <li>goldfish on forearm</li>
+            <li>sword</li>
+        </ul>
+       </li>
+       <li class="list-group">shoes:
+        <ul>
+         <li>New Balance sneakers</li>
+         <li>knee high boots</li>
+        </ul>
+       </li>
+          <li class="list-group">shoes:
+        <ul>
+         <li>New Balance sneakers</li>
+         <li>knee high boots</li>
+        </ul>
+       </li>
+      </ul>
+     </article>
+
+     <article style="width: 116%;" class="broider list-card">
+      <h2 class="list-card-title">list title three.</h2>
+      <ul class="list-items">
+       <li class="list-group">group heading:
+        <ul>
+         <li>placeholder sub-entry</li>
+         <li>placeholder sub-entry</li>
+         <li class="done">placeholder sub-entry</li>
+        </ul>
+       </li>
+       <li class="list-group">group heading:
+        <ul>
+         <li>placeholder sub-entry</li>
+         <li>placeholder sub-entry</li>
+        </ul>
+       </li>
+      </ul>
+     </article>
+
+     <article style="padding-top: 0.9rem;" class="broider list-card">
+      <h2 class="list-card-title">list title four.</h2>
+      <ul class="list-items">
+       <li>placeholder entry</li>
+       <li>placeholder entry</li>
+       <li>placeholder entry</li>
+      </ul>
+     </article>
+    </div>
+   </main>
+  </div>
+
+  <script src="webmaster.js"></script>
+ </body>
+</html>

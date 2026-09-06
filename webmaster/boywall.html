@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sei ✿ut Loud — Boy Wall</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="webmaster.css" />
+ </head>
+ <body>
+  <script>
+   try {
+    if (localStorage.getItem("darkMode") === "1") document.body.classList.add("dark");
+   } catch (_) {}
+  </script>
+
+  <header class="wm-topbar">
+   <button
+    class="petal-toggle-btn"
+    id="petalToggleBtn"
+    onclick="togglePetals()"
+    title="Toggle falling petals"
+    aria-pressed="true"
+   >
+    ✿ PETALS: ON
+   </button>
+   <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+    ◐ MODE
+   </button>
+   <a class="wm-home-flower" href="/" title="Back home">✿</a>
+  </header>
+
+  <div class="lists-layout">
+   <aside class="lists-col-left">
+    <nav class="wm-card wm-nav-card" aria-label="Site navigation">
+     <div class="wm-card-header wm-card-header-italic">navigation</div>
+     <div class="wm-nav-body">
+      <a class="wm-nav-link" href="/#home">home</a>
+      <a class="wm-nav-link" href="/#art">visuals</a>
+      <a class="wm-nav-link" href="/#writing">logs</a>
+      <a class="wm-nav-link" href="/#shrines">shrines</a>
+      <a class="wm-nav-link" href="/#letters">letters</a>
+      <a class="wm-nav-link" href="/#outgoing">outgoing</a>
+      <a class="wm-nav-link" href="/#goodies">goodies</a>
+      <a class="wm-nav-link" href="/#colophon">colophon</a>
+      <div class="wm-nav-divider" role="presentation"></div>
+      <span class="wm-nav-sublabel">webmaster</span>
+      <div class="wm-subnav">
+       <a class="wm-subnav-link" href="webmaster.html">about</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">fangirling</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">faq</a>
+       <a class="wm-subnav-link" href="sei-core.html">sei-core</a>
+       <a class="wm-subnav-link" href="lists.html">lists</a>
+       <a class="wm-subnav-link is-current" href="boywall.html" aria-current="page">boywall</a>
+      </div>
+     </div>
+    </nav>
+
+    <div class="wm-card bw-side-card">
+     <div class="wm-card-header wm-card-header-italic">house rules</div>
+     <div class="bw-side-body">
+      <p>this is a shrine, not a ranking. everybody here is tied for first.</p>
+      <p>2D and 3D share the wall. i don't make the rules, i AM the rules.</p>
+      <div class="bw-side-meta">
+       <span>pinned</span><b id="bwTotal">—</b>
+      </div>
+     </div>
+    </div>
+   </aside>
+
+   <main class="lists-content">
+    <div class="wm-page-header">
+     <h1>THE <span>B</span>OY WALL</h1>
+     <p class="wm-page-sub">tacked up with love and craze.</p>
+    </div>
+
+    <p class="bw-intro">
+     A wall of the men (and animated approximations of men, yes yes they live here too) living rent free in my
+     head. Click a photo to blow it up. No thoughts, just a bunch of dudes.
+    </p>
+
+    <div class="bw-toolbar">
+     <div class="bw-filters" id="bwFilters" role="group" aria-label="Filter the wall"></div>
+     <div class="bw-toolbar-right">
+      <span class="bw-count" id="bwCount"></span>
+      <button class="bw-shuffle" id="bwShuffle" onclick="bwShuffle()" title="Reshuffle the wall">
+       ❤︎ SHUFFLE
+      </button>
+     </div>
+    </div>
+
+    <div class="bw-wall" id="bwWall"></div>
+    <p class="bw-empty" id="bwEmpty" hidden>// nobody on the wall matches that filter yet.</p>
+   </main>
+  </div>
+
+  <div class="bw-lightbox" id="bwLightbox" onclick="bwCloseLightbox()" aria-hidden="true">
+   <div class="bw-lb-box" onclick="event.stopPropagation()" role="dialog" aria-modal="true" aria-labelledby="bwLbName">
+    <div class="wm-modal-toolbar">
+     <span id="bwLbCat">—</span>
+     <button onclick="bwCloseLightbox()">× CLOSE</button>
+    </div>
+    <div class="bw-lb-body">
+     <button class="bw-lb-arrow bw-lb-prev" onclick="bwLightboxNav(-1)" aria-label="Previous">‹</button>
+     <div class="bw-lb-stage"><img id="bwLbImg" src="" alt="" /></div>
+     <button class="bw-lb-arrow bw-lb-next" onclick="bwLightboxNav(1)" aria-label="Next">›</button>
+    </div>
+    <div class="bw-lb-meta">
+     <div class="bw-lb-name" id="bwLbName">—</div>
+     <div class="bw-lb-note" id="bwLbNote"></div>
+     <div class="bw-lb-counter" id="bwLbCounter"></div>
+    </div>
+   </div>
+  </div>
+
+  <script src="webmaster.js"></script>
+ </body>
+</html>

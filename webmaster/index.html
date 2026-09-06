@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sei ✿ut Loud — Webmaster</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DotGothic16&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="webmaster.css" />
+ </head>
+ <body>
+  <script>
+   try {
+    if (localStorage.getItem("darkMode") === "1") document.body.classList.add("dark");
+   } catch (_) {}
+  </script>
+
+  <header class="wm-topbar">
+   <button
+    class="petal-toggle-btn"
+    id="petalToggleBtn"
+    onclick="togglePetals()"
+    title="Toggle falling petals"
+    aria-pressed="true"
+   >
+    ✿ PETALS: ON
+   </button>
+   <button class="dark-toggle" id="darkToggle" onclick="toggleDark()" title="Toggle dark mode">
+    ◐ MODE
+   </button>
+   <a class="wm-home-flower" href="/" title="Back home">✿</a>
+  </header>
+
+  <div class="wm-hero">
+   <aside class="wm-col-left">
+    <nav class="wm-card wm-nav-card" aria-label="Site navigation">
+     <div class="wm-card-header wm-card-header-italic">navigation</div>
+     <div class="wm-nav-body">
+      <a class="wm-nav-link" href="/#home">home</a>
+      <a class="wm-nav-link" href="/#art">visuals</a>
+      <a class="wm-nav-link" href="/#writing">logs</a>
+      <a class="wm-nav-link" href="/#shrines">shrines</a>
+      <a class="wm-nav-link" href="/#letters">letters</a>
+      <a class="wm-nav-link" href="/#outgoing">outgoing</a>
+      <a class="wm-nav-link" href="/#goodies">goodies</a>
+      <a class="wm-nav-link" href="/#colophon">colophon</a>
+      <div class="wm-nav-divider" role="presentation"></div>
+      <span class="wm-nav-sublabel">webmaster</span>
+      <div class="wm-subnav">
+       <a class="wm-subnav-link is-current" href="webmaster.html" aria-current="page">about</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">fangirling</a>
+       <a class="wm-subnav-link" href="faq.html" title="coming soon">faq</a>
+       <a class="wm-subnav-link" href="sei-core.html">sei-core</a>
+       <a class="wm-subnav-link" href="lists.html">lists</a>
+       <a class="wm-subnav-link" href="#" title="coming soon">boywall</a>
+      </div>
+     </div>
+    </nav>
+
+    <div class="wm-bag">
+     <button class="bag-cover-btn" onclick="openBagModal()" title="What's in my bag? Click to see.">
+      <img
+       class="bag-cover-img"
+       src="https://res.cloudinary.com/seioutloud/image/upload/v1784242947/bag-Photoroom_p2csih.webp"
+       alt="Sei's bag"
+      />
+      <span class="bag-cover-hint">WHAT'S IN SEI'S BAG?</span>
+     </button>
+    </div>
+   </aside>
+
+   <main class="wm-col-center">
+    <div class="wm-page-header">
+     <h1>WHO IS <span>S</span>EI?</h1>
+     <p class="wm-page-sub">girl is blog.</p>
+    </div>
+
+    <div class="wm-card wm-profile-card">
+     <div class="wm-card-header wm-card-header-italic">webmaster.jpg</div>
+     <div class="wm-profile-body">
+      <div class="wm-profile-left">
+       <div class="wm-pfp">
+        <img id="wmpfpImg" src="https://res.cloudinary.com/seioutloud/image/upload/v1784332041/IMG_4225_zjyhzd.jpg" alt="Sei" />
+       </div>
+       <div class="wm-pfp-caption">sage / sei</div>
+       <div class="wm-stats">
+        <div class="wm-stat-row"><span class="wm-stat-label">Uptime</span><span>25 yrs</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Location</span><span>US</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Pronouns</span><span>she/her + they/them</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Ethnicity</span><span>🇵🇭🇺🇸🇯🇵</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Born</span><span>🇭🇰</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Occupation</span><span>Student + Dog Groomer</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Zodiac</span><span>🦀</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">MBTI</span><span>ENFP</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Orientation</span><span>Straight + ?</span></div>
+        <div class="wm-stat-row"><span class="wm-stat-label">Status</span><span>Single but happy!</span></div>
+       </div>
+      </div>
+      <div class="wm-profile-right">
+       <div class="wm-bio-scroll" tabindex="0">
+        <p>Hi! I'm a design student (ex-STEM) and the self-taught coder behind Sei Out Loud.</p>
+        <p>Growing up under strict parents (who I still live with, arghh), I never got to fully experience being on the internet in the early 2000s-2010s. Now that I'm an adult, I'm slowly giving myself that experience again. I was getting tired of mainstream social media algorithms, so towards the end of 2024, I decided to build my own catch-all space on the web. I first learned web design in community college using Glitch several years ago (RIP to my early projects), but building this site has rekindled my love for code, especially now that my design studies overlap with it.</p>
+        <p>I'm still learning and relearning as I go, backed by dev friends, a systems engineer dad, and endless inspiration from the Neocities community.</p>
+        <p>Originally this site was just going to be for myself, my art and my writing, but I started making stuff for other things on it too once I made the decision to make a space here on Neocities and wanted to just…be out there. It's taken many forms, and it'll probably continue to change!</p>
+        <p>So here I am, Sei, out loud. :)</p>
+        <p>Here you'll find multimedia art, fan art, silly digital shrines, blog posts of all kinds of manners, and other things you might find interesting. Eventually I'll add more spaces on here for my other interests (see below) and other things, I hope you'll stick around to see them!</p>
+        <p>When I'm not tinkering here (or changing the theme for the 100th time), I'm studying, working, drowning in hobbies, or reading fanfic.</p>
+        <p>Feel free to reach out and say hi! I'm a little slow to reply, but I always answer. :)</p>
+       </div>
+       <div class="wm-tags">
+        <span class="wm-tag"># this site is overengineered with JS oops</span>
+        <span class="wm-tag wm-tag-wide"># please clap for my genius site name, that's called branding babyyy</span>
+        <span class="wm-tag"># NEOCITIES</span>
+       </div>
+      </div>
+     </div>
+    </div>
+
+    <div class="wm-scroll-hint" aria-hidden="true">scroll for interests ↓</div>
+   </main>
+
+   <aside class="wm-col-right">
+    <div class="wm-card wm-soundtrack-card">
+     <div class="wm-card-header wm-card-header-italic">sei's soundtrack</div>
+     <div class="wm-soundtrack-body">
+      <p class="wm-soundtrack-tagline">me if I was a playlist.</p>
+      <div class="wm-playlist" id="playlistTracks"></div>
+      <div class="wm-player-controls">
+       <button id="plShuffleBtn" onclick="playerShuffle()" title="Shuffle" aria-pressed="false">⤨</button>
+       <button id="plPrevBtn" onclick="playerSkip(-1)" title="Previous" aria-label="Previous track">⏮&#xFE0E;</button>
+       <button id="plPlayBtn" class="wm-player-play" onclick="playerTogglePlay()" title="Play / pause" aria-label="Play or pause">▶</button>
+       <button id="plNextBtn" onclick="playerSkip(1)" title="Next" aria-label="Next track">⏭&#xFE0E;</button>
+       <div class="wm-player-volume">
+        <span aria-hidden="true">♪</span>
+        <input
+         type="range"
+         id="plVolume"
+         min="0"
+         max="100"
+         value="70"
+         oninput="playerSetVolume(this.value)"
+         aria-label="Volume"
+        />
+       </div>
+      </div>
+     </div>
+    </div>
+
+    <div class="wm-card wm-web-card">
+     <div class="wm-card-header wm-card-header-italic">sei on the web</div>
+     <div class="wm-web-body">
+      <ol class="wm-web-links">
+       <li><a href="/cdn-cgi/l/email-protection#264f5147454e474848434a08141f161066414b474f4a0845494b">gmail</a></li>
+       <li><a href="https://discord.com/users/1380280160972177460" target="_blank" rel="noopener">discord</a></li>
+       <li><a href="https://neocities.org/" target="_blank" rel="noopener">neocities</a></li>
+      </ol>
+     </div>
+    </div>
+   </aside>
+  </div>
+
+  <section class="wm-interests" aria-label="Sei's interests">
+   <div class="wm-widget wm-w-likes">
+    <div class="wm-widget-header">LIKES</div>
+    <div class="wm-widget-body wm-cols-3">
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">ANIMALS</div>
+      <div class="wm-int-item">♡ Raccoon</div>
+      <div class="wm-int-item">♡ Tiger</div>
+      <div class="wm-int-item">♡ Goldfish</div>
+      <div class="wm-int-item">♡ Sloth</div>
+      <div class="wm-int-item">♡ Pangolin</div>
+     </div>
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">FOOD</div>
+      <div class="wm-int-item">♡ PERSIMMONS</div>
+      <div class="wm-int-item">♡ Yakult</div>
+      <div class="wm-int-item">♡ Takoyaki</div>
+      <div class="wm-int-item">♡ Sinigang</div>
+      <div class="wm-int-item">♡ Pizza</div>
+      <div class="wm-int-item">♡ Spaghetti</div>
+      <div class="wm-int-item">♡ Ramen</div>
+      <div class="wm-int-item">♡ Castella</div>
+      <div class="wm-int-item">♡ Mangoes</div>
+      <div class="wm-int-item">♡ Siu Mai</div>
+      <div class="wm-int-item">♡ Stuffed Cabbage</div>
+     </div>
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">CHARACTERS</div>
+      <div class="wm-int-item">♡ Spiderman</div>
+      <div class="wm-int-item">♡ Oscar Isaac</div>
+      <div class="wm-int-item">♡ Choso</div>
+      <div class="wm-int-item">♡ Tamaki</div>
+      <div class="wm-int-item">♡ Alucard</div>
+      <div class="wm-int-item">♡ Saiki K.</div>
+      <div class="wm-int-item">♡ Yotsuba</div>
+      <div class="wm-int-item">♡ Miya Twins</div>
+      <div class="wm-int-item">♡ Iwaizumi Hajime</div>
+      <div class="wm-int-item">♡ Steb & Scar from Arcane</div>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-pokemon">
+    <div class="wm-widget-header">FAVORITE POKÉMON</div>
+    <div class="wm-widget-body wm-fave-body">
+     <div class="wm-fave-viewport"><img id="pokemonCarouselImg" src="" alt="" /></div>
+     <div class="wm-fave-caption" id="pokemonCarouselCaption"></div>
+     <div class="wm-fave-controls">
+      <button onclick="faveCarouselNav('pokemon', -1)" aria-label="Previous pokemon">‹</button>
+      <span class="wm-fave-counter" id="pokemonCarouselDots"></span>
+      <button onclick="faveCarouselNav('pokemon', 1)" aria-label="Next pokemon">›</button>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-monsters">
+    <div class="wm-widget-header">FAVORITE MONSTERS</div>
+    <div class="wm-widget-body wm-fave-body">
+     <div class="wm-fave-viewport"><img id="monsterCarouselImg" src="" alt="" /></div>
+     <div class="wm-fave-caption" id="monsterCarouselCaption"></div>
+     <div class="wm-fave-controls">
+      <button onclick="faveCarouselNav('monster', -1)" aria-label="Previous monster">‹</button>
+      <span class="wm-fave-counter" id="monsterCarouselDots"></span>
+      <button onclick="faveCarouselNav('monster', 1)" aria-label="Next monster">›</button>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-movies">
+    <div class="wm-widget-header">MOVIES</div>
+    <div class="wm-widget-body wm-cols-2">
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">MOVIES</div>
+      <div class="wm-int-item">✿ Spirited Away</div>
+      <div class="wm-int-item">✿ Princess Mononoke</div>
+      <div class="wm-int-item">✿ Howl's Moving Castle</div>
+      <div class="wm-int-item">✿ Pretty much all the Spider-Man movies</div>
+      <div class="wm-int-item">✿ Avatar (James Cameron, all 3 movies)</div>
+      <div class="wm-int-item">✿ Most movies that have Oscar Isaac in it lol</div>
+      <div class="wm-int-item">✿ Lord of the Rings</div>
+      <div class="wm-int-item">✿ Pacific Rim</div>
+      <div class="wm-int-item">✿ Me Before You</div>
+      <div class="wm-int-item">✿ Mononoke The Movie</div>
+     </div>
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">ANIME (AND/OR MANGAS)</div>
+      <div class="wm-int-item">✿ HAIKYUU</div>
+      <div class="wm-int-item">✿ Fullmetal Alchemist</div>
+      <div class="wm-int-item">✿ Saiki K</div>
+      <div class="wm-int-item">✿ Ouran High School Host Club</div>
+      <div class="wm-int-item">✿ Spice and Wolf</div>
+      <div class="wm-int-item">✿ Cowboy Bebop</div>
+      <div class="wm-int-item">✿ Trigun</div>
+      <div class="wm-int-item">✿ Steins;Gate</div>
+      <div class="wm-int-item">✿ Chihayafuru</div>
+      <div class="wm-int-item">✿ Castlevania</div>
+      <div class="wm-int-item">✿ Gokurakugai</div>
+      <div class="wm-int-item">✿ Gachiakuta</div>
+      <div class="wm-int-item">✿ Tokyo Revengers</div>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-hobbies">
+    <div class="wm-widget-header">HOBBIES</div>
+    <div class="wm-widget-body">
+     <div class="wm-int-section">
+      <div class="wm-int-item">✦ Drawing</div>
+      <div class="wm-int-item">✦ Knitting</div>
+      <div class="wm-int-item">✦ Crochet</div>
+      <div class="wm-int-item">✦ Writing</div>
+      <div class="wm-int-item">✦ Karaoke</div>
+      <div class="wm-int-item">✦ Sewing</div>
+      <div class="wm-int-item">✦ Reading</div>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-music">
+    <div class="wm-widget-header">MUSIC</div>
+    <div class="wm-widget-body wm-cols-2 wm-body-scroll" tabindex="0">
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">ENGLISH</div>
+      <div class="wm-int-item">♪ Chase Atlantic</div>
+      <div class="wm-int-item">♪ pryme</div>
+      <div class="wm-int-item">♪ lil hero</div>
+      <div class="wm-int-item">♪ beabadobee</div>
+      <div class="wm-int-item">♪ Tyler, The Creator</div>
+      <div class="wm-int-item">♪ Megan Thee Stallion</div>
+      <div class="wm-int-item">♪ SZA</div>
+      <div class="wm-int-item">♪ Summer Walker</div>
+      <div class="wm-int-item">♪ Doja Cat</div>
+      <div class="wm-int-item">♪ Tame Impala</div>
+      <div class="wm-int-item">♪ Pond</div>
+      <div class="wm-int-item">♪ Joji</div>
+      <div class="wm-int-item">♪ Cafuné</div>
+      <div class="wm-int-item">♪ Zeph</div>
+      <div class="wm-int-item">♪ keshi</div>
+      <div class="wm-int-item">♪ olivia rodrigo</div>
+      <div class="wm-int-item">♪ Paramore</div>
+      <div class="wm-int-item">♪ Fall Out Boy</div>
+      <div class="wm-int-item">♪ malcom todd</div>
+      <div class="wm-int-item">♪ Inhaler</div>
+      <div class="wm-int-item">♪ The Vamps</div>
+      <div class="wm-int-item">♪ 1D</div>
+      <div class="wm-int-item">♪ 5SOS</div>
+      <div class="wm-int-item">♪ Hojean</div>
+      <div class="wm-int-item">♪ Sarah Kinsley</div>
+      <div class="wm-int-item">♪ Flawed Mangoes</div>
+      <div class="wm-int-item">♪ Whirr</div>
+      <div class="wm-int-item">♪ wisp</div>
+      <div class="wm-int-item">♪ mult</div>
+     </div>
+     <div class="wm-int-section">
+      <div class="wm-int-sublabel">JAPANESE</div>
+      <div class="wm-int-item">♪ COALTAR OF THE DEEPERS</div>
+      <div class="wm-int-item">♪ MASS OF THE FERMENTING DREGS</div>
+      <div class="wm-int-item">♪ Kinoko Teikoku</div>
+      <div class="wm-int-item">♪ Oeil</div>
+      <div class="wm-int-item">♪ My Dead Girlfriend</div>
+      <div class="wm-int-item">♪ incense</div>
+      <div class="wm-int-item">♪ Tokyo shoegazer</div>
+      <div class="wm-int-item">♪ iri</div>
+      <div class="wm-int-item">♪ Taichi Mukai</div>
+      <div class="wm-int-item">♪ Vaundy</div>
+      <div class="wm-int-sublabel wm-int-sublabel-gap">KOREAN</div>
+      <div class="wm-int-item">♪ Monsta X</div>
+      <div class="wm-int-item">♪ EXO</div>
+      <div class="wm-int-item">♪ BTS</div>
+      <div class="wm-int-item">♪ ATEEZ</div>
+      <div class="wm-int-item">♪ CORTIS</div>
+      <div class="wm-int-item">♪ Le sserafim</div>
+      <div class="wm-int-item">♪ Day6</div>
+      <div class="wm-int-item">♪ The Rose</div>
+      <div class="wm-int-item">♪ wave to earth</div>
+      <div class="wm-int-item">♪ BIBI</div>
+      <div class="wm-int-item">♪ DEAN</div>
+      <div class="wm-int-item">♪ parannoul</div>
+     </div>
+    </div>
+   </div>
+
+   <div class="wm-widget wm-w-quizzes">
+    <div class="wm-widget-header">PERSONALITY QUIZZES</div>
+    <div style="width: 855px; min-width: 0px;" class="wm-widget-body wm-quiz-scroll" id="widget-quizzes">
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/fairy_lbi9en.png" alt="creature result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://pennylovespandas.neocities.org/quiz/creature" target="_blank" rel="noopener">What Creature Are You?</a>
+       <span class="wm-quiz-host">pennylovespandas.neocities.org/</span>
+      </div>
+      <div class="wm-quiz-caption">You are a sweet little fairy!</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/rock_gherjv.png" alt="rock result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://swiftyshq.neocities.org/fun/quiz/rock" target="_blank" rel="noopener">What Rock Are You?</a>
+       <span class="wm-quiz-host">swiftyshq.neocities.org</span>
+      </div>
+      <div class="wm-quiz-caption">you dont take ANY *****. this boulder will hold your door closed when an angry mob comes after you</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/cryptid_xr6wcn.png" alt="cryptid result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://swiftyshq.neocities.org/fun/quiz/creature" target="_blank" rel="noopener">What Cryptid Are You?</a>
+       <span class="wm-quiz-host">swiftyshq.neocities.org</span>
+      </div>
+      <div class="wm-quiz-caption">youre the friendly neighborhood cryptid. people have a hard time understanding you and your poetry</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/haunted-house_zxkqcy.jpg" alt="haunted house result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://hallowdaze.neocities.org" target="_blank" rel="noopener">Would you survive a haunted house?</a>
+       <span class="wm-quiz-host">hallowdaze.neocities.org</span>
+      </div>
+      <div class="wm-quiz-caption">Nope!</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://i.imgur.com/YOPG9hQ.png" alt="isopod result" loading="lazy" referrerpolicy="no-referrer" onerror="this.onerror=null;this.parentElement.style.display='none';" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://casiopea.neocities.org" target="_blank" rel="noopener">What Isopod Are You?</a>
+       <span class="wm-quiz-host">casiopea.neocities.org/isopod/isopodquiz.html</span>
+      </div>
+      <div class="wm-quiz-caption">YEAH!</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679417/fruitful_wuf1qb.jpg" alt="fruit result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://niyuart.github.io/FruitfulPersonas/index.html" target="_blank" rel="noopener">Fruitful Personas</a>
+       <span class="wm-quiz-host">niyuart.github.io/FruitfulPersonas/index.html</span>
+      </div>
+      <div class="wm-quiz-caption">You are an apple!</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/cosmos-gravity_tc7hz4.png" alt="cosmos result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://iseej.github.io/CosmosPersona/index.html" target="_blank" rel="noopener">Cosmos Personas</a>
+       <span class="wm-quiz-host">iseej.github.io/CosmosPersona/index.html</span>
+      </div>
+      <div class="wm-quiz-caption">You are gravity!</div>
+     </div>
+
+     <div class="wm-quiz-card">
+      <div class="wm-quiz-img-wrap">
+       <img class="wm-quiz-img" src="https://res.cloudinary.com/seioutloud/image/upload/v1782679415/color-peach_fmcups.png" alt="color result" loading="lazy" />
+      </div>
+      <div class="wm-quiz-meta">
+       <a class="wm-quiz-title" href="https://poomang.com/en/t/mycolor_test/result/152341536?c=26&amp;from_detail=True&amp;kc=15" target="_blank" rel="noopener">Find Your Color</a>
+       <span class="wm-quiz-host">poomang.com/</span>
+      </div>
+      <div class="wm-quiz-caption">You are Peach Fuzz!</div>
+     </div>
+    </div>
+   </div>
+  </section>
+
+  <div id="bagModal" class="wm-modal-overlay" onclick="closeBagModal()">
+   <div class="wm-modal-box" onclick="event.stopPropagation()">
+    <div class="wm-modal-toolbar">
+     <span>WHAT'S INSIDE?</span>
+     <button onclick="closeBagModal()">× CLOSE</button>
+    </div>
+    <div class="wm-modal-body">
+     <div class="bag-grid" id="bagGrid">
+      <span class="wm-hint">loading...</span>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="webmaster.js"></script>
+ <script type="module" src="https://static.cloudflareinsights.com/beacon.min.js/v4513226cdae34746b4dedf0b4dfa099e1781791509496" integrity="sha512-ZE9pZaUXND66v380QUtch/5sE9tPFh2zg45pR2PB0CVkCtOREv2AJKkSidISWkysEuQ0EH8faUU5du78bx87UQ==" data-cf-beacon='{"version":"2024.11.0","token":"75124c326cb447fe934cde04713ae013","r":1}' crossorigin="anonymous"></script>
+</body>
+</html>

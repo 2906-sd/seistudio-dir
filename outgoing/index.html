@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Outgoing</title>
+
+<!--
+  ═══════════════════════════════════════════════════════
+  OUTGOING PAGE
+  Standalone — does not use the main site's styles.css or
+  script.js, so it's safe to edit freely.
+
+  To add a link: copy one .link-row block and edit the
+  three parts — label, description, and href/link text.
+  ═══════════════════════════════════════════════════════
+-->
+
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background-color: #0d0d0d;
+    color: #e8e4dc;
+    font-family: Georgia, 'Times New Roman', serif;
+    line-height: 1.6;
+  }
+
+  a { color: #d8a7b1; }
+  a:hover { color: #f0c9d0; }
+
+  .wrap {
+    max-width: 760px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+
+  .back {
+    display: inline-block;
+    margin-bottom: 2rem;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #999;
+    text-decoration: none;
+    border: 1px solid #444;
+    padding: 6px 12px;
+  }
+  .back:hover { color: #f0c9d0; border-color: #f0c9d0; }
+
+  .page-title {
+    font-size: clamp(1.8rem, 5vw, 2.6rem);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    margin: 0 0 0.4rem;
+  }
+
+  .page-intro {
+    font-style: italic;
+    color: #b8a8ae;
+    margin: 0 0 2.5rem;
+    font-size: 1.05rem;
+  }
+
+  .section {
+    margin-bottom: 3rem;
+  }
+
+  .section h2 {
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: #999;
+    border-bottom: 1px solid #333;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-note {
+    font-size: 0.95rem;
+    color: #b8a8ae;
+    margin: 0 0 1.2rem;
+  }
+
+  /* Favorites / Neighbors — button wall of badge-style links */
+  .badge-wall {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .badge-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100px;
+    height: 40px;
+    border: 1px solid #333;
+    background: #1a1512;
+    font-family: 'Courier New', monospace;
+    font-size: 10px;
+    text-align: center;
+    text-decoration: none;
+    color: #e8e4dc;
+    padding: 4px;
+    transition: border-color 0.15s, color 0.15s;
+  }
+  .badge-link:hover { border-color: #d8a7b1; color: #f0c9d0; }
+
+  .empty-note {
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    color: #666;
+  }
+
+  /* Favorite places — plain link rows */
+  .link-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+    padding: 0.7rem 0;
+    border-bottom: 1px solid #262626;
+    flex-wrap: wrap;
+  }
+  .link-row:last-child { border-bottom: none; }
+
+  .link-label {
+    font-weight: bold;
+    min-width: 140px;
+  }
+
+  .link-desc {
+    flex: 1;
+    color: #b8b0a8;
+    font-size: 0.95rem;
+    min-width: 200px;
+  }
+
+  .link-href {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .footer-note {
+    margin-top: 4rem;
+    text-align: center;
+    font-family: 'Courier New', monospace;
+    font-size: 11px;
+    color: #666;
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+
+  <a href="../index.html#home" class="back">&larr; back</a>
+
+  <h1 class="page-title">Outgoing</h1>
+  <p class="page-intro">links out — favorite neocities sites and my favorite corners of the web.</p>
+
+  <div class="section">
+    <h2>Favorites</h2>
+    <p class="section-note">Neocities sites I love and revisit often.</p>
+    <div class="badge-wall">
+      <!-- Copy this block for each badge/button:
+      <a class="badge-link" href="https://example.neocities.org" target="_blank" rel="noopener">
+        site name
+      </a>
+      -->
+      <span class="empty-note">// no favorites yet — check back soon.</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Neighbors</h2>
+    <p class="section-note">Sites that link back or trade badges with me. hi, friends. :)</p>
+    <div class="badge-wall">
+      <span class="empty-note">// no neighbors yet — check back soon.</span>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Favorite Places</h2>
+    <p class="section-note">Non-Neocities corners of the web I keep coming back to.</p>
+
+    <div class="link-row">
+      <span class="link-label">Are.na</span>
+      <span class="link-desc">Slow social platform for collecting ideas</span>
+      <a class="link-href" href="https://www.are.na/" target="_blank" rel="noopener">are.na</a>
+    </div>
+
+    <div class="link-row">
+      <span class="link-label">Internet Archive</span>
+      <span class="link-desc">The Wayback Machine + free library</span>
+      <a class="link-href" href="https://archive.org/" target="_blank" rel="noopener">archive.org</a>
+    </div>
+
+    <div class="link-row">
+      <span class="link-label">CSS-Tricks</span>
+      <span class="link-desc">Reliable web-dev reference + snippets</span>
+      <a class="link-href" href="https://css-tricks.com/" target="_blank" rel="noopener">css-tricks.com</a>
+    </div>
+
+    <div class="link-row">
+      <span class="link-label">Melonking</span>
+      <span class="link-desc">Old-web philosophy + community</span>
+      <a class="link-href" href="https://www.melonking.net/" target="_blank" rel="noopener">melonking.net</a>
+    </div>
+  </div>
+
+  <!--
+    COMMUNITY — Cliques & Webrings
+    Uncomment once you've actually joined some. :)
+
+    <div class="section">
+      <h2>Community</h2>
+      <p class="section-note">Cliques and webrings I'm part of.</p>
+      <div class="link-row">
+        <span class="link-label">Clique / Webring name</span>
+        <span class="link-desc">Short description</span>
+        <a class="link-href" href="#" target="_blank" rel="noopener">example.neocities.org</a>
+      </div>
+    </div>
+  -->
+
+  <div class="footer-note">
+    ✿ last updated —
+  </div>
+
+</div>
+
+</body>
+</html>
