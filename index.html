@@ -1,5 +1,496 @@
-<!-- Fix: replace the malformed textarea blocks with escaped HTML and remove broken closing tags -->
-<textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href=&quot;https://seioutloud.neocities.org&quot;&gt;&lt;img src=&quot;https://res.cloudinary.com/seioutloud/image/upload/v1784832038/button-88x31_cxxjbv.gif&quot; width=&quot;88&quot; height=&quot;31&quot; alt=&quot;sei out loud&quot;&gt;&lt;/a&gt;</textarea>
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Sei ✿ut Loud</title>
+  <link rel="icon" type="image/x-icon" href="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Roboto+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+   /* ── CUSTOM LOADER ── */
+   .loader-overlay {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    backdrop-filter: blur(2px);
+    z-index: 9999;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+   }
+   body.dark .loader-overlay {
+    background: rgba(0, 0, 0, 0.95);
+   }
+   .loader-overlay.show {
+    display: flex;
+   }
+   .loader-flower {
+    font-size: 4.5rem;
+    animation: spin 2s linear infinite;
+    color: var(--accent-2);
+   }
+   @keyframes spin {
+    from {
+     transform: rotate(0deg);
+    }
+    to {
+     transform: rotate(360deg);
+    }
+   }
+   .loader-message {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    font-weight: bold;
+    color: var(--accent-3);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    min-width: 200px;
+    text-align: center;
+   }
+  </style>
+ </head>
+ <body class="advisory-lock">
+  <!-- CONTENT ADVISORY -->
+  <div
+   id="advisoryModal"
+   class="modal-overlay advisory-overlay"
+   style="display: flex"
+  >
+   <div class="admin-box advisory-box">
+    <div class="admin-toolbar">
+     <span>SEI_SYSTEM_MESSAGE</span>
+    </div>
+    <div class="admin-body advisory-body">
+     <div class="advisory-icon">✿.ᐟ</div>
 
-<!-- second stamp -->
-<textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href=&quot;https://seioutloud.neocities.org&quot;&gt;&lt;img src=&quot;https://res.cloudinary.com/seioutloud/image/upload/v1784243000/button-88x31_gyoqlm.gif&quot; width=&quot;88&quot; height=&quot;31&quot; alt=&quot;sei out loud&quot;&gt;&lt;/a&gt;</textarea>
+     <p>
+      <span style="color: var(--accent-2); font-weight: bold">[ ! ] NOTICE:</span>
+      This is an unfiltered, personal space run by an adult.
+     </p>
+
+     <p>
+      I made this site to express myself freely. Because of that, some content
+      may touch on heavy things—including abuse, trauma, and disabilities.
+      <b>You are welcome here!</b> But please prioritize your own peace and
+      comfort above all else.
+     </p>
+     <p>
+      <span style="display: block">
+       If you are a minor or sensitive to these topics, please look out for
+       yourself as you explore.</span
+      >
+     </p>
+     <p style="text-align: left; max-width: 320px; margin: 0 auto">
+      <span
+       style="
+        color: var(--accent-4);
+        font-weight: bold;
+        display: block;
+        margin-bottom: 0.5rem;
+        text-align: center;
+       "
+       >This site is only slightly responsive and best viewed on a computer!</span
+      >
+     </p>
+
+     <p style="margin-top: 0.2rem">Boot up when you're ready.</p>
+
+     <div class="advisory-actions">
+      <button class="advisory-btn advisory-enter" onclick="dismissAdvisory()">
+       Enter System
+      </button>
+      <a class="advisory-btn advisory-leave" href="https://neocities.org/"
+       >Abort / Take Me Back</a
+      >
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- WEBNEKO — must stay static!! (not JS-injected); script uses
+     document.write, which only works during initial page parsing -->
+  <script>
+   var NekoType = "white";
+  </script>
+  <h1 id="nl" style="display: none">
+   <script src="https://webneko.net/n20171213.js"></script>
+  </h1>
+
+  <!-- CUSTOM LOADER -->
+  <div id="loaderOverlay" class="loader-overlay">
+   <div class="loader-flower">✿</div>
+   <div class="loader-message" id="loaderMessage">[ FETCHING_EMOTIONS... ]</div>
+  </div>
+
+  <!-- TOP NAV -->
+  <header id="navbar" class="top-nav">
+   <div class="nav-center" id="navCenter">
+    <!-- note for me cause i keep forgetting:
+    NAV LINKS are rendered here in the header AND automatically moved into the
+    sidebar on the Home page (homeNavSlot), so add new links here ONLY!!!
+    copy block + edit u dummy:
+
+         <div class="desk-icon" onclick="showPage('PAGE_ID')" id="desk-link-PAGE_ID">
+          <div class="desk-icon-wrap">
+           <img src="ICON_URL" class="desk-icon-img" alt="LABEL" />
+          </div>
+          <span class="desk-icon-label">LABEL</span>
+         </div>
+         
+         -->
+    <button
+     class="nav-carousel-btn nav-carousel-prev"
+     onclick="navCarouselScroll(-1)"
+     aria-label="Scroll navigation left"
+     title="Scroll left"
+    >
+     ‹
+    </button>
+    <div class="desktop-icons-bar in-nav" id="desktopIconsBar">
+     <div
+      class="desk-icon active"
+      onclick="showPage('home')"
+      id="desk-link-home"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588546/Interface-Essential-Home-2--Streamline-Pixel_xcnr7v.gif"
+        class="desk-icon-img"
+        alt="HOME"
+       />
+      </div>
+      <span class="desk-icon-label">HOME</span>
+     </div>
+     <a
+      class="desk-icon desk-icon-external"
+      href="https://neocities.org/"
+      target="_blank"
+      rel="noopener"
+      id="desk-link-neocities"
+      title="Mirror on Neocities"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588301/Pet-Animals-Cat--Streamline-Pixel_nixwg4.gif"
+        class="desk-icon-img"
+        alt="NEOCITIES"
+       />
+      </div>
+      <span class="desk-icon-label">NEOCITIES</span>
+     </a>
+     <div class="desk-icon" onclick="showPage('art')" id="desk-link-art">
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588444/Photography-Frame-Picture--Streamline-Pixel_ntyse5.gif"
+        class="desk-icon-img"
+        alt="VISUALS"
+       />
+      </div>
+      <span class="desk-icon-label">VISUALS</span>
+     </div>
+     <a
+      class="desk-icon"
+      href="monologs/index.html"
+      id="desk-link-writing"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588497/Content-Files-Folder-Open--Streamline-Pixel_vcbaq5.gif"
+        class="desk-icon-img"
+        alt="LOGS"
+       />
+      </div>
+      <span class="desk-icon-label">LOGS</span>
+     </a>
+     <div
+      class="desk-icon"
+      onclick="showPage('shrines')"
+      id="desk-link-shrines"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1785188051/Romance-Heart-Lock--Streamline-Pixel_dbxibk.gif"
+        class="desk-icon-img"
+        alt="SHRINES"
+       />
+      </div>
+      <span class="desk-icon-label">SHRINES</span>
+     </div>
+     <a
+      class="desk-icon"
+      href="starmail/index.html"
+      id="desk-link-letters"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588487/Interface-Essential-Send-Mail--Streamline-Pixel_lk1p4n.gif"
+        class="desk-icon-img"
+        alt="LETTERS"
+       />
+      </div>
+      <span class="desk-icon-label">LETTERS</span>
+     </a>
+     <a
+      class="desk-icon"
+      href="outgoing/index.html"
+      id="desk-link-outgoing"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1784588301/Pet-Animals-Cat--Streamline-Pixel_nixwg4.gif"
+        class="desk-icon-img"
+        alt="OUTGOING"
+       />
+      </div>
+      <span class="desk-icon-label">OUTGOING</span>
+     </a>
+     <a
+      class="desk-icon"
+      href="webmaster/index.html"
+      id="desk-link-personal"
+     >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://res.cloudinary.com/seioutloud/image/upload/v1785187779/star63_vt3dua.gif"
+        class="desk-icon-img"
+        alt="PROFILE"
+       />
+      </div>
+      <span class="desk-icon-label">WEBMASTER</span>
+     </a>
+      <div class="desk-icon-group" id="desk-group-goodies">
+       <div class="desk-icon has-subnav" onclick="handleGoodiesSummaryClick(event)" id="desk-link-goodies">
+        <div class="desk-icon-wrap">
+         <img src="https://res.cloudinary.com/seioutloud/image/upload/v1785187497/gift4_f31vuv.gif" class="desk-icon-img" alt="GOODIES" />
+        </div>
+        <span class="desk-icon-label">GOODIES</span>
+        <span class="desk-subnav-caret" aria-hidden="true">›</span>
+       </div>
+       <div class="desk-subnav" id="desk-subnav-goodies">
+        <div class="desk-subnav-item" data-subpage="code-snippets" onclick="goToGoodiesFromNav(event, 'code-snippets')">Tutorials</div>
+        <div class="desk-subnav-item" data-subpage="graphics" onclick="goToGoodiesFromNav(event, 'graphics')">Graphics</div>
+        <div class="desk-subnav-item" data-subpage="resources" onclick="goToGoodiesFromNav(event, 'resources')">Resources</div>
+       </div>
+      </div>
+      <div
+       class="desk-icon desk-icon-info-nav"
+       onclick="showPage('colophon')"
+       id="desk-link-colophon"
+       title="ⓘ site colophon / credits"
+      >
+      <div class="desk-icon-wrap">
+       <img
+        src="https://gabestash.neocities.org/favicons/monochrome/mono340.gif"
+        class="desk-icon-img"
+
+        alt="COLOPHON"
+       />
+      </div>
+      <span class="desk-icon-label">COLOPHON</span>
+     </div>
+
+<div class="desk-icon" id="desk-link-manny" title="Manny's page (coming soon)">
+  <div class="desk-icon-wrap">
+    <img src="https://res.cloudinary.com/seioutloud/image/upload/v1784760901/gold212_yknqep.gif" class="desk-icon-img" alt="Manny (coming soon)" />
+  </div>
+  <span class="desk-icon-label">MANNY'S PAGE (coming soon)</span>
+</div>
+
+<div class="desk-icon" id="desk-link-bloom" title="Bloom's page (coming soon)">
+  <div class="desk-icon-wrap">
+    <img src="https://res.cloudinary.com/seioutloud/image/upload/v1784761330/mono53_uyl3fg.gif" class="desk-icon-img" alt="Bloom (coming soon)" />
+  </div>
+  <span class="desk-icon-label">BLOOM'S PAGE (coming soon)</span>
+</div>
+
+
+    </div>
+    <button
+     class="nav-carousel-btn nav-carousel-next"
+     onclick="navCarouselScroll(1)"
+     aria-label="Scroll navigation right"
+     title="Scroll right"
+    >
+     ›
+    </button>
+   </div>
+   <div class="nav-right">
+    <button
+     class="petal-toggle-btn"
+     id="petalToggleBtn"
+     onclick="togglePetals()"
+     title="Toggle falling petals"
+     aria-pressed="true"
+    >
+     ✿ PETALS: ON
+    </button>
+    <button
+     class="dark-toggle"
+     id="darkToggle"
+     onclick="toggleDark()"
+     title="Toggle dark mode"
+    >
+     ◐ MODE
+    </button>
+    <button
+     class="menu-trigger"
+     id="menuTrigger"
+     onclick="toggleMenu()"
+     aria-label="Toggle navigation"
+     aria-expanded="false"
+    >
+     ☰
+    </button>
+    <span
+     class="nav-admin-trigger"
+     onclick="showAdminLogin()"
+     title="Admin access"
+     >✿</span
+    >
+   </div>
+  </header>
+
+
+  <div style="width: 167%;" class="page-wrapper">
+   <main>
+    <!-- ══════════════════ HOME ══════════════════ -->
+    <section id="home" class="active">
+     <div class="home-grid">
+      <!-- SIDE NAV — this slot receives the #desktopIconsBar from the header via JS.
+           To add/edit links, see the header nav block above. -->
+      <div class="home-card home-nav-card">
+       <div class="home-card-header">NAVIGATE.EXE</div>
+       <div class="home-card-body home-nav-body" id="homeNavSlot"></div>
+       <div class="home-nav-pagination" id="homeNavPagination" style="display: none">
+        <button
+         class="home-nav-page-btn"
+         id="homeNavPrevBtn"
+         onclick="homeNavGoToPage(-1)"
+         aria-label="Previous nav links"
+        >
+         ‹ PREV
+        </button>
+        <span class="home-nav-page-status" id="homeNavPageStatus"></span>
+        <button
+         class="home-nav-page-btn"
+         id="homeNavNextBtn"
+         onclick="homeNavGoToPage(1)"
+         aria-label="Next nav links"
+        >
+         NEXT ›
+        </button>
+       </div>
+      </div>
+
+      <!-- BLOG STAMP / LINK BACK -->
+      <div class="home-card home-stamp-card home-image-left">
+       <div class="home-card-header">
+        LINK BACK TO ME? :)
+       </div>
+       <div class="home-card-body home-stamp-body">
+        <img
+         class="home-stamp-img"
+         src="https://res.cloudinary.com/seioutloud/image/upload/v1784832038/button-88x31_cxxjbv.gif"
+         alt="sei out loud 88x31 button"
+         width="88"
+         height="31"
+        />
+        <textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href=&quot;https://seioutloud.neocities.org&quot;&gt;&lt;img src=&quot;https://res.cloudinary.com/seioutloud/image/upload/v1784832038/button-88x31_cxxjbv.gif&quot; width=&quot;88&quot; height=&quot;31&quot; alt=&quot;sei out loud&quot;&gt;&lt;/a&gt;</textarea>
+       </div>
+       <div class="home-card-body home-stamp-body">
+        <img
+         class="home-stamp-img"
+         src="https://res.cloudinary.com/seioutloud/image/upload/v1784243000/button-88x31_gyoqlm.gif"
+         alt="sei out loud 88x31 button"
+         width="88"
+         height="31"
+        />
+        <textarea class="home-stamp-code" readonly onclick="this.select()">&lt;a href=&quot;https://seioutloud.neocities.org&quot;&gt;&lt;img src=&quot;https://res.cloudinary.com/seioutloud/image/upload/v1784243000/button-88x31_gyoqlm.gif&quot; width=&quot;88&quot; height=&quot;31&quot; alt=&quot;sei out loud&quot;&gt;&lt;/a&gt;</textarea>
+       </div>
+      </div>
+
+      <!-- STATUS -->
+      <div class="home-card status-card">
+       <div class="home-card-header">
+        <span>STATUS.EXE</span>
+       </div>
+       <div class="home-card-body">
+        <div class="status-row">
+         <span class="status-row-label">MOOD</span>
+         <span class="status-row-val" id="statusMood">...</span>
+        </div>
+        <div class="status-row">
+         <span class="status-row-label">LISTENING TO</span>
+         <span class="status-row-val" id="statusListening">...</span>
+        </div>
+        <div class="status-row">
+         <span class="status-row-label">SEI IS... </span>
+         <span class="status-row-val" id="statusWorking">...</span>
+        </div>
+        <div class="status-row">
+         <span class="status-row-label">TIME</span>
+         <span class="status-row-val" id="homeTime">...</span>
+        </div>
+       </div>
+       <div class="status-last-updated"
+        >LAST UPDATED: <span id="statusLastUpdated">--.--.--</span></div
+       >
+      </div>
+
+      <!-- HELLO + HERO + MARQUEE + BADGES -->
+      <div style="height: 1351px;" class="home-hero-block">
+       <!-- HELLO -->
+       <div class="home-card hello-card">
+        <div class="home-card-header">HELLO.TXT</div>
+        <div class="home-card-body">
+         <p>
+          thanks for booting up this corner of my mind. feel free to click
+          around, look at the art, or leave a note in the bulletin to say hi
+          or let other people know who you are!
+         </p>
+         <p style="margin-top: 0.8rem; color: var(--text-muted)">
+          don't mind the bugs, this place will always be a work in
+          progress.
+         </p>
+        </div>
+       </div>
+
+       <!-- HERO (image swaps between light + dark) -->
+       <div class="home-card hero-card">
+        <span style="font-size: 4.7rem;" class="site-title"> SEI OUT LOUD!</span>
+        <img
+         class="hero-image hero-image-light"
+         src="https://res.cloudinary.com/seioutloud/image/upload/v1784841117/color-changed-image_odb3wd.png"
+         alt="A cat with headphones"
+         loading="eager"
+         decoding="async"
+        />
+        <img
+         class="hero-image hero-image-dark"
+         src="https://res.cloudinary.com/seioutloud/image/upload/v1784758287/dithered-image-Photoroom_m5mgql.png"
+         alt="a dog with headphones"
+         aria-hidden="true"
+         loading="eager"
+         decoding="async"
+        />
+        <div class="marquee-container">
+         <div class="marquee-content"> a quiet sanctuary for loud ideas </div>
+        </div>
+       </div>
+
+       <!-- BADGES (internet stamps, marquee animation) -->
+       <div class="home-card badges-card">
+        <div class="home-card-body badges-card-body">
+         <button
+          class="admin-edit-btn"
+          id="badgesAdminBtn"
+          onclick="showAdminLogin();setTimeout(()=>switchAdminTab('badges'),100);"
+          style="display: none"
+         >
+          + ADD BADGE
+         </button>
